@@ -158,5 +158,15 @@ export default [
     difficulty: "Intermediate",
     icon: "Pi",
     order: 16,
+  },
+  {
+    id: "matrix",
+    name: "Matrix / 2D Arrays",
+    description: "Multi-dimensional array problems: spiral traversal, rotation, search in sorted matrix, and path finding in grids.",
+    when_to_use: "Grid-based problems, image processing, 2D search, path finding, matrix transformations.",
+    techniques: ["DFS/BFS on Grid","Spiral Traversal","Rotate/Transpose","Binary Search on Matrix","Row-Column Elimination"],
+    difficulty: "Intermediate",
+    icon: "#",
+    order: 17,
   }
 ]
