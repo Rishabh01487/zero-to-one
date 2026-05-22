@@ -159,6 +159,14 @@ export default [
       {"input":"4\n1 3 5 7\n4\n2 4 6 8","output":"1 2 3 4 5 6 7 8","explanation":"Two-pointer merge"}
     ],
     test_cases: [
+      {"input":"4\n1 3 5 7\n4\n2 4 6 8","expected":"1 2 3 4 5 6 7 8"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m;\n  cin >> n;\n  int a[n];\n  for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m;\n  int b[m];\n  for (int i = 0; i < m; i++) cin >> b[i];\n\n  // two-pointer merge\n\n  return 0;\n}",
+    approach: "This problem asks us to merge two already sorted arrays into a single sorted array. A brute force approach concatenates the two arrays and then applies a general-purpose sorting algorithm. For example, merging [1,3,5,7] and [2,4,6,8] by concatenation yields [1,3,5,7,2,4,6,8], and sorting gives [1,2,3,4,5,6,7,8]. This takes O((n+m) log (n+m)) time, which fails to exploit the fact that both input arrays are already sorted. The optimal approach is the classic two-pointer merge technique from merge sort. Initialize three pointers: i=0 for array a, j=0 for array b, and k=0 for the result array. While both i < n and j < m, compare a[i] and b[j]: place the smaller element into result[k] and advance the corresponding pointer. After one array is exhausted, copy the remaining elements from the other array directly. For a=[1,3,5,7] and b=[2,4,6,8]: compare 1<2 -> result[0]=1, i=1; compare 3>2 -> result[1]=2, j=1; compare 3<4 -> result[2]=3, i=2; compare 5>4 -> result[3]=4, j=2; continue to get [1,2,3,4,5,6,7,8]. Edge cases include one empty array (just copy the other), arrays of different lengths, and duplicate values across arrays. Time complexity is O(n+m) since each element is processed exactly once, and space complexity is O(n+m) for storing the result.\n\nDiagram:\n  a=[1, 3, 5, 7], b=[2, 4, 6, 8]\n  \n  i=0(a=1), j=0(b=2): 1<2  → res[0]=1, i=1\n  i=1(a=3), j=0(b=2): 3>2  → res[1]=2, j=1\n  i=1(a=3), j=1(b=4): 3<4  → res[2]=3, i=2\n  i=2(a=5), j=1(b=4): 5>4  → res[3]=4, j=2\n  i=2(a=5), j=2(b=6): 5<6  → res[4]=5, i=3\n  i=3(a=7), j=2(b=6): 7>6  → res[5]=6, j=3\n  i=3(a=7), j=3(b=8): 7<8  → res[6]=7, i=4\n  i=4 (exhausted): copy b[3]=8 → res[7]=8\n  \n  Result: [1, 2, 3, 4, 5, 6, 7, 8]",
+    complexity: {"time":"O(n+m)","space":"O(n+m)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m){\n  res[k++]=(a[i]<b[j])?a[i++]:b[j++];\n}\nwhile(i<n) res[k++]=a[i++];\nwhile(j<m) res[k++]=b[j++];",
+  },
   {
     id: "two-sum",
     title: "Two Sum",
@@ -166,6 +174,7 @@ export default [
     difficulty: "easy",
     description: "Find two numbers that sum to target. Return their indices.",
     constraints: "1 <= n <= 10^4",
+    techniques: ["two-pointers", "prefix-sum"],
     examples: [
       {"input":"4\n2 7 11 15\n9","output":"0 1","explanation":"arr[0]+arr[1]=2+7=9"}
     ],
@@ -173,7 +182,7 @@ export default [
       {"input":"4\n2 7 11 15\n9","expected":"0 1"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  // find two indices\n\n  cout << i << \" \" << j << endl;\n  return 0;\n}",
-    approach: "Use hash map: for each element, check if target-arr[i] exists in map. If yes, return both indices.",
+    approach: "This problem asks us to find two distinct indices i and j in an array such that arr[i] + arr[j] equals a given target value. A brute force approach uses two nested loops to check every possible pair of indices. For each i from 0 to n-2, for each j from i+1 to n-1, check if arr[i] + arr[j] == target. For example, with arr=[2,7,11,15] and target=9, the pair (0,1) is found because 2+7=9. This is O(n^2) time, which becomes very slow for n up to 10^4 (100 million operations). The optimal approach uses a hash map to trade space for speed. We iterate through the array once. For each element arr[i], compute its complement as target - arr[i]. If the complement already exists in the hash map, we have found the pair and return the indices (map[complement], i). Otherwise, store the current element with its index in the hash map for future lookups. For arr=[2,7,11,15], target=9: i=0, val=2, complement=7, map is empty so store {2:0}; i=1, val=7, complement=2, map contains 2 at index 0, so return [0,1]. Edge cases include no valid pair (handle by returning an appropriate sentinel), negative numbers, and duplicate values where the latest index is stored (which works since any valid pair suffices). Time complexity is O(n) for the single pass, and space complexity is O(n) for the hash map.\n\nDiagram:\n  Array: [2, 7, 11, 15], target = 9\n  hash = {}\n  \n  Step 1: i=0, arr[0]=2\n    complement = 9-2 = 7\n    7 not in hash → hash[2] = 0\n    hash = {2:0}\n  \n  Step 2: i=1, arr[1]=7\n    complement = 9-7 = 2\n    2 IS in hash → return [0, 1]\n  \n  Result: [0, 1]",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "unordered_map<int,int> mp;\nfor(int i=0;i<n;i++){\n  if(mp.count(target-arr[i])){\n    cout << mp[target-arr[i]] << \" \" << i;\n    return 0;\n  }\n  mp[arr[i]]=i;\n}",
@@ -185,19 +194,10 @@ export default [
     difficulty: "medium",
     description: "Find element appearing more than n/2 times. Assume it always exists.",
     constraints: "1 <= n <= 10^5",
+    techniques: ["moores-algorithm"],
     examples: [
       {"input":"7\n3 2 3 1 3 2 3","output":"3","explanation":"3 appears 4 times > 7/2"}
     ],
-    test_cases: [
-      {"input":"7\n3 2 3 1 3 2 3","expected":"3"},
-      {"input":"5\n1 1 2 2 2","expected":"2"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Moore's Voting Algorithm\n\n  cout << candidate << endl;\n  return 0;\n}",
-    approach: "Moore Voting: candidate gains votes for matches, loses for non-matches. Final candidate is the majority.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int cnt=0,cand;\nfor(int x:arr){\n  if(cnt==0) cand=x;\n  cnt+=(x==cand)?1:-1;\n}\ncout << cand;",
-  },
   {
     id: "buy-sell-stock",
     title: "Best Time to Buy and Sell Stock",
