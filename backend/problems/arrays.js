@@ -296,5 +296,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int slow=arr[0],fast=arr[0];\ndo{\n  slow=arr[slow];\n  fast=arr[arr[fast]];\n} while(slow!=fast);\nslow=arr[0];\nwhile(slow!=fast){\n  slow=arr[slow];\n  fast=arr[fast];\n}\ncout << slow;",
+  },
+  {
+    id: "longest-consecutive",
+    title: "Longest Consecutive Sequence",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Find the length of the longest consecutive elements sequence.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n100 4 200 1 3 2","output":"4","explanation":"Longest: [1,2,3,4]"}
+    ],
+    test_cases: [
+      {"input":"6\n100 4 200 1 3 2","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\n#include <unordered_set>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // use hash set\n\n  cout << longest << endl;\n  return 0;\n}",
+    approach: "Use hash set. For each element, check if it is the start of a sequence (prev not in set). Count consecutive elements.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "unordered_set<int> s(arr,arr+n);\nint mx=0;\nfor(int x:s){\n  if(!s.count(x-1)){\n    int len=1;\n    while(s.count(x+len)) len++;\n    mx=max(mx,len);\n  }\n}\ncout << mx;",
   }
 ]
