@@ -198,6 +198,16 @@ export default [
     examples: [
       {"input":"7\n3 2 3 1 3 2 3","output":"3","explanation":"3 appears 4 times > 7/2"}
     ],
+    test_cases: [
+      {"input":"7\n3 2 3 1 3 2 3","expected":"3"},
+      {"input":"5\n1 1 2 2 2","expected":"2"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Moore's Voting Algorithm\n\n  cout << candidate << endl;\n  return 0;\n}",
+    approach: "This problem asks us to find the element that appears more than n/2 times in an array, with the guarantee that such an element always exists. A brute force approach uses a hash map to count frequencies of each element and then identifies the element with count > n/2. For example, in [3,2,3,1,3,2,3], counting yields 3:4, 2:2, 1:1, and since 4 > 3.5, 3 is the majority element. This uses O(n) extra space. Sorting the array and returning the middle element (at index n/2) also works but takes O(n log n) time. The optimal approach is Boyer-Moore Majority Voting Algorithm, which operates in linear time with constant space. Maintain a candidate variable and a count initialized to 0. Traverse the array: if count is 0, set candidate to the current element and count to 1. Otherwise, if the current element equals candidate, increment count; else decrement count. The final candidate is the majority element. The algorithm works because the majority element, appearing more than half the time, survives all cancellations when paired with non-majority elements. For [3,2,3,1,3,2,3]: candidate=3, count=1; x=2: count=0; x=3: candidate=3, count=1; x=1: count=0; x=3: candidate=3, count=1; x=2: count=0; x=3: candidate=3, count=1. Final candidate=3. Edge cases include all identical elements and arrays of size 1. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Array: [3, 2, 3, 1, 3, 2, 3]\n  \n  candidate=3, count=1\n  x=2 → count=0\n  x=3 → candidate=3, count=1\n  x=1 → count=0\n  x=3 → candidate=3, count=1\n  x=2 → count=0\n  x=3 → candidate=3, count=1\n  \n  Result: 3 (appears 4 times > n/2 = 3.5)",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int cnt=0,cand;\nfor(int x:arr){\n  if(cnt==0) cand=x;\n  cnt+=(x==cand)?1:-1;\n}\ncout << cand;",
+  },
   {
     id: "buy-sell-stock",
     title: "Best Time to Buy and Sell Stock",
@@ -205,6 +215,7 @@ export default [
     difficulty: "medium",
     description: "Given daily prices, find max profit from one buy+one sell.",
     constraints: "1 <= n <= 10^5",
+    techniques: ["kadanes-algorithm"],
     examples: [
       {"input":"6\n7 1 5 3 6 4","output":"5","explanation":"Buy at 1, sell at 6 = profit 5"}
     ],
@@ -213,7 +224,7 @@ export default [
       {"input":"5\n7 6 4 3 1","expected":"0"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int prices[n];\n  for (int i = 0; i < n; i++) cin >> prices[i];\n\n  // track min price and max profit\n\n  cout << maxProfit << endl;\n  return 0;\n}",
-    approach: "Track minimum price seen so far. For each price, compute profit (price - minPrice) and track max profit.",
+    approach: "This problem asks us to find the maximum profit achievable from a single buy followed by a single sell of a stock, given an array of daily prices. You must buy on an earlier day and sell on a later day. A brute force approach uses two nested loops to try every buy-sell pair: for each buy day i, try every sell day j > i, compute profit = prices[j] - prices[i], and track the maximum. For example, with prices [7,1,5,3,6,4], checking all pairs finds that buying at 1 (day 1) and selling at 6 (day 4) yields profit 5, which is the maximum. This is O(n^2) time. The optimal approach uses a single pass tracking two variables: minPrice (the lowest price seen so far) and maxProfit (the maximum profit seen so far). Initialize minPrice to the first day's price and maxProfit to 0. For each subsequent price, compute the profit if sold today (price - minPrice) and update maxProfit if this is larger. Then update minPrice to be the smaller of minPrice and the current price. This works because the optimal buy day is always the minimum price preceding the sell day. For [7,1,5,3,6,4]: minPrice=7, maxProfit=0; day1 (1): profit=-6 (ignore), minPrice=1; day2 (5): profit=4, maxProfit=4, minPrice=1; day3 (3): profit=2, maxProfit=4, minPrice=1; day4 (6): profit=5, maxProfit=5, minPrice=1; day5 (4): profit=3, maxProfit=5. Answer=5. Edge cases include strictly decreasing prices (maxProfit remains 0, no profitable trade), and arrays with a single day. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Prices: [7, 1, 5, 3, 6, 4]\n  \n  Day 0: minPrice=7, maxProfit=0\n  Day 1: price=1, profit=-6, maxProfit=0, minPrice=1\n  Day 2: price=5, profit=4, maxProfit=4, minPrice=1\n  Day 3: price=3, profit=2, maxProfit=4, minPrice=1\n  Day 4: price=6, profit=5, maxProfit=5, minPrice=1\n  Day 5: price=4, profit=3, maxProfit=5, minPrice=1\n  \n  Result: 5 (buy at 1, sell at 6)",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int mn=prices[0],mx=0;\nfor(int i=1;i<n;i++){\n  mx=max(mx,prices[i]-mn);\n  mn=min(mn,prices[i]);\n}\ncout << mx;",
@@ -225,19 +236,8 @@ export default [
     difficulty: "hard",
     description: "Find the next lexicographically greater permutation of the array.",
     constraints: "1 <= n <= 100",
+    techniques: ["two-pointers"],
     examples: [
-      {"input":"3\n1 2 3","output":"1 3 2","explanation":"Next permutation after 123 is 132"}
-    ],
-    test_cases: [
-      {"input":"3\n1 2 3","expected":"1 3 2"},
-      {"input":"3\n3 2 1","expected":"1 2 3"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // next_permutation logic\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Find first decreasing element from right. Find next larger element to swap. Reverse the suffix.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int i=n-2;\nwhile(i>=0&&arr[i]>=arr[i+1]) i--;\nif(i>=0){\n  int j=n-1;\n  while(arr[j]<=arr[i]) j--;\n  swap(arr[i],arr[j]);\n}\nreverse(arr+i+1,arr+n);",
-  },
   {
     id: "subarray-zero-sum",
     title: "Subarray with Zero Sum",
