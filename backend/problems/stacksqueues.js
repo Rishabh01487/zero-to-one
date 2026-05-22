@@ -112,5 +112,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "deque<int> dq; for(int i=0;i<n;i++){while(!dq.empty()&&dq.front()<=i-k)dq.pop_front();while(!dq.empty()&&arr[dq.back()]<=arr[i])dq.pop_back();dq.push_back(i);if(i>=k-1)cout<<arr[dq.front()]<<\" \";}",
     solution_template: "#include <iostream>\n#include <deque>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n\n  deque<int> dq; // store indices\n\n  // maintain decreasing deque\n\n  return 0;\n}",
+  },
+  {
+    id: "celebrity",
+    title: "The Celebrity Problem",
+    category: "stack-queue",
+    difficulty: "medium",
+    description: "Find celebrity (everyone knows them, they know no one).",
+    constraints: "1 <= n <= 10^3",
+    examples: [
+      {"input":"3\n0 1 1\n0 0 1\n0 0 0","output":"2","explanation":"Person 2 is the celebrity"}
+    ],
+    test_cases: [
+      {"input":"3\n0 1 1\n0 0 1\n0 0 0","expected":"2"}
+    ],
+    approach: "Stack elimination: if A knows B, A can't be celebrity. Last remaining is candidate. Verify with everyone.",
+    complexity: {"time":"O(n²)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<int> st; for(int i=0;i<n;i++)st.push(i); while(st.size()>1){int a=st.top();st.pop();int b=st.top();st.pop();if(M[a][b])st.push(b);else st.push(a);} int c=st.top(); for(int i=0;i<n;i++)if(i!=c&&(M[c][i]||!M[i][c])){cout<<-1;return 0;}cout<<c;",
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int M[n][n];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n      cin >> M[i][j];\n\n  // stack elimination\n\n  cout << celebrity << endl;\n  return 0;\n}",
   }
 ]
