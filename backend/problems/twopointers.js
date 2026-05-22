@@ -787,7 +787,7 @@ i=3 (7): 7>4 && 7>3 → peak
   Actually expand left from 3: i=3 (7), check 4 > 1 (yes, i=2), check 1 > 2? no. So left=2.
   Expand right from 3: check 3 > 2 (yes, i=4), 2 > 5? no. So right=4.
   Mountain = indices 2..4 = [4,7,3,2] length = 5 (indices 1..5 = [1,4,7,3,2])
-
+  
 Actually let me reconsider. Mountain: arr[1]=1 < arr[2]=4 < arr[3]=7 > arr[4]=3 > arr[5]=2 → length = 5 indices: [1,4,7,3,2]
 
 Continue scanning: i=5 (2) not peak (2<3) skip.
@@ -1057,4 +1057,4 @@ Edge cases: one string longer than other, empty string, single character strings
     solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  string w1, w2; cin >> w1 >> w2;\n  // two pointers merge alternately\n  return 0;\n}",
     techniques: ["two-pointers"],
   },
-]
+];

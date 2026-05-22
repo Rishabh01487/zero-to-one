@@ -318,7 +318,7 @@ But wait, answer expected is Yes. Let me re-check:
 Actually with start=0, arr[0]=4:
   i+arr[i] = 0+4 = 4
   i-arr[i] = 0-4 = -4 (invalid)
-
+  
   From 4: arr[4]=8
   i+arr[i] = 4+8 = 12 (invalid)
   i-arr[i] = 4-8 = -4 (invalid)
@@ -332,17 +332,17 @@ BFS:
   Pop 2: arr[2]=2 != 0
     → 2+2=4, 2-2=0
     Queue: [4, 0]
-
+  
   Pop 4: arr[4]=2 != 0
     → 4+2=6(out), 4-2=2(vis)
-
+  
   Pop 0: arr[0]=3 != 0
     → 0+3=3, 0-3=-3(out)
     Queue: [3]
-
+  
   Pop 3: arr[3]=1 != 0
     → 3+1=4(vis), 3-1=2(vis)
-
+  
   Queue empty → No
 
 The greedy approach here is BFS exploring both directions simultaneously,
@@ -559,7 +559,7 @@ Step 2: Greedy slot filling
   J5(15) → slot[3]=J5
 
   Actually expected is 2 127. Let me re-examine:
-
+  
   Alternative: J1(100) slot[2], J4(25) slot[1] → 2 jobs, profit 125
   Or: J1(100) slot[2], J3(27) slot[1] → 2 jobs, profit 127 ✓
 
@@ -1201,7 +1201,7 @@ B = [3, 6, 3, 3, 4]
 Target = 3 (A[0]):
   i=0: A=3 ✓
   i=1: A=5 !=3, B=6 !=3 → impossible
-
+  
 Target = 3 (B[0]=3=A[0]):
   Same → impossible
 
@@ -1274,13 +1274,13 @@ Another example: start=5, target=8
   target=8 is even → target/=2 = 4, ops=1
   target=4 < start=5 → stop
   Total = ops + (start - target) = 1 + (5-4) = 2
-
+  
   Operations forward: 5-1=4, 4×2=8 → 2 ops
   But expected is 4? Let me re-check...
 
   Actually for start=5, target=8:
   5→8: 5-1=4, 4×2=8 → 2 ops. So expected should be 2.
-
+  
   Let me use a different case: start=3, target=10
   target=10 even → 5, ops=1
   target=5 odd → 6, ops=2
@@ -1325,7 +1325,7 @@ Step 1: Ensure first column has all 1s (highest bit matters most)
   Row0: first bit=0 → flip entire row → [1,1,0]
   Row1: first bit=1 → keep
   Row2: first bit=0 → flip entire row → [1,0,0]
-
+  
   After Step 1:
     1 1 0
     1 0 1
@@ -1336,10 +1336,10 @@ Step 2: For each subsequent column, ensure more 1s than 0s
     1 0 0    1 1 0
     1 1 1    1 0 1
     1 1 0    1 0 0
-
+  
   Wait flipping column 1 of [1,1,0], [1,0,1], [1,0,0]:
   Col1 values: [1,0,0], ones=1 < 2 → flip
-
+  
   After flip:
     1 0 0
     1 1 1
@@ -1839,7 +1839,7 @@ Case where greedy matters: bills = [5, 10, 5, 20]
   b=10:  five=0, ten=1
   b=5:   five=1
   b=20:  ten=1>0 → use $10+$5: ten=0, five=0 → Yes
-
+  
   If we had used $5+$5+$5 instead: five=1-3=-2 → No
   So preferring $10+$5 for $20 is the optimal greedy choice.
 
@@ -1853,4 +1853,4 @@ bills is always optimal.`,
     solution_code: "int f=0,t=0; for(int b:bills){if(b==5)f++;else if(b==10){t++;f--;}else{if(t){t--;f--;}else f-=3;}if(f<0){cout<<\"No\";return 0;}}cout<<\"Yes\";",
     techniques: ["greedy"]
   }
-]
+];

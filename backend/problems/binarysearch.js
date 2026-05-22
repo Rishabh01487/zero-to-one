@@ -704,7 +704,7 @@ Diagram:
 
   Step 2: mid = 20
            Day1: 1+2+3+4+5=15 <=20
-           Day2: 6+7+8=21 >20 -> Day2:6+7=13, Day3:8+9+...
+           Day2: 6+7+8=21 >20 -> Day2:6+7=13, Day3:8+9+... 
            4 days actually, but too long to trace
            Eventually: if feasible at capacity 15 -> ans=15
 
@@ -1465,4 +1465,4 @@ Standard upper_bound: find first character strictly greater than target. If none
     solution_code: "int lo=0,hi=n; while(lo<hi){int m=lo+(hi-lo)/2;if(letters[m]<=target)lo=m+1;else hi=m;}cout<<(lo==n?letters[0]:letters[lo]);",
     techniques: ["binary-search"],
   },
-]
+];
