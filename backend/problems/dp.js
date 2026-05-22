@@ -274,5 +274,25 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "vector<vector<int>> dp(n,vector<int>(m)); int mx=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++){if(i==0||j==0)dp[i][j]=mat[i][j];else if(mat[i][j])dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});else dp[i][j]=0;mx=max(mx,dp[i][j]);}cout<<mx;",
+  },
+  {
+    id: "house-robber",
+    title: "House Robber",
+    category: "dp",
+    difficulty: "medium",
+    description: "Rob houses without alerting police (no adjacent houses).",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n2 7 9 3 1","output":"12","explanation":"2+9+1=12"}
+    ],
+    test_cases: [
+      {"input":"5\n2 7 9 3 1","expected":"12"},
+      {"input":"4\n1 2 3 1","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int nums[n];\n  for (int i = 0; i < n; i++) cin >> nums[i];\n\n  // dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n\n  cout << dp << endl;\n  return 0;\n}",
+    approach: "DP: dp[i]=max(dp[i-1], dp[i-2]+nums[i]). Space-optimize to two variables.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int prev2=0,prev1=nums[0]; for(int i=1;i<n;i++){int cur=max(prev1,prev2+nums[i]);prev2=prev1;prev1=cur;}cout<<prev1;",
   }
 ]
