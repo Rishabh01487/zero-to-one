@@ -229,5 +229,25 @@ export default [
     complexity: {"time":"O(V*E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dist(n,INT_MAX); dist[s]=0; for(int i=0;i<n-1;i++)for(auto& e:edges)if(dist[e.u]!=INT_MAX&&dist[e.u]+e.w<dist[e.v])dist[e.v]=dist[e.u]+e.w;",
+  },
+  {
+    id: "course-schedule",
+    title: "Course Schedule (Topological)",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Check if all courses can be finished given prerequisites.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4 3\n1 0\n2 1\n3 2","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"4 3\n1 0\n2 1\n3 2","expected":"Yes"},
+      {"input":"2 2\n1 0\n0 1","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  vector<int> indeg(n, 0);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[v].push_back(u); indeg[u]++; }\n\n  queue<int> q;\n  for (int i = 0; i < n; i++) if (indeg[i] == 0) q.push(i);\n  int cnt = 0;\n  while (!q.empty()) { int u = q.front(); q.pop(); cnt++; for (int v : g[u]) if (--indeg[v] == 0) q.push(v); }\n\n  cout << (cnt == n ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Topological sort via Kahn's algorithm. If all courses processed, possible.",
+    complexity: {"time":"O(V+E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "queue<int> q; for(int i=0;i<n;i++)if(!indeg[i])q.push(i); int cnt=0; while(!q.empty()){int u=q.front();q.pop();cnt++;for(int v:g[u])if(--indeg[v]==0)q.push(v);}cout<<(cnt==n?\"Yes\":\"No\");",
   }
 ]
