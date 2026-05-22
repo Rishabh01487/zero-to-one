@@ -118,5 +118,15 @@ export default [
     difficulty: "Intermediate",
     icon: "Rx",
     order: 12,
+  },
+  {
+    id: "greedy",
+    name: "Greedy Algorithms",
+    description: "Make locally optimal choice at each step, hoping it leads to global optimum. Simple when applicable, but correctness must be proven.",
+    when_to_use: "Optimization problems with greedy choice property and optimal substructure — scheduling, coin change, Huffman coding.",
+    techniques: ["Sorting + Selection","Activity Selection","Fractional Knapsack","Huffman Coding","Job Sequencing"],
+    difficulty: "Intermediate",
+    icon: "Gx",
+    order: 13,
   }
 ]
