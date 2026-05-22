@@ -131,5 +131,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "// for i from idx to end: if dict has s[idx..i], recurse with string + word",
     solution_template: "#include <iostream>\n#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nvoid solve(string& s, unordered_set<string>& dict, int idx, string cur, vector<string>& ans) {\n  if (idx == (int)s.size()) { ans.push_back(cur); return; }\n  string word = \"\";\n  for (int i = idx; i < (int)s.size(); i++) {\n    word += s[i];\n    if (dict.count(word)) {\n      string nxt = cur.empty() ? word : cur + \" \" + word;\n      solve(s, dict, i+1, nxt, ans);\n    }\n  }\n}\n\nint main() {\n  string s; cin >> s;\n  int n; cin >> n;\n  unordered_set<string> dict;\n  for (int i = 0; i < n; i++) { string w; cin >> w; dict.insert(w); }\n  vector<string> ans;\n  solve(s, dict, 0, \"\", ans);\n  for (string& line : ans) cout << line << endl;\n  return 0;\n}",
+  },
+  {
+    id: "m-coloring",
+    title: "M-Coloring Problem",
+    category: "recursion",
+    difficulty: "medium",
+    description: "Check if graph can be colored with m colors (no adjacent same color).",
+    constraints: "1 <= n <= 10, 1 <= m <= 3",
+    examples: [
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 0\n3","output":"Yes","explanation":"Cycle of 4 can be 2-colored, so 3 works"}
+    ],
+    test_cases: [
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 0\n3","expected":"Yes"}
+    ],
+    approach: "Backtracking: assign color 1..m to each vertex. Check adjacent vertices for same color.",
+    complexity: {"time":"O(m^n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// for c in 1..m: if isSafe(g,col,v,c): col[v]=c, recurse(v+1), backtrack",
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nbool ok(vector<vector<int>>& g, vector<int>& col, int v, int c) {\n  for (int u : g[v]) if (col[u] == c) return false;\n  return true;\n}\n\nbool solve(vector<vector<int>>& g, vector<int>& col, int v, int m) {\n  if (v == (int)g.size()) return true;\n  for (int c = 1; c <= m; c++) {\n    if (ok(g, col, v, c)) {\n      col[v] = c;\n      if (solve(g, col, v+1, m)) return true;\n      col[v] = 0;\n    }\n  }\n  return false;\n}\n\nint main() {\n  int n, e; cin >> n >> e;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < e; i++) {\n    int u, v; cin >> u >> v;\n    g[u].push_back(v); g[v].push_back(u);\n  }\n  int m; cin >> m;\n  vector<int> col(n, 0);\n  cout << (solve(g, col, 0, m) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
   }
 ]
