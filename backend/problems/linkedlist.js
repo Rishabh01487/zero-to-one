@@ -76,5 +76,25 @@ export default [
     complexity: {"time":"O(n+m)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node dummy(0); Node* t=&dummy; while(a&&b){if(a->data<b->data){t->next=a;a=a->next;}else{t->next=b;b=b->next;}t=t->next;} t->next=a?a:b; return dummy.next;",
+  },
+  {
+    id: "remove-nth-end",
+    title: "Remove Nth Node From End",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Remove the nth node from the end of the linked list.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    examples: [
+      {"input":"5\n1 2 3 4 5\n2","output":"1 2 3 5","explanation":"Remove 2nd from end (4)"}
+    ],
+    test_cases: [
+      {"input":"5\n1 2 3 4 5\n2","expected":"1 2 3 5"},
+      {"input":"1\n1\n1","expected":""}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n\n  // fast pointer goes k steps ahead\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: "Fast pointer goes n steps ahead. Then advance both until fast hits end. Slow->next is the node to remove.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node *fast=head,*slow=head; for(int i=0;i<k;i++)fast=fast->next; if(!fast)return head->next; while(fast->next){slow=slow->next;fast=fast->next;} slow->next=slow->next->next;",
   }
 ]
