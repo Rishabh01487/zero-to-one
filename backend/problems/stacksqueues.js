@@ -75,11 +75,16 @@ export default [
     ],
     approach: "The Stock Span problem asks, for each day's stock price, to count how many consecutive days before (and including) today had price <= today's price. A brute-force leftward scan costs O(n^2). The optimal O(n) solution uses a monotonic decreasing stack storing (price, span) pairs.\n\nDiagram:\n  prices = [100, 80, 60, 70, 60, 75, 85]\n\n  i=0, p=100: stack=[], span=1, push(100,1)               -> span[0]=1\n  i=1, p=80:  stack=[(100,1)], 100>80, span=1, push(80,1) -> span[1]=1\n  i=2, p=60:  stack=[(100,1),(80,1)], 80>60, span=1, push(60,1) -> span[2]=1\n  i=3, p=70:  pop (60,1) -> span=2, 80>70, push(70,2)     -> span[3]=2\n  i=4, p=60:  stack=[(100,1),(80,1),(70,2)], 70>60, span=1, push(60,1) -> span[4]=1\n  i=5, p=75:  pop (60,1)->span=2, pop (70,2)->span=4, 80>75, push(75,4) -> span[5]=4\n  i=6, p=85:  pop (75,4)->span=5, pop (80,1)->span=6, 100>85, push(85,6) -> span[6]=6\n\n  result = [1, 1, 1, 2, 1, 4, 6]\n\nEdge cases: strictly decreasing -> all spans = 1; strictly increasing -> span = i+1. Complexity: O(n) time, O(n) space.",
     complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<pair<int,int>> st; for(int i=0;i<n;i++){int span=1; while(!st.empty()&&st.top().first<=prices[i]){span+=st.top().second;st.pop();}st.push({prices[i],span});cout<<span<<\" \";}",
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int prices[n], span[n];\n  for (int i = 0; i < n; i++) cin >> prices[i];\n\n  stack<int> st;\n  // monotonic decreasing stack\n\n  for (int i = 0; i < n; i++) cout << span[i] << \" \";\n  return 0;\n}",
+  },
   {
     id: "largest-rect-hist",
     title: "Largest Rectangle in Histogram",
     category: "stack-queue",
     difficulty: "hard",
+    techniques: ["monotonic-stack"],
     description: "Find largest rectangle area in a histogram.",
     constraints: "1 <= n <= 10^5",
     examples: [
@@ -88,7 +93,7 @@ export default [
     test_cases: [
       {"input":"6\n2 1 5 6 2 3","expected":"10"}
     ],
-    approach: "Monotonic stack of indices. When height decreases, pop and compute area using popped height as smallest.",
+    approach: "The Largest Rectangle in Histogram problem asks to find the maximum rectangular area within a histogram of n bars. A brute-force approach takes each bar as the shortest and expands left/right. The optimal O(n) solution uses a monotonic increasing stack of indices with a sentinel height 0 at the end.\n\nDiagram:\n  heights = [2, 1, 5, 6, 2, 3]\n\n  i=0, h=2: stack=[], push(0)\n  i=1, h=1: pop(0) h=2, empty -> w=1, area=2; push(1)       stack=[1]\n  i=2, h=5: push(2)                                          stack=[1,2]\n  i=3, h=6: push(3)                                          stack=[1,2,3]\n  i=4, h=2: pop(3) h=6, top=2 -> w=1, area=6\n            pop(2) h=5, top=1 -> w=2, area=10; push(4)       stack=[1,4]\n  i=5, h=3: push(5)                                          stack=[1,4,5]\n  i=6(h=0): pop(5) h=3, top=4 -> w=1, area=3\n            pop(4) h=2, top=1 -> w=4, area=8\n            pop(1) h=1, empty -> w=6, area=6\n\n  maxArea = 10\n\nEdge cases: strictly increasing heights processed at sentinel; single bar area = height. Complexity: O(n) time, O(n) space.",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "stack<int> st; int maxA=0; for(int i=0;i<=n;i++){while(!st.empty()&&(i==n||heights[st.top()]>heights[i])){int h=heights[st.top()];st.pop();int w=st.empty()?i:i-st.top()-1;maxA=max(maxA,h*w);}st.push(i);}cout<<maxA;",
@@ -99,6 +104,7 @@ export default [
     title: "Sliding Window Maximum",
     category: "stack-queue",
     difficulty: "hard",
+    techniques: ["sliding-window"],
     description: "Find maximum in every sliding window of size k.",
     constraints: "1 <= n <= 10^5, 1 <= k <= n",
     examples: [
@@ -107,12 +113,6 @@ export default [
     test_cases: [
       {"input":"8\n1 3 -1 -3 5 3 6 7\n3","expected":"3 3 5 5 6 7"}
     ],
-    approach: "Deque storing indices. Maintain decreasing deque. Front is max. Remove out-of-window indices from front.",
-    complexity: {"time":"O(n)","space":"O(k)"},
-    sheet: "Striver A2Z",
-    solution_code: "deque<int> dq; for(int i=0;i<n;i++){while(!dq.empty()&&dq.front()<=i-k)dq.pop_front();while(!dq.empty()&&arr[dq.back()]<=arr[i])dq.pop_back();dq.push_back(i);if(i>=k-1)cout<<arr[dq.front()]<<\" \";}",
-    solution_template: "#include <iostream>\n#include <deque>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n\n  deque<int> dq; // store indices\n\n  // maintain decreasing deque\n\n  return 0;\n}",
-  },
   {
     id: "celebrity",
     title: "The Celebrity Problem",
