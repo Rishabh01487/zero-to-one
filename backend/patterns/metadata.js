@@ -128,5 +128,15 @@ export default [
     difficulty: "Intermediate",
     icon: "Gx",
     order: 13,
+  },
+  {
+    id: "heaps",
+    name: "Heaps & Priority Queues",
+    description: "Tree-based structure maintaining min/max at root. Essential for priority-based processing and streaming algorithms.",
+    when_to_use: "Kth smallest/largest, merge K sorted lists, median in stream, task scheduling, Dijkstra's algorithm.",
+    techniques: ["Min-Heap","Max-Heap","Two-Heap (Median)","Heapify","Heap Sort"],
+    difficulty: "Intermediate",
+    icon: "Hp",
+    order: 14,
   }
 ]
