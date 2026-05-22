@@ -76,5 +76,24 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> state(n); function<bool(int)> dfs=[&](int u){state[u]=1;for(int v:g[u]){if(state[v]==1)return 1;if(state[v]==0&&dfs(v))return 1;}state[u]=2;return 0;}; bool cycle=0; for(int i=0;i<n;i++)if(!state[i]&&dfs(i))cycle=1; cout<<(cycle?\"Yes\":\"No\");",
+  },
+  {
+    id: "topo-sort",
+    title: "Topological Sort (Kahn)",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Return topological ordering of DAG.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"6 6\n5 0\n5 2\n4 0\n4 1\n2 3\n3 1","output":"4 5 0 2 3 1"}
+    ],
+    test_cases: [
+      {"input":"6 6\n5 0\n5 2\n4 0\n4 1\n2 3\n3 1","expected":"4 5 0 2 3 1"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  vector<int> indeg(n, 0);\n  for (int i = 0; i < m; i++) {\n    int u, v; cin >> u >> v;\n    g[u].push_back(v);\n    indeg[v]++;\n  }\n\n  // Kahn's algorithm: queue nodes with indegree 0\n\n  return 0;\n}",
+    approach: "Kahn's algorithm (BFS): queue nodes with indegree 0. Dequeue, reduce neighbor indegrees, add new 0s.",
+    complexity: {"time":"O(V+E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "queue<int> q; for(int i=0;i<n;i++)if(!indeg[i])q.push(i); while(!q.empty()){int u=q.front();q.pop();cout<<u<<\" \";for(int v:g[u])if(--indeg[v]==0)q.push(v);}",
   }
 ]
