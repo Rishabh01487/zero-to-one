@@ -131,5 +131,25 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "stack<int> st; for(int i=0;i<n;i++)st.push(i); while(st.size()>1){int a=st.top();st.pop();int b=st.top();st.pop();if(M[a][b])st.push(b);else st.push(a);} int c=st.top(); for(int i=0;i<n;i++)if(i!=c&&(M[c][i]||!M[i][c])){cout<<-1;return 0;}cout<<c;",
     solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int M[n][n];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n      cin >> M[i][j];\n\n  // stack elimination\n\n  cout << celebrity << endl;\n  return 0;\n}",
+  },
+  {
+    id: "infix-postfix",
+    title: "Infix to Postfix Conversion",
+    category: "stack-queue",
+    difficulty: "medium",
+    description: "Convert infix expression to postfix.",
+    constraints: "1 <= |s| <= 10^4",
+    examples: [
+      {"input":"a+b*(c^d-e)^(f+g*h)-i","output":"abcd^e-fgh*+^*+i-"}
+    ],
+    test_cases: [
+      {"input":"a+b","expected":"ab+"},
+      {"input":"a*b+c","expected":"ab*c+"}
+    ],
+    approach: "Shunting-yard: operators go to stack. Higher precedence operators pop first. '(' pushes, ')' pops until '('.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<char> st; string res; for(char c:s){if(isalnum(c))res+=c;else if(c=='(')st.push(c);else if(c==')'){while(st.top()!='('){res+=st.top();st.pop();}st.pop();}else{while(!st.empty()&&prec(c)<=prec(st.top())){res+=st.top();st.pop();}st.push(c);}} while(!st.empty()){res+=st.top();st.pop();}cout<<res;",
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint prec(char c) {\n  if (c == '^') return 3;\n  if (c == '*' || c == '/') return 2;\n  if (c == '+' || c == '-') return 1;\n  return 0;\n}\n\nint main() {\n  string s;\n  cin >> s;\n  stack<char> st;\n\n  // Shunting-yard algorithm\n\n  cout << result << endl;\n  return 0;\n}",
   }
 ]
