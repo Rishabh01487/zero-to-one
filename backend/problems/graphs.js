@@ -133,5 +133,24 @@ export default [
     complexity: {"time":"O((V+E) log V)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dist(n,INT_MAX); priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq; dist[s]=0; pq.push({0,s}); while(!pq.empty()){auto[d,u]=pq.top();pq.pop();if(d>dist[u])continue;for(auto[v,w]:g[u])if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;pq.push({dist[v],v});}}",
+  },
+  {
+    id: "mst-prim",
+    title: "Minimum Spanning Tree (Prim's)",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Find total weight of MST using Prim algorithm.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"5 7\n0 1 2\n0 3 6\n1 2 3\n1 3 8\n1 4 5\n2 4 7\n3 4 9","output":"16"}
+    ],
+    test_cases: [
+      {"input":"5 7\n0 1 2\n0 3 6\n1 2 3\n1 3 8\n1 4 5\n2 4 7\n3 4 9","expected":"16"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<pair<int,int>>> g(n);\n  for (int i = 0; i < m; i++) { int u, v, w; cin >> u >> v >> w; g[u].push_back({v,w}); g[v].push_back({u,w}); }\n\n  vector<bool> vis(n, false);\n  priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;\n  pq.push({0, 0});\n  int mstWeight = 0;\n\n  while (!pq.empty()) {\n    auto [w, u] = pq.top(); pq.pop();\n    if (vis[u]) continue;\n    vis[u] = true;\n    mstWeight += w;\n    for (auto [v, w2] : g[u]) if (!vis[v]) pq.push({w2, v});\n  }\n\n  cout << mstWeight << endl;\n  return 0;\n}",
+    approach: "Prim's: priority queue of edges from visited set. Add min-weight edge to unvisited vertex.",
+    complexity: {"time":"O((V+E) log V)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<bool> vis(n); priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq; pq.push({0,0}); int mst=0; while(!pq.empty()){auto[w,u]=pq.top();pq.pop();if(vis[u])continue;vis[u]=1;mst+=w;for(auto[v,w2]:g[u])if(!vis[v])pq.push({w2,v});}cout<<mst;",
   }
 ]
