@@ -74,5 +74,24 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "void merge(int arr[],int l,int m,int r){int n1=m-l+1,n2=r-m;int L[n1],R[n2];for(int i=0;i<n1;i++)L[i]=arr[l+i];for(int j=0;j<n2;j++)R[j]=arr[m+1+j];int i=0,j=0,k=l;while(i<n1&&j<n2)arr[k++]=(L[i]<=R[j])?L[i++]:R[j++];while(i<n1)arr[k++]=L[i++];while(j<n2)arr[k++]=R[j++];}",
+  },
+  {
+    id: "quick-sort-prob",
+    title: "Quick Sort Implementation",
+    category: "sorting",
+    difficulty: "medium",
+    description: "Implement quick sort and return sorted array.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"8\n10 7 8 9 1 5 4 3","output":"1 3 4 5 7 8 9 10"}
+    ],
+    test_cases: [
+      {"input":"8\n10 7 8 9 1 5 4 3","expected":"1 3 4 5 7 8 9 10"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint partition(int arr[], int lo, int hi) {\n  int pivot = arr[hi];\n  int i = lo - 1;\n  for (int j = lo; j < hi; j++)\n    if (arr[j] < pivot) swap(arr[++i], arr[j]);\n  swap(arr[i+1], arr[hi]);\n  return i+1;\n}\n\nvoid quickSort(int arr[], int lo, int hi) {\n  if (lo >= hi) return;\n  int pi = partition(arr, lo, hi);\n  quickSort(arr, lo, pi-1);\n  quickSort(arr, pi+1, hi);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  quickSort(arr, 0, n-1);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Choose pivot (e.g., last element). Partition: smaller elements left, larger right. Recurse.",
+    complexity: {"time":"O(n log n) avg, O(n²) worst","space":"O(log n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int partition(int arr[],int lo,int hi){int p=arr[hi],i=lo;for(int j=lo;j<hi;j++)if(arr[j]<=p)swap(arr[i++],arr[j]);swap(arr[i],arr[hi]);return i;}",
   }
 ]
