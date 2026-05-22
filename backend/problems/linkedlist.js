@@ -135,5 +135,24 @@ export default [
     complexity: {"time":"O(n+m)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node *p1=a,*p2=b; while(p1!=p2){p1=p1?p1->next:b;p2=p2?p2->next:a;} return p1;",
+  },
+  {
+    id: "delete-without-head",
+    title: "Delete Node Without Head Pointer",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Given only pointer to a node (not tail), delete it from linked list.",
+    constraints: "2 <= n <= 10^5",
+    examples: [
+      {"input":"4\n1 2 3 4\n2","output":"1 3 4","explanation":"Delete node at position 2 without head"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 3 4\n2","expected":"1 3 4"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nvoid deleteNode(Node* node) {\n  // copy next node's data, delete next\n}\n\nint main() {\n  int n, pos, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> pos;\n  Node* t = head;\n  for (int i = 0; i < pos; i++) t = t->next;\n  deleteNode(t);\n  t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: "Copy next node's data into current node, then delete next node.",
+    complexity: {"time":"O(1)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node* temp=node->next; node->data=temp->data; node->next=temp->next; delete temp;",
   }
 ]
