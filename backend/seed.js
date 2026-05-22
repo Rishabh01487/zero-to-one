@@ -22,6 +22,7 @@ import sortingProblems from './problems/sorting.js';
 import slidingWindowProblems from './problems/slidingwindow.js';
 import twoPointerProblems from './problems/twopointers.js';
 import bitManipulationProblems from './problems/bitmanipulation.js';
+import mathsProblems from './problems/maths.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -342,6 +343,7 @@ export function seedDatabase() {
     ...slidingWindowProblems,
     ...twoPointerProblems,
     ...bitManipulationProblems,
+    ...mathsProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
