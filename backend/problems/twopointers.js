@@ -36,5 +36,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nfor (int i = 0; i < n-2; i++) {\n  if (i > 0 && nums[i] == nums[i-1]) continue;\n  int j = i+1, k = n-1;\n  while (j < k) {\n    int sum = nums[i] + nums[j] + nums[k];\n    if (sum == 0) { /* record triplet */ j++; k--; while (j < k && nums[j]==nums[j-1]) j++; while (j < k && nums[k]==nums[k+1]) k--; }\n    else if (sum < 0) j++;\n    else k--;\n  }\n}",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sort + two pointers\n  return 0;\n}",
+  },
+  {
+    id: "container-water",
+    title: "Container With Most Water",
+    category: "two-pointers",
+    difficulty: "medium",
+    description: "Find max water container formed by two vertical lines.",
+    constraints: "2 <= n <= 10^5",
+    examples: [
+      {"input":"9\n1 8 6 2 5 4 8 3 7","output":"49"}
+    ],
+    test_cases: [
+      {"input":"9\n1 8 6 2 5 4 8 3 7","expected":"49"}
+    ],
+    approach: "Two pointers at ends. Area = min(height[i],height[j]) * (j-i). Move the pointer with smaller height inward. Track max area.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int i = 0, j = n-1, maxArea = 0;\nwhile (i < j) {\n  int area = min(height[i], height[j]) * (j - i);\n  maxArea = max(maxArea, area);\n  if (height[i] < height[j]) i++;\n  else j--;\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int h[n]; for (int i = 0; i < n; i++) cin >> h[i];\n  // two pointers\n  cout << maxArea << endl;\n  return 0;\n}",
   }
 ]
