@@ -108,5 +108,15 @@ export default [
     difficulty: "Advanced",
     icon: "DP",
     order: 11,
+  },
+  {
+    id: "recursion",
+    name: "Recursion & Backtracking",
+    description: "Functions calling themselves. Essential for divide & conquer, permutations, subsets, and exhaustive search (backtracking).",
+    when_to_use: "Problems with clear self-similar structure: tree traversals, combinatorial generation, N-Queens, Sudoku, maze solving.",
+    techniques: ["Divide & Conquer","Backtracking","Pruning","State Space Search","Tail Recursion"],
+    difficulty: "Intermediate",
+    icon: "Rx",
+    order: 12,
   }
 ]
