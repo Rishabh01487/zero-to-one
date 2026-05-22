@@ -139,5 +139,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "stack<char> st; for(char c:s){if(c=='('||c=='{'||c=='[')st.push(c);else{if(st.empty()){cout<<\"No\";return 0;}char t=st.top();st.pop();if((c==')'&&t!='(')||(c=='}'&&t!='{')||(c==']'&&t!='[')){cout<<\"No\";return 0;}}}cout<<(st.empty()?\"Yes\":\"No\");",
+  },
+  {
+    id: "longest-palindromic",
+    title: "Longest Palindromic Substring",
+    category: "strings",
+    difficulty: "medium",
+    description: "Find the longest palindromic substring.",
+    constraints: "1 <= |s| <= 1000",
+    examples: [
+      {"input":"babad","output":"bab","explanation":"\"aba\" is also valid"}
+    ],
+    test_cases: [
+      {"input":"babad","expected":"bab"},
+      {"input":"cbbd","expected":"bb"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // expand around center\n\n  cout << result << endl;\n  return 0;\n}",
+    approach: "Expand around center for each position (odd and even length). Track longest palindrome.",
+    complexity: {"time":"O(n²)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int l=0,r=0,mx=0; for(int i=0;i<s.size();i++){int l1=i,r1=i;while(l1>=0&&r1<s.size()&&s[l1]==s[r1]){if(r1-l1+1>mx){mx=r1-l1+1;l=l1;r=r1;}l1--;r1++;}int l2=i,r2=i+1;while(l2>=0&&r2<s.size()&&s[l2]==s[r2]){if(r2-l2+1>mx){mx=r2-l2+1;l=l2;r=r2;}l2--;r2++;}}cout<<s.substr(l,r-l+1);",
   }
 ]
