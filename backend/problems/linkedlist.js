@@ -116,5 +116,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} Node *rev=nullptr,*cur=slow; while(cur){Node* n=cur->next;cur->next=rev;rev=cur;cur=n;} Node* a=head,*b=rev; while(b){if(a->data!=b->data){cout<<\"No\";return 0;}a=a->next;b=b->next;}cout<<\"Yes\";",
+  },
+  {
+    id: "intersection-lists",
+    title: "Intersection of Two Linked Lists",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Find intersection point of two linked lists.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"4\n1 2 3 4\n2\n5 6\n2","output":"3","explanation":"Lists intersect at node 3"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 3 4\n2\n5 6\n2","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, m, skip, x;\n  cin >> n;\n  Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m;\n  Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n  cin >> skip;\n  // connect a[skip..] to b for intersection\n  Node* t = a;\n  for (int i = 0; i < skip && t; i++) t = t->next;\n  if (t && bt) bt->next = t;\n\n  // two-pointer: find intersection\n\n  cout << (intersect ? to_string(intersect->data) : \"-1\") << endl;\n  return 0;\n}",
+    approach: "Two-pointer: calculate lengths, advance longer list by difference, then advance both until they meet.",
+    complexity: {"time":"O(n+m)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node *p1=a,*p2=b; while(p1!=p2){p1=p1?p1->next:b;p2=p2?p2->next:a;} return p1;",
   }
 ]
