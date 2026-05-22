@@ -74,5 +74,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "stack<pair<int,int>> st; for(int i=0;i<n;i++){int span=1; while(!st.empty()&&st.top().first<=prices[i]){span+=st.top().second;st.pop();}st.push({prices[i],span});cout<<span<<\" \";}",
     solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int prices[n], span[n];\n  for (int i = 0; i < n; i++) cin >> prices[i];\n\n  stack<int> st;\n  // monotonic decreasing stack\n\n  for (int i = 0; i < n; i++) cout << span[i] << \" \";\n  return 0;\n}",
+  },
+  {
+    id: "largest-rect-hist",
+    title: "Largest Rectangle in Histogram",
+    category: "stack-queue",
+    difficulty: "hard",
+    description: "Find largest rectangle area in a histogram.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n2 1 5 6 2 3","output":"10","explanation":"5x2 rectangle"}
+    ],
+    test_cases: [
+      {"input":"6\n2 1 5 6 2 3","expected":"10"}
+    ],
+    approach: "Monotonic stack of indices. When height decreases, pop and compute area using popped height as smallest.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<int> st; int maxA=0; for(int i=0;i<=n;i++){while(!st.empty()&&(i==n||heights[st.top()]>heights[i])){int h=heights[st.top()];st.pop();int w=st.empty()?i:i-st.top()-1;maxA=max(maxA,h*w);}st.push(i);}cout<<maxA;",
+    solution_template: "#include <iostream>\n#include <stack>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int heights[n];\n  for (int i = 0; i < n; i++) cin >> heights[i];\n\n  stack<int> st;\n  int maxArea = 0;\n\n  // monotonic stack: pop when height drops\n\n  cout << maxArea << endl;\n  return 0;\n}",
   }
 ]
