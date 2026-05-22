@@ -39,6 +39,8 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "function<int(TreeNode*)> h=[&](TreeNode* r){return r?1+max(h(r->left),h(r->right)):0;}; cout<<h(root);",
+    techniques: ["tree-dfs", "recursion"]
+  },
   {
     id: "level-order",
     title: "Level Order Traversal",
@@ -53,10 +55,11 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7","expected":"1 2 3 4 5 6 7"}
     ],
     solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n; cin >> n;\n  if (n == 0) return 0;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n\n  // queue-based BFS\n\n  return 0;\n}",
-    approach: "BFS using queue: process each level left to right.",
+    approach: "Level Order Traversal uses BFS with a queue: dequeue front, visit it, enqueue left and right children.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nQueue states:\nStep 0: [1]\nStep 1: dequeue 1(visit), enqueue 2,3 -> [2,3]\nStep 2: dequeue 2(visit), enqueue 4,5 -> [3,4,5]\nStep 3: dequeue 3(visit), enqueue 6,7 -> [4,5,6,7]\nStep 4-7: dequeue 4,5,6,7(visit)\nOutput: 1 2 3 4 5 6 7\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); while(!q.empty()){auto* f=q.front();q.pop();cout<<f->val<<\" \";if(f->left)q.push(f->left);if(f->right)q.push(f->right);}",
+    techniques: ["tree-bfs"]
   },
   {
     id: "diameter-tree",
@@ -72,11 +75,8 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7","expected":"4"}
     ],
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint diameter = 0;\nint height(TreeNode* root) {\n  if (!root) return 0;\n  int lh = height(root->left);\n  int rh = height(root->right);\n  diameter = max(diameter, lh + rh);\n  return 1 + max(lh, rh);\n}\n\nint main() {\n  int n; cin >> n;\n  if (n == 0) { cout << 0; return 0; }\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  height(nodes[0]);\n  cout << diameter << endl;\n  return 0;\n}",
-    approach: "DFS: compute left and right heights, track max(lh+rh) as diameter.",
+    approach: "Diameter of Binary Tree computes the longest path (edges) between any two nodes. Use post-order DFS returning height while tracking max(lh + rh) globally.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nHeights: h(4)=1, h(5)=1 -> candidate thru 2 = 1+1=2, h(2)=2\nh(6)=1, h(7)=1 -> candidate thru 3 = 1+1=2, h(3)=2\ncandidate thru 1 = 2+2=4, global max = 4\n\nPath: 4-2-1-3-7 (4 edges)\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "int dia=0; function<int(TreeNode*)> h=[&](TreeNode* r){if(!r)return 0;int l=h(r->left),rh=h(r->right);dia=max(dia,l+rh);return 1+max(l,rh);}; h(root); cout<<dia;",
-  },
   {
     id: "balanced-tree",
     title: "Check Balanced Binary Tree",
