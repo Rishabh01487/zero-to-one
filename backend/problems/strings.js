@@ -119,5 +119,25 @@ export default [
     complexity: {"time":"O(n * minLen)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "if(n==0){cout<<\"\";return 0;} string p=strs[0]; for(int i=1;i<n;i++){int j=0;while(j<p.size()&&j<strs[i].size()&&p[j]==strs[i][j])j++;p=p.substr(0,j);}cout<<p;",
+  },
+  {
+    id: "valid-parentheses",
+    title: "Valid Parentheses",
+    category: "strings",
+    difficulty: "easy",
+    description: "Check if string of brackets is valid.",
+    constraints: "1 <= |s| <= 10^4",
+    examples: [
+      {"input":"()[]{}","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"()[]{}","expected":"Yes"},
+      {"input":"(]","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  stack<char> st;\n\n  cout << (valid ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Use stack. Push opening brackets, pop when matching closing bracket found.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<char> st; for(char c:s){if(c=='('||c=='{'||c=='[')st.push(c);else{if(st.empty()){cout<<\"No\";return 0;}char t=st.top();st.pop();if((c==')'&&t!='(')||(c=='}'&&t!='{')||(c==']'&&t!='[')){cout<<\"No\";return 0;}}}cout<<(st.empty()?\"Yes\":\"No\");",
   }
 ]
