@@ -231,25 +231,25 @@ Edge cases: removing the head (k equals length, fast becomes null after initial 
     approach: `This problem asks to determine whether a singly linked list reads the same forwards and backwards. The brute-force approach copies all values to an array and checks if it's a palindrome, using O(n) extra space. The optimal O(1) space approach uses three phases: find the middle, reverse the second half, then compare.
 
 First, use the slow/fast pointer technique to locate the middle node. Second, reverse the second half starting from slow using the standard three-pointer reversal. Third, compare the first half (head) with the reversed second half (rev) node by node.
-  {
-    id: "reverse-k-group",
-    title: "Reverse Nodes in K-Group",
-    category: "linked-list",
-    difficulty: "hard",
-    description: "Reverse nodes in groups of k. Leftover nodes stay as-is.",
-    constraints: "1 <= n <= 10^4, 1 <= k <= n",
-    examples: [
-      {"input":"5\n1 2 3 4 5\n3","output":"3 2 1 4 5"}
-    ],
-    test_cases: [
-      {"input":"5\n1 2 3 4 5\n3","expected":"3 2 1 4 5"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* reverseKGroup(Node* head, int k) {\n  // recursive: reverse first k, recurse on rest\n}\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n  head = reverseKGroup(head, k);\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
-    approach: "Recursively reverse first k nodes, then recurse on remaining list.",
-    complexity: {"time":"O(n)","space":"O(n/k)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node* cur=head; int cnt=0; while(cur&&cnt<k){cur=cur->next;cnt++;} if(cnt<k)return head; Node *prev=nullptr,*curr=head; for(int i=0;i<k;i++){Node* n=curr->next;curr->next=prev;prev=curr;curr=n;} head->next=reverseKGroup(curr,k); return prev;",
-  }
+
+Diagram:
+\`\`\`
+  List: 1 → 2 → 2 → 1 → null
+
+  Phase 1: Find middle
+    1 → 2 → 2 → 1 → null
+    s,f → s=1,f=1 → s=2,f=2 → s=2,f=null
+    slow ends at second 2 (even list)
+
+  Phase 2: Reverse second half
+    Original: 2 → 1 → null
+    Reversed: 1 → 2 → null
+
+  Phase 3: Compare
+    First half:  1 → 2
+    Second half: 1 → 2
+    1==1 ✓, 2==2 ✓ → Palindrome!
+
   Odd case (1→2→3→2→1):
     Middle at 3, skip middle, reverse 2→1, compare 1-1, 2-2 → Palindrome!
 \`\`\`
