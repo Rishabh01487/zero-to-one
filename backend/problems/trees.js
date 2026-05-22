@@ -172,5 +172,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); bool l2r=1; while(!q.empty()){int sz=q.size();vector<int> lvl(sz);for(int i=0;i<sz;i++){auto* f=q.front();q.pop();int idx=l2r?i:sz-1-i;lvl[idx]=f->val;if(f->left)q.push(f->left);if(f->right)q.push(f->right);}for(int v:lvl)cout<<v<<\" \";l2r=!l2r;}",
+  },
+  {
+    id: "bst-validate",
+    title: "Validate Binary Search Tree",
+    category: "trees",
+    difficulty: "medium",
+    description: "Check if a binary tree is a valid BST.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"3\n2 1 3","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"3\n2 1 3","expected":"Yes"},
+      {"input":"3\n5 1 4","output":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <climits>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool isValid(TreeNode* root, long long mn, long long mx) {\n  if (!root) return true;\n  if (root->val <= mn || root->val >= mx) return false;\n  return isValid(root->left, mn, root->val) &&\n         isValid(root->right, root->val, mx);\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cout << (isValid(nodes[0], LLONG_MIN, LLONG_MAX) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "DFS with range: each node must be within (min,max). Left subtree updates max, right updates min.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "function<bool(TreeNode*,long long,long long)> v=[&](TreeNode* r,long long mn,long long mx){return !r||(r->val>mn&&r->val<mx&&v(r->left,mn,r->val)&&v(r->right,r->val,mx));}; cout<<(v(root,LLONG_MIN,LLONG_MAX)?\"Yes\":\"No\");",
   }
 ]
