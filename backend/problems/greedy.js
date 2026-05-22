@@ -36,5 +36,24 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "sort(items,items+n,[](auto& a,auto& b){return a.value*b.weight>b.value*a.weight;}); double profit=0; for(int i=0;i<n&&W>0;i++){int take=min(items[i].weight,W);profit+=take*items[i].value/items[i].weight;W-=take;}cout<<fixed<<setprecision(2)<<profit;",
+  },
+  {
+    id: "n-meetings",
+    title: "N Meetings in One Room",
+    category: "greedy",
+    difficulty: "easy",
+    description: "Schedule maximum meetings in one room.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n1 3 0 5 8 5\n2 4 6 7 9 9","output":"1 2 4 5"}
+    ],
+    test_cases: [
+      {"input":"6\n1 3 0 5 8 5\n2 4 6 7 9 9","expected":"1 2 4 5"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int start[n], end[n];\n  for (int i = 0; i < n; i++) cin >> start[i];\n  for (int i = 0; i < n; i++) cin >> end[i];\n\n  vector<pair<int,int>> meet(n);\n  for (int i = 0; i < n; i++) meet[i] = {end[i], start[i]};\n  sort(meet.begin(), meet.end());\n\n  int lastEnd = -1;\n  for (int i = 0; i < n; i++) {\n    if (meet[i].second > lastEnd) {\n      cout << i+1 << \" \";\n      lastEnd = meet[i].first;\n    }\n  }\n  return 0;\n}",
+    approach: "Sort by end time. Pick meeting that starts after last selected meeting ends.",
+    complexity: {"time":"O(n log n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "sort(meetings,meetings+n,[](auto& a,auto& b){return a.end<b.end;}); int cnt=1,last=meetings[0].end; for(int i=1;i<n;i++){if(meetings[i].start>last){cnt++;last=meetings[i].end;}}cout<<cnt;",
   }
 ]
