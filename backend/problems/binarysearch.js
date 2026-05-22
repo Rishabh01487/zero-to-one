@@ -58,5 +58,25 @@ export default [
     complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){cout<<m;return 0;}if(arr[lo]<=arr[m]){if(target>=arr[lo]&&target<arr[m])hi=m-1;else lo=m+1;}else{if(target>arr[m]&&target<=arr[hi])lo=m+1;else hi=m-1;}}cout<<-1;",
+  },
+  {
+    id: "peak-element",
+    title: "Find Peak Element",
+    category: "binary-search",
+    difficulty: "medium",
+    description: "Find a peak element (greater than neighbors).",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4\n1 2 3 1","output":"2","explanation":"arr[2] = 3 is a peak"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 3 1","expected":"2"},
+      {"input":"7\n1 2 1 3 5 6 4","expected":"5"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  int lo = 0, hi = n-1;\n  while (lo < hi) {\n    int mid = lo + (hi-lo)/2;\n    if (arr[mid] > arr[mid+1]) hi = mid;\n    else lo = mid + 1;\n  }\n  cout << lo << endl;\n  return 0;\n}",
+    approach: "Binary search: compare mid with mid+1. If mid > mid+1, peak is in left half (including mid). Else peak in right.",
+    complexity: {"time":"O(log n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int lo=0,hi=n-1; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]>arr[m+1])hi=m;else lo=m+1;}cout<<lo;",
   }
 ]
