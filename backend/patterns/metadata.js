@@ -48,5 +48,15 @@ export default [
     difficulty: "Intermediate",
     icon: "->",
     order: 5,
+  },
+  {
+    id: "stacks-queues",
+    name: "Stacks & Queues",
+    description: "LIFO/FIFO structures essential for expression evaluation, monotonic patterns, BFS/DFS, and undo operations.",
+    when_to_use: "When order of processing depends on nesting (stack) or level-order (queue), nearest greater/smaller elements.",
+    techniques: ["Monotonic Stack","Deque","Two Queues/Stacks","Circular Buffer"],
+    difficulty: "Intermediate",
+    icon: "||",
+    order: 6,
   }
 ]
