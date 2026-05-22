@@ -39,28 +39,10 @@ export default [
     sheet: "Love Babbar 450",
     techniques: ["maths-technique"],
     solution_code: "while (b) { int t = b; b = a % b; a = t; }\ncout << a;",
-  {
-    id: "factorial-large",
-    title: "Factorial of Large Number",
-    category: "maths",
-    difficulty: "medium",
-    description: "Find factorial of n (result can be very large).",
-    constraints: "1 <= n <= 1000",
-    examples: [
-      {"input":"10","output":"3628800"}
-    ],
-    test_cases: [
-      {"input":"10","expected":"3628800"},
-      {"input":"5","expected":"120"}
-    ],
-    approach: "Use array/vector to store digits. Multiply each digit by i (2..n), handle carry. Result stored in reverse.",
-    complexity: {"time":"O(n²)","space":"O(n)"},
-    sheet: "Love Babbar 450",
-    solution_code: "vector<int> res = {1};\nfor (int i = 2; i <= n; i++) {\n  int carry = 0;\n  for (int j = 0; j < res.size(); j++) {\n    int prod = res[j] * i + carry;\n    res[j] = prod % 10;\n    carry = prod / 10;\n  }\n  while (carry) { res.push_back(carry%10); carry /= 10; }\n}",
-    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // large factorial\n  return 0;\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int a, b; cin >> a >> b;\n  // Euclidean GCD\n  return 0;\n}",
   },
   {
-    id: "exponentiation",
+    id: "power-mod",
     title: "Modular Exponentiation (Fast Power)",
     category: "maths",
     difficulty: "medium",
@@ -72,12 +54,30 @@ export default [
     test_cases: [
       {"input":"2 10 1000000007","expected":"1024"}
     ],
-    approach: "Exponentiation by squaring: if n is even, (x²)^(n/2); if odd, x * x^(n-1). Take mod at each step.",
+    approach: "Compute (x^n) % m using exponentiation by squaring.\n\nDiagram:\n```\nx=2, n=10, m=1000000007\n\nn=10 = 1010₂\n\nresult=1, base=2\nn=10 (even): base=4, n=5\nn=5 (odd): result=1*4=4, base=16, n=2\nn=2 (even): base=256, n=1\nn=1 (odd): result=4*256=1024, base=..., n=0\n\nReturn 1024 = 2^10 ✓\n\nx=3, n=5\nn=5 (odd): result=3, base=9, n=2\nn=2 (even): base=81, n=1\nn=1 (odd): result=3*81=243, n=0\nReturn 243 = 3^5 ✓\n```\n\nTime O(log n), Space O(1).",
     complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
+    techniques: ["maths-technique"],
     solution_code: "long long result = 1;\nwhile (n > 0) {\n  if (n & 1) result = (result * x) % m;\n  x = (x * x) % m;\n  n >>= 1;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  long long x, n, m; cin >> x >> n >> m;\n  // fast exponentiation\n  return 0;\n}",
   },
+  {
+    id: "sieve-eratosthenes",
+    title: "Sieve of Eratosthenes (Generate Primes)",
+    category: "maths",
+    difficulty: "medium",
+    description: "Generate all prime numbers less than n using the Sieve of Eratosthenes.",
+    constraints: "2 <= n <= 10^6",
+    examples: [
+      {"input":"20","output":"2 3 5 7 11 13 17 19"}
+    ],
+    test_cases: [
+      {"input":"20","expected":"2 3 5 7 11 13 17 19"}
+    ],
+    approach: "Generate primes by marking composites using the classic sieve.\n\nDiagram:\n```\nn = 20\n\ni=2:  mark 4,6,8,10,12,14,16,18 as composite\ni=3:  mark 9,15 as composite\ni=4:  skip (already composite)\ni=5:  5² = 25 > 19 → stop\n\nPrimes: 2,3,5,7,11,13,17,19\n\nSieve visual:\n  i: 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19\n     P P C P C P C C C  P  C  P  C  C  C  P  C  P\n  (P=prime, C=composite)\n```\n\nTime O(n log log n), Space O(n).",
+    complexity: {"time":"O(n log log n)","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    techniques: ["maths-technique"],
   {
     id: "next-palindrome",
     title: "Next Palindrome Number",
