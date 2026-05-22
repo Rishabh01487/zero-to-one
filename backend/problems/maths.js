@@ -77,5 +77,26 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "long long result = 1;\nwhile (n > 0) {\n  if (n & 1) result = (result * x) % m;\n  x = (x * x) % m;\n  n >>= 1;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  long long x, n, m; cin >> x >> n >> m;\n  // fast exponentiation\n  return 0;\n}",
+  },
+  {
+    id: "next-palindrome",
+    title: "Next Palindrome Number",
+    category: "maths",
+    difficulty: "medium",
+    description: "Find smallest palindrome greater than or equal to given number.",
+    constraints: "1 <= n <= 10^18",
+    examples: [
+      {"input":"121","output":"121"},
+      {"input":"123","output":"131"}
+    ],
+    test_cases: [
+      {"input":"121","expected":"121"},
+      {"input":"123","expected":"131"}
+    ],
+    approach: "Mirror left half to right. If result <= original, increment the middle and mirror again. Handle carries.",
+    complexity: {"time":"O(log n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "// convert to string, mirror left half\nstring s = to_string(n);\nint len = s.size();\nfor (int i = 0; i < len/2; i++) s[len-1-i] = s[i];\nif (stoll(s) < n) {\n  // increment middle\n}",
+    solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  long long n; cin >> n;\n  // next palindrome\n  return 0;\n}",
   }
 ]
