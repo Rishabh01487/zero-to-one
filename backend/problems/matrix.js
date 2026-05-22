@@ -75,8 +75,12 @@ export default [
     approach: "Staircase search from top-right corner.\n\nDiagram:\n```\nMatrix:\n  1   3   5   7\n 10  11  16  20\n 23  30  34  60\n\nSearch target=3:\n  (0,3)=7 > 3 → col-- (move left)\n  (0,2)=5 > 3 → col--\n  (0,1)=3 == 3 → found ✓\n\nSearch target=34:\n  (0,3)=7 < 34 → row++ (move down)\n  (1,3)=20 < 34 → row++\n  (2,3)=60 > 34 → col--\n  (2,2)=34 == 34 → found ✓\n```\n\nTime O(n+m), Space O(1).",
     complexity: {"time":"O(n + m)","space":"O(1)"},
     sheet: "Striver A2Z",
+    techniques: ["matrix"],
+    solution_code: "int i = 0, j = m-1;\nwhile (i < n && j >= 0) {\n  if (mat[i][j] == target) { cout << \"Yes\"; return 0; }\n  if (mat[i][j] > target) j--;\n  else i++;\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[100][100];\n  for (int i=0; i<n; i++) for (int j=0; j<m; j++) cin >> mat[i][j];\n  int target; cin >> target;\n  // staircase search\n  return 0;\n}",
+  },
   {
-    id: "maximal-rectangle",
+    id: "max-rectangle-binary",
     title: "Maximal Rectangle of 1s",
     category: "matrix",
     difficulty: "hard",
@@ -88,12 +92,8 @@ export default [
     test_cases: [
       {"input":"4 5\n10100\n10111\n11111\n10010","expected":"6"}
     ],
-    approach: "Treat each row as histogram base. Calculate heights array (consecutive 1s from top). Use largest rectangle in histogram algorithm for each row.",
+    approach: "Histogram-based approach: treat each row as base of histogram.\n\nDiagram:\n```\nMatrix:      Heights per row:\n1 0 1 0 0   1 0 1 0 0\n1 0 1 1 1   2 0 2 1 1\n1 1 1 1 1   3 1 3 2 2\n1 0 0 1 0   4 0 0 3 0\n\nRow 2 heights=[3,1,3,2,2] → max rectangle = 6\n  (columns 2-4 with height 2: area=2*3=6)\n\nRow 3 heights=[4,0,0,3,0] → max = 4\nGlobal max = 6\n```\n\nTime O(n*m), Space O(m).",
     complexity: {"time":"O(n*m)","space":"O(m)"},
-    sheet: "Striver A2Z",
-    solution_code: "vector<int> heights(m, 0);\nint maxArea = 0;\nfor (int i = 0; i < n; i++) {\n  for (int j = 0; j < m; j++) heights[j] = (mat[i][j] == '1') ? heights[j] + 1 : 0;\n  maxArea = max(maxArea, largestRectangleArea(heights));\n}",
-    solution_template: "#include <iostream>\n#include <vector>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<string> mat(n);\n  for (int i=0; i<n; i++) cin >> mat[i];\n  // histogram based\n  return 0;\n}",
-  }
     sheet: "Striver A2Z",
     techniques: ["matrix"],
     solution_code: "vector<int> heights(m, 0);\nint maxArea = 0;\nfor (int i = 0; i < n; i++) {\n  for (int j = 0; j < m; j++) heights[j] = (mat[i][j] == '1') ? heights[j] + 1 : 0;\n  maxArea = max(maxArea, largestRectangleArea(heights));\n}",
