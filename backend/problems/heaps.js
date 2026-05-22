@@ -499,4 +499,4 @@ export default [
     solution_code: "priority_queue<int,vector<int>,greater<int>> pq; for(int x:nums){pq.push(x);if(pq.size()>k)pq.pop();} cout<<pq.top();",
     techniques: ["heaps", "quickselect"],
   },
-]
+];

@@ -770,4 +770,4 @@ export default [
     solution_code: "int freq[26]={0}; queue<char> q; for(char c:stream){freq[c-'a']++; q.push(c); while(!q.empty()&&freq[q.front()-'a']>1)q.pop(); cout<<(q.empty()?\"-1\":string(1,q.front()))<<\" \";}",
     solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  char stream[n];\n  for (int i = 0; i < n; i++) cin >> stream[i];\n\n  queue<char> q;\n  int freq[26] = {0};\n\n  // process stream\n\n  return 0;\n}",
   },
-]
+];
