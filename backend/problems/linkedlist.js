@@ -155,44 +155,44 @@ Diagram:
   a: 1 → 2 → 4
   b: 1 → 3 → 4
 
-  {
-    id: "add-two-numbers",
-    title: "Add Two Numbers (Linked Lists)",
-    category: "linked-list",
-    difficulty: "medium",
-    description: "Add two numbers represented as linked lists (digits in reverse order).",
-    constraints: "1 <= n,m <= 10^5",
-    examples: [
-      {"input":"3\n2 4 3\n3\n5 6 4","output":"7 0 8","explanation":"342 + 465 = 807"}
-    ],
-    test_cases: [
-      {"input":"3\n2 4 3\n3\n5 6 4","expected":"7 0 8"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, m, x;\n  cin >> n; Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m; Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n\n  // sum with carry\n\n  Node* res = result;\n  while (res) { cout << res->data << \" \"; res = res->next; }\n  return 0;\n}",
-    approach: "Traverse both lists, sum digits with carry. Create new node for each digit.",
-    complexity: {"time":"O(n+m)","space":"O(max(n,m))"},
+  Step 1: dummy → 1b (compare 1 vs 1, pick b's 1)  a=1→2→4  b=3→4
+  Step 2: dummy → 1 → 1a (1 vs 3, pick a's 1)       a=2→4    b=3→4
+  Step 3: dummy → 1 → 1 → 2  (2 vs 3, pick 2)       a=4      b=3→4
+  Step 4: dummy → 1 → 1 → 2 → 3  (4 vs 3, pick 3)   a=4      b=4
+  Step 5: dummy → 1 → 1 → 2 → 3 → 4a (4 vs 4, pick a's 4)
+  Step 6: a exhausted, attach remaining b (4)
+
+  Final: 1 → 1 → 2 → 3 → 4 → 4
+\`\`\`
+
+Edge cases: one or both lists empty (return the non-empty one, or null). Complexity: O(n+m) time, O(1) extra space.`,
+    complexity: {"time":"O(n+m)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "Node dummy(0); Node* t=&dummy; int carry=0; while(a||b||carry){int s=carry; if(a){s+=a->data;a=a->next;}if(b){s+=b->data;b=b->next;}t->next=new Node(s%10);carry=s/10;t=t->next;} return dummy.next;",
+    solution_code: "Node dummy(0); Node* t=&dummy; while(a&&b){if(a->data<b->data){t->next=a;a=a->next;}else{t->next=b;b=b->next;}t=t->next;} t->next=a?a:b; return dummy.next;",
+    techniques: ["two-pointers", "recursion"],
   },
   {
-    id: "rotate-list",
-    title: "Rotate Linked List by K",
+    id: "remove-nth-end",
+    title: "Remove Nth Node From End",
     category: "linked-list",
     difficulty: "medium",
-    description: "Rotate linked list to the right by k places.",
-    constraints: "1 <= n <= 10^5, 1 <= k <= 10^5",
+    description: "Remove the nth node from the end of the linked list.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
     examples: [
-      {"input":"5\n1 2 3 4 5\n2","output":"4 5 1 2 3"}
+      {"input":"5\n1 2 3 4 5\n2","output":"1 2 3 5","explanation":"Remove 2nd from end (4)"}
     ],
     test_cases: [
-      {"input":"5\n1 2 3 4 5\n2","expected":"4 5 1 2 3"}
+      {"input":"5\n1 2 3 4 5\n2","expected":"1 2 3 5"},
+      {"input":"1\n1\n1","expected":""}
     ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n  k %= n;\n  if (k == 0) { Node* t = head; while (t) { cout << t->data << \" \"; t = t->next; } return 0; }\n\n  // make circular, break at n-k\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
-    approach: "Make list circular by connecting tail to head. Break at new head position (n-k%n).",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node* t=head; int len=1; while(t->next){t=t->next;len++;} t->next=head; k%=len; int steps=len-k; while(steps--)t=t->next; head=t->next; t->next=nullptr;",
-  },
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n\n  // fast pointer goes k steps ahead\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: `This problem asks to remove the k-th node from the end of a singly linked list. The brute-force approach makes two passes: first count total nodes n, then traverse to node (n-k) and remove the next node. The one-pass optimal approach uses the two-pointer (fast/slow) technique combined with a gap.
+
+Move fast ahead by k steps first. If fast becomes null after those k steps, we are removing the head node (k equals list length), so return head→next. Otherwise, advance both slow and fast one step at a time until fast→next is null. At this point, slow is at the node just before the target node. Remove the target by setting slow→next = slow→next→next.
+
+Diagram:
+\`\`\`
+  List: 1 → 2 → 3 → 4 → 5 → null, k=2
   {
     id: "flatten-list",
     title: "Flatten a Multilevel Linked List",
