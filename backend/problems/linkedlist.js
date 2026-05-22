@@ -57,5 +57,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;if(slow==fast)return true;} return false;",
+  },
+  {
+    id: "merge-sorted-lists",
+    title: "Merge Two Sorted Linked Lists",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Merge two sorted linked lists into one sorted list.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"3\n1 2 4\n3\n1 3 4","output":"1 1 2 3 4 4"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 4\n3\n1 3 4","expected":"1 1 2 3 4 4"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* merge(Node* a, Node* b) {\n  // dummy node + two pointers\n}\n\nint main() {\n  int n, m, x;\n  cin >> n; Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m; Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n  Node* res = merge(a, b);\n  while (res) { cout << res->data << \" \"; res = res->next; }\n  return 0;\n}",
+    approach: "Dummy node + two-pointer merge. Compare nodes, attach smaller one.",
+    complexity: {"time":"O(n+m)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node dummy(0); Node* t=&dummy; while(a&&b){if(a->data<b->data){t->next=a;a=a->next;}else{t->next=b;b=b->next;}t=t->next;} t->next=a?a:b; return dummy.next;",
   }
 ]
