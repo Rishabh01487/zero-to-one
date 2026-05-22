@@ -158,5 +158,24 @@ export default [
     complexity: {"time":"O(n+m)","space":"O(n+m)"},
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m){\n  res[k++]=(a[i]<b[j])?a[i++]:b[j++];\n}\nwhile(i<n) res[k++]=a[i++];\nwhile(j<m) res[k++]=b[j++];",
+  },
+  {
+    id: "two-sum",
+    title: "Two Sum",
+    category: "arrays",
+    difficulty: "easy",
+    description: "Find two numbers that sum to target. Return their indices.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"4\n2 7 11 15\n9","output":"0 1","explanation":"arr[0]+arr[1]=2+7=9"}
+    ],
+    test_cases: [
+      {"input":"4\n2 7 11 15\n9","expected":"0 1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  // find two indices\n\n  cout << i << \" \" << j << endl;\n  return 0;\n}",
+    approach: "Use hash map: for each element, check if target-arr[i] exists in map. If yes, return both indices.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "unordered_map<int,int> mp;\nfor(int i=0;i<n;i++){\n  if(mp.count(target-arr[i])){\n    cout << mp[target-arr[i]] << \" \" << i;\n    return 0;\n  }\n  mp[arr[i]]=i;\n}",
   }
 ]
