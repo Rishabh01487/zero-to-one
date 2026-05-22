@@ -38,5 +38,25 @@ export default [
     sheet: "Love Babbar 450",
     solution_code: "while (b) { int t = b; b = a % b; a = t; }\ncout << a;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int a, b; cin >> a >> b;\n  // Euclidean GCD\n  return 0;\n}",
+  },
+  {
+    id: "factorial-large",
+    title: "Factorial of Large Number",
+    category: "maths",
+    difficulty: "medium",
+    description: "Find factorial of n (result can be very large).",
+    constraints: "1 <= n <= 1000",
+    examples: [
+      {"input":"10","output":"3628800"}
+    ],
+    test_cases: [
+      {"input":"10","expected":"3628800"},
+      {"input":"5","expected":"120"}
+    ],
+    approach: "Use array/vector to store digits. Multiply each digit by i (2..n), handle carry. Result stored in reverse.",
+    complexity: {"time":"O(n²)","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "vector<int> res = {1};\nfor (int i = 2; i <= n; i++) {\n  int carry = 0;\n  for (int j = 0; j < res.size(); j++) {\n    int prod = res[j] * i + carry;\n    res[j] = prod % 10;\n    carry = prod / 10;\n  }\n  while (carry) { res.push_back(carry%10); carry /= 10; }\n}",
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // large factorial\n  return 0;\n}",
   }
 ]
