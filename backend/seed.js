@@ -24,6 +24,7 @@ import twoPointerProblems from './problems/twopointers.js';
 import bitManipulationProblems from './problems/bitmanipulation.js';
 import mathsProblems from './problems/maths.js';
 import matrixProblems from './problems/matrix.js';
+import intervalProblems from './problems/intervals.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -124,7 +125,7 @@ const problems = [
     ]
   },
   {
-    id: 'prob-04', title: 'Valid Parentheses', difficulty: 'easy', category: 'stacks',
+    id: 'prob-04', title: 'Valid Parentheses', difficulty: 'easy', category: 'stack-queue',
     description: `Given a string \`s\` containing just the characters \'(\', \')\', \'{\', \'}\', \'[\' and \']\', determine if the input string is valid.\n\nAn input string is valid if:\n1. Open brackets must be closed by the same type of brackets.\n2. Open brackets must be closed in the correct order.\n3. Every close bracket has a corresponding open bracket of the same type.`,
     examples: [
       { input: 's = "()"', output: 'true' },
@@ -151,7 +152,7 @@ const problems = [
     ]
   },
   {
-    id: 'prob-06', title: 'Binary Search', difficulty: 'easy', category: 'searching',
+    id: 'prob-06', title: 'Binary Search', difficulty: 'easy', category: 'binary-search',
     description: `Given an array of integers \`nums\` which is sorted in ascending order, and an integer \`target\`, write a function to search \`target\` in \`nums\`. If \`target\` exists, then return its index. Otherwise, return \`-1\`.\n\nYou must write an algorithm with O(log n) runtime complexity.`,
     examples: [
       { input: 'nums = [-1,0,3,5,9,12], target = 9', output: '4', explanation: '9 exists in nums and its index is 4' },
@@ -346,6 +347,7 @@ export function seedDatabase() {
     ...bitManipulationProblems,
     ...mathsProblems,
     ...matrixProblems,
+    ...intervalProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
@@ -359,3 +361,5 @@ export function seedDatabase() {
   console.log('Database seeded successfully!');
   return { lessons: allLessons.length, problems: problems.length };
 }
+
+seedDatabase();
