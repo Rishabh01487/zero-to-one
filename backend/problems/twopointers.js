@@ -55,5 +55,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "int i = 0, j = n-1, maxArea = 0;\nwhile (i < j) {\n  int area = min(height[i], height[j]) * (j - i);\n  maxArea = max(maxArea, area);\n  if (height[i] < height[j]) i++;\n  else j--;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int h[n]; for (int i = 0; i < n; i++) cin >> h[i];\n  // two pointers\n  cout << maxArea << endl;\n  return 0;\n}",
+  },
+  {
+    id: "remove-duplicates",
+    title: "Remove Duplicates from Sorted Array",
+    category: "two-pointers",
+    difficulty: "easy",
+    description: "Remove duplicates in-place from sorted array, return new length.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n1 1 2 2 3","output":"3"}
+    ],
+    test_cases: [
+      {"input":"5\n1 1 2 2 3","expected":"3"}
+    ],
+    approach: "Slow/fast pointer. Fast scans forward; when fast finds new value, copy to slow+1 and advance slow.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "if (n == 0) return 0;\nint slow = 0;\nfor (int fast = 1; fast < n; fast++)\n  if (arr[fast] != arr[slow]) arr[++slow] = arr[fast];",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // two pointer removal\n  return 0;\n}",
   }
 ]
