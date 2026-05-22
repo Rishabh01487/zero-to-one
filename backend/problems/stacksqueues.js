@@ -151,5 +151,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "stack<char> st; string res; for(char c:s){if(isalnum(c))res+=c;else if(c=='(')st.push(c);else if(c==')'){while(st.top()!='('){res+=st.top();st.pop();}st.pop();}else{while(!st.empty()&&prec(c)<=prec(st.top())){res+=st.top();st.pop();}st.push(c);}} while(!st.empty()){res+=st.top();st.pop();}cout<<res;",
     solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint prec(char c) {\n  if (c == '^') return 3;\n  if (c == '*' || c == '/') return 2;\n  if (c == '+' || c == '-') return 1;\n  return 0;\n}\n\nint main() {\n  string s;\n  cin >> s;\n  stack<char> st;\n\n  // Shunting-yard algorithm\n\n  cout << result << endl;\n  return 0;\n}",
+  },
+  {
+    id: "impl-stack-queue",
+    title: "Stack Using Queues",
+    category: "stack-queue",
+    difficulty: "easy",
+    description: "Implement stack using two queues.",
+    constraints: "1 <= q <= 10^5",
+    examples: [
+      {"input":"5\npush 1\npush 2\ntop\npop\ntop","output":"2 1"}
+    ],
+    test_cases: [
+      {"input":"5\npush 1\npush 2\ntop\npop\ntop","expected":"2 1"}
+    ],
+    approach: "Use a single queue. On push, add and rotate all previous elements to front.",
+    complexity: {"time":"O(n) push, O(1) pop","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "// push: q.push(x); for i in 0..size-2: q.push(q.front()); q.pop();",
+    solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nclass MyStack {\n  queue<int> q;\npublic:\n  void push(int x) { q.push(x); for (int i = 0; i < (int)q.size()-1; i++) { q.push(q.front()); q.pop(); } }\n  int pop() { int x = q.front(); q.pop(); return x; }\n  int top() { return q.front(); }\n  bool empty() { return q.empty(); }\n};\n\nint main() {\n  int q; cin >> q;\n  MyStack ms;\n  while (q--) {\n    string op; cin >> op;\n    if (op == \"push\") { int x; cin >> x; ms.push(x); }\n    else if (op == \"pop\") cout << ms.pop() << endl;\n    else if (op == \"top\") cout << ms.top() << endl;\n  }\n  return 0;\n}",
   }
 ]
