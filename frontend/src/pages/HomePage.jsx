@@ -2,45 +2,50 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const features = [
-  { icon: '📘', title: 'Structured Curriculum', desc: 'From zero to DSA master — 60+ lessons covering every C++ concept with deep explanations.' },
-  { icon: '💻', title: 'Live Code Editor', desc: 'Write, compile, and run C++ code directly in your browser with the Monaco editor.' },
-  { icon: '🎯', title: 'Code Visualizer', desc: 'Watch your code execute step-by-step with live variable tracking and memory visualization.' },
-  { icon: '⚡', title: '200+ DSA Problems', desc: 'Practice with curated problems from Easy to Hard with instant feedback and test cases.' },
-  { icon: '📊', title: 'Progress Tracking', desc: 'Track your learning journey with detailed progress metrics and achievements.' },
-  { icon: '🧠', title: 'Concept Deep-Dives', desc: 'Every topic explained with real analogies, visual diagrams, and production-ready examples.' },
+  { title: 'Structured curriculum', desc: '60+ lessons from zero to DSA master, each concept explained from first principles.' },
+  { title: 'Live code editor', desc: 'Write, compile, and run C++ in your browser. No setup needed.' },
+  { title: 'Code visualizer', desc: 'Step through your code line by line. Watch variables change in real time.' },
+  { title: 'DSA problem bank', desc: 'Pattern-based problems from Striver and Love Babbar sheets, fully solved and explained.' },
+  { title: 'Progress tracking', desc: 'Your learning journey tracked across lessons, problems, and concepts.' },
+  { title: 'Production-ready examples', desc: 'Learn how real C++ is written, not just textbook snippets.' },
 ];
 
 const topics = [
-  { name: 'Variables & Data Types', lessons: 4, color: '#06B6D4' },
-  { name: 'Control Flow', lessons: 3, color: '#7C3AED' },
-  { name: 'Functions & Recursion', lessons: 5, color: '#10B981' },
-  { name: 'Arrays & Strings', lessons: 5, color: '#F59E0B' },
-  { name: 'Pointers & Memory', lessons: 4, color: '#EF4444' },
-  { name: 'OOP Concepts', lessons: 5, color: '#EC4899' },
-  { name: 'STL Containers', lessons: 4, color: '#8B5CF6' },
-  { name: 'Sorting & Searching', lessons: 4, color: '#14B8A6' },
-  { name: 'Linked Lists', lessons: 4, color: '#F97316' },
-  { name: 'Trees & Graphs', lessons: 6, color: '#22C55E' },
-  { name: 'Dynamic Programming', lessons: 6, color: '#A855F7' },
-  { name: 'Advanced DSA', lessons: 6, color: '#E11D48' },
-];
-
-const stats = [
-  { value: '60+', label: 'Lessons' },
-  { value: '200+', label: 'Problems' },
-  { value: '1000+', label: 'Code Examples' },
-  { value: 'Zero', label: 'Prerequisites' },
+  { name: 'Basics', lessons: 6, desc: 'Syntax, variables, I/O, operators' },
+  { name: 'Control Flow', lessons: 4, desc: 'Conditionals, loops, error handling' },
+  { name: 'Functions', lessons: 5, desc: 'Overloading, recursion, lambdas' },
+  { name: 'Arrays & Strings', lessons: 5, desc: 'STL array, vector, algorithms' },
+  { name: 'Pointers & Memory', lessons: 4, desc: 'Dynamic allocation, smart pointers' },
+  { name: 'OOP', lessons: 6, desc: 'Classes, inheritance, polymorphism' },
+  { name: 'STL', lessons: 6, desc: 'Containers, iterators, algorithms' },
+  { name: 'Sorting', lessons: 5, desc: 'Merge, quick, heap, radix sort' },
+  { name: 'Linked Lists', lessons: 4, desc: 'Singly, doubly, circular, algorithms' },
+  { name: 'Trees', lessons: 5, desc: 'BST, AVL, heaps, traversals' },
+  { name: 'DP', lessons: 6, desc: 'Memoization, tabulation, classic problems' },
+  { name: 'Advanced', lessons: 6, desc: 'Graphs, hashing, bit manipulation' },
 ];
 
 export default function HomePage({ username, setUsername }) {
   const navigate = useNavigate();
   const [nameInput, setNameInput] = React.useState('');
+  const [patterns, setPatterns] = React.useState([]);
+  const [stats, setStats] = React.useState({ lessons: 56, patterns: 0, problems: 0 });
+
+  React.useEffect(() => {
+    fetch('/api/patterns')
+      .then(r => r.json())
+      .then(data => {
+        setPatterns(data);
+        setStats(s => ({ ...s, patterns: data.length, problems: data.reduce((a, p) => a + p.problemCount, 0) }));
+      })
+      .catch(() => {});
+  }, []);
 
   const handleStart = () => {
     if (nameInput.trim()) {
       setUsername(nameInput.trim());
       localStorage.setItem('zto_username', nameInput.trim());
-      fetch('http://localhost:3001/api/progress/user', {
+      fetch('/api/progress/user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: nameInput.trim() })
@@ -50,234 +55,217 @@ export default function HomePage({ username, setUsername }) {
   };
 
   return (
-    <div>
-      {/* HERO SECTION */}
-      <section style={{
-        minHeight: '100vh',
+    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
+      <nav style={{
+        height: 56,
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px 24px',
-        position: 'relative',
-        overflow: 'hidden',
-        background: 'radial-gradient(ellipse at 50% 0%, #1a1a3e 0%, #0f0f1a 50%)'
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        borderBottom: '1px solid var(--border)',
+        maxWidth: 1120,
+        margin: '0 auto'
       }}>
-        <div style={{
-          position: 'absolute',
-          top: '-20%',
-          left: '-10%',
-          width: '60%',
-          height: '80%',
-          background: 'radial-gradient(circle, rgba(124,58,237,0.08) 0%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-        <div style={{
-          position: 'absolute',
-          bottom: '-10%',
-          right: '-10%',
-          width: '50%',
-          height: '70%',
-          background: 'radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none'
-        }} />
-
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 24,
-          maxWidth: 800,
-          textAlign: 'center',
-          animation: 'slideUp 0.8s ease forwards'
-        }}>
-          <div style={{
-            padding: '8px 20px',
-            borderRadius: 100,
-            background: 'rgba(124,58,237,0.12)',
-            border: '1px solid rgba(124,58,237,0.2)',
-            fontSize: 13,
-            fontWeight: 600,
-            color: 'var(--primary-light)',
-            letterSpacing: 1
-          }}>
-            🚀 The Complete C++ & DSA Learning Platform
-          </div>
-
-          <h1 style={{
-            fontSize: 64,
-            fontWeight: 900,
-            margin: 0,
-            lineHeight: 1.1,
-            letterSpacing: -2
-          }}>
-            From{' '}
-            <span className="gradient-text">Zero</span>
-            {' '}to{' '}
-            <span className="gradient-text">One</span>
-          </h1>
-
-          <p style={{
-            fontSize: 20,
-            color: 'var(--text-secondary)',
-            lineHeight: 1.6,
-            maxWidth: 600,
-            margin: 0
-          }}>
-            Master C++ programming and Data Structures & Algorithms from absolute scratch.
-            Learn by writing real code, not just watching videos.
-          </p>
-
-          {!username ? (
-            <div style={{
-              display: 'flex',
-              gap: 12,
-              marginTop: 16,
-              width: '100%',
-              maxWidth: 480
-            }}>
-              <input
-                type="text"
-                placeholder="Enter your name to start learning..."
-                value={nameInput}
-                onChange={e => setNameInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleStart()}
-                style={{ flex: 1, padding: '14px 20px', fontSize: 15 }}
-              />
-              <button className="btn btn-primary btn-lg" onClick={handleStart}>
-                Start Learning →
-              </button>
-            </div>
+        <span style={{ fontSize: 15, fontWeight: 600, letterSpacing: '-0.3px' }}>
+          zero<span style={{ color: 'var(--text-muted)' }}>to</span>one
+        </span>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {username ? (
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{username}</span>
           ) : (
-            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
-              <button className="btn btn-primary btn-lg" onClick={() => navigate('/lessons')}>
-                Continue Learning →
-              </button>
-              <button className="btn btn-secondary btn-lg" onClick={() => navigate('/playground')}>
-                Open Playground
-              </button>
-            </div>
+            <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>guest</span>
           )}
+        </div>
+      </nav>
 
+      <section style={{
+        padding: '100px 24px 60px',
+        maxWidth: 800,
+        margin: '0 auto',
+        textAlign: 'center'
+      }}>
+        <h1 style={{
+          fontSize: 56,
+          fontWeight: 700,
+          margin: '0 0 16px',
+          letterSpacing: '-1.5px',
+          lineHeight: 1.1
+        }}>
+          from <span style={{ color: 'var(--text-muted)' }}>zero</span> to{' '}
+          <span style={{ color: 'var(--text-primary)' }}>one</span>
+        </h1>
+        <p style={{
+          fontSize: 16,
+          color: 'var(--text-secondary)',
+          lineHeight: 1.6,
+          maxWidth: 520,
+          margin: '0 auto 40px'
+        }}>
+          Master C++ and DSA from absolute scratch. Learn by writing real code, 
+          tracing every step, and solving curated problems.
+        </p>
+
+        {!username ? (
           <div style={{
             display: 'flex',
-            gap: 40,
-            marginTop: 32,
-            paddingTop: 32,
-            borderTop: '1px solid var(--border)'
+            gap: 8,
+            justifyContent: 'center',
+            maxWidth: 400,
+            margin: '0 auto'
           }}>
-            {stats.map(s => (
-              <div key={s.label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 32, fontWeight: 800, color: 'var(--text-primary)' }}>{s.value}</div>
-                <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES GRID */}
-      <section style={{ padding: '80px 24px', maxWidth: 1200, margin: '0 auto' }}>
-        <h2 className="section-title" style={{ textAlign: 'center' }}>Everything You Need</h2>
-        <p className="section-subtitle" style={{ textAlign: 'center' }}>
-          A complete platform designed to take you from complete beginner to DSA problem solver
-        </p>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-          gap: 20,
-          marginTop: 40
-        }}>
-          {features.map(f => (
-            <div key={f.title} className="card" style={{ padding: 28 }}>
-              <div style={{ fontSize: 36, marginBottom: 16 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, margin: '0 0 8px' }}>{f.title}</h3>
-              <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CURRICULUM OVERVIEW */}
-      <section style={{
-        padding: '80px 24px',
-        background: 'var(--bg-secondary)'
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <h2 className="section-title" style={{ textAlign: 'center' }}>Complete Curriculum</h2>
-          <p className="section-subtitle" style={{ textAlign: 'center' }}>
-            56 lessons across 12 modules — from your first "Hello World" to advanced DSA
-          </p>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: 16,
-            marginTop: 40
-          }}>
-            {topics.map(t => (
-              <div key={t.name} className="card" style={{
-                padding: 20,
-                borderLeft: `3px solid ${t.color}`,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
-                <span style={{ fontSize: 14, fontWeight: 600 }}>{t.name}</span>
-                <span style={{
-                  fontSize: 11,
-                  color: 'var(--text-muted)',
-                  background: 'var(--bg-tertiary)',
-                  padding: '3px 10px',
-                  borderRadius: 12
-                }}>{t.lessons} lessons</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section style={{
-        padding: '80px 24px',
-        textAlign: 'center',
-        background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.06) 0%, transparent 70%)'
-      }}>
-        <h2 style={{ fontSize: 36, fontWeight: 800, margin: '0 0 12px' }}>
-          Ready to Go from <span className="gradient-text">Zero to One</span>?
-        </h2>
-        <p style={{ fontSize: 16, color: 'var(--text-secondary)', maxWidth: 500, margin: '0 auto 32px' }}>
-          No prior experience needed. Just bring your curiosity and willingness to learn.
-        </p>
-        {!username ? (
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
             <input
               type="text"
-              placeholder="Enter your name..."
+              placeholder="Your name to get started..."
               value={nameInput}
               onChange={e => setNameInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleStart()}
-              style={{ padding: '14px 20px', fontSize: 15, width: 280 }}
+              style={{ flex: 1, padding: '10px 14px', fontSize: 14 }}
+            />
+            <button className="btn btn-primary" onClick={handleStart} style={{ padding: '10px 20px' }}>
+              Start →
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+            <button className="btn btn-primary btn-lg" onClick={() => navigate('/lessons')}>
+              Continue learning →
+            </button>
+            <button className="btn btn-ghost btn-lg" onClick={() => navigate('/playground')}>
+              Playground
+            </button>
+          </div>
+        )}
+
+        <div style={{
+          display: 'flex',
+          gap: 40,
+          justifyContent: 'center',
+          marginTop: 48,
+          paddingTop: 32,
+          borderTop: '1px solid var(--border)'
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)' }}>{stats.lessons}</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>Lessons</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)' }}>{stats.patterns}</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>Patterns</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)' }}>{stats.problems}</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>Problems</div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: 28, fontWeight: 600, color: 'var(--text-primary)' }}>0</div>
+            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>Prerequisites</div>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '60px 24px', borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 24px' }}>Everything you need</h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: 12,
+          }}>
+            {features.map(f => (
+              <div key={f.title} className="card" style={{ padding: 20 }}>
+                <h3 style={{ fontSize: 14, fontWeight: 600, margin: '0 0 6px' }}>{f.title}</h3>
+                <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '60px 24px', borderTop: '1px solid var(--border)', background: 'var(--bg-secondary)' }}>
+        <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 4px' }}>{stats.patterns} DSA Patterns</h2>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 24px' }}>
+            {stats.problems} problems organized by algorithmic pattern
+          </p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: 10
+          }}>
+            {patterns.slice(0, 8).map(p => (
+              <div key={p.id} className="card card-hover" style={{ padding: 16, cursor: 'pointer' }} onClick={() => navigate(`/problems?category=${p.id}`)}>
+                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>{p.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 4, lineHeight: 1.5 }}>{p.description}</div>
+                <div style={{ fontSize: 11, color: 'var(--accent)' }}>{p.problemCount} problems</div>
+              </div>
+            ))}
+          </div>
+          <div style={{ textAlign: 'center', marginTop: 16 }}>
+            <button className="btn btn-ghost" onClick={() => navigate('/patterns')} style={{ fontSize: 13 }}>
+              View all {stats.patterns} patterns →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '60px 24px', borderTop: '1px solid var(--border)' }}>
+        <div style={{ maxWidth: 1120, margin: '0 auto' }}>
+          <h2 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 4px' }}>12 modules, {stats.lessons} lessons</h2>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 24px' }}>
+            From your first C++ program to advanced DSA
+          </p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+            gap: 10
+          }}>
+            {topics.map(t => (
+              <div key={t.name} className="card" style={{ padding: '14px 16px' }}>
+                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>{t.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{t.desc}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 6 }}>{t.lessons} lessons</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: '60px 24px', textAlign: 'center' }}>
+        <h2 style={{ fontSize: 20, fontWeight: 600, margin: '0 0 8px' }}>
+          Ready to start?
+        </h2>
+        <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 24px' }}>
+          No prior experience needed.
+        </p>
+        {!username ? (
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', maxWidth: 360, margin: '0 auto' }}>
+            <input
+              type="text"
+              placeholder="Your name..."
+              value={nameInput}
+              onChange={e => setNameInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleStart()}
+              style={{ flex: 1, padding: '10px 14px', fontSize: 14 }}
             />
             <button className="btn btn-primary btn-lg" onClick={handleStart}>
-              Start Free →
+              Start →
             </button>
           </div>
         ) : (
           <button className="btn btn-primary btn-lg" onClick={() => navigate('/lessons')}>
-            Continue Learning →
+            Continue learning →
           </button>
         )}
       </section>
 
-      {/* FOOTER */}
       <footer style={{
-        padding: '32px 24px',
+        padding: '24px',
         borderTop: '1px solid var(--border)',
         textAlign: 'center',
-        fontSize: 13,
+        fontSize: 12,
         color: 'var(--text-muted)'
       }}>
-        Built with ❤️ for every aspiring programmer. Zero to One — Master C++ & DSA.
+        zero to one — C++ & DSA
       </footer>
     </div>
   );
