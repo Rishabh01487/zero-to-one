@@ -126,7 +126,7 @@ export default [
     test_cases: [
       {"input":"catsanddog\n5\ncat cats and sand dog","expected":"cat sand dog\ncats and dog"}
     ],
-    approach: "DFS: at each position, try all words from dictionary that match prefix. Recurse for remaining string.",
+    approach: "DFS: at each position, try all words from dictionary that match prefix. Recurse for remaining string.\n\nDiagram:\n  s = \"catsanddog\", dict = {cat, cats, and, sand, dog}\n\n            idx=0\n           /     \\\n       \"cat\"   \"cats\"\n         |        |\n       idx=3    idx=4\n         |        |\n      \"sand\"   \"and\"\n         |        |\n       idx=7    idx=7\n         |        |\n      \"dog\"    \"dog\"\n         |        |\n       idx=10   idx=10\n      (add)     (add)\n\n  At idx, try all prefixes s[idx..i] that exist in dict.\n  Recurse on i+1 with accumulated sentence string.\n  Base: idx == s.length(), add sentence to ans.\n  No explicit backtracking needed (strings are immutable).",
     complexity: {"time":"O(2^n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// for i from idx to end: if dict has s[idx..i], recurse with string + word",
@@ -145,7 +145,7 @@ export default [
     test_cases: [
       {"input":"4 4\n0 1\n1 2\n2 3\n3 0\n3","expected":"Yes"}
     ],
-    approach: "Backtracking: assign color 1..m to each vertex. Check adjacent vertices for same color.",
+    approach: "Backtracking: assign color 1..m to each vertex. Check adjacent vertices for same color.\n\nDiagram:\n  4-vertex graph with m=3:\n\n          v=0\n       /   |   \\\n      c1   c2   c3\n       |    |    |\n      v=1  v=1  v=1\n     / \\   / \\   / \\\n   c1 c2 c1 c2 c1 c2 ... (pruned by adj check)\n    |  |  |  |  |  |\n   (X) v2 ... (finds solution)\n\n  At vertex v, try colors 1..m.\n  isSafe: check no neighbor has same color.\n  If safe, assign, recurse v+1.\n  If recursion fails, backtrack (col[v]=0), try next color.\n  Base: v == N, all colored -> return true.",
     complexity: {"time":"O(m^n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// for c in 1..m: if isSafe(g,col,v,c): col[v]=c, recurse(v+1), backtrack",
