@@ -38,5 +38,25 @@ export default [
     complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1,first=-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){first=m;hi=m-1;}else if(arr[m]<target)lo=m+1;else hi=m-1;} lo=0;hi=n-1;int last=-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){last=m;lo=m+1;}else if(arr[m]<target)lo=m+1;else hi=m-1;}cout<<first<<\" \"<<last;",
+  },
+  {
+    id: "search-rotated",
+    title: "Search in Rotated Sorted Array",
+    category: "binary-search",
+    difficulty: "medium",
+    description: "Search for target in a rotated sorted array.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n4 5 6 7 0 1 2\n0","output":"4"}
+    ],
+    test_cases: [
+      {"input":"7\n4 5 6 7 0 1 2\n0","expected":"4"},
+      {"input":"7\n4 5 6 7 0 1 2\n3","expected":"-1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  int lo = 0, hi = n-1;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if (arr[mid] == target) { cout << mid << endl; return 0; }\n    if (arr[lo] <= arr[mid]) {\n      if (target >= arr[lo] && target < arr[mid]) hi = mid - 1;\n      else lo = mid + 1;\n    } else {\n      if (target > arr[mid] && target <= arr[hi]) lo = mid + 1;\n      else hi = mid - 1;\n    }\n  }\n  cout << -1 << endl;\n  return 0;\n}",
+    approach: "Binary search: identify sorted half by comparing arr[lo] with arr[mid]. Search in sorted half or pivot elsewhere.",
+    complexity: {"time":"O(log n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int lo=0,hi=n-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){cout<<m;return 0;}if(arr[lo]<=arr[m]){if(target>=arr[lo]&&target<arr[m])hi=m-1;else lo=m+1;}else{if(target>arr[m]&&target<=arr[hi])lo=m+1;else hi=m-1;}}cout<<-1;",
   }
 ]
