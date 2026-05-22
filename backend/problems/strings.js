@@ -219,5 +219,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Love Babbar 450",
     solution_code: "string r; int cnt=1; for(int i=1;i<=s.size();i++){if(i<s.size()&&s[i]==s[i-1])cnt++;else{r+=s[i-1]+to_string(cnt);cnt=1;}}cout<<r;",
+  },
+  {
+    id: "group-anagrams",
+    title: "Group Anagrams",
+    category: "strings",
+    difficulty: "medium",
+    description: "Group anagrams together from array of strings.",
+    constraints: "1 <= n <= 10^4, 1 <= |s| <= 100",
+    examples: [
+      {"input":"6\nate eat tea tan nat bat","output":"ate eat tea\ntan nat\nbat","explanation":"Groups by sorted signature"}
+    ],
+    test_cases: [
+      {"input":"6\nate eat tea tan nat bat","expected":"ate eat tea\ntan nat\nbat"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  string strs[n];\n  for (int i = 0; i < n; i++) cin >> strs[i];\n\n  // map sorted string to group\n\n  return 0;\n}",
+    approach: "Use hash map: sorted string as key, list of original strings as value.",
+    complexity: {"time":"O(n * k log k)","space":"O(n * k)"},
+    sheet: "Striver A2Z",
+    solution_code: "unordered_map<string,vector<string>> mp; for(string& s:strs){string t=s;sort(t.begin(),t.end());mp[t].push_back(s);} for(auto& p:mp){for(string& s:p.second)cout<<s<<\" \";cout<<endl;}",
   }
 ]
