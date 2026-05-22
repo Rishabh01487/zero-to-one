@@ -195,5 +195,25 @@ export default [
     complexity: {"time":"O(n*W)","space":"O(W)"},
     sheet: "Love Babbar 450",
     solution_code: "vector<int> dp(W+1,0); for(int w=1;w<=W;w++)for(int i=0;i<n;i++)if(wt[i]<=w)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]);cout<<dp[W];",
+  },
+  {
+    id: "palindrome-part",
+    title: "Palindrome Partitioning (Min Cuts)",
+    category: "dp",
+    difficulty: "hard",
+    description: "Find minimum cuts needed to partition string into all palindromes.",
+    constraints: "1 <= |s| <= 2000",
+    examples: [
+      {"input":"aab","output":"1","explanation":"aa | b = 1 cut"}
+    ],
+    test_cases: [
+      {"input":"aab","expected":"1"},
+      {"input":"abcbdd","expected":"2"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  string s; cin >> s;\n  int n = s.size();\n  bool pal[n][n] = {false};\n  int dp[n];\n\n  // O(n^2): mark palindromes + DP for cuts\n\n  cout << dp[n-1] << endl;\n  return 0;\n}",
+    approach: "Precompute palindrome table. DP: dp[i]=min cuts for prefix i. If s[j..i] palindrome, dp[i]=min(dp[i],dp[j-1]+1).",
+    complexity: {"time":"O(n²)","space":"O(n²)"},
+    sheet: "Love Babbar 450",
+    solution_code: "vector<vector<bool>> pal(n,vector<bool>(n,0)); for(int i=0;i<n;i++)pal[i][i]=1; for(int len=2;len<=n;len++)for(int i=0;i+len-1<n;i++){int j=i+len-1;if(s[i]==s[j]&&(len==2||pal[i+1][j-1]))pal[i][j]=1;} vector<int> dp(n,0); for(int i=0;i<n;i++){if(pal[0][i])dp[i]=0;else{dp[i]=i;for(int j=0;j<i;j++)if(pal[j+1][i])dp[i]=min(dp[i],dp[j]+1);}}cout<<dp[n-1];",
   }
 ]
