@@ -235,5 +235,25 @@ export default [
     complexity: {"time":"O(k*n²)","space":"O(k*n)"},
     sheet: "Love Babbar 450",
     solution_code: "vector<vector<int>> dp(k+1,vector<int>(n+1)); for(int i=1;i<=k;i++){dp[i][0]=0;dp[i][1]=1;} for(int j=1;j<=n;j++)dp[1][j]=j; for(int i=2;i<=k;i++)for(int j=2;j<=n;j++){dp[i][j]=INT_MAX;for(int x=1;x<=j;x++)dp[i][j]=min(dp[i][j],1+max(dp[i-1][x-1],dp[i][j-x]));}cout<<dp[k][n];",
+  },
+  {
+    id: "wildcard-match-dp",
+    title: "Wildcard Matching (DP)",
+    category: "dp",
+    difficulty: "hard",
+    description: "Match string with pattern: ? = any char, * = any sequence.",
+    constraints: "1 <= |s|,|p| <= 2000",
+    examples: [
+      {"input":"aa a*","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"aa a*","expected":"Yes"},
+      {"input":"cb ?a","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  string s, p;\n  cin >> s >> p;\n  int n = s.size(), m = p.size();\n\n  // 2D boolean DP\n\n  cout << (dp[n][m] ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "2D DP: handle ? matches single char, * matches empty/one/many.",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "int n=s.size(),m=p.size(); vector<vector<bool>> dp(n+1,vector<bool>(m+1)); dp[0][0]=1; for(int j=1;j<=m;j++)if(p[j-1]=='*')dp[0][j]=dp[0][j-1]; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(p[j-1]=='*')dp[i][j]=dp[i-1][j]||dp[i][j-1];else if(p[j-1]=='?'||s[i-1]==p[j-1])dp[i][j]=dp[i-1][j-1];}cout<<(dp[n][m]?\"Yes\":\"No\");",
   }
 ]
