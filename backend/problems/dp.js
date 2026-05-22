@@ -275,26 +275,26 @@ Diagram:
   },
   {
     id: "unbounded-knapsack",
-  {
-    id: "house-robber",
-    title: "House Robber",
+    title: "Unbounded Knapsack",
     category: "dp",
     difficulty: "medium",
-    description: "Rob houses without alerting police (no adjacent houses).",
-    constraints: "1 <= n <= 10^5",
+    description: "Each item can be picked unlimited times.",
+    constraints: "1 <= n <= 100, 1 <= W <= 1000",
     examples: [
-      {"input":"5\n2 7 9 3 1","output":"12","explanation":"2+9+1=12"}
+      {"input":"2\n1 3\n10 40\n4","output":"120","explanation":"Item 3x weight 3+3+3=9, value 40+40+40=120"}
     ],
     test_cases: [
-      {"input":"5\n2 7 9 3 1","expected":"12"},
-      {"input":"4\n1 2 3 1","expected":"4"}
+      {"input":"2\n1 3\n10 40\n4","expected":"120"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int nums[n];\n  for (int i = 0; i < n; i++) cin >> nums[i];\n\n  // dp[i] = max(dp[i-1], dp[i-2] + nums[i])\n\n  cout << dp << endl;\n  return 0;\n}",
-    approach: "DP: dp[i]=max(dp[i-1], dp[i-2]+nums[i]). Space-optimize to two variables.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int prev2=0,prev1=nums[0]; for(int i=1;i<n;i++){int cur=max(prev1,prev2+nums[i]);prev2=prev1;prev1=cur;}cout<<prev1;",
-  }
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, W; cin >> n;\n  int wt[n], val[n];\n  for (int i = 0; i < n; i++) cin >> wt[i];\n  for (int i = 0; i < n; i++) cin >> val[i];\n  cin >> W;\n\n  // for each w: dp[w] = max(dp[w], dp[w-wt[i]] + val[i])\n\n  cout << dp[W] << endl;\n  return 0;\n}",
+    approach: `DP 1D forward iteration: for each weight, dp[w]=max(dp[w],dp[w-wt[i]]+val[i]).
+
+Diagram:
+  wt=[1,3], val=[10,40], W=4
+
+  capacity  0   1   2   3   4
+  dp[w]     0  10  20  40  50
+
   dp[w] = max(dp[w], dp[w-wt[i]]+val[i])
   Result: 50 (weight 1+3 = 10+40)`,
     complexity: {"time":"O(n*W)","space":"O(W)"},
