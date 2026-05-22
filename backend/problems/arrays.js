@@ -59,5 +59,26 @@ export default [
     complexity: {"time":"O(n log k)","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "priority_queue<int,vector<int>,greater<int>> pq;\nfor(int x:arr){\n  pq.push(x);\n  if(pq.size()>k) pq.pop();\n}\ncout << pq.top();",
+  },
+  {
+    id: "kadane",
+    title: "Maximum Subarray Sum (Kadane)",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Find the contiguous subarray with the largest sum.",
+    constraints: "1 <= n <= 10^5, -10^4 <= arr[i] <= 10^4",
+    examples: [
+      {"input":"9\n-2 1 -3 4 -1 2 1 -5 4","output":"6","explanation":"[4,-1,2,1] has sum 6"}
+    ],
+    test_cases: [
+      {"input":"9\n-2 1 -3 4 -1 2 1 -5 4","expected":"6"},
+      {"input":"4\n-1 -2 -3 -4","expected":"-1"},
+      {"input":"5\n5 4 3 2 1","expected":"15"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Kadane's algorithm\n\n  cout << maxSum << endl;\n  return 0;\n}",
+    approach: "Kadane: track current sum and max sum. Reset current sum to 0 if it goes negative.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int cur=0,mx=arr[0];\nfor(int x:arr){\n  cur+=x;\n  mx=max(mx,cur);\n  if(cur<0) cur=0;\n}\ncout << mx;",
   }
 ]
