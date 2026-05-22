@@ -316,6 +316,22 @@ export default [
     id: "longest-consecutive",
     title: "Longest Consecutive Sequence",
     category: "arrays",
+    difficulty: "medium",
+    description: "Find the length of the longest consecutive elements sequence.",
+    constraints: "1 <= n <= 10^5",
+    techniques: ["prefix-sum"],
+    examples: [
+      {"input":"6\n100 4 200 1 3 2","output":"4","explanation":"Longest: [1,2,3,4]"}
+    ],
+    test_cases: [
+      {"input":"6\n100 4 200 1 3 2","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\n#include <unordered_set>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // use hash set\n\n  cout << longest << endl;\n  return 0;\n}",
+    approach: "This problem asks us to find the length of the longest consecutive sequence that can be formed from the elements of an unsorted array. The sequence elements must differ by exactly 1, and the order in the original array does not matter. A brute force approach sorts the array first and then scans for the longest consecutive run. For example, sorting [100,4,200,1,3,2] gives [1,2,3,4,100,200] and scanning reveals a run of length 4 (1,2,3,4). Sorting takes O(n log n) time. The optimal approach uses a hash set for O(1) lookups, achieving O(n) time. Insert all elements into an unordered set. Then iterate through the set. For each element, check if it is the start of a sequence by verifying that element-1 is NOT in the set. If it is not a start (element-1 exists), skip it because it will be counted when we process the actual start. If it is a start, count how many consecutive numbers follow by incrementing a counter while element+length exists in the set. Track the maximum length. For [100,4,200,1,3,2]: set = {100,4,200,1,3,2}. 100: 99 not in set, count: 101? no, length=1. 4: 3 in set, skip (not a start). 200: 199 not in set, count: 201? no, length=1. 1: 0 not in set, start! count: 2 in set (len=2), 3 in set (len=3), 4 in set (len=4), 5 not in set, length=4. 3: 2 in set, skip. 2: 1 in set, skip. Answer=4. Edge cases include empty array (length 0), all identical elements (length 1), negative numbers, and sequences that span zero. Time complexity is O(n) because each element is processed at most twice, and space complexity is O(n) for the hash set.\n\nDiagram:\n  Array: [100, 4, 200, 1, 3, 2]\n  set = {100, 4, 200, 1, 3, 2}\n  \n  x=100: 99 not in set → start! count: 101? no → len=1, max=1\n  x=4:   3 in set → skip\n  x=200: 199 not in set → start! count: 201? no → len=1, max=1\n  x=1:   0 not in set → start! count: 2 in set(len=2), 3 in set(len=3), 4 in set(len=4), 5? no → len=4, max=4\n  x=3:   2 in set → skip\n  x=2:   1 in set → skip\n  \n  Result: 4 (sequence: [1, 2, 3, 4])",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "unordered_set<int> s(arr,arr+n);\nint mx=0;\nfor(int x:s){\n  if(!s.count(x-1)){\n    int len=1;\n    while(s.count(x+len)) len++;\n    mx=max(mx,len);\n  }\n}\ncout << mx;",
+  },
   {
     id: "common-three-sorted",
     title: "Common Elements in Three Sorted Arrays",
@@ -323,6 +339,7 @@ export default [
     difficulty: "medium",
     description: "Find common elements in three sorted arrays.",
     constraints: "1 <= n,m,p <= 10^5",
+    techniques: ["two-pointers"],
     examples: [
       {"input":"6\n1 5 10 20 40 80\n5\n6 7 20 80 100\n8\n3 4 15 20 30 70 80 120","output":"20 80","explanation":"20 and 80 appear in all three"}
     ],
@@ -330,30 +347,13 @@ export default [
       {"input":"6\n1 5 10 20 40 80\n5\n6 7 20 80 100\n8\n3 4 15 20 30 70 80 120","expected":"20 80"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m, p;\n  cin >> n; int a[n]; for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m; int b[m]; for (int i = 0; i < m; i++) cin >> b[i];\n  cin >> p; int c[p]; for (int i = 0; i < p; i++) cin >> c[i];\n\n  // three-pointer approach\n\n  return 0;\n}",
-    approach: "Three-pointer: advance the smallest pointer. When all three elements equal, add to result and advance all three.",
+    approach: "This problem asks us to find all elements that appear in all three given sorted arrays. A brute force approach takes the first array and, for each element, searches for it in the other two arrays using linear or binary search. This could be O(n*m*p) or O(n log m + n log p) depending on the search method. The optimal approach uses three pointers (i, j, k) to traverse all three arrays simultaneously. Since all arrays are sorted, we can advance pointers strategically. While all three pointers are within bounds, compare the current elements a[i], b[j], and c[k]. If all three are equal, we have found a common element: record it and advance all three pointers. Otherwise, find the smallest value among the three and advance the pointer(s) pointing to it. This ensures we make progress without missing any common elements. For a=[1,5,10,20,40,80], b=[6,7,20,80,100], c=[3,4,15,20,30,70,80,120]: i=0(a=1), j=0(b=6), k=0(c=3). Min=1, advance i. i=1(a=5), min=5, advance i. i=2(a=10), min=6 (b), advance j. j=1(b=7), min=7, advance j. j=2(b=20), k=0(c=3), min=3, advance k. k=1(c=4), advance k. k=2(c=15), advance k. k=3(c=20): a=20, b=20, c=20! All equal, record 20, advance all. Continue to find 80. Edge cases include arrays with no common elements, one or more empty arrays, duplicate values within a single array (handle by advancing past duplicates or skipping if already added), and arrays of different lengths where some pointers exhaust earlier. Time complexity is O(n+m+p) and space complexity is O(1) excluding the result.\n\nDiagram:\n  a=[1,5,10,20,40,80], b=[6,7,20,80,100], c=[3,4,15,20,30,70,80,120]\n  \n  i=0(a=1),  j=0(b=6),  k=0(c=3)   → min=1,  advance i\n  i=1(a=5),  j=0(b=6),  k=0(c=3)   → min=3,  advance k\n  i=1(a=5),  j=0(b=6),  k=1(c=4)   → min=4,  advance k\n  i=1(a=5),  j=0(b=6),  k=2(c=15)  → min=5,  advance i\n  i=2(a=10), j=0(b=6),  k=2(c=15)  → min=6,  advance j\n  i=2(a=10), j=1(b=7),  k=2(c=15)  → min=7,  advance j\n  i=2(a=10), j=2(b=20), k=2(c=15)  → min=10, advance i\n  i=3(a=20), j=2(b=20), k=2(c=15)  → min=15, advance k\n  i=3(a=20), j=2(b=20), k=3(c=20)  → ALL EQUAL! record 20\n  ... continues to find 80\n  \n  Result: 20, 80",
     complexity: {"time":"O(n+m+p)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m&&k<p){\n  if(a[i]==b[j]&&b[j]==c[k]){\n    cout << a[i] << \" \";\n    i++; j++; k++;\n  } else {\n    int mn=min({a[i],b[j],c[k]});\n    if(a[i]==mn) i++;\n    if(b[j]==mn) j++;\n    if(c[k]==mn) k++;\n  }\n}",
   },
   {
     id: "chocolate-dist",
-    title: "Chocolate Distribution",
-    category: "arrays",
-    difficulty: "easy",
-    description: "Given packets with chocolates, distribute to m children so that max-min difference is minimized.",
-    constraints: "1 <= n <= 10^5, 1 <= m <= n",
-    examples: [
-      {"input":"8\n3 4 1 9 56 7 9 12\n5","output":"6","explanation":"Pick packets: 3,4,7,9,9 => max-min = 9-3 = 6"}
-    ],
-    test_cases: [
-      {"input":"8\n3 4 1 9 56 7 9 12\n5","expected":"6"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> m;\n\n  sort(arr, arr + n);\n  // sliding window of size m\n\n  cout << minDiff << endl;\n  return 0;\n}",
-    approach: "Sort array. Use sliding window of size m. Minimize difference between max and min in each window.",
-    complexity: {"time":"O(n log n)","space":"O(1)"},
-    sheet: "Love Babbar 450",
-    solution_code: "sort(arr,arr+n);\nint mn=INT_MAX;\nfor(int i=0;i+m-1<n;i++){\n  mn=min(mn,arr[i+m-1]-arr[i]);\n}\ncout << mn;",
-  },
   {
     id: "product-array",
     title: "Product of Array Except Self",
