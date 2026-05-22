@@ -193,44 +193,44 @@ Move fast ahead by k steps first. If fast becomes null after those k steps, we a
 Diagram:
 \`\`\`
   List: 1 → 2 → 3 → 4 → 5 → null, k=2
-  {
-    id: "flatten-list",
-    title: "Flatten a Multilevel Linked List",
-    category: "linked-list",
-    difficulty: "hard",
-    description: "Flatten a linked list where nodes have next and child pointers.",
-    constraints: "1 <= n <= 10^3",
-    examples: [
-      {"input":"12\n1 2 3 4 5 6 7 8 9 10 11 12\n3 7 10","output":"1 2 3 7 8 9 10 11 12 4 5 6","explanation":"Nodes with children at positions 3,7,10"}
-    ],
-    test_cases: [
-      {"input":"12\n1 2 3 4 5 6 7 8 9 10 11 12\n3 7 10","expected":"1 2 3 7 8 9 10 11 12 4 5 6"}
-    ],
-    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node *next, *child;\n  Node(int d) : data(d), next(nullptr), child(nullptr) {}\n};\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  vector<Node*> nodes;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    nodes.push_back(nn);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  int c; while (cin >> c) {\n    if (c < (int)nodes.size() - 1) nodes[c]->child = nodes[c+1];\n  }\n\n  // flatten using stack\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
-    approach: "Use stack for child pointers. Traverse next, when child exists, push next to stack and follow child.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "stack<Node*> st; Node* cur=head; while(cur){if(cur->child&&cur->next)st.push(cur->next);if(cur->child)cur->next=cur->child;else if(!cur->next&&!st.empty()){cur->next=st.top();st.pop();}cur=cur->next;}",
-  },
-  {
-    id: "clone-random",
-    title: "Clone Linked List with Random Pointer",
-    category: "linked-list",
-    difficulty: "hard",
-    description: "Clone a linked list where each node has next and random pointers.",
-    constraints: "1 <= n <= 10^3",
-    examples: [
-      {"input":"4\n1 2 3 4\n-1 0 1 2","output":"1 2 3 4","explanation":"Random: 1->null, 2->1, 3->2, 4->3"}
-    ],
-    test_cases: [
-      {"input":"4\n1 2 3 4\n-1 0 1 2","expected":"1 2 3 4"}
-    ],
-    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node *next, *random;\n  Node(int d) : data(d), next(nullptr), random(nullptr) {}\n};\n\nint main() {\n  int n;\n  cin >> n;\n  vector<Node*> nodes(n);\n  for (int i = 0; i < n; i++) { int x; cin >> x; nodes[i] = new Node(x); }\n  for (int i = 0; i < n-1; i++) nodes[i]->next = nodes[i+1];\n  for (int i = 0; i < n; i++) {\n    int r; cin >> r;\n    if (r >= 0) nodes[i]->random = nodes[r];\n  }\n\n  // interleave clone nodes, set random, separate\n\n  Node* t = nodes[0];\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
-    approach: "Interleave clone nodes (A->A'->B->B'). Set random pointers using original->next->random = original->random->next. Separate lists.",
+
+  Step 1: Move fast k=2 steps ahead
+          slow=1, fast=1 → fast=2 → fast=3
+
+  Step 2: Advance both until fast→next is null
+          slow=1→2,  fast=3→4
+          slow=2→3,  fast=4→5  (fast→next is null, stop)
+
+  Step 3: slow is at 3, remove slow→next (node 4)
+          3 → next = 5
+
+  Result: 1 → 2 → 3 → 5 → null
+\`\`\`
+
+Edge cases: removing the head (k equals length, fast becomes null after initial k steps, return head→next), removing the tail (slow→next→next is null), single node list. Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "Node* cur=head; while(cur){Node* n=new Node(cur->val);n->next=cur->next;cur->next=n;cur=n->next;} cur=head; while(cur){if(cur->random)cur->next->random=cur->random->next;cur=cur->next->next;} Node* newHead=head->next; cur=head; while(cur){Node* n=cur->next;cur->next=n->next;if(n->next)n->next=n->next->next;cur=cur->next;} return newHead;",
+    solution_code: "Node *fast=head,*slow=head; for(int i=0;i<k;i++)fast=fast->next; if(!fast)return head->next; while(fast->next){slow=slow->next;fast=fast->next;} slow->next=slow->next->next;",
+    techniques: ["fast-slow-pointers"],
   },
+  {
+    id: "palindrome-list",
+    title: "Palindrome Linked List",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Check if linked list is a palindrome.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4\n1 2 2 1","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 2 1","expected":"Yes"},
+      {"input":"3\n1 2 3","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* reverse(Node* head) {\n  Node *prev = nullptr, *curr = head;\n  while (curr) {\n    Node* nxt = curr->next;\n    curr->next = prev;\n    prev = curr; curr = nxt;\n  }\n  return prev;\n}\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n\n  // find mid, reverse second half, compare\n\n  cout << (isPal ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: `This problem asks to determine whether a singly linked list reads the same forwards and backwards. The brute-force approach copies all values to an array and checks if it's a palindrome, using O(n) extra space. The optimal O(1) space approach uses three phases: find the middle, reverse the second half, then compare.
+
+First, use the slow/fast pointer technique to locate the middle node. Second, reverse the second half starting from slow using the standard three-pointer reversal. Third, compare the first half (head) with the reversed second half (rev) node by node.
   {
     id: "reverse-k-group",
     title: "Reverse Nodes in K-Group",
