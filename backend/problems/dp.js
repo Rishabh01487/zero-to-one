@@ -97,5 +97,26 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=dp[i-1][j-1];else dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});}cout<<dp[n][m];",
+  },
+  {
+    id: "lcs",
+    title: "Longest Common Subsequence",
+    category: "dp",
+    difficulty: "medium",
+    description: "Find length of longest common subsequence between two strings.",
+    constraints: "1 <= |s1|,|s2| <= 1000",
+    examples: [
+      {"input":"abcde\nace","output":"3","explanation":"LCS = \"ace\""}
+    ],
+    test_cases: [
+      {"input":"abcde\nace","expected":"3"},
+      {"input":"abc\nabc","expected":"3"},
+      {"input":"abc\ndef","expected":"0"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s1, s2;\n  cin >> s1 >> s2;\n  int n = s1.size(), m = s2.size();\n\n  // 2D DP: if match dp[i][j]=1+dp[i-1][j-1], else max(dp[i-1][j], dp[i][j-1])\n\n  cout << dp[n][m] << endl;\n  return 0;\n}",
+    approach: "2D DP: if chars match, dp[i][j]=1+dp[i-1][j-1]; else dp[i][j]=max(dp[i-1][j],dp[i][j-1]).",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=1+dp[i-1][j-1];else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);}cout<<dp[n][m];",
   }
 ]
