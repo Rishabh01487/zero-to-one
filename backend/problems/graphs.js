@@ -95,5 +95,24 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "queue<int> q; for(int i=0;i<n;i++)if(!indeg[i])q.push(i); while(!q.empty()){int u=q.front();q.pop();cout<<u<<\" \";for(int v:g[u])if(--indeg[v]==0)q.push(v);}",
+  },
+  {
+    id: "shortest-path-unweighted",
+    title: "Shortest Path (BFS) in Unweighted Graph",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Find shortest path distances from source to all nodes.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"5 6 0\n0 1\n0 2\n1 3\n1 4\n2 4\n3 4","output":"0 0\n1 1\n2 1\n3 2\n4 2"}
+    ],
+    test_cases: [
+      {"input":"5 6 0\n0 1\n0 2\n1 3\n1 4\n2 4\n3 4","expected":"0 0\n1 1\n2 1\n3 2\n4 2"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n, m, s; cin >> n >> m >> s;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); g[v].push_back(u); }\n\n  vector<int> dist(n, -1);\n  queue<int> q; q.push(s); dist[s] = 0;\n\n  while (!q.empty()) {\n    int u = q.front(); q.pop();\n    for (int v : g[u]) if (dist[v] == -1) { dist[v] = dist[u] + 1; q.push(v); }\n  }\n\n  for (int i = 0; i < n; i++) cout << i << \" \" << dist[i] << endl;\n  return 0;\n}",
+    approach: "BFS from source: distance to each node = distance[parent] + 1 (unweighted edges).",
+    complexity: {"time":"O(V+E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dist(n,-1); queue<int> q; q.push(s); dist[s]=0; while(!q.empty()){int u=q.front();q.pop();for(int v:g[u])if(dist[v]==-1){dist[v]=dist[u]+1;q.push(v);}} for(int i=0;i<n;i++)cout<<i<<\" \"<<dist[i]<<endl;",
   }
 ]
