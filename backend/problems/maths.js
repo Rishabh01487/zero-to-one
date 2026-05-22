@@ -577,25 +577,7 @@ export default [
       {"input":"3 1\n1 2 3","expected":"valid"},
       {"input":"4 2\n4 4 4 4","expected":"valid"}
     ],
-    approach: `Reservoir sampling: iterate through the array. When we see the target, increment count and replace the selected index with probability 1/count.
-
-    Diagram:
-    ```
-    arr = [1, 2, 3, 3, 3], target = 3
-    
-    i=0: arr[0]=1 ≠ 3 → skip
-    i=1: arr[1]=2 ≠ 3 → skip
-    i=2: arr[2]=3 == 3 → count=1, pick idx=2 (prob 1/1)
-    i=3: arr[3]=3 == 3 → count=2, pick idx=3 (prob 1/2)
-    i=4: arr[4]=3 == 3 → count=3, pick idx=4 (prob 1/3)
-    
-    Each index with value 3 has equal probability (1/3) of being selected.
-    
-    Distribution over many runs:
-      idx=2: 1/3
-      idx=3: 1/3
-      idx=4: 1/3
-    ````,
+    approach: "Reservoir sampling: iterate through the array. When we see the target, increment count and replace the selected index with probability 1/count.\n\n    Diagram:\n    ```\n    arr = [1, 2, 3, 3, 3], target = 3\n    \n    i=0: arr[0]=1 ≠ 3 → skip\n    i=1: arr[1]=2 ≠ 3 → skip\n    i=2: arr[2]=3 == 3 → count=1, pick idx=2 (prob 1/1)\n    i=3: arr[3]=3 == 3 → count=2, pick idx=3 (prob 1/2)\n    i=4: arr[4]=3 == 3 → count=3, pick idx=4 (prob 1/3)\n    \n    Each index with value 3 has equal probability (1/3) of being selected.\n    \n    Distribution over many runs:\n      idx=2: 1/3\n      idx=3: 1/3\n      idx=4: 1/3\n    ```",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     techniques: ["reservoir-sampling"],
@@ -633,27 +615,7 @@ int main() {
       {"input":"1\n42","expected":"42"}
     ],
     techniques: ["reservoir-sampling"],
-    approach: `Reservoir sampling with k=1 over a linked list of unknown length. Traverse the list, for the i-th node, replace result with probability 1/(i+1).
-
-    Diagram:
-    ```
-    List: 1 → 2 → 3 → 4 → 5
-    
-    i=0: val=1, count=1, pick val=1 (prob 1/1)
-    i=1: val=2, count=2, pick val=2 (prob 1/2)
-    i=2: val=3, count=3, pick val=3 (prob 1/3)
-    i=3: val=4, count=4, pick val=4 (prob 1/4)
-    i=4: val=5, count=5, pick val=5 (prob 1/5)
-    
-    After full traversal, each node has exactly 1/5 probability of being selected.
-    
-    Proof by induction:
-    At i=0, prob(val=1) = 1
-    At i=1, prob(val=1) = 1*(1-1/2) = 1/2, prob(val=2) = 1/2
-    At i=2, prob(val=1) = 1/2*2/3 = 1/3, prob(val=2)=1/3, prob(val=3)=1/3
-    ...
-    At i=4, each has 1/5 probability.
-    ````,
+    approach: "Reservoir sampling with k=1 over a linked list of unknown length. Traverse the list, for the i-th node, replace result with probability 1/(i+1).\n\n    Diagram:\n    ```\n    List: 1 → 2 → 3 → 4 → 5\n    \n    i=0: val=1, count=1, pick val=1 (prob 1/1)\n    i=1: val=2, count=2, pick val=2 (prob 1/2)\n    i=2: val=3, count=3, pick val=3 (prob 1/3)\n    i=3: val=4, count=4, pick val=4 (prob 1/4)\n    i=4: val=5, count=5, pick val=5 (prob 1/5)\n    \n    After full traversal, each node has exactly 1/5 probability of being selected.\n    \n    Proof by induction:\n    At i=0, prob(val=1) = 1\n    At i=1, prob(val=1) = 1*(1-1/2) = 1/2, prob(val=2) = 1/2\n    At i=2, prob(val=1) = 1/2*2/3 = 1/3, prob(val=2)=1/3, prob(val=3)=1/3\n    ...\n    At i=4, each has 1/5 probability.\n    ```",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int res, cnt=0;\nwhile(head) {\n  cnt++;\n  if(rand()%cnt==0) res=head->val;\n  head=head->next;\n}\nreturn res;",
@@ -699,31 +661,7 @@ int main() {
       {"input":"4\n2 4 6 8","expected":"valid"}
     ],
     techniques: ["reservoir-sampling"],
-    approach: `Build prefix sum array, generate random number in [1, total], binary search the prefix sum to find the index.
-
-    Diagram:
-    ```
-    weights = [1, 3, 2]
-    
-    prefix = [1, 4, 6]
-    total = 6
-    
-    random r in [1, 6]:
-      r=1 → prefix ≥ 1 at idx 0 → return 0 (weight 1, prob 1/6)
-      r=2 → prefix ≥ 2 at idx 1 → return 1 (prob 3/6)
-      r=3 → prefix ≥ 3 at idx 1 → return 1
-      r=4 → prefix ≥ 4 at idx 1 → return 1
-      r=5 → prefix ≥ 5 at idx 2 → return 2 (prob 2/6)
-      r=6 → prefix ≥ 6 at idx 2 → return 2
-    
-    Visual distribution:
-    
-    Index 0: [1]        1 space
-    Index 1: [2 3 4]    3 spaces
-    Index 2: [5 6]      2 spaces
-    
-    r=1 → 0, r=2,3,4 → 1, r=5,6 → 2
-    ````,
+    approach: "Build prefix sum array, generate random number in [1, total], binary search the prefix sum to find the index.\n\n    Diagram:\n    ```\n    weights = [1, 3, 2]\n    \n    prefix = [1, 4, 6]\n    total = 6\n    \n    random r in [1, 6]:\n      r=1 → prefix ≥ 1 at idx 0 → return 0 (weight 1, prob 1/6)\n      r=2 → prefix ≥ 2 at idx 1 → return 1 (prob 3/6)\n      r=3 → prefix ≥ 3 at idx 1 → return 1\n      r=4 → prefix ≥ 4 at idx 1 → return 1\n      r=5 → prefix ≥ 5 at idx 2 → return 2 (prob 2/6)\n      r=6 → prefix ≥ 6 at idx 2 → return 2\n    \n    Visual distribution:\n    \n    Index 0: [1]        1 space\n    Index 1: [2 3 4]    3 spaces\n    Index 2: [5 6]      2 spaces\n    \n    r=1 → 0, r=2,3,4 → 1, r=5,6 → 2\n    ```",
     complexity: {"time":"O(log n) per query","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> pref;\npref.push_back(w[0]);\nfor(int i=1;i<n;i++) pref.push_back(pref.back()+w[i]);\nint r=rand()%pref.back()+1;\nint idx=lower_bound(pref.begin(),pref.end(),r)-pref.begin();\nreturn idx;",
@@ -762,40 +700,7 @@ int main() {
       {"input":"7 2","expected":"7"}
     ],
     techniques: ["maths-technique"],
-    approach: `Collect all factors up to sqrt(n). If i divides n, both i and n/i are factors. Sort and return kth (1-indexed).
-
-    Diagram:
-    ```
-    n = 12
-    
-    Factors come in pairs:
-    
-    i=1: 1×12 → factors: 1, 12
-    i=2: 2×6  → factors: 2, 6
-    i=3: 3×4  → factors: 3, 4
-    i=4: 4≥√12 → stop
-    
-    Sorted factors: [1, 2, 3, 4, 6, 12]
-    
-    k=1 → 1
-    k=2 → 2
-    k=3 → 3 ✓
-    k=4 → 4
-    k=5 → 6
-    k=6 → 12
-    
-    n = 7 (prime):
-    i=1: 1×7 → factors: 1, 7
-    i=2: 2≥√7 → stop
-    Sorted: [1, 7]
-    k=2 → 7
-    
-    n = 16:
-    i=1: 1,16
-    i=2: 2,8
-    i=4: 4,4 (only add once)
-    Sorted: [1,2,4,8,16]
-    ````,
+    approach: "Collect all factors up to sqrt(n). If i divides n, both i and n/i are factors. Sort and return kth (1-indexed).\n\n    Diagram:\n    ```\n    n = 12\n    \n    Factors come in pairs:\n    \n    i=1: 1×12 → factors: 1, 12\n    i=2: 2×6  → factors: 2, 6\n    i=3: 3×4  → factors: 3, 4\n    i=4: 4≥√12 → stop\n    \n    Sorted factors: [1, 2, 3, 4, 6, 12]\n    \n    k=1 → 1\n    k=2 → 2\n    k=3 → 3 ✓\n    k=4 → 4\n    k=5 → 6\n    k=6 → 12\n    \n    n = 7 (prime):\n    i=1: 1×7 → factors: 1, 7\n    i=2: 2≥√7 → stop\n    Sorted: [1, 7]\n    k=2 → 7\n    \n    n = 16:\n    i=1: 1,16\n    i=2: 2,8\n    i=4: 4,4 (only add once)\n    Sorted: [1,2,4,8,16]\n    ```",
     complexity: {"time":"O(√n log √n)","space":"O(√n)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> f;\nfor(int i=1;i*i<=n;i++) {\n  if(n%i==0) {\n    f.push_back(i);\n    if(i!=n/i) f.push_back(n/i);\n  }\n}\nsort(f.begin(),f.end());\nreturn (k<=f.size()) ? f[k-1] : -1;",
@@ -834,36 +739,7 @@ int main() {
       {"input":"5 2 11 13","expected":"10"}
     ],
     techniques: ["maths-technique"],
-    approach: `Binary search on the answer. Count how many numbers ≤ mid are divisible by a, b, or c using inclusion-exclusion: count = mid/a + mid/b + mid/c - mid/lcm(a,b) - mid/lcm(b,c) - mid/lcm(a,c) + mid/lcm(a,b,c).
-
-    Diagram:
-    ```
-    n=3, a=2, b=3, c=5
-    
-    Numbers divisible by 2, 3, or 5:
-    1, 2, 3, 4, 5, 6, 8, 9, 10, 12, ...
-    Index: 1  2  3  4  5  6  7  8  9  10
-    
-    3rd ugly number is 4.
-    
-    Binary search for answer:
-    low=1, high=2*10^9
-    
-    mid=10: count=10/2 + 10/3 + 10/5 - 10/6 - 10/15 - 10/10 + 10/30
-         = 5+3+2-1-0-1+0 = 8 → too big, high=9
-    
-    mid=5: count=5/2+5/3+5/5-5/6-5/15-5/10+5/30
-         = 2+1+1-0-0-0+0 = 4 → too big, high=4
-    
-    mid=3: count=3/2+3/3+3/5-...= 0+1+0-... = 1 → too small, low=4
-    
-    mid=4: count=4/2+4/3+4/5-4/6-4/15-4/10+4/30
-         = 2+1+0-0-0-0+0 = 3 → ans=4
-    
-    For (a,b,c)=(2,3,4), n=4:
-    Divisible by 2,3,4: 2,3,4,6,8,9,10,12,14,15,16,18,20...
-    4th = 6 ✓
-    ````,
+    approach: "Binary search on the answer. Count how many numbers ≤ mid are divisible by a, b, or c using inclusion-exclusion: count = mid/a + mid/b + mid/c - mid/lcm(a,b) - mid/lcm(b,c) - mid/lcm(a,c) + mid/lcm(a,b,c).\n\n    Diagram:\n    ```\n    n=3, a=2, b=3, c=5\n    \n    Numbers divisible by 2, 3, or 5:\n    1, 2, 3, 4, 5, 6, 8, 9, 10, 12, ...\n    Index: 1  2  3  4  5  6  7  8  9  10\n    \n    3rd ugly number is 4.\n    \n    Binary search for answer:\n    low=1, high=2*10^9\n    \n    mid=10: count=10/2 + 10/3 + 10/5 - 10/6 - 10/15 - 10/10 + 10/30\n         = 5+3+2-1-0-1+0 = 8 → too big, high=9\n    \n    mid=5: count=5/2+5/3+5/5-5/6-5/15-5/10+5/30\n         = 2+1+1-0-0-0+0 = 4 → too big, high=4\n    \n    mid=3: count=3/2+3/3+3/5-...= 0+1+0-... = 1 → too small, low=4\n    \n    mid=4: count=4/2+4/3+4/5-4/6-4/15-4/10+4/30\n         = 2+1+0-0-0-0+0 = 3 → ans=4\n    \n    For (a,b,c)=(2,3,4), n=4:\n    Divisible by 2,3,4: 2,3,4,6,8,9,10,12,14,15,16,18,20...\n    4th = 6 ✓\n    ```",
     complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "long long lcm(long long a, long long b) { return a/__gcd(a,b)*b; }\nlong long count(long long m, long long a, long long b, long long c) {\n  return m/a + m/b + m/c - m/lcm(a,b) - m/lcm(b,c) - m/lcm(a,c) + m/lcm(lcm(a,b),c);\n}",
