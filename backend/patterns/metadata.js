@@ -78,5 +78,15 @@ export default [
     difficulty: "Intermediate",
     icon: "<>",
     order: 8,
+  },
+  {
+    id: "trees",
+    name: "Trees",
+    description: "Hierarchical data structures. Master traversals (inorder/preorder/postorder/level-order), BSTs, and recursion.",
+    when_to_use: "Hierarchical data, binary search trees, expression trees, decision trees, or any parent-child relationship.",
+    techniques: ["Recursive DFS","Iterative DFS (Stack)","BFS / Level Order","Morris Traversal","LCA"],
+    difficulty: "Intermediate to Advanced",
+    icon: "^Y",
+    order: 9,
   }
 ]
