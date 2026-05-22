@@ -116,6 +116,13 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7\n4 5","expected":"2"},
       {"input":"7\n1 2 3 4 5 6 7\n4 6","expected":"1"}
     ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nTreeNode* lca(TreeNode* root, int p, int q) {\n  if (!root || root->val == p || root->val == q) return root;\n  auto* l = lca(root->left, p, q);\n  auto* r = lca(root->right, p, q);\n  if (l && r) return root;\n  return l ? l : r;\n}\n\nint main() {\n  int n, p, q; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cin >> p >> q;\n  TreeNode* ans = lca(nodes[0], p, q);\n  cout << (ans ? ans->val : -1) << endl;\n  return 0;\n}",
+    approach: "LCA finds the deepest node that is an ancestor of both p and q. Single-pass DFS: if node matches p or q, return it. If both sides return non-null, node is LCA.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nlca(1,4,5):\n  left=lca(2,4,5) -> lca(4)=4(return 4), lca(5)=5(return 5) -> both non-null, return 2\n  right=lca(3,4,5) -> lca(6)=null, lca(7)=null -> return null\n  left=2, right=null -> return 2\n\nOutput: 2\n\nFor p=4, q=6: left=2, right=3 both non-null at root 1 -> LCA = 1\n\nTime O(n), Space O(n).",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "function<TreeNode*(TreeNode*)> l=[&](TreeNode* r){if(!r||r->val==p||r->val==q)return r;auto* lf=l(r->left),*ri=l(r->right);if(lf&&ri)return r;return lf?lf:ri;}; auto* a=l(root);cout<<(a?a->val:-1);",
+    techniques: ["tree-dfs", "recursion"]
+  },
   {
     id: "right-view",
     title: "Right Side View of Binary Tree",
@@ -127,13 +134,15 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7","output":"1 3 7"}
     ],
     test_cases: [
-      {"input":"7\n1 2 3 4 5 6 7","expected":"1 3 7"}
+      {"input":"7\n1 2 3 4 5 6 7","expected":"1 3 7"},
+      {"input":"5\n1 2 3 -1 5","expected":"1 3 5"}
     ],
     solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n\n  // BFS, collect last node at each level\n\n  return 0;\n}",
-    approach: "BFS level order, print the last node at each level.",
+    approach: "Right Side View returns the rightmost node at each level. Use BFS with level-size tracking: capture node when index equals size-1 (last in level).\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nLevel 0: queue=[1], size=1, i=0 -> capture 1\nLevel 1: queue=[2,3], size=2, i=1 -> capture 3\nLevel 2: queue=[4,5,6,7], size=4, i=3 -> capture 7\n\nOutput: 1 3 7\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); while(!q.empty()){int sz=q.size();for(int i=0;i<sz;i++){auto* f=q.front();q.pop();if(i==sz-1)cout<<f->val<<\" \";if(f->left)q.push(f->left);if(f->right)q.push(f->right);}}",
+    techniques: ["tree-bfs"]
   },
   {
     id: "top-view",
@@ -145,15 +154,6 @@ export default [
     examples: [
       {"input":"7\n1 2 3 4 5 6 7","output":"4 2 1 3 7"}
     ],
-    test_cases: [
-      {"input":"7\n1 2 3 4 5 6 7","expected":"4 2 1 3 7"}
-    ],
-    solution_template: "#include <iostream>\n#include <queue>\n#include <map>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n\n  // BFS with horizontal distance tracking\n\n  return 0;\n}",
-    approach: "BFS with horizontal distance map. First node at each HD is in top view.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "map<int,int> mp; queue<pair<TreeNode*,int>> q; q.push({root,0}); while(!q.empty()){auto[p,hd]=q.front();q.pop();if(!mp.count(hd))mp[hd]=p->val;if(p->left)q.push({p->left,hd-1});if(p->right)q.push({p->right,hd+1});} for(auto&[hd,val]:mp)cout<<val<<\" \";",
-  },
   {
     id: "tree-zigzag",
     title: "Zigzag Level Order Traversal",
