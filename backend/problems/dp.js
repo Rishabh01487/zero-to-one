@@ -157,45 +157,45 @@ Diagram:
     test_cases: [
       {"input":"abcde\nace","expected":"3"},
       {"input":"abc\nabc","expected":"3"},
-  {
-    id: "subset-sum",
-    title: "Subset Sum Problem",
-    category: "dp",
-    difficulty: "medium",
-    description: "Check if subset with given sum exists.",
-    constraints: "1 <= n <= 200, 1 <= sum <= 10^4",
-    examples: [
-      {"input":"6\n3 34 4 12 5 2\n9","output":"Yes","explanation":"4+5=9"}
+      {"input":"abc\ndef","expected":"0"}
     ],
-    test_cases: [
-      {"input":"6\n3 34 4 12 5 2\n9","expected":"Yes"},
-      {"input":"4\n1 2 3 7\n10","expected":"No"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  // dp[s] = can we achieve sum s?\n\n  cout << (dp[target] ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "DP boolean: dp[s]=true if sum s achievable. For each num, iterate sums backwards: dp[s]=dp[s]||dp[s-num].",
-    complexity: {"time":"O(n*target)","space":"O(target)"},
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s1, s2;\n  cin >> s1 >> s2;\n  int n = s1.size(), m = s2.size();\n\n  // 2D DP: if match dp[i][j]=1+dp[i-1][j-1], else max(dp[i-1][j], dp[i][j-1])\n\n  cout << dp[n][m] << endl;\n  return 0;\n}",
+    approach: `2D DP: if chars match, dp[i][j]=1+dp[i-1][j-1]; else dp[i][j]=max(dp[i-1][j],dp[i][j-1]).
+
+Diagram:
+  a = "abcde", b = "ace"
+
+        O   a   c   e
+  O    0   0   0   0
+  a    0   1   1   1
+  b    0   1   1   1
+  c    0   1   2   2
+  d    0   1   2   2
+  e    0   1   2   3
+
+  dp[i][j] = (s[i-1]==t[j-1]) ? 1+dp[i-1][j-1] : max(dp[i-1][j], dp[i][j-1])
+  Result: 3 ("ace")`,
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
-    solution_code: "vector<bool> dp(target+1); dp[0]=1; for(int x:arr)for(int s=target;s>=x;s--)if(dp[s-x])dp[s]=1; cout<<(dp[target]?\"Yes\":\"No\");",
+    solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=1+dp[i-1][j-1];else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);}cout<<dp[n][m];",
   },
   {
-    id: "unbounded-knapsack",
-    title: "Unbounded Knapsack",
+    id: "rod-cutting",
+    title: "Rod Cutting",
     category: "dp",
     difficulty: "medium",
-    description: "Each item can be picked unlimited times.",
-    constraints: "1 <= n <= 100, 1 <= W <= 1000",
+    description: "Find max value from cutting a rod of length n.",
+    constraints: "1 <= n <= 100",
     examples: [
-      {"input":"2\n1 3\n10 40\n4","output":"120","explanation":"Item 3x weight 3+3+3=9, value 40+40+40=120"}
+      {"input":"8\n1 5 8 9 10 17 17 20","output":"22","explanation":"Cut into 2+6 = 5+17 = 22"}
     ],
     test_cases: [
-      {"input":"2\n1 3\n10 40\n4","expected":"120"}
+      {"input":"8\n1 5 8 9 10 17 17 20","expected":"22"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, W; cin >> n;\n  int wt[n], val[n];\n  for (int i = 0; i < n; i++) cin >> wt[i];\n  for (int i = 0; i < n; i++) cin >> val[i];\n  cin >> W;\n\n  // for each w: dp[w] = max(dp[w], dp[w-wt[i]] + val[i])\n\n  cout << dp[W] << endl;\n  return 0;\n}",
-    approach: "DP 1D forward iteration: for each weight, dp[w]=max(dp[w],dp[w-wt[i]]+val[i]).",
-    complexity: {"time":"O(n*W)","space":"O(W)"},
-    sheet: "Love Babbar 450",
-    solution_code: "vector<int> dp(W+1,0); for(int w=1;w<=W;w++)for(int i=0;i<n;i++)if(wt[i]<=w)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]);cout<<dp[W];",
-  },
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int price[n];\n  for (int i = 0; i < n; i++) cin >> price[i];\n\n  // dp[i] = max(price[j] + dp[i-j-1]) for all j\n\n  cout << dp[n] << endl;\n  return 0;\n}",
+    approach: `DP: for each length i, try all cuts j, dp[i]=max(price[j]+dp[i-j-1]).
+
+Diagram:
   {
     id: "palindrome-part",
     title: "Palindrome Partitioning (Min Cuts)",
