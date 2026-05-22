@@ -18,5 +18,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node *prev=nullptr,*curr=head; while(curr){Node* nxt=curr->next; curr->next=prev; prev=curr; curr=nxt;} return prev;",
+  },
+  {
+    id: "mid-linked-list",
+    title: "Middle of Linked List",
+    category: "linked-list",
+    difficulty: "easy",
+    description: "Return the middle node of linked list. If even, return second middle.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n1 2 3 4 5","output":"3"}
+    ],
+    test_cases: [
+      {"input":"5\n1 2 3 4 5","expected":"3"},
+      {"input":"6\n1 2 3 4 5 6","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n\n  // slow/fast pointer\n\n  cout << slow->data << endl;\n  return 0;\n}",
+    approach: "Slow/fast pointer: slow moves 1, fast moves 2. When fast reaches end, slow is at middle.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} cout<<slow->data;",
   }
 ]
