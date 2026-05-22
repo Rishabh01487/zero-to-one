@@ -77,5 +77,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "int xor1 = 0, xor2 = 0;\nfor (int i = 0; i < n; i++) { xor1 ^= arr[i]; xor2 ^= i; }\nxor2 ^= n;\ncout << (xor1 ^ xor2);",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // XOR\n  return 0;\n}",
+  },
+  {
+    id: "two-odd-occuring",
+    title: "Two Numbers with Odd Occurrences",
+    category: "bit-manipulation",
+    difficulty: "medium",
+    description: "Find two elements that appear odd number of times.",
+    constraints: "2 <= n <= 10^5",
+    examples: [
+      {"input":"8\n4 3 4 4 5 3 5 2","output":"4 2"}
+    ],
+    test_cases: [
+      {"input":"8\n4 3 4 4 5 3 5 2","expected":"4 2"}
+    ],
+    approach: "XOR all elements to get xor of two odd-occurring numbers. Find a set bit in this xor, partition array based on that bit, XOR each group separately.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int xorAll = 0;\nfor (int i = 0; i < n; i++) xorAll ^= arr[i];\nint setBit = xorAll & ~(xorAll - 1);\nint x = 0, y = 0;\nfor (int i = 0; i < n; i++) {\n  if (arr[i] & setBit) x ^= arr[i];\n  else y ^= arr[i];\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // XOR partitioning\n  return 0;\n}",
   }
 ]
