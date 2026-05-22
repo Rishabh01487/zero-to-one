@@ -138,5 +138,24 @@ export default [
     complexity: {"time":"O(n log range)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "sort(stalls,stalls+n); int lo=0,hi=stalls[n-1]-stalls[0],ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if(canPlace(stalls,n,c,m)){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
+  },
+  {
+    id: "book-allocation",
+    title: "Book Allocation Problem",
+    category: "binary-search",
+    difficulty: "hard",
+    description: "Allocate m books to n students minimizing max pages per student.",
+    constraints: "1 <= n <= m <= 10^5",
+    examples: [
+      {"input":"4 2\n12 34 67 90","output":"113"}
+    ],
+    test_cases: [
+      {"input":"4 2\n12 34 67 90","expected":"113"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nbool canAlloc(int pages[], int n, int m, int maxP) {\n  int cnt = 1, sum = 0;\n  for (int i = 0; i < n; i++) {\n    if (pages[i] > maxP) return false;\n    if (sum + pages[i] > maxP) { cnt++; sum = pages[i]; }\n    else sum += pages[i];\n  }\n  return cnt <= m;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  int pages[n];\n  int lo = 0, hi = 0;\n  for (int i = 0; i < n; i++) { cin >> pages[i]; hi += pages[i]; lo = max(lo, pages[i]); }\n\n  int ans = hi;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if (canAlloc(pages, n, m, mid)) { ans = mid; hi = mid - 1; }\n    else lo = mid + 1;\n  }\n  cout << ans << endl;\n  return 0;\n}",
+    approach: "Binary search on max pages. Check if allocation possible with 'mid' as max pages per student.",
+    complexity: {"time":"O(n log sum)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int lo=*max_element(pages,pages+n),hi=accumulate(pages,pages+n,0),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;if(canAlloc(pages,n,m,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
   }
 ]
