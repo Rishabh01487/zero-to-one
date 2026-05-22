@@ -94,5 +94,24 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "sort(arr,arr+n);sort(dep,dep+n); int plat=1,maxP=1,i=1,j=0; while(i<n&&j<n){if(arr[i]<=dep[j]){plat++;i++;}else{plat--;j++;}maxP=max(maxP,plat);}cout<<maxP;",
+  },
+  {
+    id: "huffman",
+    title: "Huffman Coding",
+    category: "greedy",
+    difficulty: "hard",
+    description: "Build Huffman tree and print codes.",
+    constraints: "1 <= n <= 10^3",
+    examples: [
+      {"input":"6\na 5\nb 9\nc 12\nd 13\ne 16\nf 45","output":"f:0 c:100 d:101 a:1100 b:1101 e:111"}
+    ],
+    test_cases: [
+      {"input":"6\na 5\nb 9\nc 12\nd 13\ne 16\nf 45","expected":"f:0 c:100 d:101 a:1100 b:1101 e:111"}
+    ],
+    solution_template: "#include <iostream>\n#include <queue>\n#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nstruct Node {\n  char ch;\n  int freq;\n  Node *left, *right;\n  Node(char c, int f) : ch(c), freq(f), left(nullptr), right(nullptr) {}\n};\n\nstruct Compare {\n  bool operator()(Node* a, Node* b) { return a->freq > b->freq; }\n};\n\nvoid encode(Node* root, string code, unordered_map<char,string>& codes) {\n  if (!root) return;\n  if (!root->left && !root->right) { codes[root->ch] = code; }\n  encode(root->left, code + \"0\", codes);\n  encode(root->right, code + \"1\", codes);\n}\n\nint main() {\n  int n; cin >> n;\n  char ch; int freq;\n  priority_queue<Node*, vector<Node*>, Compare> pq;\n  for (int i = 0; i < n; i++) { cin >> ch >> freq; pq.push(new Node(ch, freq)); }\n\n  while (pq.size() > 1) {\n    Node *l = pq.top(); pq.pop();\n    Node *r = pq.top(); pq.pop();\n    Node *p = new Node('$', l->freq + r->freq);\n    p->left = l; p->right = r;\n    pq.push(p);\n  }\n\n  unordered_map<char,string> codes;\n  encode(pq.top(), \"\", codes);\n  for (auto& [c, code] : codes) cout << c << \":\" << code << \" \";\n  return 0;\n}",
+    approach: "Build min-heap of nodes. Extract two smallest, merge with sum weight, push back. Repeat until one node remains.",
+    complexity: {"time":"O(n log n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// Build min-heap of nodes. While size > 1: extract min2, create parent = sum, insert. Last node is root.",
   }
 ]
