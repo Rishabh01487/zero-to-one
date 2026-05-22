@@ -134,5 +134,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); while(!q.empty()){int sz=q.size();for(int i=0;i<sz;i++){auto* f=q.front();q.pop();if(i==sz-1)cout<<f->val<<\" \";if(f->left)q.push(f->left);if(f->right)q.push(f->right);}}",
+  },
+  {
+    id: "top-view",
+    title: "Top View of Binary Tree",
+    category: "trees",
+    difficulty: "medium",
+    description: "Return the top view of the binary tree.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7","output":"4 2 1 3 7"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"4 2 1 3 7"}
+    ],
+    solution_template: "#include <iostream>\n#include <queue>\n#include <map>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n\n  // BFS with horizontal distance tracking\n\n  return 0;\n}",
+    approach: "BFS with horizontal distance map. First node at each HD is in top view.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "map<int,int> mp; queue<pair<TreeNode*,int>> q; q.push({root,0}); while(!q.empty()){auto[p,hd]=q.front();q.pop();if(!mp.count(hd))mp[hd]=p->val;if(p->left)q.push({p->left,hd-1});if(p->right)q.push({p->right,hd+1});} for(auto&[hd,val]:mp)cout<<val<<\" \";",
   }
 ]
