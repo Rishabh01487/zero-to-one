@@ -55,5 +55,24 @@ export default [
     complexity: {"time":"O(n log k)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "unordered_map<int,int> mp; for(int x:arr)mp[x]++; priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq; for(auto& p:mp){pq.push({p.second,p.first});if(pq.size()>k)pq.pop();} while(!pq.empty()){cout<<pq.top().second<<\" \";pq.pop();}",
+  },
+  {
+    id: "find-median-stream",
+    title: "Find Median from Data Stream",
+    category: "heaps",
+    difficulty: "hard",
+    description: "Maintain median as numbers are added.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n1 2 3 4 5 6","output":"1 1.5 2 2.5 3 3.5"}
+    ],
+    test_cases: [
+      {"input":"6\n1 2 3 4 5 6","expected":"1 1.5 2 2.5 3 3.5"}
+    ],
+    solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nint main() {\n  priority_queue<int> maxHeap;\n  priority_queue<int, vector<int>, greater<>> minHeap;\n\n  int n; while (cin >> n) {\n    if (maxHeap.empty() || n <= maxHeap.top()) maxHeap.push(n);\n    else minHeap.push(n);\n\n    if (maxHeap.size() > minHeap.size() + 1) { minHeap.push(maxHeap.top()); maxHeap.pop(); }\n    if (minHeap.size() > maxHeap.size()) { maxHeap.push(minHeap.top()); minHeap.pop(); }\n\n    if (maxHeap.size() > minHeap.size()) cout << maxHeap.top() << endl;\n    else cout << (maxHeap.top() + minHeap.top()) / 2.0 << endl;\n  }\n  return 0;\n}",
+    approach: "Two heaps: max-heap for left half, min-heap for right. Balance sizes. Median is root of left (or average).",
+    complexity: {"time":"O(log n) each","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "priority_queue<int> maxh; priority_queue<int,vector<int>,greater<int>> minh; for(int x:arr){if(maxh.empty()||x<=maxh.top())maxh.push(x);else minh.push(x); if(maxh.size()>minh.size()+1){minh.push(maxh.top());maxh.pop();}else if(minh.size()>maxh.size()){maxh.push(minh.top());minh.pop();}cout<<maxh.top()<<\" \";}",
   }
 ]
