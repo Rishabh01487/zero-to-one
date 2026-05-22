@@ -57,5 +57,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); while(!q.empty()){auto* f=q.front();q.pop();cout<<f->val<<\" \";if(f->left)q.push(f->left);if(f->right)q.push(f->right);}",
+  },
+  {
+    id: "diameter-tree",
+    title: "Diameter of Binary Tree",
+    category: "trees",
+    difficulty: "medium",
+    description: "Find the diameter (longest path between any two nodes).",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7","output":"4","explanation":"Longest path: 4-2-1-3-7 (4 edges)"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint diameter = 0;\nint height(TreeNode* root) {\n  if (!root) return 0;\n  int lh = height(root->left);\n  int rh = height(root->right);\n  diameter = max(diameter, lh + rh);\n  return 1 + max(lh, rh);\n}\n\nint main() {\n  int n; cin >> n;\n  if (n == 0) { cout << 0; return 0; }\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  height(nodes[0]);\n  cout << diameter << endl;\n  return 0;\n}",
+    approach: "DFS: compute left and right heights, track max(lh+rh) as diameter.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int dia=0; function<int(TreeNode*)> h=[&](TreeNode* r){if(!r)return 0;int l=h(r->left),rh=h(r->right);dia=max(dia,l+rh);return 1+max(l,rh);}; h(root); cout<<dia;",
   }
 ]
