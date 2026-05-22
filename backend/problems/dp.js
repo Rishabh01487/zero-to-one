@@ -39,6 +39,15 @@ export default [
 Diagram:
   coins=[1,2,5], amount=11
 
+  amount  0  1  2  3  4  5  6  7  8  9 10 11
+  dp[a]   0  1  1  2  2  1  2  2  3  3  2  3
+
+  dp[a] = min(dp[a], dp[a-coin]+1)
+  Result: 3 (5+5+1)`,
+    complexity: {"time":"O(n*amount)","space":"O(amount)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dp(amount+1,amount+1); dp[0]=0; for(int a=1;a<=amount;a++)for(int c:coins)if(c<=a)dp[a]=min(dp[a],dp[a-c]+1); cout<<(dp[amount]>amount?-1:dp[amount]);",
+  },
   {
     id: "longest-inc-subseq",
     title: "Longest Increasing Subsequence",
@@ -54,29 +63,20 @@ Diagram:
       {"input":"6\n0 1 0 3 2 3","expected":"4"}
     ],
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // DP[i] = 1 + max(DP[j]) for j < i and arr[j] < arr[i]\n\n  cout << maxLen << endl;\n  return 0;\n}",
-    approach: "DP: dp[i]=1+LIS ending at i. For each j<i, if arr[j]<arr[i], dp[i]=max(dp[i],dp[j]+1).",
+    approach: `DP: dp[i]=1+LIS ending at i. For each j<i, if arr[j]<arr[i], dp[i]=max(dp[i],dp[j]+1).
+
+Diagram:
+  arr = [10,9,2,5,3,7,101,18]
+
+  index   0   1  2  3  4  5   6   7
+  arr    10   9  2  5  3  7 101  18
+  dp[i]   1   1  1  2  2  3   4   4
+
+  dp[i] = 1 + max(dp[j]) for j < i and arr[j] < arr[i]
+  Result: 4 ([2,3,7,101])`,
     complexity: {"time":"O(n²)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(n,1); int mx=1; for(int i=0;i<n;i++){for(int j=0;j<i;j++)if(arr[j]<arr[i])dp[i]=max(dp[i],dp[j]+1);mx=max(mx,dp[i]);}cout<<mx;",
-  },
-  {
-    id: "0-1-knapsack",
-    title: "0/1 Knapsack",
-    category: "dp",
-    difficulty: "medium",
-    description: "Given weights and values, find max value that fits in knapsack capacity.",
-    constraints: "1 <= n <= 100, 1 <= W <= 1000",
-    examples: [
-      {"input":"3\n10 20 30\n60 100 120\n50","output":"220","explanation":"Items 2+3 = 100+120 = 220, weight 20+30=50"}
-    ],
-    test_cases: [
-      {"input":"3\n10 20 30\n60 100 120\n50","expected":"220"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, W;\n  cin >> n;\n  int wt[n], val[n];\n  for (int i = 0; i < n; i++) cin >> wt[i];\n  for (int i = 0; i < n; i++) cin >> val[i];\n  cin >> W;\n\n  // DP: dp[w] = max(dp[w], dp[w-wt[i]] + val[i])\n\n  cout << dp[W] << endl;\n  return 0;\n}",
-    approach: "DP 1D: for each item, iterate capacity backwards, dp[w]=max(dp[w],dp[w-wt[i]]+val[i]).",
-    complexity: {"time":"O(n*W)","space":"O(W)"},
-    sheet: "Striver A2Z",
-    solution_code: "vector<int> dp(W+1,0); for(int i=0;i<n;i++)for(int w=W;w>=wt[i];w--)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]); cout<<dp[W];",
   },
   {
     id: "edit-distance",
