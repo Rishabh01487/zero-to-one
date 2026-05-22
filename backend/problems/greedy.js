@@ -114,25 +114,25 @@ This holds because items are divisible (fractional).`,
 Meetings: (start, end) arrays given
   start = [1, 3, 0, 5, 8, 5]
   end   = [2, 4, 6, 7, 9, 9]
-  {
-    id: "gas-station",
-    title: "Gas Station (Circular Tour)",
-    category: "greedy",
-    difficulty: "medium",
-    description: "Find starting station to complete circular tour.",
-    constraints: "1 <= n <= 10^5",
-    examples: [
-      {"input":"4\n4 6 7 4\n6 5 3 5","output":"1","explanation":"Start at index 1"}
-    ],
-    test_cases: [
-      {"input":"4\n4 6 7 4\n6 5 3 5","expected":"1"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int gas[n], cost[n];\n  for (int i = 0; i < n; i++) cin >> gas[i];\n  for (int i = 0; i < n; i++) cin >> cost[i];\n\n  int total = 0, cur = 0, start = 0;\n  for (int i = 0; i < n; i++) {\n    total += gas[i] - cost[i];\n    cur += gas[i] - cost[i];\n    if (cur < 0) { start = i + 1; cur = 0; }\n  }\n\n  cout << (total >= 0 ? start : -1) << endl;\n  return 0;\n}",
-    approach: "Greedy: track total and current surplus. If cur < 0, reset start to next station. If total >= 0, start is valid.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int total = 0, cur = 0, start = 0; for (int i = 0; i < n; i++) { total += gas[i] - cost[i]; cur += gas[i] - cost[i]; if (cur < 0) { start = i + 1; cur = 0; } } cout << (total >= 0 ? start : -1) << endl;",
-  }
+
+  M1(1,2)  M2(3,4)  M3(0,6)  M4(5,7)  M5(8,9)  M6(5,9)
+
+Diagram:
+
+Step 1: Sort by end time, track original index
+  Sorted: M1(1,2), M2(3,4), M3(0,6), M4(5,7), M5(8,9), M6(5,9)
+
+Step 2: Greedy selection
+  Pick M1(1,2) → lastEnd=2  (output: 1)
+  Pick M2(3,4) because 3 > 2 → lastEnd=4  (output: 1 2)
+  Skip M3(0,6) because 0 < 4
+  Pick M4(5,7) because 5 > 4 → lastEnd=7  (output: 1 2 4)
+  Pick M5(8,9) because 8 > 7 → lastEnd=9  (output: 1 2 4 5)
+  Skip M6(5,9) because 5 < 9
+
+  Timeline:
+  M1: |---|
+  M2:     |---|
   M3: |-------|  (skipped)
   M4:       |---|
   M5:         |---|
