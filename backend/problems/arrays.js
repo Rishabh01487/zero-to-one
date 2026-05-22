@@ -217,5 +217,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int mn=prices[0],mx=0;\nfor(int i=1;i<n;i++){\n  mx=max(mx,prices[i]-mn);\n  mn=min(mn,prices[i]);\n}\ncout << mx;",
+  },
+  {
+    id: "next-permutation",
+    title: "Next Permutation",
+    category: "arrays",
+    difficulty: "hard",
+    description: "Find the next lexicographically greater permutation of the array.",
+    constraints: "1 <= n <= 100",
+    examples: [
+      {"input":"3\n1 2 3","output":"1 3 2","explanation":"Next permutation after 123 is 132"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 3","expected":"1 3 2"},
+      {"input":"3\n3 2 1","expected":"1 2 3"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // next_permutation logic\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Find first decreasing element from right. Find next larger element to swap. Reverse the suffix.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int i=n-2;\nwhile(i>=0&&arr[i]>=arr[i+1]) i--;\nif(i>=0){\n  int j=n-1;\n  while(arr[j]<=arr[i]) j--;\n  swap(arr[i],arr[j]);\n}\nreverse(arr+i+1,arr+n);",
   }
 ]
