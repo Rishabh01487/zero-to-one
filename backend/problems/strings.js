@@ -97,6 +97,7 @@ export default [
   },
   {
     id: "valid-parentheses",
+    mermaid: "flowchart TD\n  A[\"Valid Parentheses\"] --> B[\"Init stack\"]\n  B --> C{\"For each char\"}\n  C -->|Yes| D{\"Opening bracket?\"}\n  D -->|Yes| E[\"Push to stack\"]\n  D -->|No| F{\"Stack empty?\"}\n  F -->|Yes| G[\"Return invalid\"]\n  F -->|No| H[\"Pop and check match\"]\n  H --> I{\"Matches?\"}\n  I -->|No| G\n  I -->|Yes| J[\"Continue\"]\n  E --> C\n  J --> C\n  C -->|No| K[\"Return valid\"]",
     title: "Valid Parentheses",
     category: "strings",
     difficulty: "easy",
@@ -158,6 +159,7 @@ export default [
     techniques: [],
     sheet: "Striver A2Z",
     solution_code: "int val[256]={0}; val['I']=1;val['V']=5;val['X']=10;val['L']=50;val['C']=100;val['D']=500;val['M']=1000; int res=0; for(int i=0;i<s.size();i++){if(i+1<s.size()&&val[s[i]]<val[s[i+1]])res-=val[s[i]];else res+=val[s[i]];}cout<<res;",
+    mermaid: "flowchart TD\n  A[\"Roman to Integer\"] --> B[\"Init value map: I=1,V=5,...,M=1000\"]\n  B --> C[\"res=0, i=0\"]\n  C --> D{\"i < n?\"}\n  D -->|Yes| E{\"val[s[i]] < val[s[i+1]]?\"}\n  E -->|Yes| F[\"res -= val[s[i]]\"]\n  E -->|No| G[\"res += val[s[i]]\"]\n  F --> H[\"i++\"]\n  G --> H\n  H --> D\n  D -->|No| I[\"Return res\"]",
   },
   {
     id: "string-compression",
