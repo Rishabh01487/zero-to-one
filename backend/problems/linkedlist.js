@@ -192,5 +192,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node* t=head; int len=1; while(t->next){t=t->next;len++;} t->next=head; k%=len; int steps=len-k; while(steps--)t=t->next; head=t->next; t->next=nullptr;",
+  },
+  {
+    id: "flatten-list",
+    title: "Flatten a Multilevel Linked List",
+    category: "linked-list",
+    difficulty: "hard",
+    description: "Flatten a linked list where nodes have next and child pointers.",
+    constraints: "1 <= n <= 10^3",
+    examples: [
+      {"input":"12\n1 2 3 4 5 6 7 8 9 10 11 12\n3 7 10","output":"1 2 3 7 8 9 10 11 12 4 5 6","explanation":"Nodes with children at positions 3,7,10"}
+    ],
+    test_cases: [
+      {"input":"12\n1 2 3 4 5 6 7 8 9 10 11 12\n3 7 10","expected":"1 2 3 7 8 9 10 11 12 4 5 6"}
+    ],
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node *next, *child;\n  Node(int d) : data(d), next(nullptr), child(nullptr) {}\n};\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  vector<Node*> nodes;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    nodes.push_back(nn);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  int c; while (cin >> c) {\n    if (c < (int)nodes.size() - 1) nodes[c]->child = nodes[c+1];\n  }\n\n  // flatten using stack\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: "Use stack for child pointers. Traverse next, when child exists, push next to stack and follow child.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<Node*> st; Node* cur=head; while(cur){if(cur->child&&cur->next)st.push(cur->next);if(cur->child)cur->next=cur->child;else if(!cur->next&&!st.empty()){cur->next=st.top();st.pop();}cur=cur->next;}",
   }
 ]
