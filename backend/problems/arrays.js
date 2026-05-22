@@ -237,5 +237,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int i=n-2;\nwhile(i>=0&&arr[i]>=arr[i+1]) i--;\nif(i>=0){\n  int j=n-1;\n  while(arr[j]<=arr[i]) j--;\n  swap(arr[i],arr[j]);\n}\nreverse(arr+i+1,arr+n);",
+  },
+  {
+    id: "subarray-zero-sum",
+    title: "Subarray with Zero Sum",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Check if there is a subarray whose sum is zero.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n4 2 -3 1 6","output":"Yes","explanation":"Subarray [2,-3,1] sums to 0"}
+    ],
+    test_cases: [
+      {"input":"5\n4 2 -3 1 6","expected":"Yes"},
+      {"input":"3\n1 2 3","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <unordered_set>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // check prefix sum in hash set\n\n  return 0;\n}",
+    approach: "Use prefix sum with hash set. If prefix sum repeats or becomes 0, subarray with 0 sum exists.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "unordered_set<int> s;\nint sum=0;\nfor(int x:arr){\n  sum+=x;\n  if(sum==0||s.count(sum)){\n    cout << \"Yes\";\n    return 0;\n  }\n  s.insert(sum);\n}\ncout << \"No\";",
   }
 ]
