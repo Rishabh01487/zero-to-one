@@ -99,5 +99,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int last[256]; memset(last,-1,sizeof(last)); int l=0,mx=0; for(int r=0;r<s.size();r++){if(last[s[r]]>=l)l=last[s[r]]+1;last[s[r]]=r;mx=max(mx,r-l+1);}cout<<mx;",
+  },
+  {
+    id: "lcp",
+    title: "Longest Common Prefix",
+    category: "strings",
+    difficulty: "easy",
+    description: "Find the longest common prefix among an array of strings.",
+    constraints: "1 <= n <= 200, 1 <= |s| <= 200",
+    examples: [
+      {"input":"3\nflower flow flight","output":"fl"}
+    ],
+    test_cases: [
+      {"input":"3\nflower flow flight","expected":"fl"},
+      {"input":"3\ndog racecar car","expected":""}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  string strs[n];\n  for (int i = 0; i < n; i++) cin >> strs[i];\n\n  // compare first string with others\n\n  cout << prefix << endl;\n  return 0;\n}",
+    approach: "Compare first string with each other string, character by character, shortening prefix when mismatch found.",
+    complexity: {"time":"O(n * minLen)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "if(n==0){cout<<\"\";return 0;} string p=strs[0]; for(int i=1;i<n;i++){int j=0;while(j<p.size()&&j<strs[i].size()&&p[j]==strs[i][j])j++;p=p.substr(0,j);}cout<<p;",
   }
 ]
