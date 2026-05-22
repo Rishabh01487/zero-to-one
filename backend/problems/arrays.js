@@ -197,5 +197,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int cnt=0,cand;\nfor(int x:arr){\n  if(cnt==0) cand=x;\n  cnt+=(x==cand)?1:-1;\n}\ncout << cand;",
+  },
+  {
+    id: "buy-sell-stock",
+    title: "Best Time to Buy and Sell Stock",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Given daily prices, find max profit from one buy+one sell.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n7 1 5 3 6 4","output":"5","explanation":"Buy at 1, sell at 6 = profit 5"}
+    ],
+    test_cases: [
+      {"input":"6\n7 1 5 3 6 4","expected":"5"},
+      {"input":"5\n7 6 4 3 1","expected":"0"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int prices[n];\n  for (int i = 0; i < n; i++) cin >> prices[i];\n\n  // track min price and max profit\n\n  cout << maxProfit << endl;\n  return 0;\n}",
+    approach: "Track minimum price seen so far. For each price, compute profit (price - minPrice) and track max profit.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int mn=prices[0],mx=0;\nfor(int i=1;i<n;i++){\n  mx=max(mx,prices[i]-mn);\n  mn=min(mn,prices[i]);\n}\ncout << mx;",
   }
 ]
