@@ -179,5 +179,25 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int n=haystack.size(),m=needle.size(); for(int i=0;i<=n-m;i++){int j=0;while(j<m&&haystack[i+j]==needle[j])j++;if(j==m){cout<<i;return 0;}}cout<<-1;",
+  },
+  {
+    id: "roman-integer",
+    title: "Roman to Integer",
+    category: "strings",
+    difficulty: "medium",
+    description: "Convert Roman numeral to integer.",
+    constraints: "1 <= |s| <= 15",
+    examples: [
+      {"input":"MCMXCIV","output":"1994"}
+    ],
+    test_cases: [
+      {"input":"MCMXCIV","expected":"1994"},
+      {"input":"LVIII","expected":"58"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint romanValue(char c) {\n  switch(c) {\n    case 'I': return 1;\n    case 'V': return 5;\n    case 'X': return 10;\n    case 'L': return 50;\n    case 'C': return 100;\n    case 'D': return 500;\n    case 'M': return 1000;\n    default: return 0;\n  }\n}\n\nint main() {\n  string s;\n  cin >> s;\n\n  // add normally, subtract if smaller before larger\n\n  cout << result << endl;\n  return 0;\n}",
+    approach: "Add values normally. If a smaller value appears before a larger one, subtract it instead.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int val[256]={0}; val['I']=1;val['V']=5;val['X']=10;val['L']=50;val['C']=100;val['D']=500;val['M']=1000; int res=0; for(int i=0;i<s.size();i++){if(i+1<s.size()&&val[s[i]]<val[s[i+1]])res-=val[s[i]];else res+=val[s[i]];}cout<<res;",
   }
 ]
