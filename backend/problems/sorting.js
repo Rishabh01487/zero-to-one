@@ -150,5 +150,24 @@ export default [
     complexity: {"time":"O(n+k) avg, O(n²) worst","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int id=bucketCnt*arr[i]/maxVal; // assign to bucket, then sort each bucket with insertion sort",
+  },
+  {
+    id: "radix-sort",
+    title: "Radix Sort Implementation",
+    category: "sorting",
+    difficulty: "hard",
+    description: "Implement radix sort for non-negative integers.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"8\n170 45 75 90 802 24 2 66","output":"2 24 45 66 75 90 170 802"}
+    ],
+    test_cases: [
+      {"input":"8\n170 45 75 90 802 24 2 66","expected":"2 24 45 66 75 90 170 802"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nvoid countSort(int arr[], int n, int exp) {\n  int out[n], cnt[10] = {0};\n  for (int i = 0; i < n; i++) cnt[(arr[i]/exp)%10]++;\n  for (int i = 1; i < 10; i++) cnt[i] += cnt[i-1];\n  for (int i = n-1; i >= 0; i--) {\n    out[cnt[(arr[i]/exp)%10]-1] = arr[i];\n    cnt[(arr[i]/exp)%10]--;\n  }\n  for (int i = 0; i < n; i++) arr[i] = out[i];\n}\n\nvoid radixSort(int arr[], int n) {\n  int mx = *max_element(arr, arr+n);\n  for (int exp = 1; mx/exp > 0; exp *= 10) countSort(arr, n, exp);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  radixSort(arr, n);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Sort digit by digit using counting sort as subroutine (LSD first).",
+    complexity: {"time":"O(d×(n+k))","space":"O(n+k)"},
+    sheet: "Striver A2Z",
+    solution_code: "int getMax(int arr[],int n){int mx=arr[0];for(int i=1;i<n;i++)if(arr[i]>mx)mx=arr[i];return mx;} // then countSort for each digit (exp = 1, 10, 100...)",
   }
 ]
