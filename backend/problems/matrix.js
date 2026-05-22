@@ -36,5 +36,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "bool firstRow = false, firstCol = false;\nfor (int i=0; i<n; i++) for (int j=0; j<m; j++) if (mat[i][j]==0) { if (i==0) firstRow=true; if (j==0) firstCol=true; mat[i][0]=0; mat[0][j]=0; }\nfor (int i=1; i<n; i++) for (int j=1; j<m; j++) if (mat[i][0]==0 || mat[0][j]==0) mat[i][j]=0;\nif (firstRow) for (int j=0; j<m; j++) mat[0][j]=0;\nif (firstCol) for (int i=0; i<n; i++) mat[i][0]=0;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[200][200];\n  for (int i=0; i<n; i++) for (int j=0; j<m; j++) cin >> mat[i][j];\n  // set zeroes\n  for (int i=0; i<n; i++) { for (int j=0; j<m; j++) cout << mat[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
+  },
+  {
+    id: "rotate-image",
+    title: "Rotate Image (90 degrees)",
+    category: "matrix",
+    difficulty: "medium",
+    description: "Rotate n x n matrix by 90 degrees clockwise in-place.",
+    constraints: "1 <= n <= 100",
+    examples: [
+      {"input":"3\n1 2 3\n4 5 6\n7 8 9","output":"7 4 1\n8 5 2\n9 6 3"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 3\n4 5 6\n7 8 9","expected":"7 4 1\n8 5 2\n9 6 3"}
+    ],
+    approach: "Transpose the matrix (swap across diagonal), then reverse each row. Both operations are in-place.",
+    complexity: {"time":"O(n²)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "for (int i=0; i<n; i++) for (int j=i; j<n; j++) swap(mat[i][j], mat[j][i]);\nfor (int i=0; i<n; i++) for (int j=0; j<n/2; j++) swap(mat[i][j], mat[i][n-1-j]);",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int mat[100][100];\n  for (int i=0; i<n; i++) for (int j=0; j<n; j++) cin >> mat[i][j];\n  // rotate\n  for (int i=0; i<n; i++) { for (int j=0; j<n; j++) cout << mat[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
   }
 ]
