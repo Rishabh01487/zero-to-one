@@ -38,5 +38,15 @@ export default [
     difficulty: "Beginner to Intermediate",
     icon: "<-",
     order: 4,
+  },
+  {
+    id: "linked-list",
+    name: "Linked Lists",
+    description: "Node-based sequential structure. Master pointer manipulation, reversal, cycle detection, and merging.",
+    when_to_use: "When frequent insertions/deletions are needed, size may grow dynamically, or circular/cyclic structures.",
+    techniques: ["Slow-Fast Pointer","Dummy Node","Recursive Reversal","Runner Technique"],
+    difficulty: "Intermediate",
+    icon: "->",
+    order: 5,
   }
 ]
