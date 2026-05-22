@@ -37,6 +37,8 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<bool> vis(n); function<void(int)> dfs=[&](int u){vis[u]=1;cout<<u<<\" \";for(int v:g[u])if(!vis[v])dfs(v);}; dfs(0);",
+    techniques: ["tree-dfs"],
+  },
   {
     id: "cycle-undirected",
     title: "Detect Cycle in Undirected Graph",
@@ -52,10 +54,11 @@ export default [
       {"input":"3 2\n0 1\n1 2","expected":"No"}
     ],
     solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nbool dfs(vector<vector<int>>& g, vector<bool>& vis, int u, int parent) {\n  vis[u] = true;\n  for (int v : g[u]) {\n    if (!vis[v]) { if (dfs(g, vis, v, u)) return true; }\n    else if (v != parent) return true;\n  }\n  return false;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); g[v].push_back(u); }\n  vector<bool> vis(n, false);\n  bool cycle = false;\n  for (int i = 0; i < n; i++) if (!vis[i] && dfs(g, vis, i, -1)) { cycle = true; break; }\n  cout << (cycle ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "DFS with parent tracking. If a neighbor is visited and is not parent, cycle exists.",
+    approach: "\n\nDiagram:\n```\ncycle-undirected:\n  0 ─ 1 ─ 3\n  │       │\n  2 ───── 4\n\n  dfs(0, -1): vis[0]=T\n  └─ dfs(1, 0): vis[1]=T\n     └─ dfs(3, 1): vis[3]=T\n        └─ dfs(4, 3): vis[4]=T\n           neighbor 2 is visited and 2 ≠ 3 → cycle!\n\n  Tree (no cycle):\n  0 ─ 1 ─ 2\n  dfs(0): → dfs(1,0) → dfs(2,1)\n  neighbor 1 is parent, so no cycle\n```\nCycle detection in an undirected graph determines whether the graph contains a closed loop where a node can be reached from itself through a path of edges without retracing the same edge. The graph is represented using an adjacency list. The standard algorithm uses Depth-First Search (DFS) with parent tracking. We maintain a visited array and recursively explore each unvisited node while passing the parent node as a parameter. For each node u, we mark it as visited and iterate over all neighbors v. If v is not visited, we recursively call dfs(v, u). If v is already visited and v is not equal to the parent, a cycle exists because the edge (u, v) connects two nodes already connected through a different path, forming a closed loop. The parent check is crucial: in an undirected graph, an edge from u to its parent p is the same edge we just traversed, and treating it as a cycle would produce a false positive. For a dry run on a graph with 5 nodes and edges (0-1, 0-2, 1-3, 1-4, 2-4, 3-4): DFS starts at 0 (parent -1), visits 1 (parent 0), then 3 (parent 1), then 4 (parent 3). From 4, neighbor 2 is visited and 2 != parent(3), so a cycle is detected. Edge cases include self-loops which are immediately detected because the neighbor equals the current node and is visited and is not the parent. A tree with no cycles never produces a visited neighbor other than the parent. Disconnected components each need to be checked by running DFS from every unvisited node. A graph with a single edge connecting two nodes has no cycle. The time complexity is O(V+E) and space complexity is O(V).",
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<bool> vis(n); function<bool(int,int)> dfs=[&](int u,int p){vis[u]=1;for(int v:g[u]){if(!vis[v]){if(dfs(v,u))return 1;}else if(v!=p)return 1;}return 0;}; bool cycle=0; for(int i=0;i<n;i++)if(!vis[i]&&dfs(i,-1))cycle=1; cout<<(cycle?\"Yes\":\"No\");",
+    techniques: ["tree-dfs", "union-find"],
   },
   {
     id: "cycle-directed",
@@ -72,11 +75,8 @@ export default [
       {"input":"4 3\n0 1\n1 2\n2 3","expected":"No"}
     ],
     solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nbool dfs(vector<vector<int>>& g, vector<int>& state, int u) {\n  state[u] = 1;\n  for (int v : g[u]) {\n    if (state[v] == 1) return true;\n    if (state[v] == 0 && dfs(g, state, v)) return true;\n  }\n  state[u] = 2;\n  return false;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); }\n  vector<int> state(n, 0);\n  bool cycle = false;\n  for (int i = 0; i < n; i++) if (state[i] == 0 && dfs(g, state, i)) { cycle = true; break; }\n  cout << (cycle ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "DFS with three-state tracking: 0=unvisited, 1=in current path, 2=done. If neighbor in current path, cycle.",
+    approach: "\n\nDiagram:\n```\ncycle-directed:\n  0 → 1 → 2 → 3\n      ↑________│\n\n  State: 0=unvisited, 1=in-path, 2=done\n  dfs(0): state[0]=1\n  └─ dfs(1): state[1]=1\n     └─ dfs(2): state[2]=1\n        └─ dfs(3): state[3]=1\n           neighbor 1 has state[1]=1 → back edge! cycle!\n\n  DAG (no cycle):\n  0 → 1 → 2 → 3\n  dfs(0): → dfs(1) → dfs(2) → dfs(3)\n  all states become 2, no back edges found\n```\nCycle detection in a directed graph identifies whether there exists a back edge that points to a node currently in the active recursion stack, indicating a cycle. The graph is represented as an adjacency list with directed edges. The algorithm uses DFS enhanced with a three-state tracking array: 0 for unvisited, 1 for in current DFS path, and 2 for fully processed. For each unvisited node, we initiate dfs(u): set state[u] = 1 to mark it on the current path, then for each neighbor v, check its state. If state[v] == 1, we have found a back edge: v is an ancestor of u in the current DFS tree, forming a directed cycle. If state[v] == 0, recursively call dfs(v). After processing all neighbors, set state[u] = 2 and return false. The three-state system is essential because it distinguishes nodes in the current path (state 1) from nodes visited in a completely different DFS branch (state 2), which do not indicate cycles. For a dry run on a directed graph with edges (0->1, 1->2, 2->3, 3->1): state is all 0 initially. dfs(0) sets state[0]=1, neighbor 1 is 0 -> dfs(1) sets state[1]=1, neighbor 2 is 0 -> dfs(2) sets state[2]=1, neighbor 3 is 0 -> dfs(3) sets state[3]=1, neighbor 1 has state[1]=1 (in current path) so cycle is detected. Edge cases include self-loops (node u with edge u->u) which are trivially cycles since v = u and state[u] = 1. A DAG processes all nodes without finding back edges. Nodes with no outgoing edges are marked state 2 after processing. Time complexity is O(V+E) and space is O(V).",
     complexity: {"time":"O(V+E)","space":"O(V)"},
-    sheet: "Striver A2Z",
-    solution_code: "vector<int> state(n); function<bool(int)> dfs=[&](int u){state[u]=1;for(int v:g[u]){if(state[v]==1)return 1;if(state[v]==0&&dfs(v))return 1;}state[u]=2;return 0;}; bool cycle=0; for(int i=0;i<n;i++)if(!state[i]&&dfs(i))cycle=1; cout<<(cycle?\"Yes\":\"No\");",
-  },
   {
     id: "topo-sort",
     title: "Topological Sort (Kahn)",
