@@ -230,5 +230,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// serialize: queue BFS, '#' for null. deserialize: queue, build left+right from tokens.",
+  },
+  {
+    id: "max-path-sum",
+    title: "Binary Tree Maximum Path Sum",
+    category: "trees",
+    difficulty: "hard",
+    description: "Find maximum path sum (path can start/end at any node).",
+    constraints: "1 <= n <= 10^4, -10^3 <= val <= 10^3",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7","output":"18","explanation":"4+2+1+3+7 = 17 or 5+2+1+3+7 = 18"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"18"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint maxSum = INT_MIN;\n\nint maxGain(TreeNode* root) {\n  if (!root) return 0;\n  int l = max(0, maxGain(root->left));\n  int r = max(0, maxGain(root->right));\n  maxSum = max(maxSum, l + r + root->val);\n  return root->val + max(l, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  maxGain(nodes[0]);\n  cout << maxSum << endl;\n  return 0;\n}",
+    approach: "DFS: maxGain = val + max(0, leftGain) + max(0, rightGain). Update global max.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int mx=INT_MIN; function<int(TreeNode*)> g=[&](TreeNode* r){if(!r)return 0;int l=max(0,g(r->left)),ri=max(0,g(r->right));mx=max(mx,l+ri+r->val);return r->val+max(l,ri);}; g(root); cout<<mx;",
   }
 ]
