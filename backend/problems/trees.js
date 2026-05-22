@@ -95,5 +95,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "function<int(TreeNode*)> ch=[&](TreeNode* r){if(!r)return 0;int l=ch(r->left);if(l==-1)return -1;int rh=ch(r->right);if(rh==-1)return -1;if(abs(l-rh)>1)return -1;return 1+max(l,rh);}; cout<<(ch(root)!=-1?\"Yes\":\"No\");",
+  },
+  {
+    id: "lca-tree",
+    title: "Lowest Common Ancestor of Binary Tree",
+    category: "trees",
+    difficulty: "medium",
+    description: "Find LCA of two nodes in a binary tree.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7\n4 5","output":"2","explanation":"LCA of 4 and 5 is 2"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7\n4 5","expected":"2"},
+      {"input":"7\n1 2 3 4 5 6 7\n4 6","expected":"1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nTreeNode* lca(TreeNode* root, int p, int q) {\n  if (!root || root->val == p || root->val == q) return root;\n  auto* l = lca(root->left, p, q);\n  auto* r = lca(root->right, p, q);\n  if (l && r) return root;\n  return l ? l : r;\n}\n\nint main() {\n  int n, p, q; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cin >> p >> q;\n  TreeNode* ans = lca(nodes[0], p, q);\n  cout << (ans ? ans->val : -1) << endl;\n  return 0;\n}",
+    approach: "Recursive: if root matches p or q, return root. Get LCA from left and right. If both non-null, root is LCA.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "function<TreeNode*(TreeNode*)> l=[&](TreeNode* r){if(!r||r->val==p||r->val==q)return r;auto* lf=l(r->left),*ri=l(r->right);if(lf&&ri)return r;return lf?lf:ri;}; auto* a=l(root);cout<<(a?a->val:-1);",
   }
 ]
