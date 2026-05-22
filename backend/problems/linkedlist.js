@@ -154,5 +154,24 @@ export default [
     complexity: {"time":"O(1)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node* temp=node->next; node->data=temp->data; node->next=temp->next; delete temp;",
+  },
+  {
+    id: "add-two-numbers",
+    title: "Add Two Numbers (Linked Lists)",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Add two numbers represented as linked lists (digits in reverse order).",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"3\n2 4 3\n3\n5 6 4","output":"7 0 8","explanation":"342 + 465 = 807"}
+    ],
+    test_cases: [
+      {"input":"3\n2 4 3\n3\n5 6 4","expected":"7 0 8"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, m, x;\n  cin >> n; Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m; Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n\n  // sum with carry\n\n  Node* res = result;\n  while (res) { cout << res->data << \" \"; res = res->next; }\n  return 0;\n}",
+    approach: "Traverse both lists, sum digits with carry. Create new node for each digit.",
+    complexity: {"time":"O(n+m)","space":"O(max(n,m))"},
+    sheet: "Striver A2Z",
+    solution_code: "Node dummy(0); Node* t=&dummy; int carry=0; while(a||b||carry){int s=carry; if(a){s+=a->data;a=a->next;}if(b){s+=b->data;b=b->next;}t->next=new Node(s%10);carry=s/10;t=t->next;} return dummy.next;",
   }
 ]
