@@ -58,5 +58,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int cnt[26]={0}; for(char c:s)cnt[c-'a']++; for(char c:t)cnt[c-'a']--; for(int i=0;i<26;i++)if(cnt[i]!=0){cout<<\"No\";return 0;}cout<<\"Yes\";",
+  },
+  {
+    id: "first-non-repeat",
+    title: "First Non-Repeating Character",
+    category: "strings",
+    difficulty: "easy",
+    description: "Find the first non-repeating character in a string.",
+    constraints: "1 <= |s| <= 10^5",
+    examples: [
+      {"input":"geeksforgeeks","output":"f"}
+    ],
+    test_cases: [
+      {"input":"geeksforgeeks","expected":"f"},
+      {"input":"aabbcc","expected":"-"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // frequency array\n\n  cout << result << endl;\n  return 0;\n}",
+    approach: "Count frequencies in first pass. Second pass finds first char with count 1.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int cnt[256]={0}; for(char c:s)cnt[c]++; for(char c:s)if(cnt[c]==1){cout<<c;return 0;}cout<<'-';",
   }
 ]
