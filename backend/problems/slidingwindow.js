@@ -36,5 +36,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "int freq[26] = {0}, distinct = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < s.size(); right++) {\n  if (freq[s[right]-'a']++ == 0) distinct++;\n  while (distinct > k) if (--freq[s[left++]-'a'] == 0) distinct--;\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; int k;\n  cin >> s >> k;\n  // sliding window + freq\n  return 0;\n}",
+  },
+  {
+    id: "min-window-substr",
+    title: "Minimum Window Substring",
+    category: "sliding-window",
+    difficulty: "hard",
+    description: "Find smallest substring of s that contains all chars of t.",
+    constraints: "1 <= |s|,|t| <= 10^5",
+    examples: [
+      {"input":"ADOBECODEBANC\nABC","output":"BANC"}
+    ],
+    test_cases: [
+      {"input":"ADOBECODEBANC\nABC","expected":"BANC"}
+    ],
+    approach: "Use sliding window with two frequency maps. Expand right until all chars of t are covered. Then shrink from left while still covering all, tracking minimum window length.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int need[128] = {0}, have[128] = {0}, needCnt = 0, haveCnt = 0, left = 0, minLen = INT_MAX, start = 0;\nfor (char c : t) if (need[c]++ == 0) needCnt++;\nfor (int right = 0; right < s.size(); right++) {\n  char c = s[right]; have[c]++;\n  if (have[c] == need[c]) haveCnt++;\n  while (haveCnt == needCnt) {\n    if (right - left + 1 < minLen) { minLen = right - left + 1; start = left; }\n    char lc = s[left++]; have[lc]--;\n    if (have[lc] < need[lc]) haveCnt--;\n  }\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s, t; cin >> s >> t;\n  // sliding window\n  return 0;\n}",
   }
 ]
