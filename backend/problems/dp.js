@@ -215,5 +215,25 @@ export default [
     complexity: {"time":"O(n²)","space":"O(n²)"},
     sheet: "Love Babbar 450",
     solution_code: "vector<vector<bool>> pal(n,vector<bool>(n,0)); for(int i=0;i<n;i++)pal[i][i]=1; for(int len=2;len<=n;len++)for(int i=0;i+len-1<n;i++){int j=i+len-1;if(s[i]==s[j]&&(len==2||pal[i+1][j-1]))pal[i][j]=1;} vector<int> dp(n,0); for(int i=0;i<n;i++){if(pal[0][i])dp[i]=0;else{dp[i]=i;for(int j=0;j<i;j++)if(pal[j+1][i])dp[i]=min(dp[i],dp[j]+1);}}cout<<dp[n-1];",
+  },
+  {
+    id: "egg-drop",
+    title: "Egg Dropping Problem",
+    category: "dp",
+    difficulty: "hard",
+    description: "Find min attempts to find critical floor with k eggs and n floors.",
+    constraints: "1 <= k <= 100, 1 <= n <= 10^4",
+    examples: [
+      {"input":"2 10","output":"4"}
+    ],
+    test_cases: [
+      {"input":"2 10","expected":"4"},
+      {"input":"1 5","expected":"5"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int k, n; cin >> k >> n;\n\n  // dp[e][f] = min(max(dp[e-1][x-1], dp[e][f-x]) + 1)\n\n  cout << dp[k][n] << endl;\n  return 0;\n}",
+    approach: "DP: dp[e][f]=min(1+max(dp[e-1][x-1],dp[e][f-x])) over all floors x. Binary search optimization possible.",
+    complexity: {"time":"O(k*n²)","space":"O(k*n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "vector<vector<int>> dp(k+1,vector<int>(n+1)); for(int i=1;i<=k;i++){dp[i][0]=0;dp[i][1]=1;} for(int j=1;j<=n;j++)dp[1][j]=j; for(int i=2;i<=k;i++)for(int j=2;j<=n;j++){dp[i][j]=INT_MAX;for(int x=1;x<=j;x++)dp[i][j]=min(dp[i][j],1+max(dp[i-1][x-1],dp[i][j-x]));}cout<<dp[k][n];",
   }
 ]
