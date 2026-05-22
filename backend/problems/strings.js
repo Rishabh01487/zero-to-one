@@ -38,5 +38,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=s.size()-1; while(i<j)if(s[i++]!=s[j--]){cout<<\"No\";return 0;}cout<<\"Yes\";",
+  },
+  {
+    id: "anagram",
+    title: "Valid Anagram",
+    category: "strings",
+    difficulty: "easy",
+    description: "Check if two strings are anagrams of each other.",
+    constraints: "1 <= |s|,|t| <= 10^5",
+    examples: [
+      {"input":"anagram nagaram","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"anagram nagaram","expected":"Yes"},
+      {"input":"cat rat","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s, t;\n  cin >> s >> t;\n\n  // character count\n\n  cout << (isAnagram ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Count char frequencies. If all counts match, strings are anagrams.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int cnt[26]={0}; for(char c:s)cnt[c-'a']++; for(char c:t)cnt[c-'a']--; for(int i=0;i<26;i++)if(cnt[i]!=0){cout<<\"No\";return 0;}cout<<\"Yes\";",
   }
 ]
