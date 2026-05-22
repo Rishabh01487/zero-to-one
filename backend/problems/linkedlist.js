@@ -117,44 +117,44 @@ Diagram:
   Step 1: s=1, f=1
   Step 2: s=2, f=3
   Step 3: s=3, f=5
+  Step 4: s=4, f=3  (fast loops back into cycle)
+  Step 5: s=5, f=5  → meet! Return true
+
+  No-cycle case: 1 → 2 → 3 → 4 → null
+  Step 1: s=1, f=1
+  Step 2: s=2, f=3
+  Step 3: s=3, f=null → fast reached end, no cycle
+\`\`\`
+
+The proof relies on the fact that once both pointers are inside the cycle, fast gains on slow by 1 step per iteration, guaranteeing they will meet within the cycle's length iterations. Edge cases: empty list (return false), single node with no cycle (return false), single node pointing to itself (return true). Complexity: O(n) time, O(1) space.`,
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;if(slow==fast)return true;} return false;",
+    techniques: ["fast-slow-pointers"],
+  },
   {
-    id: "intersection-lists",
-    title: "Intersection of Two Linked Lists",
+    id: "merge-sorted-lists",
+    title: "Merge Two Sorted Linked Lists",
     category: "linked-list",
     difficulty: "medium",
-    description: "Find intersection point of two linked lists.",
+    description: "Merge two sorted linked lists into one sorted list.",
     constraints: "1 <= n,m <= 10^5",
     examples: [
-      {"input":"4\n1 2 3 4\n2\n5 6\n2","output":"3","explanation":"Lists intersect at node 3"}
+      {"input":"3\n1 2 4\n3\n1 3 4","output":"1 1 2 3 4 4"}
     ],
     test_cases: [
-      {"input":"4\n1 2 3 4\n2\n5 6\n2","expected":"3"}
+      {"input":"3\n1 2 4\n3\n1 3 4","expected":"1 1 2 3 4 4"}
     ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, m, skip, x;\n  cin >> n;\n  Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m;\n  Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n  cin >> skip;\n  // connect a[skip..] to b for intersection\n  Node* t = a;\n  for (int i = 0; i < skip && t; i++) t = t->next;\n  if (t && bt) bt->next = t;\n\n  // two-pointer: find intersection\n\n  cout << (intersect ? to_string(intersect->data) : \"-1\") << endl;\n  return 0;\n}",
-    approach: "Two-pointer: calculate lengths, advance longer list by difference, then advance both until they meet.",
-    complexity: {"time":"O(n+m)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node *p1=a,*p2=b; while(p1!=p2){p1=p1?p1->next:b;p2=p2?p2->next:a;} return p1;",
-  },
-  {
-    id: "delete-without-head",
-    title: "Delete Node Without Head Pointer",
-    category: "linked-list",
-    difficulty: "medium",
-    description: "Given only pointer to a node (not tail), delete it from linked list.",
-    constraints: "2 <= n <= 10^5",
-    examples: [
-      {"input":"4\n1 2 3 4\n2","output":"1 3 4","explanation":"Delete node at position 2 without head"}
-    ],
-    test_cases: [
-      {"input":"4\n1 2 3 4\n2","expected":"1 3 4"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nvoid deleteNode(Node* node) {\n  // copy next node's data, delete next\n}\n\nint main() {\n  int n, pos, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> pos;\n  Node* t = head;\n  for (int i = 0; i < pos; i++) t = t->next;\n  deleteNode(t);\n  t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
-    approach: "Copy next node's data into current node, then delete next node.",
-    complexity: {"time":"O(1)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node* temp=node->next; node->data=temp->data; node->next=temp->next; delete temp;",
-  },
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* merge(Node* a, Node* b) {\n  // dummy node + two pointers\n}\n\nint main() {\n  int n, m, x;\n  cin >> n; Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m; Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n  Node* res = merge(a, b);\n  while (res) { cout << res->data << \" \"; res = res->next; }\n  return 0;\n}",
+    approach: `This problem asks to merge two sorted linked lists into a single sorted linked list. The brute-force approach creates a new list by repeatedly extracting the smaller of the two heads and appending to the result, but this creates new nodes, using extra space. The optimal approach reuses existing nodes and uses a dummy node technique with two pointers.
+
+Create a dummy node with value 0 and a tail pointer starting at &dummy. While both lists have nodes remaining, compare a→data and b→data. The smaller node is attached to tail→next, and the corresponding pointer (a or b) advances. tail is then moved to tail→next. Once one list is exhausted, attach the remaining nodes of the non-empty list directly.
+
+Diagram:
+\`\`\`
+  a: 1 → 2 → 4
+  b: 1 → 3 → 4
+
   {
     id: "add-two-numbers",
     title: "Add Two Numbers (Linked Lists)",
