@@ -12,7 +12,7 @@ export default [
     test_cases: [
       {"input":"4","expected":"0 1 0 0\n0 0 0 1\n1 0 0 0\n0 0 1 0"}
     ],
-    approach: "Backtracking: place queen per row, check column/diagonal safety, recurse to next row.",
+    approach: "Backtracking: place queen per row, check column/diagonal safety, recurse to next row.\n\nDiagram:\n  N=4, place queens row by row:\n\n  Row 0:     Q . . .\n\n  Row 1:     Q . . .    Q . . .\n             . . Q .    . . . Q\n\n  Row 2:     ... (branch continues, pruned if unsafe)\n\n  At row r, try each col c=0..N-1.\n  isSafe checks column, main diag (r-c == const), anti-diag (r+c == const).\n  On success, recurse row+1; on failure, backtrack (board[r][c]=0).",
     complexity: {"time":"O(n!)","space":"O(n²)"},
     sheet: "Striver A2Z",
     solution_code: "// isSafe checks column and diagonals. Place on board, recurse, backtrack.",
@@ -31,7 +31,7 @@ export default [
     test_cases: [
       {"input":"9\n5 3 0 0 7 0 0 0 0\n6 0 0 1 9 5 0 0 0\n0 9 8 0 0 0 0 6 0\n8 0 0 0 6 0 0 0 3\n4 0 0 8 0 3 0 0 1\n7 0 0 0 2 0 0 0 6\n0 6 0 0 0 0 2 8 0\n0 0 0 4 1 9 0 0 5\n0 0 0 0 8 0 0 7 9","expected":"Solved"}
     ],
-    approach: "Backtracking: find empty cell, try digits 1-9, check row/col/box validity, recurse.",
+    approach: "Backtracking: find empty cell, try digits 1-9, check row/col/box validity, recurse.\n\nDiagram:\n  Cell (r,c) empty, try digits 1..9:\n\n            findEmpty(r,c)\n                 |\n          try digit 1..9\n           /  |  |  |  \\\n          1   2  3  4 ... 9\n          |   |  |  |     |\n        (valid? check row,col,box)\n          |   |  |  |     |\n        place |  |  |   place\n          |   |  |  |     |\n        recurse|  |  |  recurse\n          |   |  |  |     |\n       success? fail->backtrack->next\n\n  Base: no empty cells remain (board full).\n  Backtrack: reset board[r][c]=0 when no digit works.",
     complexity: {"time":"O(9^(n*n))","space":"O(n²)"},
     sheet: "Striver A2Z",
     solution_code: "// isValid checks row, col, 3x3 box. Try each num, recurse, backtrack if fails.",
