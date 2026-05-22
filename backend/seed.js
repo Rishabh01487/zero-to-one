@@ -20,6 +20,7 @@ import heapProblems from './problems/heaps.js';
 import greedyProblems from './problems/greedy.js';
 import sortingProblems from './problems/sorting.js';
 import slidingWindowProblems from './problems/slidingwindow.js';
+import twoPointerProblems from './problems/twopointers.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -338,6 +339,7 @@ export function seedDatabase() {
     ...greedyProblems,
     ...sortingProblems,
     ...slidingWindowProblems,
+    ...twoPointerProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
