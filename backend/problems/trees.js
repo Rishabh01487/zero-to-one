@@ -249,5 +249,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int mx=INT_MIN; function<int(TreeNode*)> g=[&](TreeNode* r){if(!r)return 0;int l=max(0,g(r->left)),ri=max(0,g(r->right));mx=max(mx,l+ri+r->val);return r->val+max(l,ri);}; g(root); cout<<mx;",
+  },
+  {
+    id: "construct-bt",
+    title: "Construct Binary Tree from Preorder and Inorder",
+    category: "trees",
+    difficulty: "hard",
+    description: "Build a binary tree from preorder and inorder traversals.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"6\n3 9 20 15 7\n9 3 15 20 7","output":"3 9 20 15 7","explanation":"Preorder + Inorder => unique tree"}
+    ],
+    test_cases: [
+      {"input":"6\n3 9 20 15 7\n9 3 15 20 7","expected":"3 9 20 15 7"}
+    ],
+    solution_template: "#include <iostream>\n#include <unordered_map>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint preIdx = 0;\nunordered_map<int,int> inMap;\n\nTreeNode* build(int preorder[], int inorder[], int l, int r) {\n  if (l > r) return nullptr;\n  int val = preorder[preIdx++];\n  TreeNode* root = new TreeNode(val);\n  int mid = inMap[val];\n  root->left = build(preorder, inorder, l, mid-1);\n  root->right = build(preorder, inorder, mid+1, r);\n  return root;\n}\n\nvoid pre(TreeNode* r) { if (!r) return; cout << r->val << \" \"; pre(r->left); pre(r->right); }\n\nint main() {\n  int n; cin >> n;\n  int preorder[n], inorder[n];\n  for (int i = 0; i < n; i++) cin >> preorder[i];\n  for (int i = 0; i < n; i++) { cin >> inorder[i]; inMap[inorder[i]] = i; }\n  TreeNode* root = build(preorder, inorder, 0, n-1);\n  pre(root);\n  return 0;\n}",
+    approach: "Preorder gives root. Find root position in inorder. Left subtree = elements before root in inorder.",
+    complexity: {"time":"O(n log n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// recursively: root = preorder[preIdx++], mid = index in inorder via hashmap, build left(inorder[l..mid-1]) and right(inorder[mid+1..r])",
   }
 ]
