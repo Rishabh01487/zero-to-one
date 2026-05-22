@@ -77,5 +77,25 @@ export default [
     complexity: {"time":"O(n*W)","space":"O(W)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(W+1,0); for(int i=0;i<n;i++)for(int w=W;w>=wt[i];w--)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]); cout<<dp[W];",
+  },
+  {
+    id: "edit-distance",
+    title: "Edit Distance (Levenshtein)",
+    category: "dp",
+    difficulty: "hard",
+    description: "Min operations to convert word1 to word2 (insert, delete, replace).",
+    constraints: "1 <= |s1|,|s2| <= 500",
+    examples: [
+      {"input":"horse\nros","output":"3","explanation":"horse->rorse->rose->ros (3 ops)"}
+    ],
+    test_cases: [
+      {"input":"horse\nros","expected":"3"},
+      {"input":"intention\nexecution","expected":"5"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s1, s2;\n  cin >> s1 >> s2;\n  int n = s1.size(), m = s2.size();\n\n  // 2D DP: dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(s1[i]!=s2[j]))\n\n  cout << dp[n][m] << endl;\n  return 0;\n}",
+    approach: "2D DP: dp[i][j]=min(insert,delete,replace). Insert=dp[i][j-1]+1, Delete=dp[i-1][j]+1, Replace=dp[i-1][j-1]+(s1[i]!=s2[j]).",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=dp[i-1][j-1];else dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});}cout<<dp[n][m];",
   }
 ]
