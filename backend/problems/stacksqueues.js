@@ -170,5 +170,24 @@ export default [
     sheet: "Love Babbar 450",
     solution_code: "// push: q.push(x); for i in 0..size-2: q.push(q.front()); q.pop();",
     solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nclass MyStack {\n  queue<int> q;\npublic:\n  void push(int x) { q.push(x); for (int i = 0; i < (int)q.size()-1; i++) { q.push(q.front()); q.pop(); } }\n  int pop() { int x = q.front(); q.pop(); return x; }\n  int top() { return q.front(); }\n  bool empty() { return q.empty(); }\n};\n\nint main() {\n  int q; cin >> q;\n  MyStack ms;\n  while (q--) {\n    string op; cin >> op;\n    if (op == \"push\") { int x; cin >> x; ms.push(x); }\n    else if (op == \"pop\") cout << ms.pop() << endl;\n    else if (op == \"top\") cout << ms.top() << endl;\n  }\n  return 0;\n}",
+  },
+  {
+    id: "max-rect-binary",
+    title: "Max Rectangle in Binary Matrix",
+    category: "stack-queue",
+    difficulty: "hard",
+    description: "Find the largest rectangle containing only 1s in binary matrix.",
+    constraints: "1 <= n,m <= 200",
+    examples: [
+      {"input":"4 5\n10100\n10111\n11111\n10010","output":"6","explanation":"Largest rectangle of 1s has area 6"}
+    ],
+    test_cases: [
+      {"input":"4 5\n10100\n10111\n11111\n10010","expected":"6"}
+    ],
+    approach: "Treat each row as base of histogram. Use largest rectangle in histogram per row.",
+    complexity: {"time":"O(n*m)","space":"O(m)"},
+    sheet: "Striver A2Z",
+    solution_code: "int h[200]={0},mx=0; for(int i=0;i<n;i++){for(int j=0;j<m;j++)h[j]=(mat[i][j]=='1')?h[j]+1:0;mx=max(mx,largestArea(h,m));}cout<<mx;",
+    solution_template: "#include <iostream>\n#include <stack>\n#include <algorithm>\nusing namespace std;\n\nint largestArea(int heights[], int n) {\n  stack<int> st;\n  int maxA = 0;\n  for (int i = 0; i <= n; i++) {\n    while (!st.empty() && (i == n || heights[st.top()] > heights[i])) {\n      int h = heights[st.top()]; st.pop();\n      int w = st.empty() ? i : i - st.top() - 1;\n      maxA = max(maxA, h * w);\n    }\n    st.push(i);\n  }\n  return maxA;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  int heights[m] = {0};\n  int maxArea = 0;\n  for (int i = 0; i < n; i++) {\n    string row; cin >> row;\n    for (int j = 0; j < m; j++)\n      heights[j] = (row[j] == '1') ? heights[j] + 1 : 0;\n    maxArea = max(maxArea, largestArea(heights, m));\n  }\n  cout << maxArea << endl;\n  return 0;\n}",
   }
 ]
