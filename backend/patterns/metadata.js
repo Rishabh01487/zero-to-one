@@ -68,5 +68,15 @@ export default [
     difficulty: "Beginner to Advanced",
     icon: "\\/",
     order: 7,
+  },
+  {
+    id: "binary-search",
+    name: "Binary Search",
+    description: "Divide the search space in half at each step. Works on sorted data and monotonic functions. O(log n) efficiency.",
+    when_to_use: "Sorted arrays, searching in rotated arrays, finding peaks, or any monotonic predicate (minimize/maximize problems).",
+    techniques: ["Standard BS","Lower/Upper Bound","BS on Answer","Search Rotated","Ternary Search"],
+    difficulty: "Intermediate",
+    icon: "<>",
+    order: 8,
   }
 ]
