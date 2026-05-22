@@ -78,5 +78,26 @@ export default [
     complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]>arr[m+1])hi=m;else lo=m+1;}cout<<lo;",
+  },
+  {
+    id: "sqrt-binsearch",
+    title: "Square Root (Binary Search)",
+    category: "binary-search",
+    difficulty: "easy",
+    description: "Find integer square root of x using binary search.",
+    constraints: "1 <= x <= 10^9",
+    examples: [
+      {"input":"8","output":"2"},
+      {"input":"16","output":"4"}
+    ],
+    test_cases: [
+      {"input":"8","expected":"2"},
+      {"input":"16","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int x; cin >> x;\n  if (x < 2) { cout << x << endl; return 0; }\n\n  int lo = 1, hi = x / 2, ans = 0;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if ((long long)mid * mid <= x) { ans = mid; lo = mid + 1; }\n    else hi = mid - 1;\n  }\n  cout << ans << endl;\n  return 0;\n}",
+    approach: "Binary search 1..x/2. If mid*mid <= x, record answer and search right. Otherwise search left.",
+    complexity: {"time":"O(log x)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int lo=1,hi=x/2,ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if((long long)m*m<=x){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
   }
 ]
