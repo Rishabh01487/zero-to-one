@@ -276,5 +276,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int l=0,r=n-1,lMax=0,rMax=0,water=0;\nwhile(l<r){\n  if(height[l]<height[r]){\n    if(height[l]>=lMax) lMax=height[l];\n    else water+=lMax-height[l];\n    l++;\n  } else {\n    if(height[r]>=rMax) rMax=height[r];\n    else water+=rMax-height[r];\n    r--;\n  }\n}\ncout << water;",
+  },
+  {
+    id: "find-duplicate",
+    title: "Find the Duplicate Number",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Given n+1 numbers from 1..n, find the duplicate (without modifying array).",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n1 3 4 2 2","output":"2","explanation":"2 appears twice"}
+    ],
+    test_cases: [
+      {"input":"5\n1 3 4 2 2","expected":"2"},
+      {"input":"4\n3 1 3 2","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Floyd's cycle detection: slow/fast pointer\n\n  cout << duplicate << endl;\n  return 0;\n}",
+    approach: "Floyd cycle detection: treat array values as linked list pointers. Slow/fast pointers meet at cycle entry (duplicate).",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int slow=arr[0],fast=arr[0];\ndo{\n  slow=arr[slow];\n  fast=arr[arr[fast]];\n} while(slow!=fast);\nslow=arr[0];\nwhile(slow!=fast){\n  slow=arr[slow];\n  fast=arr[fast];\n}\ncout << slow;",
   }
 ]
