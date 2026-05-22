@@ -148,5 +148,15 @@ export default [
     difficulty: "Intermediate to Advanced",
     icon: "01",
     order: 15,
+  },
+  {
+    id: "maths",
+    name: "Mathematics",
+    description: "Number theory, combinatorics, probability, and geometry problems. Master GCD/LCM, primality, modulo arithmetic.",
+    when_to_use: "Prime numbers, divisors, factorial computations, combinatorics (nCr), modular arithmetic, probability calculations.",
+    techniques: ["Sieve of Eratosthenes","GCD/Euclidean","Modular Exponentiation","nCr Combinations","Linear Diophantine"],
+    difficulty: "Intermediate",
+    icon: "Pi",
+    order: 16,
   }
 ]
