@@ -112,5 +112,24 @@ export default [
     complexity: {"time":"O(n+k)","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "int count[100001]={0},out[n]; for(int i=0;i<n;i++)count[arr[i]]++; for(int i=1;i<=100000;i++)count[i]+=count[i-1]; for(int i=n-1;i>=0;i--)out[--count[arr[i]]]=arr[i];",
+  },
+  {
+    id: "heap-sort",
+    title: "Heap Sort Implementation",
+    category: "sorting",
+    difficulty: "medium",
+    description: "Implement heap sort and return sorted array.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n12 11 13 5 6 7","output":"5 6 7 11 12 13"}
+    ],
+    test_cases: [
+      {"input":"6\n12 11 13 5 6 7","expected":"5 6 7 11 12 13"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nvoid heapify(int arr[], int n, int i) {\n  int largest = i, l = 2*i+1, r = 2*i+2;\n  if (l < n && arr[l] > arr[largest]) largest = l;\n  if (r < n && arr[r] > arr[largest]) largest = r;\n  if (largest != i) { swap(arr[i], arr[largest]); heapify(arr, n, largest); }\n}\n\nvoid heapSort(int arr[], int n) {\n  for (int i = n/2-1; i >= 0; i--) heapify(arr, n, i);\n  for (int i = n-1; i > 0; i--) { swap(arr[0], arr[i]); heapify(arr, i, 0); }\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  heapSort(arr, n);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Build max-heap from array. Repeatedly extract max (swap root with last, heapify reduced heap).",
+    complexity: {"time":"O(n log n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "void heapify(int arr[],int n,int i){int l=2*i+1,r=2*i+2,largest=i;if(l<n&&arr[l]>arr[largest])largest=l;if(r<n&&arr[r]>arr[largest])largest=r;if(largest!=i){swap(arr[i],arr[largest]);heapify(arr,n,largest);}} for(int i=n/2-1;i>=0;i--)heapify(arr,n,i); for(int i=n-1;i>0;i--){swap(arr[0],arr[i]);heapify(arr,i,0);}",
   }
 ]
