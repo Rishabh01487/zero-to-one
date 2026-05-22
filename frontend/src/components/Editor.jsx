@@ -70,7 +70,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button
-            className="btn btn-sm btn-secondary"
+            className="btn btn-sm btn-ghost"
             onClick={() => setShowInput(!showInput)}
           >Input</button>
           <button
@@ -79,7 +79,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
             disabled={running}
             style={{ opacity: running ? 0.6 : 1 }}
           >
-            {running ? '⏳ Running...' : '▶ Run'}
+            {running ? 'Running...' : 'Run'}
           </button>
         </div>
       </div>
