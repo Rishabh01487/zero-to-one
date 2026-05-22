@@ -177,5 +177,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "unordered_map<int,int> mp;\nfor(int i=0;i<n;i++){\n  if(mp.count(target-arr[i])){\n    cout << mp[target-arr[i]] << \" \" << i;\n    return 0;\n  }\n  mp[arr[i]]=i;\n}",
+  },
+  {
+    id: "majority-element",
+    title: "Majority Element (Moore Voting)",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Find element appearing more than n/2 times. Assume it always exists.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n3 2 3 1 3 2 3","output":"3","explanation":"3 appears 4 times > 7/2"}
+    ],
+    test_cases: [
+      {"input":"7\n3 2 3 1 3 2 3","expected":"3"},
+      {"input":"5\n1 1 2 2 2","expected":"2"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Moore's Voting Algorithm\n\n  cout << candidate << endl;\n  return 0;\n}",
+    approach: "Moore Voting: candidate gains votes for matches, loses for non-matches. Final candidate is the majority.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int cnt=0,cand;\nfor(int x:arr){\n  if(cnt==0) cand=x;\n  cnt+=(x==cand)?1:-1;\n}\ncout << cand;",
   }
 ]
