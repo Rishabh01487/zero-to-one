@@ -74,5 +74,24 @@ export default [
     sheet: "Love Babbar 450",
     solution_code: "int freq[100001] = {0}, distinct = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < n; right++) {\n  if (freq[arr[right]]++ == 0) distinct++;\n  while (distinct > 2) if (--freq[arr[left++]] == 0) distinct--;\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window at most 2 distinct\n  return 0;\n}",
+  },
+  {
+    id: "longest-repeating-replacement",
+    title: "Longest Repeating Character Replacement",
+    category: "sliding-window",
+    difficulty: "medium",
+    description: "Find longest substring containing same letter after at most k replacements.",
+    constraints: "1 <= |s| <= 10^5, 1 <= k <= 10^5",
+    examples: [
+      {"input":"AABABBA\n1","output":"4","explanation":"Replace one B with A -> \"AAAA\" or \"AAAB\""}
+    ],
+    test_cases: [
+      {"input":"AABABBA\n1","expected":"4"}
+    ],
+    approach: "Sliding window tracking max frequency of any char in window. Valid window when windowLen - maxFreq <= k. Expand right, shrink if invalid.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int freq[26] = {0}, maxFreq = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < s.size(); right++) {\n  maxFreq = max(maxFreq, ++freq[s[right]-'A']);\n  while ((right - left + 1) - maxFreq > k) {\n    freq[s[left++]-'A']--;\n    maxFreq = 0;\n    for (int i = 0; i < 26; i++) maxFreq = max(maxFreq, freq[i]);\n  }\n  maxLen = max(maxLen, right - left + 1);\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; int k; cin >> s >> k;\n  // sliding window\n  return 0;\n}",
   }
 ]
