@@ -38,46 +38,46 @@ export default [
     complexity: {"time":"O(1)","space":"O(1)"},
     sheet: "Love Babbar 450",
     techniques: ["bit-manipulation"],
-  {
-    id: "power-two",
-    title: "Power of Two",
-    category: "bit-manipulation",
-    difficulty: "easy",
-    description: "Check if n is a power of two.",
-    constraints: "-2^31 <= n <= 2^31-1",
-    examples: [
-      {"input":"16","output":"Yes"},
-      {"input":"18","output":"No"}
-    ],
-    test_cases: [
-      {"input":"16","expected":"Yes"},
-      {"input":"0","expected":"No"}
-    ],
-    approach: "Power of two has exactly one set bit. n & (n-1) clears the lowest set bit, so result is 0 for powers of two.",
-    complexity: {"time":"O(1)","space":"O(1)"},
-    sheet: "Love Babbar 450",
     solution_code: "cout << (n > 0 && (n & (n-1)) == 0 ? \"Yes\" : \"No\");",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // check power of two\n  return 0;\n}",
   },
   {
-    id: "missing-number-bit",
-    title: "Missing Number (XOR)",
+    id: "count-set-bits",
+    title: "Count Set Bits (Brian Kernighan)",
     category: "bit-manipulation",
     difficulty: "easy",
-    description: "Find missing number in array of 0..n with one missing.",
-    constraints: "1 <= n <= 10^5",
+    description: "Count the number of 1 bits (set bits) in an integer.",
+    constraints: "0 <= n <= 10^9",
     examples: [
-      {"input":"5\n3 0 1 5 2","output":"4"}
+      {"input":"11","output":"3","explanation":"1011 has 3 set bits"}
     ],
     test_cases: [
-      {"input":"5\n3 0 1 5 2","expected":"4"}
+      {"input":"11","expected":"3"},
+      {"input":"128","expected":"1"}
     ],
-    approach: "XOR all array elements and all numbers 0..n. Paired numbers cancel out, leaving the missing one.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int xor1 = 0, xor2 = 0;\nfor (int i = 0; i < n; i++) { xor1 ^= arr[i]; xor2 ^= i; }\nxor2 ^= n;\ncout << (xor1 ^ xor2);",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // XOR\n  return 0;\n}",
+    approach: "This problem asks to count the number of 1 bits in binary representation. Brian Kernighan's algorithm uses n & (n-1) to clear the lowest set bit in each iteration.\n\nDiagram:\n```\nn = 11 → binary: 1011\n\nIteration 1: n = 1011\n  n - 1 = 1010\n  n & (n-1) = 1011 & 1010 = 1010  count = 1\n\nIteration 2: n = 1010\n  n - 1 = 1001\n  n & (n-1) = 1010 & 1001 = 1000  count = 2\n\nIteration 3: n = 1000\n  n - 1 = 0111\n  n & (n-1) = 1000 & 0111 = 0000  count = 3\n\nn = 0 → stop. Result: 3\n\nn = 128 → binary: 10000000 (only 1 set bit)\n  n & (n-1) = 10000000 & 01111111 = 0 → count = 1\n```\n\nTime complexity is O(k) where k is number of set bits, space O(1).",
+    complexity: {"time":"O(k) where k = number of set bits","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    techniques: ["bit-manipulation"],
+    solution_code: "int count = 0;\nwhile (n) { count++; n &= n - 1; }\ncout << count;",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // count set bits\n  return 0;\n}",
   },
+  {
+    id: "power-set-bits",
+    title: "Power Set using Bits",
+    category: "bit-manipulation",
+    difficulty: "medium",
+    description: "Generate all subsets (power set) of an array using bit manipulation.",
+    constraints: "1 <= n <= 20",
+    examples: [
+      {"input":"3\n1 2 3","output":"[] [1] [2] [1,2] [3] [1,3] [2,3] [1,2,3]"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 3","expected":"[] [1] [2] [1,2] [3] [1,3] [2,3] [1,2,3]"}
+    ],
+    approach: "Generates all 2^n subsets by treating each bit as inclusion flag.\n\nDiagram:\n```\narr = [1, 2, 3], n = 3, 2^3 = 8 subsets\n\nmask 0 (000) → []        mask 4 (100) → [3]\nmask 1 (001) → [1]       mask 5 (101) → [1,3]\nmask 2 (010) → [2]       mask 6 (110) → [2,3]\nmask 3 (011) → [1,2]     mask 7 (111) → [1,2,3]\n\nBit positions:\n  arr[0]=1 → bit 0 (LSB)\n  arr[1]=2 → bit 1\n  arr[2]=3 → bit 2\n\nmask=5 (101): bit0=1 include 1, bit1=0 skip 2, bit2=1 include 3 → [1,3]\n```\n\nTime complexity is O(n * 2^n), space O(n * 2^n).",
+    complexity: {"time":"O(n * 2^n)","space":"O(n * 2^n)"},
+    sheet: "Love Babbar 450",
   {
     id: "two-odd-occuring",
     title: "Two Numbers with Odd Occurrences",
