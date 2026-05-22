@@ -18,6 +18,7 @@ import graphProblems from './problems/graphs.js';
 import binarySearchProblems from './problems/binarysearch.js';
 import heapProblems from './problems/heaps.js';
 import greedyProblems from './problems/greedy.js';
+import sortingProblems from './problems/sorting.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -334,6 +335,7 @@ export function seedDatabase() {
     ...binarySearchProblems,
     ...heapProblems,
     ...greedyProblems,
+    ...sortingProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
