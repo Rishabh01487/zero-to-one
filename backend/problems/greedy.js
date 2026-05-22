@@ -75,5 +75,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int maxReach = 0; for (int i = 0; i < n; i++) { if (i > maxReach) { cout << \"No\" << endl; return 0; } maxReach = max(maxReach, i + nums[i]); } cout << \"Yes\" << endl;",
+  },
+  {
+    id: "min-platforms",
+    title: "Minimum Platforms Required",
+    category: "greedy",
+    difficulty: "medium",
+    description: "Find min platforms needed at a railway station.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n900 940 950 1100 1500 1800\n910 1200 1120 1130 1900 2000","output":"3"}
+    ],
+    test_cases: [
+      {"input":"6\n900 940 950 1100 1500 1800\n910 1200 1120 1130 1900 2000","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n], dep[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  for (int i = 0; i < n; i++) cin >> dep[i];\n\n  sort(arr, arr+n);\n  sort(dep, dep+n);\n\n  int plat = 1, maxPlat = 1, i = 1, j = 0;\n  while (i < n && j < n) {\n    if (arr[i] <= dep[j]) { plat++; i++; }\n    else { plat--; j++; }\n    maxPlat = max(maxPlat, plat);\n  }\n\n  cout << maxPlat << endl;\n  return 0;\n}",
+    approach: "Sort arrivals and departions separately. Two-pointer: if arr <= dep, platform++; else platform--.",
+    complexity: {"time":"O(n log n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "sort(arr,arr+n);sort(dep,dep+n); int plat=1,maxP=1,i=1,j=0; while(i<n&&j<n){if(arr[i]<=dep[j]){plat++;i++;}else{plat--;j++;}maxP=max(maxP,plat);}cout<<maxP;",
   }
 ]
