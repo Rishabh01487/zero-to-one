@@ -131,5 +131,24 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "void heapify(int arr[],int n,int i){int l=2*i+1,r=2*i+2,largest=i;if(l<n&&arr[l]>arr[largest])largest=l;if(r<n&&arr[r]>arr[largest])largest=r;if(largest!=i){swap(arr[i],arr[largest]);heapify(arr,n,largest);}} for(int i=n/2-1;i>=0;i--)heapify(arr,n,i); for(int i=n-1;i>0;i--){swap(arr[0],arr[i]);heapify(arr,i,0);}",
+  },
+  {
+    id: "find-kth-smallest",
+    title: "Kth Smallest Element (QuickSelect)",
+    category: "sorting",
+    difficulty: "medium",
+    description: "Find kth smallest element using quickselect.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    examples: [
+      {"input":"6\n7 10 4 3 20 15\n3","output":"7"}
+    ],
+    test_cases: [
+      {"input":"6\n7 10 4 3 20 15\n3","expected":"7"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint partition(int arr[], int l, int r) {\n  int pivot = arr[r], i = l;\n  for (int j = l; j < r; j++)\n    if (arr[j] <= pivot) swap(arr[i++], arr[j]);\n  swap(arr[i], arr[r]);\n  return i;\n}\n\nint quickSelect(int arr[], int l, int r, int k) {\n  if (l == r) return arr[l];\n  int pi = partition(arr, l, r);\n  if (k == pi) return arr[k];\n  return (k < pi) ? quickSelect(arr, l, pi-1, k) : quickSelect(arr, pi+1, r, k);\n}\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  cout << quickSelect(arr, 0, n-1, k-1) << endl;\n  return 0;\n}",
+    approach: "Distribute elements into buckets, sort each bucket (insertion sort), concatenate.",
+    complexity: {"time":"O(n+k) avg, O(n²) worst","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int id=bucketCnt*arr[i]/maxVal; // assign to bucket, then sort each bucket with insertion sort",
   }
 ]
