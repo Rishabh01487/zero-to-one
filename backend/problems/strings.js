@@ -238,5 +238,25 @@ export default [
     complexity: {"time":"O(n * k log k)","space":"O(n * k)"},
     sheet: "Striver A2Z",
     solution_code: "unordered_map<string,vector<string>> mp; for(string& s:strs){string t=s;sort(t.begin(),t.end());mp[t].push_back(s);} for(auto& p:mp){for(string& s:p.second)cout<<s<<\" \";cout<<endl;}",
+  },
+  {
+    id: "count-palindromic-substr",
+    title: "Count Palindromic Substrings",
+    category: "strings",
+    difficulty: "medium",
+    description: "Count all palindromic substrings in a string.",
+    constraints: "1 <= |s| <= 1000",
+    examples: [
+      {"input":"aaa","output":"6","explanation":"a,a,a,aa,aa,aaa"}
+    ],
+    test_cases: [
+      {"input":"aaa","expected":"6"},
+      {"input":"abc","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // expand around center for each position\n\n  cout << count << endl;\n  return 0;\n}",
+    approach: "Expand around each center (odd and even). Count each palindrome found.",
+    complexity: {"time":"O(n²)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int cnt=0; for(int i=0;i<s.size();i++){int l=i,r=i;while(l>=0&&r<s.size()&&s[l]==s[r]){cnt++;l--;r++;}l=i;r=i+1;while(l>=0&&r<s.size()&&s[l]==s[r]){cnt++;l--;r++;}}cout<<cnt;",
   }
 ]
