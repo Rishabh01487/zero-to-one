@@ -93,5 +93,24 @@ export default [
     complexity: {"time":"O(n log k)","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "priority_queue<pair<long long,pair<int,int>>> pq; for(auto& p:pts){long long d=1LL*p.first*p.first+1LL*p.second*p.second;pq.push({d,p});if(pq.size()>k)pq.pop();} vector<pair<int,int>> ans; while(!pq.empty()){ans.push_back(pq.top().second);pq.pop();} for(auto& p:ans)cout<<p.first<<\" \"<<p.second<<endl;",
+  },
+  {
+    id: "task-scheduler",
+    title: "Task Scheduler",
+    category: "heaps",
+    difficulty: "medium",
+    description: "Find minimum time to complete tasks with cooling period between same tasks.",
+    constraints: "1 <= n <= 10^4, 0 <= cool <= 100",
+    examples: [
+      {"input":"6\nA A A B B B\n2","output":"8","explanation":"A->B->idle->A->B->idle->A->B"}
+    ],
+    test_cases: [
+      {"input":"6\nA A A B B B\n2","expected":"8"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, cool; cin >> n;\n  char tasks[n];\n  for (int i = 0; i < n; i++) cin >> tasks[i];\n  cin >> cool;\n\n  int freq[26] = {0};\n  for (int i = 0; i < n; i++) freq[tasks[i]-'A']++;\n\n  priority_queue<int> pq;\n  for (int f : freq) if (f > 0) pq.push(f);\n\n  int time = 0;\n  while (!pq.empty()) {\n    vector<int> temp;\n    for (int i = 0; i <= cool; i++) {\n      if (!pq.empty()) { temp.push_back(pq.top()); pq.pop(); }\n    }\n    for (int f : temp) if (--f > 0) pq.push(f);\n    time += temp.size() <= cool ? cool + 1 : (int)temp.size();\n  }\n  cout << time << endl;\n  return 0;\n}",
+    approach: "Max-heap of frequencies. Process in cycles of cool+1, decrement and re-push remaining tasks.",
+    complexity: {"time":"O(n)","space":"O(26)"},
+    sheet: "Striver A2Z",
+    solution_code: "priority_queue<int> pq; for(int f:freq)if(f>0)pq.push(f); int time=0; while(!pq.empty()){vector<int> tmp; for(int i=0;i<=cool&&!pq.empty();i++){tmp.push_back(pq.top());pq.pop();} for(int f:tmp)if(--f>0)pq.push(f); time+=tmp.size()<=cool?cool+1:(int)tmp.size();} cout<<time;",
   }
 ]
