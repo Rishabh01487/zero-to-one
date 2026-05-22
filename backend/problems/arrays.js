@@ -257,5 +257,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Love Babbar 450",
     solution_code: "unordered_set<int> s;\nint sum=0;\nfor(int x:arr){\n  sum+=x;\n  if(sum==0||s.count(sum)){\n    cout << \"Yes\";\n    return 0;\n  }\n  s.insert(sum);\n}\ncout << \"No\";",
+  },
+  {
+    id: "trapping-rain",
+    title: "Trapping Rain Water",
+    category: "arrays",
+    difficulty: "hard",
+    description: "Given elevation map, compute how much water can be trapped.",
+    constraints: "1 <= n <= 10^5, 0 <= height[i] <= 10^5",
+    examples: [
+      {"input":"12\n0 1 0 2 1 0 1 3 2 1 2 1","output":"6","explanation":"6 units of water trapped"}
+    ],
+    test_cases: [
+      {"input":"12\n0 1 0 2 1 0 1 3 2 1 2 1","expected":"6"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int height[n];\n  for (int i = 0; i < n; i++) cin >> height[i];\n\n  // two-pointer approach\n\n  cout << water << endl;\n  return 0;\n}",
+    approach: "Two-pointer: maintain leftMax and rightMax. Process smaller side first, add trapped water.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int l=0,r=n-1,lMax=0,rMax=0,water=0;\nwhile(l<r){\n  if(height[l]<height[r]){\n    if(height[l]>=lMax) lMax=height[l];\n    else water+=lMax-height[l];\n    l++;\n  } else {\n    if(height[r]>=rMax) rMax=height[r];\n    else water+=rMax-height[r];\n    r--;\n  }\n}\ncout << water;",
   }
 ]
