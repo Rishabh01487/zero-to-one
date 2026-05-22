@@ -81,6 +81,10 @@ export default [
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Kadane's algorithm\n\n  cout << maxSum << endl;\n  return 0;\n}",
     approach: "This problem asks us to find the contiguous subarray (a consecutive block of elements) that has the maximum possible sum, and return that sum. A brute force approach uses three nested loops: fix the start and end indices with two outer loops, then compute the sum with an inner loop, yielding O(n^3) time. This can be optimized to O(n^2) by incrementally updating the sum as we extend the end pointer. For example, in [-2,1,-3,4,-1,2,1,-5,4], we would check every subarray and find that [4,-1,2,1] has sum 6. O(n^2) is too slow for n=10^5. The optimal approach is Kadane's algorithm, which works in a single pass. Initialize currentSum to 0 and maxSum to the first element (or a very small number). For each element x, add x to currentSum. Update maxSum to be the maximum of maxSum and currentSum. If currentSum becomes negative, reset it to 0 because any subarray starting fresh from the next element will have a larger sum than carrying a negative prefix. For [-2,1,-3,4,-1,2,1,-5,4]: x=-2: cur=-2, max=-2, cur=0; x=1: cur=1, max=1; x=-3: cur=-2, max=1, cur=0; x=4: cur=4, max=4; x=-1: cur=3, max=4; x=2: cur=5, max=5; x=1: cur=6, max=6; x=-5: cur=1, max=6; x=4: cur=5, max=6. Answer=6. Edge cases include arrays with all negative numbers (the algorithm correctly returns the largest/least negative element) and arrays with a single element. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]\n  \n  i=0: arr[0]=-2, cur=-2, max=-2, cur=0\n  i=1: arr[1]=1,  cur=1,  max=1\n  i=2: arr[2]=-3, cur=-2, max=1, cur=0\n  i=3: arr[3]=4,  cur=4,  max=4\n  i=4: arr[4]=-1, cur=3,  max=4\n  i=5: arr[5]=2,  cur=5,  max=5\n  i=6: arr[6]=1,  cur=6,  max=6\n  i=7: arr[7]=-5, cur=1,  max=6\n  i=8: arr[8]=4,  cur=5,  max=6\n  \n  Max subarray sum = 6  (subarray: [4, -1, 2, 1])",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int cur=0,mx=arr[0];\nfor(int x:arr){\n  cur+=x;\n  mx=max(mx,cur);\n  if(cur<0) cur=0;\n}\ncout << mx;",
+  },
   {
     id: "sort-012",
     title: "Sort 0s, 1s and 2s (Dutch Flag)",
@@ -88,6 +92,7 @@ export default [
     difficulty: "medium",
     description: "Given an array of 0s, 1s and 2s, sort them in-place.",
     constraints: "1 <= n <= 10^5",
+    techniques: ["two-pointers"],
     examples: [
       {"input":"6\n2 0 2 1 1 0","output":"0 0 1 1 2 2","explanation":"Sort using Dutch National Flag algorithm"}
     ],
@@ -96,7 +101,7 @@ export default [
       {"input":"5\n0 1 2 0 1","expected":"0 0 1 1 2"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Dutch National Flag: three pointers\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Dutch National Flag: three pointers (low,mid,high). Partition 0s to left, 2s to right, 1s stay in middle.",
+    approach: "This problem asks us to sort an array containing only the values 0, 1, and 2, performing the sort in-place with a single traversal. A brute force approach would use any standard comparison-based sorting algorithm like quicksort or mergesort, taking O(n log n) time. For example, sorting [2,0,2,1,1,0] with a general-purpose sort yields [0,0,1,1,2,2]. Since we know the array only contains three distinct values, using a general sort is overkill. The optimal approach is the Dutch National Flag algorithm, which uses three pointers: low, mid, and high. Initially, low=0, mid=0, and high=n-1. The array is partitioned into four regions: 0s in [0, low-1], 1s in [low, mid-1], unsorted elements in [mid, high], and 2s in [high+1, n-1]. As mid traverses from left to right: if arr[mid] is 0, swap arr[low] and arr[mid], then increment both low and mid; if arr[mid] is 1, just increment mid; if arr[mid] is 2, swap arr[mid] and arr[high], then decrement high (mid is not incremented because the swapped-in element needs processing). For [2,0,2,1,1,0]: low=0, mid=0, high=5. arr[0]=2: swap with arr[5], array becomes [0,0,2,1,1,2], high=4; arr[0]=0: swap with arr[0] (no change), low=1, mid=1; arr[1]=0: swap with arr[1], low=2, mid=2; arr[2]=2: swap with arr[4], array becomes [0,0,1,1,2,2], high=3; arr[2]=1: mid=3; arr[3]=1: mid=4; mid>high, stop. Edge cases include arrays with only one distinct value, where the algorithm simply increments mid through the entire array. Time complexity is O(n) for the single pass, and space complexity is O(1).\n\nDiagram:\n  Array: [2, 0, 2, 1, 1, 0]\n  low=0, mid=0, high=5\n  \n  Step 1: arr[mid]=2 → swap(mid,high) → [0,0,2,1,1,2], high=4\n  Step 2: arr[mid]=0 → swap(low,mid) → [0,0,2,1,1,2], low=1, mid=1\n  Step 3: arr[mid]=0 → swap(low,mid) → [0,0,2,1,1,2], low=2, mid=2\n  Step 4: arr[mid]=2 → swap(mid,high) → [0,0,1,1,2,2], high=3\n  Step 5: arr[mid]=1 → mid=3\n  Step 6: arr[mid]=1 → mid=4\n  Step 7: mid > high → stop\n  \n  Result: [0, 0, 1, 1, 2, 2]",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int l=0,m=0,h=n-1;\nwhile(m<=h){\n  if(arr[m]==0){\n    swap(arr[l],arr[m]);\n    l++; m++;\n  } else if(arr[m]==1){\n    m++;\n  } else {\n    swap(arr[m],arr[h]);\n    h--;\n  }\n}",
@@ -108,6 +113,7 @@ export default [
     difficulty: "easy",
     description: "Given array of n-1 numbers from 1..n, find the missing one.",
     constraints: "2 <= n <= 10^5",
+    techniques: ["cyclic-sort", "bit-manipulation"],
     examples: [
       {"input":"5\n1 2 4 5","output":"3","explanation":"Numbers 1..5, 3 is missing"}
     ],
@@ -115,12 +121,6 @@ export default [
       {"input":"5\n1 2 4 5","expected":"3"},
       {"input":"3\n1 3","expected":"2"}
     ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n-1];\n  for (int i = 0; i < n-1; i++) cin >> arr[i];\n\n  // find missing number using XOR\n\n  cout << missing << endl;\n  return 0;\n}",
-    approach: "XOR all numbers 1..n with all array elements. Paired numbers cancel, leaving the missing one.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Love Babbar 450",
-    solution_code: "int x=0;\nfor(int i=1;i<=n;i++) x^=i;\nfor(int i=0;i<n-1;i++) x^=arr[i];\ncout << x;",
-  },
   {
     id: "rotate-array",
     title: "Rotate Array by K",
