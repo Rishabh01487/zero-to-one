@@ -36,5 +36,24 @@ export default [
     complexity: {"time":"O(n log k)","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "auto cmp=[](Node& a,Node& b){return a.val>b.val;}; priority_queue<Node,vector<Node>,decltype(cmp)> pq(cmp); for(int i=0;i<k;i++)pq.push({lists[i]->val,i}); Node dummy(0); Node* t=&dummy; while(!pq.empty()){Node* cur=pq.top();pq.pop();t->next=cur;t=t->next;if(cur->next)pq.push({cur->next->val});} return dummy.next;",
+  },
+  {
+    id: "top-k-freq",
+    title: "Top K Frequent Elements",
+    category: "heaps",
+    difficulty: "medium",
+    description: "Return k most frequent elements.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    examples: [
+      {"input":"6\n1 1 1 2 2 3\n2","output":"1 2"}
+    ],
+    test_cases: [
+      {"input":"6\n1 1 1 2 2 3\n2","expected":"1 2"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\n#include <unordered_map>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int nums[n];\n  for (int i = 0; i < n; i++) cin >> nums[i];\n  cin >> k;\n\n  unordered_map<int,int> freq;\n  for (int x : nums) freq[x]++;\n\n  priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;\n  for (auto& p : freq) {\n    pq.push({p.second, p.first});\n    if ((int)pq.size() > k) pq.pop();\n  }\n\n  vector<int> ans;\n  while (!pq.empty()) { ans.push_back(pq.top().second); pq.pop(); }\n  for (int i = ans.size()-1; i >= 0; i--) cout << ans[i] << \" \";\n  return 0;\n}",
+    approach: "Count frequencies with map, then min-heap of size k. Pop smallest frequency when size > k.",
+    complexity: {"time":"O(n log k)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "unordered_map<int,int> mp; for(int x:arr)mp[x]++; priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq; for(auto& p:mp){pq.push({p.second,p.first});if(pq.size()>k)pq.pop();} while(!pq.empty()){cout<<pq.top().second<<\" \";pq.pop();}",
   }
 ]
