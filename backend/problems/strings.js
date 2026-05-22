@@ -258,5 +258,24 @@ export default [
     complexity: {"time":"O(n²)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int cnt=0; for(int i=0;i<s.size();i++){int l=i,r=i;while(l>=0&&r<s.size()&&s[l]==s[r]){cnt++;l--;r++;}l=i;r=i+1;while(l>=0&&r<s.size()&&s[l]==s[r]){cnt++;l--;r++;}}cout<<cnt;",
+  },
+  {
+    id: "min-char-palindrome",
+    title: "Min Chars to Make Palindrome",
+    category: "strings",
+    difficulty: "hard",
+    description: "Find min characters to add at front to make string palindrome.",
+    constraints: "1 <= |s| <= 10^5",
+    examples: [
+      {"input":"aacecaaa","output":"1","explanation":"Add \"a\" at front -> \"aaacecaaa\""}
+    ],
+    test_cases: [
+      {"input":"aacecaaa","expected":"1"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // use LPS (KMP) on s + '#' + reverse(s)\n\n  cout << add << endl;\n  return 0;\n}",
+    approach: "Compute LPS array on s+'#'+reverse(s). Min chars to add = n - LPS[last].",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "string t=s+'#'+string(s.rbegin(),s.rend()); int lps[t.size()]={0}; for(int i=1;i<t.size();i++){int j=lps[i-1];while(j>0&&t[i]!=t[j])j=lps[j-1];if(t[i]==t[j])j++;lps[i]=j;}cout<<s.size()-lps[t.size()-1];",
   }
 ]
