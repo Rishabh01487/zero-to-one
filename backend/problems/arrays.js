@@ -334,5 +334,24 @@ export default [
     complexity: {"time":"O(n+m+p)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m&&k<p){\n  if(a[i]==b[j]&&b[j]==c[k]){\n    cout << a[i] << \" \";\n    i++; j++; k++;\n  } else {\n    int mn=min({a[i],b[j],c[k]});\n    if(a[i]==mn) i++;\n    if(b[j]==mn) j++;\n    if(c[k]==mn) k++;\n  }\n}",
+  },
+  {
+    id: "chocolate-dist",
+    title: "Chocolate Distribution",
+    category: "arrays",
+    difficulty: "easy",
+    description: "Given packets with chocolates, distribute to m children so that max-min difference is minimized.",
+    constraints: "1 <= n <= 10^5, 1 <= m <= n",
+    examples: [
+      {"input":"8\n3 4 1 9 56 7 9 12\n5","output":"6","explanation":"Pick packets: 3,4,7,9,9 => max-min = 9-3 = 6"}
+    ],
+    test_cases: [
+      {"input":"8\n3 4 1 9 56 7 9 12\n5","expected":"6"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> m;\n\n  sort(arr, arr + n);\n  // sliding window of size m\n\n  cout << minDiff << endl;\n  return 0;\n}",
+    approach: "Sort array. Use sliding window of size m. Minimize difference between max and min in each window.",
+    complexity: {"time":"O(n log n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "sort(arr,arr+n);\nint mn=INT_MAX;\nfor(int i=0;i+m-1<n;i++){\n  mn=min(mn,arr[i+m-1]-arr[i]);\n}\ncout << mn;",
   }
 ]
