@@ -74,5 +74,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "// for i from idx to n-1: swap(arr[idx],arr[i]), permute(idx+1), swap back",
     solution_template: "#include <iostream>\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nvoid permute(vector<int>& arr, int idx, vector<vector<int>>& ans) {\n  if (idx == (int)arr.size()) { ans.push_back(arr); return; }\n  for (int i = idx; i < (int)arr.size(); i++) {\n    swap(arr[idx], arr[i]);\n    permute(arr, idx+1, ans);\n    swap(arr[idx], arr[i]);\n  }\n}\n\nint main() {\n  int n; cin >> n;\n  vector<int> arr(n);\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  vector<vector<int>> ans;\n  permute(arr, 0, ans);\n  sort(ans.begin(), ans.end());\n  for (auto& v : ans) {\n    for (int x : v) cout << x << \" \";\n    cout << endl;\n  }\n  return 0;\n}",
+  },
+  {
+    id: "combinations",
+    title: "Generate Combinations (nCk)",
+    category: "recursion",
+    difficulty: "medium",
+    description: "Generate all combinations of k numbers from 1..n.",
+    constraints: "1 <= n <= 20, 1 <= k <= n",
+    examples: [
+      {"input":"4 2","output":"1 2\n1 3\n1 4\n2 3\n2 4\n3 4"}
+    ],
+    test_cases: [
+      {"input":"4 2","expected":"1 2\n1 3\n1 4\n2 3\n2 4\n3 4"}
+    ],
+    approach: "Backtracking: pick numbers in increasing order to avoid duplicates.",
+    complexity: {"time":"O(C(n,k))","space":"O(k)"},
+    sheet: "Striver A2Z",
+    solution_code: "// for i from start to n: push, recurse with i+1, pop",
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid comb(int n, int k, int start, vector<int>& cur, vector<vector<int>>& ans) {\n  if ((int)cur.size() == k) { ans.push_back(cur); return; }\n  for (int i = start; i <= n; i++) {\n    cur.push_back(i);\n    comb(n, k, i+1, cur, ans);\n    cur.pop_back();\n  }\n}\n\nint main() {\n  int n, k; cin >> n >> k;\n  vector<vector<int>> ans;\n  vector<int> cur;\n  comb(n, k, 1, cur, ans);\n  for (auto& v : ans) {\n    for (int x : v) cout << x << \" \";\n    cout << endl;\n  }\n  return 0;\n}",
   }
 ]
