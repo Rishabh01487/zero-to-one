@@ -50,7 +50,7 @@ export default [
     test_cases: [
       {"input":"4\n1 0 0 0\n1 1 0 1\n1 1 0 0\n0 1 1 1","expected":"DDRDRR DRDDRR"}
     ],
-    approach: "DFS/backtracking: try moves (D,L,R,U) in order. Mark visited, recurse, unmark.",
+    approach: "DFS/backtracking: try moves (D,L,R,U) in order. Mark visited, recurse, unmark.\n\nDiagram:\n  Maze 4x4, start at (0,0):\n\n        (0,0)\n       /     |\n      D      R (blocked)\n      |\n    (1,0)\n      |\n      D -> (2,0)\n      |\n      D (blocked)  R -> (2,1)\n                        |\n                       ... until (3,3)\n\n  At each cell (r,c), try 4 moves.\n  Valid if in bounds and maze[nr][nc] == 1.\n  Mark cell = 0 before recurse, restore = 1 after (backtrack).\n  Base: r==n-1 && c==n-1, record path string.",
     complexity: {"time":"O(3^(n²))","space":"O(n²)"},
     sheet: "Striver A2Z",
     solution_code: "// dirs array for 4 moves. Check bounds and open cell. Recurse on valid move.",
@@ -69,7 +69,7 @@ export default [
     test_cases: [
       {"input":"3\n1 2 3","expected":"1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1"}
     ],
-    approach: "Backtracking with swapping: swap each element into current position, recurse, swap back.",
+    approach: "Backtracking with swapping: swap each element into current position, recurse, swap back.\n\nDiagram:\n  Permutations of [1,2,3]:\n\n            idx=0\n         /    |     \\\n    swap(0) swap(1) swap(2)\n    [1,2,3] [2,1,3] [3,2,1]\n        |       |        |\n      idx=1   idx=1    idx=1\n     /   \\    /   \\    /   \\\n  sw1  sw2 sw1  sw2 sw1  sw2\n  1,2,3 1,3,2 ...  ...  ...\n    |     |\n  idx=2 idx=2 (add to ans)\n\n  At each idx, swap arr[idx] with arr[i] for i=idx..n-1.\n  Recurse on idx+1, then swap back (backtrack).\n  Base: idx == n, push copy of arr into ans.",
     complexity: {"time":"O(n*n!)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// for i from idx to n-1: swap(arr[idx],arr[i]), permute(idx+1), swap back",
