@@ -138,5 +138,15 @@ export default [
     difficulty: "Intermediate",
     icon: "Hp",
     order: 14,
+  },
+  {
+    id: "bit-manipulation",
+    name: "Bit Manipulation",
+    description: "Operate directly on bits using AND, OR, XOR, shifts. Ultra-fast tricks for space optimization and clever algorithms.",
+    when_to_use: "Power-of-2 checks, counting set bits, XOR-based problems (single number), subset generation, fast arithmetic.",
+    techniques: ["Bitmask DP","XOR Properties","Kernighan's Algorithm","Bit Hacks","Bit Subsets"],
+    difficulty: "Intermediate to Advanced",
+    icon: "01",
+    order: 15,
   }
 ]
