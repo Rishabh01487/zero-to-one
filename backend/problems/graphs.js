@@ -210,5 +210,24 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "function<void(int,int)> dfs=[&](int r,int c){if(r<0||r>=n||c<0||c>=m||grid[r][c]!='1')return;grid[r][c]='0';dfs(r+1,c);dfs(r-1,c);dfs(r,c+1);dfs(r,c-1);}; int cnt=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++)if(grid[i][j]=='1'){cnt++;dfs(i,j);}cout<<cnt;",
+  },
+  {
+    id: "bellman-ford",
+    title: "Bellman-Ford Algorithm",
+    category: "graphs",
+    difficulty: "hard",
+    description: "Find shortest paths from source (handles negative edges).",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"4 5 0\n0 1 4\n1 2 -3\n0 2 5\n2 3 2\n1 3 6","output":"0 4 1 3"}
+    ],
+    test_cases: [
+      {"input":"4 5 0\n0 1 4\n1 2 -3\n0 2 5\n2 3 2\n1 3 6","expected":"0 4 1 3"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m, s; cin >> n >> m >> s;\n  struct Edge { int u, v, w; };\n  vector<Edge> edges(m);\n  for (int i = 0; i < m; i++) cin >> edges[i].u >> edges[i].v >> edges[i].w;\n\n  vector<int> dist(n, INT_MAX);\n  dist[s] = 0;\n\n  for (int i = 0; i < n-1; i++)\n    for (auto& e : edges)\n      if (dist[e.u] != INT_MAX && dist[e.u] + e.w < dist[e.v])\n        dist[e.v] = dist[e.u] + e.w;\n\n  for (int i = 0; i < n; i++) cout << dist[i] << \" \";\n  return 0;\n}",
+    approach: "Relax all edges n-1 times. Then check for negative cycles.",
+    complexity: {"time":"O(V*E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dist(n,INT_MAX); dist[s]=0; for(int i=0;i<n-1;i++)for(auto& e:edges)if(dist[e.u]!=INT_MAX&&dist[e.u]+e.w<dist[e.v])dist[e.v]=dist[e.u]+e.w;",
   }
 ]
