@@ -137,5 +137,24 @@ export default [
     complexity: {"time":"O(n²)","space":"O(n)"},
     sheet: "Love Babbar 450",
     solution_code: "int dp[n+1]={0}; for(int i=1;i<=n;i++)for(int j=0;j<i;j++)dp[i]=max(dp[i],price[j]+dp[i-j-1]);cout<<dp[n];",
+  },
+  {
+    id: "min-path-sum",
+    title: "Minimum Path Sum in Grid",
+    category: "dp",
+    difficulty: "medium",
+    description: "Find min sum path from top-left to bottom-right (only down/right).",
+    constraints: "1 <= n,m <= 200",
+    examples: [
+      {"input":"3 3\n1 3 1\n1 5 1\n4 2 1","output":"7","explanation":"1->3->1->1->1 = 7"}
+    ],
+    test_cases: [
+      {"input":"3 3\n1 3 1\n1 5 1\n4 2 1","expected":"7"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int grid[n][m];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      cin >> grid[i][j];\n\n  // dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])\n\n  cout << dp[n-1][m-1] << endl;\n  return 0;\n}",
+    approach: "DP: first row/col are cumulative sums. For other cells, dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]).",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "int dp[n][m]; dp[0][0]=grid[0][0]; for(int i=1;i<n;i++)dp[i][0]=dp[i-1][0]+grid[i][0]; for(int j=1;j<m;j++)dp[0][j]=dp[0][j-1]+grid[0][j]; for(int i=1;i<n;i++)for(int j=1;j<m;j++)dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]);cout<<dp[n-1][m-1];",
   }
 ]
