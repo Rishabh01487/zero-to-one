@@ -192,5 +192,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "function<bool(TreeNode*,long long,long long)> v=[&](TreeNode* r,long long mn,long long mx){return !r||(r->val>mn&&r->val<mx&&v(r->left,mn,r->val)&&v(r->right,r->val,mx));}; cout<<(v(root,LLONG_MIN,LLONG_MAX)?\"Yes\":\"No\");",
+  },
+  {
+    id: "kth-smallest-bst",
+    title: "Kth Smallest Element in BST",
+    category: "trees",
+    difficulty: "medium",
+    description: "Find kth smallest element in BST.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    examples: [
+      {"input":"5\n3 1 4 -1 2\n1","output":"1","explanation":"Inorder: 1,2,3,4 => 1st = 1"}
+    ],
+    test_cases: [
+      {"input":"5\n3 1 4 -1 2\n1","expected":"1"}
+    ],
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n, k; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cin >> k;\n\n  // iterative inorder, stop at kth\n\n  return 0;\n}",
+    approach: "Iterative inorder. Stop when counter reaches k.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<TreeNode*> st; TreeNode* cur=root; int cnt=0; while(cur||!st.empty()){while(cur){st.push(cur);cur=cur->left;}cur=st.top();st.pop();if(++cnt==k){cout<<cur->val;return 0;}cur=cur->right;}",
   }
 ]
