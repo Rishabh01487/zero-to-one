@@ -154,6 +154,16 @@ export default [
     examples: [
       {"input":"7\n1 2 3 4 5 6 7","output":"4 2 1 3 7"}
     ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"4 2 1 3 7"}
+    ],
+    solution_template: "#include <iostream>\n#include <queue>\n#include <map>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n\n  // BFS with horizontal distance tracking\n\n  return 0;\n}",
+    approach: "Top View shows the first node at each horizontal distance (HD) when viewed from above. BFS with queue of (node, HD) and a map storing first node per HD.\n\nDiagram:\n       1(HD=0)\n      /      \\\n   2(-1)     3(1)\n   /   \\     /   \\\n4(-2) 5(0) 6(0) 7(2)\n\nMap: {-2:4, -1:2, 0:1, 1:3, 2:7}\nOutput (sorted by HD): 4 2 1 3 7\n\nTime O(n log n), Space O(n).",
+    complexity: {"time":"O(n log n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "map<int,int> mp; queue<pair<TreeNode*,int>> q; q.push({root,0}); while(!q.empty()){auto[p,hd]=q.front();q.pop();if(!mp.count(hd))mp[hd]=p->val;if(p->left)q.push({p->left,hd-1});if(p->right)q.push({p->right,hd+1});} for(auto&[hd,val]:mp)cout<<val<<\" \";",
+    techniques: ["tree-bfs", "tree-dfs"]
+  },
   {
     id: "tree-zigzag",
     title: "Zigzag Level Order Traversal",
@@ -168,10 +178,11 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7","expected":"1 3 2 4 5 6 7"}
     ],
     solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\n#include <algorithm>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n\n  // BFS with level reversal flag\n\n  return 0;\n}",
-    approach: "BFS with level flag. Reverse order at alternate levels.",
+    approach: "Zigzag Level Order alternates direction each level. BFS with a boolean flag; place node at index i (L->R) or size-1-i (R->L) in a level array.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nLevel 0 (L->R): [1]\nLevel 1 (R->L): [3,2]\nLevel 2 (L->R): [4,5,6,7]\nOutput: 1 3 2 4 5 6 7\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); bool l2r=1; while(!q.empty()){int sz=q.size();vector<int> lvl(sz);for(int i=0;i<sz;i++){auto* f=q.front();q.pop();int idx=l2r?i:sz-1-i;lvl[idx]=f->val;if(f->left)q.push(f->left);if(f->right)q.push(f->right);}for(int v:lvl)cout<<v<<\" \";l2r=!l2r;}",
+    techniques: ["tree-bfs"]
   },
   {
     id: "bst-validate",
@@ -182,17 +193,6 @@ export default [
     constraints: "1 <= n <= 10^5",
     examples: [
       {"input":"3\n2 1 3","output":"Yes"}
-    ],
-    test_cases: [
-      {"input":"3\n2 1 3","expected":"Yes"},
-      {"input":"3\n5 1 4","output":"No"}
-    ],
-    solution_template: "#include <iostream>\n#include <climits>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool isValid(TreeNode* root, long long mn, long long mx) {\n  if (!root) return true;\n  if (root->val <= mn || root->val >= mx) return false;\n  return isValid(root->left, mn, root->val) &&\n         isValid(root->right, root->val, mx);\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cout << (isValid(nodes[0], LLONG_MIN, LLONG_MAX) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "DFS with range: each node must be within (min,max). Left subtree updates max, right updates min.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "function<bool(TreeNode*,long long,long long)> v=[&](TreeNode* r,long long mn,long long mx){return !r||(r->val>mn&&r->val<mx&&v(r->left,mn,r->val)&&v(r->right,r->val,mx));}; cout<<(v(root,LLONG_MIN,LLONG_MAX)?\"Yes\":\"No\");",
-  },
   {
     id: "kth-smallest-bst",
     title: "Kth Smallest Element in BST",
