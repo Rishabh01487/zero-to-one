@@ -156,5 +156,25 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "int dp[n][m]; dp[0][0]=grid[0][0]; for(int i=1;i<n;i++)dp[i][0]=dp[i-1][0]+grid[i][0]; for(int j=1;j<m;j++)dp[0][j]=dp[0][j-1]+grid[0][j]; for(int i=1;i<n;i++)for(int j=1;j<m;j++)dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]);cout<<dp[n-1][m-1];",
+  },
+  {
+    id: "subset-sum",
+    title: "Subset Sum Problem",
+    category: "dp",
+    difficulty: "medium",
+    description: "Check if subset with given sum exists.",
+    constraints: "1 <= n <= 200, 1 <= sum <= 10^4",
+    examples: [
+      {"input":"6\n3 34 4 12 5 2\n9","output":"Yes","explanation":"4+5=9"}
+    ],
+    test_cases: [
+      {"input":"6\n3 34 4 12 5 2\n9","expected":"Yes"},
+      {"input":"4\n1 2 3 7\n10","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  // dp[s] = can we achieve sum s?\n\n  cout << (dp[target] ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "DP boolean: dp[s]=true if sum s achievable. For each num, iterate sums backwards: dp[s]=dp[s]||dp[s-num].",
+    complexity: {"time":"O(n*target)","space":"O(target)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<bool> dp(target+1); dp[0]=1; for(int x:arr)for(int s=target;s>=x;s--)if(dp[s-x])dp[s]=1; cout<<(dp[target]?\"Yes\":\"No\");",
   }
 ]
