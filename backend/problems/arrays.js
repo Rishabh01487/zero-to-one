@@ -238,6 +238,18 @@ export default [
     constraints: "1 <= n <= 100",
     techniques: ["two-pointers"],
     examples: [
+      {"input":"3\n1 2 3","output":"1 3 2","explanation":"Next permutation after 123 is 132"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 3","expected":"1 3 2"},
+      {"input":"3\n3 2 1","expected":"1 2 3"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // next_permutation logic\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "This problem asks us to find the next lexicographically greater permutation of an array of numbers. If the array is already the largest permutation (descending order), the next permutation wraps around to the smallest (ascending order). A brute force approach would generate all possible permutations, sort them lexicographically, locate the current one, and return the next. This is O(n!) time, which is completely infeasible even for n up to 100. The optimal algorithm works in three linear steps. Step 1: Find the first decreasing element from the right. Scan from right to left and find the first index i where arr[i] < arr[i+1]. This is the pivot that needs to be increased. If no such i exists, the entire array is in descending order, so reverse it and return. Step 2: Find the element just larger than arr[i] to its right. Scan from the right end to find the first index j where arr[j] > arr[i]. This element is the smallest element on the right that is larger than arr[i]. Step 3: Swap arr[i] and arr[j], then reverse the suffix from i+1 to the end. Reversing the suffix puts it in ascending order, which is the smallest possible arrangement for that suffix, giving the next permutation. For [1,2,3]: step 1 finds i=1 (arr[1]=2 < arr[2]=3). Step 2 finds j=2 (arr[2]=3 > 2). Swap -> [1,3,2]. Reverse suffix from index 2 (just [2]) -> [1,3,2]. For [3,2,1]: no i found where arr[i] < arr[i+1], so reverse entire array -> [1,2,3]. Edge cases include arrays of size 1 (no change) and arrays with duplicate elements where we use >= for step 1 and <= for step 2 to handle duplicates correctly. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Array: [1, 2, 3]\n  \n  Step 1: Find first decreasing from right\n    arr[1]=2 < arr[2]=3 → pivot at i=1\n  \n  Step 2: Find element just larger than arr[1] from right\n    arr[2]=3 > 2 → j=2\n  \n  Step 3: Swap arr[1] and arr[2]\n    [1, 3, 2]\n  \n  Step 4: Reverse suffix from index 2\n    [1, 3, 2]\n  \n  Result: [1, 3, 2]\n  \n  For [3, 2, 1] (max permutation, no pivot found):\n    Reverse entire array → [1, 2, 3]",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int i=n-2;\nwhile(i>=0&&arr[i]>=arr[i+1]) i--;\nif(i>=0){\n  int j=n-1;\n  while(arr[j]<=arr[i]) j--;\n  swap(arr[i],arr[j]);\n}\nreverse(arr+i+1,arr+n);",
+  },
   {
     id: "subarray-zero-sum",
     title: "Subarray with Zero Sum",
@@ -245,6 +257,7 @@ export default [
     difficulty: "medium",
     description: "Check if there is a subarray whose sum is zero.",
     constraints: "1 <= n <= 10^5",
+    techniques: ["prefix-sum"],
     examples: [
       {"input":"5\n4 2 -3 1 6","output":"Yes","explanation":"Subarray [2,-3,1] sums to 0"}
     ],
@@ -253,7 +266,7 @@ export default [
       {"input":"3\n1 2 3","expected":"No"}
     ],
     solution_template: "#include <iostream>\n#include <unordered_set>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // check prefix sum in hash set\n\n  return 0;\n}",
-    approach: "Use prefix sum with hash set. If prefix sum repeats or becomes 0, subarray with 0 sum exists.",
+    approach: "This problem asks us to check whether any contiguous subarray within the given array sums to zero. A brute force approach considers every possible subarray using two nested loops to define start and end indices, computing the sum for each subarray with a third inner loop (or incrementally). For example, with array [4,2,-3,1,6], the subarray [2,-3,1] from index 1 to 3 sums to 0. Checking all subarrays takes O(n^2) time, which is too slow for n up to 10^5. The optimal approach uses the prefix sum technique with a hash set. Traverse the array while maintaining a running sum. If the running sum ever becomes 0, a zero-sum subarray exists from the start. Additionally, if the running sum has been seen before (stored in the hash set), then the subarray between the previous occurrence and the current index sums to zero. This works because if prefix sums at two different indices are equal, the elements between them must sum to zero. For [4,2,-3,1,6]: sum=0, set={}; index 0 (4): sum=4, not in set, add 4 -> set={4}; index 1 (2): sum=6, not in set, add 6 -> set={4,6}; index 2 (-3): sum=3, not in set, add 3 -> set={4,6,3}; index 3 (1): sum=4, found in set! Zero-sum subarray exists from index 1 to 3 (values 2,-3,1). Edge cases include an element equal to 0 (running sum hits 0 immediately), an array where the entire array sums to 0, and an array with no zero-sum subarray. Time complexity is O(n) and space complexity is O(n) for the hash set.\n\nDiagram:\n  Array: [4, 2, -3, 1, 6]\n  set = {}, sum = 0\n  \n  i=0 (4): sum=4,  4 not in set → add {4}\n  i=1 (2): sum=6,  6 not in set → add {4,6}\n  i=2 (-3): sum=3, 3 not in set → add {4,6,3}\n  i=3 (1): sum=4,  4 IS in set → zero-sum subarray found! (indices 1..3: [2,-3,1])\n  \n  Result: Yes",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Love Babbar 450",
     solution_code: "unordered_set<int> s;\nint sum=0;\nfor(int x:arr){\n  sum+=x;\n  if(sum==0||s.count(sum)){\n    cout << \"Yes\";\n    return 0;\n  }\n  s.insert(sum);\n}\ncout << \"No\";",
@@ -264,19 +277,6 @@ export default [
     category: "arrays",
     difficulty: "hard",
     description: "Given elevation map, compute how much water can be trapped.",
-    constraints: "1 <= n <= 10^5, 0 <= height[i] <= 10^5",
-    examples: [
-      {"input":"12\n0 1 0 2 1 0 1 3 2 1 2 1","output":"6","explanation":"6 units of water trapped"}
-    ],
-    test_cases: [
-      {"input":"12\n0 1 0 2 1 0 1 3 2 1 2 1","expected":"6"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int height[n];\n  for (int i = 0; i < n; i++) cin >> height[i];\n\n  // two-pointer approach\n\n  cout << water << endl;\n  return 0;\n}",
-    approach: "Two-pointer: maintain leftMax and rightMax. Process smaller side first, add trapped water.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int l=0,r=n-1,lMax=0,rMax=0,water=0;\nwhile(l<r){\n  if(height[l]<height[r]){\n    if(height[l]>=lMax) lMax=height[l];\n    else water+=lMax-height[l];\n    l++;\n  } else {\n    if(height[r]>=rMax) rMax=height[r];\n    else water+=rMax-height[r];\n    r--;\n  }\n}\ncout << water;",
-  },
   {
     id: "find-duplicate",
     title: "Find the Duplicate Number",
