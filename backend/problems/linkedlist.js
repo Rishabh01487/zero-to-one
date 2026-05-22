@@ -38,5 +38,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} cout<<slow->data;",
+  },
+  {
+    id: "detect-cycle",
+    title: "Detect Cycle in Linked List",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Check if linked list has a cycle (Floyd cycle detection).",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4\n1 2 3 4\n2","output":"Yes","explanation":"Last node connects to node at position 2 (1-indexed)"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 3 4\n-1","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nbool hasCycle(Node* head) {\n  // Floyd's algorithm\n}\n\nint main() {\n  int n, pos;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr, *cycleNode = nullptr;\n  for (int i = 0; i < n; i++) {\n    int x; cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> pos;\n  // create cycle if pos != -1\n  if (pos >= 0) {\n    Node* t = head;\n    for (int i = 0; i < pos; i++) t = t->next;\n    tail->next = t;\n  }\n  cout << (hasCycle(head) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Floyd cycle detection: slow and fast pointers. If they meet, cycle exists.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;if(slow==fast)return true;} return false;",
   }
 ]
