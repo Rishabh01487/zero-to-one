@@ -119,44 +119,44 @@ Diagram:
     examples: [
       {"input":"horse\nros","output":"3","explanation":"horse->rorse->rose->ros (3 ops)"}
     ],
-  {
-    id: "rod-cutting",
-    title: "Rod Cutting",
-    category: "dp",
-    difficulty: "medium",
-    description: "Find max value from cutting a rod of length n.",
-    constraints: "1 <= n <= 100",
-    examples: [
-      {"input":"8\n1 5 8 9 10 17 17 20","output":"22","explanation":"Cut into 2+6 = 5+17 = 22"}
-    ],
     test_cases: [
-      {"input":"8\n1 5 8 9 10 17 17 20","expected":"22"}
+      {"input":"horse\nros","expected":"3"},
+      {"input":"intention\nexecution","expected":"5"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int price[n];\n  for (int i = 0; i < n; i++) cin >> price[i];\n\n  // dp[i] = max(price[j] + dp[i-j-1]) for all j\n\n  cout << dp[n] << endl;\n  return 0;\n}",
-    approach: "DP: for each length i, try all cuts j, dp[i]=max(price[j]+dp[i-j-1]).",
-    complexity: {"time":"O(n²)","space":"O(n)"},
-    sheet: "Love Babbar 450",
-    solution_code: "int dp[n+1]={0}; for(int i=1;i<=n;i++)for(int j=0;j<i;j++)dp[i]=max(dp[i],price[j]+dp[i-j-1]);cout<<dp[n];",
-  },
-  {
-    id: "min-path-sum",
-    title: "Minimum Path Sum in Grid",
-    category: "dp",
-    difficulty: "medium",
-    description: "Find min sum path from top-left to bottom-right (only down/right).",
-    constraints: "1 <= n,m <= 200",
-    examples: [
-      {"input":"3 3\n1 3 1\n1 5 1\n4 2 1","output":"7","explanation":"1->3->1->1->1 = 7"}
-    ],
-    test_cases: [
-      {"input":"3 3\n1 3 1\n1 5 1\n4 2 1","expected":"7"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int grid[n][m];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      cin >> grid[i][j];\n\n  // dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])\n\n  cout << dp[n-1][m-1] << endl;\n  return 0;\n}",
-    approach: "DP: first row/col are cumulative sums. For other cells, dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]).",
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s1, s2;\n  cin >> s1 >> s2;\n  int n = s1.size(), m = s2.size();\n\n  // 2D DP: dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(s1[i]!=s2[j]))\n\n  cout << dp[n][m] << endl;\n  return 0;\n}",
+    approach: `2D DP: dp[i][j]=min(insert,delete,replace). Insert=dp[i][j-1]+1, Delete=dp[i-1][j]+1, Replace=dp[i-1][j-1]+(s1[i]!=s2[j]).
+
+Diagram:
+  s1="horse", s2="ros"
+
+       O   r   o   s
+  O    0   1   2   3
+  h    1   1   2   3
+  o    2   2   1   2
+  r    3   2   2   2
+  s    4   3   3   2
+  e    5   4   4   3
+
+  dp[i][j] = if match: dp[i-1][j-1]
+           else: 1+min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+  Result: 3 (horse->rorse->rose->ros)`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
-    solution_code: "int dp[n][m]; dp[0][0]=grid[0][0]; for(int i=1;i<n;i++)dp[i][0]=dp[i-1][0]+grid[i][0]; for(int j=1;j<m;j++)dp[0][j]=dp[0][j-1]+grid[0][j]; for(int i=1;i<n;i++)for(int j=1;j<m;j++)dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]);cout<<dp[n-1][m-1];",
+    solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=dp[i-1][j-1];else dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});}cout<<dp[n][m];",
   },
+  {
+    id: "lcs",
+    title: "Longest Common Subsequence",
+    category: "dp",
+    difficulty: "medium",
+    description: "Find length of longest common subsequence between two strings.",
+    constraints: "1 <= |s1|,|s2| <= 1000",
+    examples: [
+      {"input":"abcde\nace","output":"3","explanation":"LCS = \"ace\""}
+    ],
+    test_cases: [
+      {"input":"abcde\nace","expected":"3"},
+      {"input":"abc\nabc","expected":"3"},
   {
     id: "subset-sum",
     title: "Subset Sum Problem",
