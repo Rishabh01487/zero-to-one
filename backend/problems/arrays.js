@@ -40,6 +40,8 @@ export default [
     approach: "This problem asks us to find both the maximum and minimum values present in a given unsorted array of integers. A brute force approach would sort the entire array using a comparison-based sort like quicksort or mergesort, then take the first element as the minimum and the last element as the maximum. For example, with array [3,7,1,9,4,2], sorting gives [1,2,3,4,7,9], so min=1 and max=9. Sorting takes O(n log n) time, which is unnecessary overhead for such a simple task, especially when n can reach 10^5. The optimal approach uses a single linear scan: initialize two variables, maxVal and minVal, both set to the first element of the array. Then iterate from the second element onward. For each element, if it is greater than maxVal, update maxVal; if it is smaller than minVal, update minVal. After a complete pass, maxVal and minVal hold the answers. For [3,7,1,9,4,2]: initialize max=3, min=3; process 7: max=7; process 1: min=1; process 9: max=9; process 4: no change; process 2: no change. Result: max=9, min=1. Edge cases include arrays with a single element where both max and min are that element, arrays where all values are identical, and arrays containing negative numbers. The time complexity is O(n) since we make exactly one pass, and the space complexity is O(1) as we only use two tracking variables.\n\nDiagram:\n  Array: [3, 7, 1, 9, 4, 2]\n  \n  i=0: arr[0]=3 → max=3, min=3\n  i=1: arr[1]=7 → 7>3 → max=7\n  i=2: arr[2]=1 → 1<3 → min=1\n  i=3: arr[3]=9 → 9>7 → max=9\n  i=4: arr[4]=4 → no change\n  i=5: arr[5]=2 → no change\n  \n  Result: max=9, min=1",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
+    solution_code: "int mx=arr[0],mn=arr[0];\nfor(int i=1;i<n;i++){\n  if(arr[i]>mx) mx=arr[i];\n  if(arr[i]<mn) mn=arr[i];\n}\ncout << mx << \" \" << mn;",
+  },
   {
     id: "kth-largest",
     title: "Kth Largest Element in Array",
@@ -47,6 +49,7 @@ export default [
     difficulty: "medium",
     description: "Find the kth largest element in an unsorted array.",
     constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    techniques: ["sorting"],
     examples: [
       {"input":"6\n3 2 1 5 6 4\n2","output":"5","explanation":"Sorted: [1,2,3,4,5,6], 2nd largest = 5"}
     ],
@@ -55,7 +58,7 @@ export default [
       {"input":"5\n7 2 9 1 8\n3","expected":"7"}
     ],
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, k;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n\n  // find kth largest\n\n  return 0;\n}",
-    approach: "Use min-heap of size k. For each element, push to heap; if heap size exceeds k, pop smallest. Root is kth largest.",
+    approach: "This problem asks us to find the kth largest element in an unsorted array without fully sorting it. A brute force approach would sort the entire array in descending order and return the element at index k-1. For example, with array [3,2,1,5,6,4] and k=2, sorting gives [6,5,4,3,2,1], and the 2nd largest is 5. Sorting takes O(n log n) time, which is wasteful since we only care about one specific element. The optimal approach uses a min-heap (priority queue) of size k. We iterate through all elements, pushing each into the heap. Whenever the heap size exceeds k, we pop the smallest element (the root of the min-heap). After processing all elements, the heap contains exactly the k largest elements, and the root is the kth largest. For [3,2,1,5,6,4], k=2: push 3 (heap=[3]); push 2 (heap=[2,3]); push 1 (heap=[1,2,3], size>2 so pop 1, heap=[2,3]); push 5 (heap=[2,3,5], pop 2, heap=[3,5]); push 6 (heap=[3,5,6], pop 3, heap=[5,6]); push 4 (heap=[4,5,6], pop 4, heap=[5,6]). The root is 5. Edge cases include k=1 (largest element, heap always size 1) where it behaves like tracking the maximum, and k=n (smallest element) where the heap maintains all elements and pops the smallest each time. Time complexity is O(n log k) since each heap operation takes O(log k) and there are n elements. Space complexity is O(k) for the heap.\n\nDiagram:\n  Array: [3, 2, 1, 5, 6, 4], k=2\n  Min-heap (size=2, root is kth largest):\n  \n  Push 3: heap=[3]\n  Push 2: heap=[2, 3]\n  Push 1: heap=[1, 2, 3] → pop 1 → heap=[2, 3]\n  Push 5: heap=[2, 3, 5] → pop 2 → heap=[3, 5]\n  Push 6: heap=[3, 5, 6] → pop 3 → heap=[5, 6]\n  Push 4: heap=[4, 5, 6] → pop 4 → heap=[5, 6]\n  \n  Root of heap = 5 → kth largest = 5",
     complexity: {"time":"O(n log k)","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "priority_queue<int,vector<int>,greater<int>> pq;\nfor(int x:arr){\n  pq.push(x);\n  if(pq.size()>k) pq.pop();\n}\ncout << pq.top();",
@@ -67,6 +70,7 @@ export default [
     difficulty: "medium",
     description: "Find the contiguous subarray with the largest sum.",
     constraints: "1 <= n <= 10^5, -10^4 <= arr[i] <= 10^4",
+    techniques: ["kadanes-algorithm"],
     examples: [
       {"input":"9\n-2 1 -3 4 -1 2 1 -5 4","output":"6","explanation":"[4,-1,2,1] has sum 6"}
     ],
@@ -76,11 +80,7 @@ export default [
       {"input":"5\n5 4 3 2 1","expected":"15"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Kadane's algorithm\n\n  cout << maxSum << endl;\n  return 0;\n}",
-    approach: "Kadane: track current sum and max sum. Reset current sum to 0 if it goes negative.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int cur=0,mx=arr[0];\nfor(int x:arr){\n  cur+=x;\n  mx=max(mx,cur);\n  if(cur<0) cur=0;\n}\ncout << mx;",
-  },
+    approach: "This problem asks us to find the contiguous subarray (a consecutive block of elements) that has the maximum possible sum, and return that sum. A brute force approach uses three nested loops: fix the start and end indices with two outer loops, then compute the sum with an inner loop, yielding O(n^3) time. This can be optimized to O(n^2) by incrementally updating the sum as we extend the end pointer. For example, in [-2,1,-3,4,-1,2,1,-5,4], we would check every subarray and find that [4,-1,2,1] has sum 6. O(n^2) is too slow for n=10^5. The optimal approach is Kadane's algorithm, which works in a single pass. Initialize currentSum to 0 and maxSum to the first element (or a very small number). For each element x, add x to currentSum. Update maxSum to be the maximum of maxSum and currentSum. If currentSum becomes negative, reset it to 0 because any subarray starting fresh from the next element will have a larger sum than carrying a negative prefix. For [-2,1,-3,4,-1,2,1,-5,4]: x=-2: cur=-2, max=-2, cur=0; x=1: cur=1, max=1; x=-3: cur=-2, max=1, cur=0; x=4: cur=4, max=4; x=-1: cur=3, max=4; x=2: cur=5, max=5; x=1: cur=6, max=6; x=-5: cur=1, max=6; x=4: cur=5, max=6. Answer=6. Edge cases include arrays with all negative numbers (the algorithm correctly returns the largest/least negative element) and arrays with a single element. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]\n  \n  i=0: arr[0]=-2, cur=-2, max=-2, cur=0\n  i=1: arr[1]=1,  cur=1,  max=1\n  i=2: arr[2]=-3, cur=-2, max=1, cur=0\n  i=3: arr[3]=4,  cur=4,  max=4\n  i=4: arr[4]=-1, cur=3,  max=4\n  i=5: arr[5]=2,  cur=5,  max=5\n  i=6: arr[6]=1,  cur=6,  max=6\n  i=7: arr[7]=-5, cur=1,  max=6\n  i=8: arr[8]=4,  cur=5,  max=6\n  \n  Max subarray sum = 6  (subarray: [4, -1, 2, 1])",
   {
     id: "sort-012",
     title: "Sort 0s, 1s and 2s (Dutch Flag)",
