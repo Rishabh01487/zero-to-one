@@ -112,5 +112,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "// push, rec(idx+1), pop, rec(idx+1)",
     solution_template: "#include <iostream>\n#include <vector>\n#include <algorithm>\nusing namespace std;\n\nvoid gen(vector<int>& arr, int idx, vector<int>& cur, vector<vector<int>>& ans) {\n  if (idx == (int)arr.size()) { ans.push_back(cur); return; }\n  cur.push_back(arr[idx]);\n  gen(arr, idx+1, cur, ans);\n  cur.pop_back();\n  gen(arr, idx+1, cur, ans);\n}\n\nint main() {\n  int n; cin >> n;\n  vector<int> arr(n);\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  sort(arr.begin(), arr.end());\n  vector<vector<int>> ans;\n  vector<int> cur;\n  gen(arr, 0, cur, ans);\n  for (auto& v : ans) {\n    for (int x : v) cout << x << \" \";\n    cout << endl;\n  }\n  return 0;\n}",
+  },
+  {
+    id: "word-break",
+    title: "Word Break (Print All)",
+    category: "recursion",
+    difficulty: "hard",
+    description: "Given string and dictionary, print all possible sentences.",
+    constraints: "1 <= |s| <= 20, 1 <= n <= 20",
+    examples: [
+      {"input":"catsanddog\n5\ncat cats and sand dog","output":"cat sand dog\ncats and dog"}
+    ],
+    test_cases: [
+      {"input":"catsanddog\n5\ncat cats and sand dog","expected":"cat sand dog\ncats and dog"}
+    ],
+    approach: "DFS: at each position, try all words from dictionary that match prefix. Recurse for remaining string.",
+    complexity: {"time":"O(2^n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// for i from idx to end: if dict has s[idx..i], recurse with string + word",
+    solution_template: "#include <iostream>\n#include <vector>\n#include <unordered_set>\nusing namespace std;\n\nvoid solve(string& s, unordered_set<string>& dict, int idx, string cur, vector<string>& ans) {\n  if (idx == (int)s.size()) { ans.push_back(cur); return; }\n  string word = \"\";\n  for (int i = idx; i < (int)s.size(); i++) {\n    word += s[i];\n    if (dict.count(word)) {\n      string nxt = cur.empty() ? word : cur + \" \" + word;\n      solve(s, dict, i+1, nxt, ans);\n    }\n  }\n}\n\nint main() {\n  string s; cin >> s;\n  int n; cin >> n;\n  unordered_set<string> dict;\n  for (int i = 0; i < n; i++) { string w; cin >> w; dict.insert(w); }\n  vector<string> ans;\n  solve(s, dict, 0, \"\", ans);\n  for (string& line : ans) cout << line << endl;\n  return 0;\n}",
   }
 ]
