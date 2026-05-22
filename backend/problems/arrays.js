@@ -315,5 +315,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "unordered_set<int> s(arr,arr+n);\nint mx=0;\nfor(int x:s){\n  if(!s.count(x-1)){\n    int len=1;\n    while(s.count(x+len)) len++;\n    mx=max(mx,len);\n  }\n}\ncout << mx;",
+  },
+  {
+    id: "common-three-sorted",
+    title: "Common Elements in Three Sorted Arrays",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Find common elements in three sorted arrays.",
+    constraints: "1 <= n,m,p <= 10^5",
+    examples: [
+      {"input":"6\n1 5 10 20 40 80\n5\n6 7 20 80 100\n8\n3 4 15 20 30 70 80 120","output":"20 80","explanation":"20 and 80 appear in all three"}
+    ],
+    test_cases: [
+      {"input":"6\n1 5 10 20 40 80\n5\n6 7 20 80 100\n8\n3 4 15 20 30 70 80 120","expected":"20 80"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m, p;\n  cin >> n; int a[n]; for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m; int b[m]; for (int i = 0; i < m; i++) cin >> b[i];\n  cin >> p; int c[p]; for (int i = 0; i < p; i++) cin >> c[i];\n\n  // three-pointer approach\n\n  return 0;\n}",
+    approach: "Three-pointer: advance the smallest pointer. When all three elements equal, add to result and advance all three.",
+    complexity: {"time":"O(n+m+p)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m&&k<p){\n  if(a[i]==b[j]&&b[j]==c[k]){\n    cout << a[i] << \" \";\n    i++; j++; k++;\n  } else {\n    int mn=min({a[i],b[j],c[k]});\n    if(a[i]==mn) i++;\n    if(b[j]==mn) j++;\n    if(c[k]==mn) k++;\n  }\n}",
   }
 ]
