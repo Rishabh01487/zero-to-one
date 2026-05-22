@@ -192,6 +192,16 @@ export default [
     examples: [
       {"input":"4 7\n0 1 5\n0 3 10\n1 2 3\n1 3 2\n2 3 1\n3 0 7\n3 2 6","output":"0 5 8 7\n7 0 3 2\n8 5 0 1\n7 12 6 0"}
     ],
+    test_cases: [
+      {"input":"4 7\n0 1 5\n0 3 10\n1 2 3\n1 3 2\n2 3 1\n3 0 7\n3 2 6","expected":"0 5 8 7\n7 0 3 2\n8 5 0 1\n7 12 6 0"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int INF = 1e9;\n  int dist[n][n];\n  for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) dist[i][j] = (i == j) ? 0 : INF;\n  for (int i = 0; i < m; i++) { int u, v, w; cin >> u >> v >> w; dist[u][v] = w; }\n\n  for (int k = 0; k < n; k++)\n    for (int i = 0; i < n; i++)\n      for (int j = 0; j < n; j++)\n        if (dist[i][k] < INF && dist[k][j] < INF)\n          dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);\n\n  for (int i = 0; i < n; i++) { for (int j = 0; j < n; j++) cout << dist[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
+    approach: "\n\nDiagram:\n```\nfloyd-warshall:\n  Initial matrix (0-indexed):\n     0   1   2   3\n  0  0   5   ∞   10\n  1  ∞   0   3   2\n  2  ∞   ∞   0   1\n  3  7   ∞   6   0\n\n  k=0: dist[3][1] = min(∞, 7+5) = 12\n  k=1: dist[0][2] = min(∞, 5+3) = 8\n       dist[0][3] = min(10, 5+2) = 7\n  k=2: dist[1][3] = min(2, 3+1) = 2\n       dist[3][1] = min(12, 6+3) = 9\n       dist[0][3] = min(7, 8+1) = 7 (no change)\n  k=3: dist[0][1] = min(5, 7+9, 7+2) = 5\n\n  Final:\n     0   1   2   3\n  0  0   5   8   7\n  1  7   0   3   2\n  2  8   5   0   1\n  3  7  12   6   0\n```\nFloyd-Warshall computes shortest paths between every pair of vertices in a weighted graph, handling negative edge weights (but not negative cycles). The graph is represented as an adjacency matrix dist[n][n] where dist[i][j] is initialized to the edge weight from i to j (or INF if no direct edge, and 0 on the diagonal). The algorithm uses dynamic programming across intermediate vertices. For each intermediate vertex k from 0 to n-1, and for every pair of vertices i and j, we update dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]). This relaxation considers whether going through k yields a shorter path than the current known path. The key insight is that after processing k, dist[i][j] holds the shortest path using only vertices {0,...,k-1} as intermediates. After all k iterations, dist[i][j] holds the true shortest path between i and j using any set of intermediate vertices. For a dry run on a 4-node graph with edges (0->1:5, 0->3:10, 1->2:3, 1->3:2, 2->3:1, 3->0:7, 3->2:6): initial dist is a 4x4 matrix. k=0: dist[3][1] = min(INF, 7+5=12)=12. k=1: dist[0][2]=min(INF,5+3=8)=8, dist[0][3]=min(10,5+2=7)=7, dist[3][2]=min(6,12+3=15)=6. k=2: dist[0][3]=min(7,8+1=9)=7, dist[1][3]=min(2,3+1=4)=2, dist[3][1]=min(12,6+3=9)=9. k=3: dist[0][1]=min(5,7+9=16, 7+2=9)=5, final matrix: [0,5,8,7], [7,0,3,2], [8,5,0,1], [7,12,6,0]. Time complexity is O(V^3) and space is O(V^2). The algorithm detects negative cycles by checking if any dist[i][i] becomes negative after processing all k.",
+    complexity: {"time":"O(V³)","space":"O(V²)"},
+    sheet: "Striver A2Z",
+    solution_code: "for(int k=0;k<n;k++)for(int i=0;i<n;i++)for(int j=0;j<n;j++)if(dist[i][k]<INF&&dist[k][j]<INF)dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);",
+    techniques: ["shortest-path"],
+  },
   {
     id: "islands",
     title: "Number of Islands",
@@ -206,10 +216,11 @@ export default [
       {"input":"4 5\n11000\n11000\n00100\n00011","expected":"3"}
     ],
     solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid dfs(vector<vector<char>>& grid, int r, int c) {\n  int n = grid.size(), m = grid[0].size();\n  if (r < 0 || r >= n || c < 0 || c >= m || grid[r][c] == '0') return;\n  grid[r][c] = '0';\n  dfs(grid, r+1, c); dfs(grid, r-1, c);\n  dfs(grid, r, c+1); dfs(grid, r, c-1);\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<char>> grid(n, vector<char>(m));\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      cin >> grid[i][j];\n\n  int count = 0;\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      if (grid[i][j] == '1') { dfs(grid, i, j); count++; }\n\n  cout << count << endl;\n  return 0;\n}",
-    approach: "DFS: for each unvisited '1', increment count and sink the entire island via DFS.",
+    approach: "\n\nDiagram:\n```\nislands:\n  Grid:         DFS sinks island 1:\n  1 1 0 0 0    0 0 0 0 0\n  1 1 0 0 0    0 0 0 0 0\n  0 0 1 0 0    0 0 1 0 0\n  0 0 0 1 1    0 0 0 1 1\n\n  Scan (0,0): '1' → cnt=1, flood-fill:\n  dfs(0,0) → dfs(1,0) → dfs(1,1) → dfs(0,1)\n  Sinks all four connected 1s\n\n  Continue scanning:\n  (2,2): '1' → cnt=2, sinks (2,2)\n  (3,3): '1' → cnt=3, sinks (3,3),(3,4)\n\n  Total islands = 3\n```\nThe Number of Islands problem counts connected components of 1s (land) in a binary 2D grid, where connectivity is defined horizontally and vertically (4-directional). The grid is stored as a 2D matrix of characters. The algorithm scans every cell sequentially. When an unvisited 1 is found, we increment the island count and perform DFS or BFS to visit every cell of that island, setting them to 0 (sinking the island) to avoid reprocessing. The DFS function takes row r and column c as parameters. It checks boundary conditions: if r is outside [0, n-1] or c is outside [0, m-1], return. If grid[r][c] is 0, return. Otherwise, set grid[r][c] = 0 and recursively call itself for the four adjacent cells: up (r-1,c), down (r+1,c), left (r,c-1), right (r,c+1). This recursive flood-fill ensures the entire island is consumed before the outer loop continues scanning. For a dry run on a 4x5 grid: 11000 / 11000 / 00100 / 00011. Scanning from (0,0): first 1, count=1, DFS sinks (0,0), (0,1), (1,0), (1,1). Scanning continues past 0s until (2,2): second 1, count=2, DFS sinks (2,2). Scanning to (3,3): third 1, count=3, DFS sinks (3,3), (3,4). Total islands = 3. Edge cases include empty grid (return 0), all 0s (return 0), single cell grid with 1 (return 1), and single-row or single-column grids. For large grids, recursive DFS may overflow the stack; an iterative BFS using a queue avoids this. Time complexity is O(m*n) where m and n are grid dimensions, as each cell is visited exactly once. Space complexity is O(m*n) for the recursion stack in the worst case when the entire grid is one island.",
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "function<void(int,int)> dfs=[&](int r,int c){if(r<0||r>=n||c<0||c>=m||grid[r][c]!='1')return;grid[r][c]='0';dfs(r+1,c);dfs(r-1,c);dfs(r,c+1);dfs(r,c-1);}; int cnt=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++)if(grid[i][j]=='1'){cnt++;dfs(i,j);}cout<<cnt;",
+    techniques: ["tree-dfs", "tree-bfs", "union-find"],
   },
   {
     id: "bellman-ford",
@@ -219,17 +230,6 @@ export default [
     description: "Find shortest paths from source (handles negative edges).",
     constraints: "1 <= n,m <= 10^5",
     examples: [
-      {"input":"4 5 0\n0 1 4\n1 2 -3\n0 2 5\n2 3 2\n1 3 6","output":"0 4 1 3"}
-    ],
-    test_cases: [
-      {"input":"4 5 0\n0 1 4\n1 2 -3\n0 2 5\n2 3 2\n1 3 6","expected":"0 4 1 3"}
-    ],
-    solution_template: "#include <iostream>\n#include <vector>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m, s; cin >> n >> m >> s;\n  struct Edge { int u, v, w; };\n  vector<Edge> edges(m);\n  for (int i = 0; i < m; i++) cin >> edges[i].u >> edges[i].v >> edges[i].w;\n\n  vector<int> dist(n, INT_MAX);\n  dist[s] = 0;\n\n  for (int i = 0; i < n-1; i++)\n    for (auto& e : edges)\n      if (dist[e.u] != INT_MAX && dist[e.u] + e.w < dist[e.v])\n        dist[e.v] = dist[e.u] + e.w;\n\n  for (int i = 0; i < n; i++) cout << dist[i] << \" \";\n  return 0;\n}",
-    approach: "Relax all edges n-1 times. Then check for negative cycles.",
-    complexity: {"time":"O(V*E)","space":"O(V)"},
-    sheet: "Striver A2Z",
-    solution_code: "vector<int> dist(n,INT_MAX); dist[s]=0; for(int i=0;i<n-1;i++)for(auto& e:edges)if(dist[e.u]!=INT_MAX&&dist[e.u]+e.w<dist[e.v])dist[e.v]=dist[e.u]+e.w;",
-  },
   {
     id: "course-schedule",
     title: "Course Schedule (Topological)",
