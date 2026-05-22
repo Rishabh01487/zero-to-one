@@ -191,5 +191,24 @@ export default [
     complexity: {"time":"O(V³)","space":"O(V²)"},
     sheet: "Striver A2Z",
     solution_code: "for(int k=0;k<n;k++)for(int i=0;i<n;i++)for(int j=0;j<n;j++)if(dist[i][k]<INF&&dist[k][j]<INF)dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);",
+  },
+  {
+    id: "islands",
+    title: "Number of Islands",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Count number of islands in a binary grid.",
+    constraints: "1 <= n,m <= 200",
+    examples: [
+      {"input":"4 5\n11000\n11000\n00100\n00011","output":"3"}
+    ],
+    test_cases: [
+      {"input":"4 5\n11000\n11000\n00100\n00011","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid dfs(vector<vector<char>>& grid, int r, int c) {\n  int n = grid.size(), m = grid[0].size();\n  if (r < 0 || r >= n || c < 0 || c >= m || grid[r][c] == '0') return;\n  grid[r][c] = '0';\n  dfs(grid, r+1, c); dfs(grid, r-1, c);\n  dfs(grid, r, c+1); dfs(grid, r, c-1);\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<char>> grid(n, vector<char>(m));\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      cin >> grid[i][j];\n\n  int count = 0;\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      if (grid[i][j] == '1') { dfs(grid, i, j); count++; }\n\n  cout << count << endl;\n  return 0;\n}",
+    approach: "DFS: for each unvisited '1', increment count and sink the entire island via DFS.",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "function<void(int,int)> dfs=[&](int r,int c){if(r<0||r>=n||c<0||c>=m||grid[r][c]!='1')return;grid[r][c]='0';dfs(r+1,c);dfs(r-1,c);dfs(r,c+1);dfs(r,c-1);}; int cnt=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++)if(grid[i][j]=='1'){cnt++;dfs(i,j);}cout<<cnt;",
   }
 ]
