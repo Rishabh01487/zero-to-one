@@ -120,5 +120,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int x=0;\nfor(int i=1;i<=n;i++) x^=i;\nfor(int i=0;i<n-1;i++) x^=arr[i];\ncout << x;",
+  },
+  {
+    id: "rotate-array",
+    title: "Rotate Array by K",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Rotate the array to the right by k steps.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= 10^5",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7\n3","output":"5 6 7 1 2 3 4","explanation":"Rotate right by 3"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7\n3","expected":"5 6 7 1 2 3 4"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nvoid reverse(int arr[], int l, int r) {\n  while (l < r) {\n    int t = arr[l]; arr[l] = arr[r]; arr[r] = t;\n    l++; r--;\n  }\n}\n\nint main() {\n  int n, k;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  k = k % n;\n\n  // rotate using reversal algorithm\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Reversal algorithm: reverse entire array, then reverse first k, then reverse remaining n-k.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "k%=n;\nreverse(arr,arr+n);\nreverse(arr,arr+k);\nreverse(arr+k,arr+n);",
   }
 ]
