@@ -1359,4 +1359,4 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "if(m!=n-1){cout<<\"false\";return 0;} vector<int> par(n); iota(par.begin(),par.end(),0); function<int(int)> find=[&](int x){return par[x]==x?x:par[x]=find(par[x]);}; auto unite=[&](int a,int b){par[find(a)]=find(b);}; for(int i=0;i<m;i++){int u,v;cin>>u>>v;if(find(u)==find(v)){cout<<\"false\";return 0;}unite(u,v);} int r=find(0); for(int i=1;i<n;i++)if(find(i)!=r){cout<<\"false\";return 0;} cout<<\"true\";",
   },
-]
+];

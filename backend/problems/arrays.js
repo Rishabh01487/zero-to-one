@@ -657,7 +657,7 @@ Diagram:
 
 Diagram:
   Array: [1, 2, 3, 1, 1, 2, 2, 3, 1]
-
+  
   i=0 (1): c1=1, cnt1=1, c2=_, cnt2=0
   i=1 (2): c1=1, cnt1=1, c2=2, cnt2=1
   i=2 (3): no match, cnt1>0, cnt2>0 => cnt1=0, cnt2=0
@@ -667,7 +667,7 @@ Diagram:
   i=6 (2): c2=2 => cnt2=2
   i=7 (3): no match, cnt1=1>0, cnt2=2>0 => cnt1=0, cnt2=1
   i=8 (1): cnt1=0 => c1=1, cnt1=1
-
+  
   Verify: c1=1 appears 4 times > 3, c2=2 appears 3 times = 3 (not >3)
   Result: [1]`,
     complexity: {"time":"O(n)","space":"O(1)"},
@@ -695,7 +695,7 @@ Diagram:
 Diagram:
   Array: [3, 1, 2, 2, 1, 3, 3, 2], k=4, threshold=8/4=2
   map = {}
-
+  
   i=0 (3): map size=0 <3 => map={3:1}
   i=1 (1): map size=1 <3 => map={3:1, 1:1}
   i=2 (2): map size=2 <3 => map={3:1, 1:1, 2:1}
@@ -704,7 +704,7 @@ Diagram:
   i=5 (3): 3 in map => map={3:2, 1:2, 2:2}
   i=6 (3): 3 in map => map={3:3, 1:2, 2:2}
   i=7 (2): 2 in map => map={3:3, 1:2, 2:3}
-
+  
   Verify: 3 appears 3 > 2, 2 appears 3 > 2, 1 appears 2 = 2 (not >2)
   Result: [2, 3]`,
     complexity: {"time":"O(n*k)","space":"O(k)"},
@@ -731,7 +731,7 @@ Diagram:
 
 Diagram:
   Array: [4, 3, 2, 7, 8, 2, 3, 1]
-
+  
   Cyclic sort swaps:
   i=0: arr[0]=4, swap(0,3) => [7,3,2,4,8,2,3,1]
   i=0: arr[0]=7, swap(0,6) => [3,3,2,4,8,2,7,1]
@@ -747,7 +747,7 @@ Diagram:
   i=5: arr[5]=2, arr[1]=2 => i=6
   i=6: arr[6]=7, arr[6]=7 => i=7
   i=7: arr[7]=8, arr[7]=8 => done
-
+  
   Scan: indices 4 (arr=3 !=5) and 5 (arr=2 !=6) => missing [5,6]`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -773,13 +773,13 @@ Diagram:
 
 Diagram:
   Array: [1, 2, 2, 4]
-
+  
   Cyclic sort:
   i=0: arr[0]=1, arr[0]=1 => i=1
   i=1: arr[1]=2, arr[1]=2 => i=2
   i=2: arr[2]=2, arr[1]=2 (correctly placed), since arr[2]=2 and arr[2-1]=2 => i=3
   i=3: arr[3]=4, arr[3]=4 => done
-
+  
   After sort: [1, 2, 2, 4]
   Scan: arr[2]=2 != 3 => duplicate=2, missing=3`,
     complexity: {"time":"O(n)","space":"O(1)"},
@@ -806,14 +806,14 @@ Diagram:
 
 Diagram:
   Array: [1, 2, 3, 4]
-
+  
   Left pass (prefix products):
     res[0] = 1
     res[1] = res[0] * arr[0] = 1 * 1 = 1
     res[2] = res[1] * arr[1] = 1 * 2 = 2
     res[3] = res[2] * arr[2] = 2 * 3 = 6
     => res = [1, 1, 2, 6]
-
+  
   Right pass (suffix products, right-to-left):
     suffix=1
     i=3: res[3] = res[3] * suffix = 6 * 1 = 6, suffix=1*4=4
@@ -846,17 +846,17 @@ Diagram:
 
 Diagram:
   Array: [-3, 2, -3, 4, 2]
-
+  
   Prefix sums:
     i=0: sum = -3
     i=1: sum = -3 + 2 = -1
     i=2: sum = -1 + (-3) = -4
     i=3: sum = -4 + 4 = 0
     i=4: sum = 0 + 2 = 2
-
+  
   minPrefixSum = -4
   start = max(1, 1 - (-4)) = max(1, 5) = 5
-
+  
   Verify with start=5:
     step 0: 5 + (-3) = 2 >= 1
     step 1: 2 + 2 = 4 >= 1
@@ -887,35 +887,35 @@ Diagram:
 
 Diagram:
   Array: [7, 4, 3, 9, 1, 8, 5, 2, 6], k=2, window size=5
-
+  
   Prefix sums:
     pre[0]=7, pre[1]=11, pre[2]=14, pre[3]=23, pre[4]=24
     pre[5]=32, pre[6]=37, pre[7]=39, pre[8]=45
-
+  
   i=0,1: i<k => -1
-
+  
   i=2: window indices [0..4]
     sum = pre[4] = 24, avg = 24/5 = 4
     Result: 4
-
+  
   i=3: window indices [1..5]
     sum = pre[5] - pre[0] = 32 - 7 = 25, avg = 25/5 = 5
     Result: 5
-
+  
   i=4: window indices [2..6]
     sum = pre[6] - pre[1] = 37 - 11 = 26, avg = 26/5 = 5
     Result: 5
-
+  
   i=5: window indices [3..7]
     sum = pre[7] - pre[2] = 39 - 14 = 25, avg = 25/5 = 5
     Result: 5
-
+  
   i=6: window indices [4..8]
     sum = pre[8] - pre[3] = 45 - 23 = 22, avg = 22/5 = 4
     Result: 4
-
+  
   i=7,8: i >= n-k => -1
-
+  
   Edge cases: k=0 (window size 1, just the element itself), small arrays where no window fits (all -1). Time O(n), Space O(n) for prefix array.`,
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
