@@ -88,7 +88,7 @@ export default [
     test_cases: [
       {"input":"4 2","expected":"1 2\n1 3\n1 4\n2 3\n2 4\n3 4"}
     ],
-    approach: "Backtracking: pick numbers in increasing order to avoid duplicates.",
+    approach: "Backtracking: pick numbers in increasing order to avoid duplicates.\n\nDiagram:\n  n=4, k=2:\n\n            start=1\n         /    |     |    \\\n       i=1   i=2   i=3  i=4\n        |     |     |     |\n     start=2 start=3 start=4 start=5\n     /  |  \\    |     |     |\n   i=2 i=3 i=4 i=3   i=4   (stop)\n    |   |   |   |     |\n  [1,2][1,3][1,4][2,3][2,4]\n\n  Pick next number i from start..n.\n  Push i, recurse with start=i+1, pop (backtrack).\n  Base: cur.size() == k, add to ans.\n  Increasing order avoids duplicates like {2,1}.",
     complexity: {"time":"O(C(n,k))","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "// for i from start to n: push, recurse with i+1, pop",
@@ -107,7 +107,7 @@ export default [
     test_cases: [
       {"input":"3\n1 2 3","expected":"\n1\n1 2\n1 2 3\n1 3\n2\n2 3\n3"}
     ],
-    approach: "Pick or skip each element: include arr[idx] and recurse, then exclude and recurse.",
+    approach: "Pick or skip each element: include arr[idx] and recurse, then exclude and recurse.\n\nDiagram:\n  nums = [1, 2]:\n\n            root\n           /     \\\n       include 1 exclude 1\n         /    \\      /    \\\n     inc2  exc2  inc2  exc2\n       |     |     |     |\n    [1,2]   [1]   [2]   []\n\n  All subsets of [1,2,3]:\n  [], [1], [2], [3], [1,2], [1,3], [2,3], [1,2,3]\n\n  Take/include: push arr[idx], recurse idx+1, pop (backtrack).\n  Skip/exclude: recurse idx+1 directly.\n  Base: idx == n, add cur to ans.\n  Total 2^n subsets.",
     complexity: {"time":"O(2^n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// push, rec(idx+1), pop, rec(idx+1)",
