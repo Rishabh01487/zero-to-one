@@ -12,6 +12,7 @@ import stringProblems from './problems/strings.js';
 import linkedListProblems from './problems/linkedlist.js';
 import treeProblems from './problems/trees.js';
 import stackQueueProblems from './problems/stacksqueues.js';
+import dpProblems from './problems/dp.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -322,6 +323,7 @@ export function seedDatabase() {
     ...linkedListProblems,
     ...treeProblems,
     ...stackQueueProblems,
+    ...dpProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
