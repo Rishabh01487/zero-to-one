@@ -58,5 +58,24 @@ export default [
     complexity: {"time":"O(n²)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(n,1); int mx=1; for(int i=0;i<n;i++){for(int j=0;j<i;j++)if(arr[j]<arr[i])dp[i]=max(dp[i],dp[j]+1);mx=max(mx,dp[i]);}cout<<mx;",
+  },
+  {
+    id: "0-1-knapsack",
+    title: "0/1 Knapsack",
+    category: "dp",
+    difficulty: "medium",
+    description: "Given weights and values, find max value that fits in knapsack capacity.",
+    constraints: "1 <= n <= 100, 1 <= W <= 1000",
+    examples: [
+      {"input":"3\n10 20 30\n60 100 120\n50","output":"220","explanation":"Items 2+3 = 100+120 = 220, weight 20+30=50"}
+    ],
+    test_cases: [
+      {"input":"3\n10 20 30\n60 100 120\n50","expected":"220"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, W;\n  cin >> n;\n  int wt[n], val[n];\n  for (int i = 0; i < n; i++) cin >> wt[i];\n  for (int i = 0; i < n; i++) cin >> val[i];\n  cin >> W;\n\n  // DP: dp[w] = max(dp[w], dp[w-wt[i]] + val[i])\n\n  cout << dp[W] << endl;\n  return 0;\n}",
+    approach: "DP 1D: for each item, iterate capacity backwards, dp[w]=max(dp[w],dp[w-wt[i]]+val[i]).",
+    complexity: {"time":"O(n*W)","space":"O(W)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dp(W+1,0); for(int i=0;i<n;i++)for(int w=W;w>=wt[i];w--)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]); cout<<dp[W];",
   }
 ]
