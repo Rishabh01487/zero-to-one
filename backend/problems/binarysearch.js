@@ -99,5 +99,25 @@ export default [
     complexity: {"time":"O(log x)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int lo=1,hi=x/2,ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if((long long)m*m<=x){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
+  },
+  {
+    id: "median-two-sorted",
+    title: "Median of Two Sorted Arrays",
+    category: "binary-search",
+    difficulty: "hard",
+    description: "Find median of two sorted arrays in O(log(min(n,m))).",
+    constraints: "1 <= n,m <= 1000",
+    examples: [
+      {"input":"2\n1 3\n2\n2","output":"2.00000"}
+    ],
+    test_cases: [
+      {"input":"2\n1 3\n2\n2","expected":"2.00000"},
+      {"input":"2\n1 2\n2\n3 4","expected":"2.50000"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n;\n  int a[n]; for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m;\n  int b[m]; for (int i = 0; i < m; i++) cin >> b[i];\n\n  // binary search on smaller array\n\n  return 0;\n}",
+    approach: "Binary search on smaller array. Partition both such that left half has n+1/2 elements. Check crossover condition.",
+    complexity: {"time":"O(log min(n,m))","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "if(n>m)swap(n,m),swap(a,b); int lo=0,hi=n; while(lo<=hi){int p1=lo+(hi-lo)/2,p2=(n+m+1)/2-p1;int l1=(p1?INT_MIN:p1-1);int r1=(p1==n?INT_MAX:a[p1]);int l2=(p2?INT_MIN:b[p2-1]);int r2=(p2==m?INT_MAX:b[p2]);if(l1<=r2&&l2<=r1){if((n+m)%2)cout<<max(l1,l2);else cout<<(max(l1,l2)+min(r1,r2))/2.0;return 0;}if(l1>r2)hi=p1-1;else lo=p1+1;}",
   }
 ]
