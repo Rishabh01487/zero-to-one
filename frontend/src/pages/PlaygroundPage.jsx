@@ -22,7 +22,7 @@ int main() {
   cout << "Fibonacci of " << n << " is: " << fib(n) << endl;
   return 0;
 }`,
-  'bubble-sort': `#include <iostream>
+  'bubble sort': `#include <iostream>
 using namespace std;
 
 void bubbleSort(int arr[], int n) {
@@ -44,7 +44,7 @@ int main() {
   cout << endl;
   return 0;
 }`,
-  'linked-list': `#include <iostream>
+  'linked list': `#include <iostream>
 using namespace std;
 
 struct Node {
@@ -106,23 +106,23 @@ export default function PlaygroundPage() {
   const [activeTemplate, setActiveTemplate] = useState('hello');
 
   return (
-    <div style={{ maxWidth: 1200, margin: '0 auto', padding: '24px' }}>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800, margin: '0 0 4px' }}>Code Playground</h1>
-        <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 16px' }}>
-          Write, compile, and run C++ code in your browser
+    <div style={{ padding: '20px 24px', maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ marginBottom: 20 }}>
+        <h1 style={{ fontSize: 24, fontWeight: 700, margin: '0 0 4px' }}>Playground</h1>
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '0 0 14px' }}>
+          Write, compile, and run C++ in your browser
         </p>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {Object.entries(templates).map(([key, code]) => (
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {Object.keys(templates).map(key => (
             <button
               key={key}
-              className={`btn btn-sm ${activeTemplate === key ? 'btn-primary' : 'btn-secondary'}`}
+              className={`btn btn-sm ${activeTemplate === key ? 'btn-primary' : 'btn-ghost'}`}
               onClick={() => setActiveTemplate(key)}
-            >{key.replace('-', ' ')}</button>
+            >{key}</button>
           ))}
         </div>
       </div>
-      <Editor key={activeTemplate} initialCode={templates[activeTemplate]} height={500} />
+      <Editor key={activeTemplate} initialCode={templates[activeTemplate]} height={520} />
     </div>
   );
 }
