@@ -159,5 +159,25 @@ export default [
     complexity: {"time":"O(n²)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int l=0,r=0,mx=0; for(int i=0;i<s.size();i++){int l1=i,r1=i;while(l1>=0&&r1<s.size()&&s[l1]==s[r1]){if(r1-l1+1>mx){mx=r1-l1+1;l=l1;r=r1;}l1--;r1++;}int l2=i,r2=i+1;while(l2>=0&&r2<s.size()&&s[l2]==s[r2]){if(r2-l2+1>mx){mx=r2-l2+1;l=l2;r=r2;}l2--;r2++;}}cout<<s.substr(l,r-l+1);",
+  },
+  {
+    id: "str-str",
+    title: "Find First Occurrence (strStr)",
+    category: "strings",
+    difficulty: "medium",
+    description: "Find the first occurrence of needle in haystack.",
+    constraints: "1 <= |haystack|,|needle| <= 10^4",
+    examples: [
+      {"input":"sadbutsad sad","output":"0"}
+    ],
+    test_cases: [
+      {"input":"sadbutsad sad","expected":"0"},
+      {"input":"leetcode leeto","expected":"-1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string haystack, needle;\n  cin >> haystack >> needle;\n\n  // sliding window or KMP\n\n  cout << index << endl;\n  return 0;\n}",
+    approach: "Sliding window: compare needle with each haystack substring of same length.",
+    complexity: {"time":"O(n*m)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int n=haystack.size(),m=needle.size(); for(int i=0;i<=n-m;i++){int j=0;while(j<m&&haystack[i+j]==needle[j])j++;if(j==m){cout<<i;return 0;}}cout<<-1;",
   }
 ]
