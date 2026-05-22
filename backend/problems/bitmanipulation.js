@@ -58,5 +58,24 @@ export default [
     sheet: "Love Babbar 450",
     solution_code: "cout << (n > 0 && (n & (n-1)) == 0 ? \"Yes\" : \"No\");",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // check power of two\n  return 0;\n}",
+  },
+  {
+    id: "missing-number-bit",
+    title: "Missing Number (XOR)",
+    category: "bit-manipulation",
+    difficulty: "easy",
+    description: "Find missing number in array of 0..n with one missing.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n3 0 1 5 2","output":"4"}
+    ],
+    test_cases: [
+      {"input":"5\n3 0 1 5 2","expected":"4"}
+    ],
+    approach: "XOR all array elements and all numbers 0..n. Paired numbers cancel out, leaving the missing one.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int xor1 = 0, xor2 = 0;\nfor (int i = 0; i < n; i++) { xor1 ^= arr[i]; xor2 ^= i; }\nxor2 ^= n;\ncout << (xor1 ^ xor2);",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // XOR\n  return 0;\n}",
   }
 ]
