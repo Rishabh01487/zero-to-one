@@ -255,5 +255,24 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(),m=p.size(); vector<vector<bool>> dp(n+1,vector<bool>(m+1)); dp[0][0]=1; for(int j=1;j<=m;j++)if(p[j-1]=='*')dp[0][j]=dp[0][j-1]; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(p[j-1]=='*')dp[i][j]=dp[i-1][j]||dp[i][j-1];else if(p[j-1]=='?'||s[i-1]==p[j-1])dp[i][j]=dp[i-1][j-1];}cout<<(dp[n][m]?\"Yes\":\"No\");",
+  },
+  {
+    id: "max-square",
+    title: "Max Square of 1s in Binary Matrix",
+    category: "dp",
+    difficulty: "medium",
+    description: "Find the largest square submatrix of 1s.",
+    constraints: "1 <= n,m <= 300",
+    examples: [
+      {"input":"4 5\n10100\n10111\n11111\n10010","output":"2","explanation":"Max side length = 2 (area 4)"}
+    ],
+    test_cases: [
+      {"input":"4 5\n10100\n10111\n11111\n10010","expected":"2"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[n][m];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      scanf(\"%1d\", &mat[i][j]);\n\n  // dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n\n  cout << maxSide * maxSide << endl;\n  return 0;\n}",
+    approach: "DP: dp[i][j]=1+min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]) if mat[i][j]=1. Track max side.",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<vector<int>> dp(n,vector<int>(m)); int mx=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++){if(i==0||j==0)dp[i][j]=mat[i][j];else if(mat[i][j])dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});else dp[i][j]=0;mx=max(mx,dp[i][j]);}cout<<mx;",
   }
 ]
