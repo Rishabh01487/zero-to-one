@@ -113,6 +113,12 @@ export default [
       {"input":"5\n2 4 1 3 5","expected":"3"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nlong long inversions = 0;\n\nvoid merge(int arr[], int l, int m, int r) {\n  int n1 = m-l+1, n2 = r-m;\n  int L[n1], R[n2];\n  for (int i = 0; i < n1; i++) L[i] = arr[l+i];\n  for (int i = 0; i < n2; i++) R[i] = arr[m+1+i];\n  int i = 0, j = 0, k = l;\n  while (i < n1 && j < n2) {\n    if (L[i] <= R[j]) arr[k++] = L[i++];\n    else { arr[k++] = R[j++]; inversions += n1 - i; }\n  }\n  while (i < n1) arr[k++] = L[i++];\n  while (j < n2) arr[k++] = R[j++];\n}\n\nvoid mergeSort(int arr[], int l, int r) {\n  if (l >= r) return;\n  int m = l + (r-l)/2;\n  mergeSort(arr, l, m);\n  mergeSort(arr, m+1, r);\n  merge(arr, l, m, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  mergeSort(arr, 0, n-1);\n  cout << inversions << endl;\n  return 0;\n}",
+    approach: "count-inversions (merge-sort based):\n  arr = [2, 4, 1, 3, 5]\n  \n  Split: [2, 4, 1] | [3, 5]\n         [2] [4, 1] | [3] [5]\n         [2] [4] [1] | [3] [5]\n  \n  Merge [4] and [1]: 4>1 → inversion count+=1 → [1,4]\n  Merge [2] and [1,4]: 2>1 → count+=1 (remaining in L=1), 2<4 → no inversion\n    total so far: 2 inversions\n  Merge [3] and [5]: 3<5 → no inversion\n  Merge [1,2,4] and [3,5]:\n    1<3 → no inversion\n    2<3 → no inversion\n    4>3 → count+=1 (remaining in L: 4,5 → inversion with 3 only)\n    4<5 → no inversion\n    total: 3 inversions: (2,1), (4,1), (4,3)\n\n  Result: [1, 2, 3, 4, 5], inversions = 3\n\nThis algorithm counts inversions during the merge step of merge sort. An inversion is a pair (i,j) where i<j and arr[i]>arr[j]. When merging two sorted halves, if an element from the right half (R[j]) is smaller than L[i], then it forms inversions with all remaining elements in the left half (n1-i of them). Time complexity: O(n log n). Space: O(n).\n\nDiagram:\n  arr = [2, 4, 1, 3, 5]\n\n  Merge [4] & [1]: 4>1 -> inv+=1 -> [1,4]  (inv=1)\n  Merge [2] & [1,4]: 2>1 -> inv+=1 -> [1,2,4]  (inv=2)\n  Merge [1,2,4] & [3,5]: 4>3 -> inv+=1 -> [1,2,3,4,5]  (inv=3)\n  Inversions: (2,1), (4,1), (4,3)",
+    complexity: {"time":"O(n log n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int count[100001]={0},out[n]; for(int i=0;i<n;i++)count[arr[i]]++; for(int i=1;i<=100000;i++)count[i]+=count[i-1]; for(int i=n-1;i>=0;i--)out[--count[arr[i]]]=arr[i];",
+    techniques: ["sorting"],
+  },
   {
     id: "heap-sort",
     title: "Heap Sort Implementation",
@@ -127,10 +133,11 @@ export default [
       {"input":"6\n12 11 13 5 6 7","expected":"5 6 7 11 12 13"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nvoid heapify(int arr[], int n, int i) {\n  int largest = i, l = 2*i+1, r = 2*i+2;\n  if (l < n && arr[l] > arr[largest]) largest = l;\n  if (r < n && arr[r] > arr[largest]) largest = r;\n  if (largest != i) { swap(arr[i], arr[largest]); heapify(arr, n, largest); }\n}\n\nvoid heapSort(int arr[], int n) {\n  for (int i = n/2-1; i >= 0; i--) heapify(arr, n, i);\n  for (int i = n-1; i > 0; i--) { swap(arr[0], arr[i]); heapify(arr, i, 0); }\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  heapSort(arr, n);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Build max-heap from array. Repeatedly extract max (swap root with last, heapify reduced heap).",
+    approach: "heap-sort:\n  arr = [12, 11, 13, 5, 6, 7]\n  \n  Build max-heap:\n    heapify idx=2 (val=13): leaf → no change\n    heapify idx=1 (val=11): children 5,6 → 11 > both → no change\n    heapify idx=0 (val=12): children 11,13 → swap(12,13)\n    heap: [13, 11, 12, 5, 6, 7]\n  \n  Extract max:\n    swap(13,7) → [7, 11, 12, 5, 6, 13], heapify root → [12, 11, 7, 5, 6, 13]\n    swap(12,6) → [6, 11, 7, 5, 12, 13], heapify root → [11, 6, 7, 5, 12, 13]\n    swap(11,5) → [5, 6, 7, 11, 12, 13], heapify root → [7, 6, 5, 11, 12, 13]\n    swap(7,5)  → [5, 6, 7, 11, 12, 13], heapify root → [6, 5, 7, 11, 12, 13]\n    swap(6,5)  → [5, 6, 7, 11, 12, 13]  sorted!\n\nHeap sort builds a max-heap from the array, then repeatedly extracts the maximum element by swapping the root with the last element, reducing the heap size, and restoring the heap property via heapify. Time complexity: O(n log n) in all cases. Space: O(1) in-place. Stable: no.\n\nDiagram:\n  arr = [12, 11, 13, 5, 6, 7]\n\n  Build heap: [13, 11, 12, 5, 6, 7]\n  Extract 13 -> [7,11,12,5,6,13] heapify -> [12,11,7,5,6,13]\n  Extract 12 -> [6,11,7,5,12,13] heapify -> [11,6,7,5,12,13]\n  Extract 11 -> [5,6,7,11,12,13] heapify -> [7,6,5,11,12,13]\n  Extract 7  -> [5,6,7,11,12,13] heapify -> [6,5,7,11,12,13]\n  Extract 6  -> [5,6,7,11,12,13] sorted!",
     complexity: {"time":"O(n log n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "void heapify(int arr[],int n,int i){int l=2*i+1,r=2*i+2,largest=i;if(l<n&&arr[l]>arr[largest])largest=l;if(r<n&&arr[r]>arr[largest])largest=r;if(largest!=i){swap(arr[i],arr[largest]);heapify(arr,n,largest);}} for(int i=n/2-1;i>=0;i--)heapify(arr,n,i); for(int i=n-1;i>0;i--){swap(arr[0],arr[i]);heapify(arr,i,0);}",
+    techniques: ["sorting"],
   },
   {
     id: "find-kth-smallest",
@@ -144,13 +151,6 @@ export default [
     ],
     test_cases: [
       {"input":"6\n7 10 4 3 20 15\n3","expected":"7"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint partition(int arr[], int l, int r) {\n  int pivot = arr[r], i = l;\n  for (int j = l; j < r; j++)\n    if (arr[j] <= pivot) swap(arr[i++], arr[j]);\n  swap(arr[i], arr[r]);\n  return i;\n}\n\nint quickSelect(int arr[], int l, int r, int k) {\n  if (l == r) return arr[l];\n  int pi = partition(arr, l, r);\n  if (k == pi) return arr[k];\n  return (k < pi) ? quickSelect(arr, l, pi-1, k) : quickSelect(arr, pi+1, r, k);\n}\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  cout << quickSelect(arr, 0, n-1, k-1) << endl;\n  return 0;\n}",
-    approach: "Distribute elements into buckets, sort each bucket (insertion sort), concatenate.",
-    complexity: {"time":"O(n+k) avg, O(n²) worst","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "int id=bucketCnt*arr[i]/maxVal; // assign to bucket, then sort each bucket with insertion sort",
-  },
   {
     id: "radix-sort",
     title: "Radix Sort Implementation",
