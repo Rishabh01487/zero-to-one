@@ -93,5 +93,24 @@ export default [
     complexity: {"time":"O(n log n) avg, O(n²) worst","space":"O(log n)"},
     sheet: "Striver A2Z",
     solution_code: "int partition(int arr[],int lo,int hi){int p=arr[hi],i=lo;for(int j=lo;j<hi;j++)if(arr[j]<=p)swap(arr[i++],arr[j]);swap(arr[i],arr[hi]);return i;}",
+  },
+  {
+    id: "count-inversions",
+    title: "Count Inversions (Merge Sort)",
+    category: "sorting",
+    difficulty: "medium",
+    description: "Count inversions in array using merge sort.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"5\n2 4 1 3 5","output":"3","explanation":"(2,1),(4,1),(4,3)"}
+    ],
+    test_cases: [
+      {"input":"5\n2 4 1 3 5","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nlong long inversions = 0;\n\nvoid merge(int arr[], int l, int m, int r) {\n  int n1 = m-l+1, n2 = r-m;\n  int L[n1], R[n2];\n  for (int i = 0; i < n1; i++) L[i] = arr[l+i];\n  for (int i = 0; i < n2; i++) R[i] = arr[m+1+i];\n  int i = 0, j = 0, k = l;\n  while (i < n1 && j < n2) {\n    if (L[i] <= R[j]) arr[k++] = L[i++];\n    else { arr[k++] = R[j++]; inversions += n1 - i; }\n  }\n  while (i < n1) arr[k++] = L[i++];\n  while (j < n2) arr[k++] = R[j++];\n}\n\nvoid mergeSort(int arr[], int l, int r) {\n  if (l >= r) return;\n  int m = l + (r-l)/2;\n  mergeSort(arr, l, m);\n  mergeSort(arr, m+1, r);\n  merge(arr, l, m, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  mergeSort(arr, 0, n-1);\n  cout << inversions << endl;\n  return 0;\n}",
+    approach: "Count frequency of each value. Compute prefix sum. Place elements in correct positions.",
+    complexity: {"time":"O(n+k)","space":"O(k)"},
+    sheet: "Striver A2Z",
+    solution_code: "int count[100001]={0},out[n]; for(int i=0;i<n;i++)count[arr[i]]++; for(int i=1;i<=100000;i++)count[i]+=count[i-1]; for(int i=n-1;i>=0;i--)out[--count[arr[i]]]=arr[i];",
   }
 ]
