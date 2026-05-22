@@ -372,5 +372,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int pre[n],suf[n];\npre[0]=1;\nfor(int i=1;i<n;i++) pre[i]=pre[i-1]*arr[i-1];\nsuf[n-1]=1;\nfor(int i=n-2;i>=0;i--) suf[i]=suf[i+1]*arr[i+1];\nfor(int i=0;i<n;i++) cout << pre[i]*suf[i] << \" \";",
+  },
+  {
+    id: "min-jumps",
+    title: "Minimum Jumps to Reach End",
+    category: "arrays",
+    difficulty: "hard",
+    description: "Each element is max jump length. Find min jumps to reach end.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"11\n1 3 5 8 9 2 6 7 6 8 9","output":"3","explanation":"1->3->9->end"}
+    ],
+    test_cases: [
+      {"input":"11\n1 3 5 8 9 2 6 7 6 8 9","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // greedy: track maxReach and steps\n\n  cout << jumps << endl;\n  return 0;\n}",
+    approach: "Greedy: track current end and farthest reachable. When i reaches current end, increment jump and set new end.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int jumps=0,curEnd=0,far=0;\nfor(int i=0;i<n-1;i++){\n  far=max(far,i+arr[i]);\n  if(i==curEnd){\n    jumps++;\n    curEnd=far;\n  }\n}\ncout << jumps;",
   }
 ]
