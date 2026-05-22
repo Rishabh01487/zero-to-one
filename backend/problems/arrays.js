@@ -80,5 +80,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int cur=0,mx=arr[0];\nfor(int x:arr){\n  cur+=x;\n  mx=max(mx,cur);\n  if(cur<0) cur=0;\n}\ncout << mx;",
+  },
+  {
+    id: "sort-012",
+    title: "Sort 0s, 1s and 2s (Dutch Flag)",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Given an array of 0s, 1s and 2s, sort them in-place.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"6\n2 0 2 1 1 0","output":"0 0 1 1 2 2","explanation":"Sort using Dutch National Flag algorithm"}
+    ],
+    test_cases: [
+      {"input":"6\n2 0 2 1 1 0","expected":"0 0 1 1 2 2"},
+      {"input":"5\n0 1 2 0 1","expected":"0 0 1 1 2"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Dutch National Flag: three pointers\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Dutch National Flag: three pointers (low,mid,high). Partition 0s to left, 2s to right, 1s stay in middle.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int l=0,m=0,h=n-1;\nwhile(m<=h){\n  if(arr[m]==0){\n    swap(arr[l],arr[m]);\n    l++; m++;\n  } else if(arr[m]==1){\n    m++;\n  } else {\n    swap(arr[m],arr[h]);\n    h--;\n  }\n}",
   }
 ]
