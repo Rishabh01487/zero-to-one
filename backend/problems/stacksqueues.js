@@ -55,5 +55,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "// push: stack in. pop: if out empty, transfer in to out, then pop. peek: same as pop but without removal.",
     solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nclass MyQueue {\n  stack<int> in, out;\npublic:\n  void push(int x) { in.push(x); }\n  int pop() {\n    if (out.empty()) while (!in.empty()) { out.push(in.top()); in.pop(); }\n    int x = out.top(); out.pop(); return x;\n  }\n  int peek() {\n    if (out.empty()) while (!in.empty()) { out.push(in.top()); in.pop(); }\n    return out.top();\n  }\n  bool empty() { return in.empty() && out.empty(); }\n};\n\nint main() {\n  int q; cin >> q;\n  MyQueue mq;\n  while (q--) {\n    string op; cin >> op;\n    if (op == \"push\") { int x; cin >> x; mq.push(x); }\n    else if (op == \"pop\") cout << mq.pop() << endl;\n    else if (op == \"peek\") cout << mq.peek() << endl;\n  }\n  return 0;\n}",
+  },
+  {
+    id: "stock-span",
+    title: "Stock Span Problem",
+    category: "stack-queue",
+    difficulty: "medium",
+    description: "For each day, find number of consecutive days price <= current day.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n100 80 60 70 60 75 85","output":"1 1 1 2 1 4 6"}
+    ],
+    test_cases: [
+      {"input":"7\n100 80 60 70 60 75 85","expected":"1 1 1 2 1 4 6"}
+    ],
+    approach: "Monotonic decreasing stack of {price, index}. While stack.top <= current, pop. Span = i - stack.top.index.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<pair<int,int>> st; for(int i=0;i<n;i++){int span=1; while(!st.empty()&&st.top().first<=prices[i]){span+=st.top().second;st.pop();}st.push({prices[i],span});cout<<span<<\" \";}",
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int prices[n], span[n];\n  for (int i = 0; i < n; i++) cin >> prices[i];\n\n  stack<int> st;\n  // monotonic decreasing stack\n\n  for (int i = 0; i < n; i++) cout << span[i] << \" \";\n  return 0;\n}",
   }
 ]
