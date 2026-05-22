@@ -74,5 +74,24 @@ export default [
     complexity: {"time":"O(log n) each","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "priority_queue<int> maxh; priority_queue<int,vector<int>,greater<int>> minh; for(int x:arr){if(maxh.empty()||x<=maxh.top())maxh.push(x);else minh.push(x); if(maxh.size()>minh.size()+1){minh.push(maxh.top());maxh.pop();}else if(minh.size()>maxh.size()){maxh.push(minh.top());minh.pop();}cout<<maxh.top()<<\" \";}",
+  },
+  {
+    id: "k-closest",
+    title: "K Closest Points to Origin",
+    category: "heaps",
+    difficulty: "medium",
+    description: "Find k closest points to origin.",
+    constraints: "1 <= n <= 10^4, 1 <= k <= n",
+    examples: [
+      {"input":"3 2\n1 3\n-2 2\n5 8","output":"-2 2\n1 3"}
+    ],
+    test_cases: [
+      {"input":"3 2\n1 3\n-2 2\n5 8","expected":"-2 2\n1 3"}
+    ],
+    solution_template: "#include <iostream>\n#include <queue>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n >> k;\n  vector<pair<int,int>> pts(n);\n  for (int i = 0; i < n; i++) cin >> pts[i].first >> pts[i].second;\n\n  priority_queue<pair<long long, pair<int,int>>> pq;\n  for (auto& p : pts) {\n    long long dist = (long long)p.first * p.first + (long long)p.second * p.second;\n    pq.push({dist, p});\n    if ((int)pq.size() > k) pq.pop();\n  }\n\n  vector<pair<int,int>> ans;\n  while (!pq.empty()) { ans.push_back(pq.top().second); pq.pop(); }\n  for (auto& p : ans) cout << p.first << \" \" << p.second << endl;\n  return 0;\n}",
+    approach: "Max-heap of size k: push squared distance, pop when size > k. Remaining are k closest.",
+    complexity: {"time":"O(n log k)","space":"O(k)"},
+    sheet: "Striver A2Z",
+    solution_code: "priority_queue<pair<long long,pair<int,int>>> pq; for(auto& p:pts){long long d=1LL*p.first*p.first+1LL*p.second*p.second;pq.push({d,p});if(pq.size()>k)pq.pop();} vector<pair<int,int>> ans; while(!pq.empty()){ans.push_back(pq.top().second);pq.pop();} for(auto& p:ans)cout<<p.first<<\" \"<<p.second<<endl;",
   }
 ]
