@@ -151,6 +151,14 @@ export default [
     ],
     test_cases: [
       {"input":"6\n7 10 4 3 20 15\n3","expected":"7"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint partition(int arr[], int l, int r) {\n  int pivot = arr[r], i = l;\n  for (int j = l; j < r; j++)\n    if (arr[j] <= pivot) swap(arr[i++], arr[j]);\n  swap(arr[i], arr[r]);\n  return i;\n}\n\nint quickSelect(int arr[], int l, int r, int k) {\n  if (l == r) return arr[l];\n  int pi = partition(arr, l, r);\n  if (k == pi) return arr[k];\n  return (k < pi) ? quickSelect(arr, l, pi-1, k) : quickSelect(arr, pi+1, r, k);\n}\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  cout << quickSelect(arr, 0, n-1, k-1) << endl;\n  return 0;\n}",
+    approach: "quickselect (find 3rd smallest, k=3):\n  arr = [7, 10, 4, 3, 20, 15]\n  \n  Partition (pivot=15):\n    [7, 10, 4, 3, 15, 20] → pivot at idx 4, k-1=2 < 4 → recurse left\n  \n  Partition left [7,10,4,3] (pivot=3):\n    [3, 10, 4, 7] → pivot at idx 0, k-1=2 > 0 → recurse right\n  \n  Partition right [10,4,7] (pivot=7):\n    [4, 7, 10] → pivot at idx 1, k-1=2 > 1 → recurse right\n  \n  Partition right [10] → pivot at idx 2, k-1 == 2 → return 10\n  \n  Wait, let's recompute with k=3 (k-1=2):\n  \n  arr = [7, 10, 4, 3, 20, 15], k=3\n  \n  Partition [0..5] pivot=15:\n    i=0, j=0: 7<=15 swap(7,7) i=1\n    j=1: 10<=15 swap(10,10) i=2\n    j=2: 4<=15 swap(4,4) i=3\n    j=3: 3<=15 swap(3,3) i=4\n    j=4: 20>15 no swap\n    place pivot: swap(20,15) → [7,10,4,3,15,20] pi=4\n    k-1=2 < 4 → recurse [0..3]\n  \n  Partition [0..3] pivot=3:\n    j=0: 7>3 no swap; j=1: 10>3 no swap; j=2: 4>3 no swap\n    place pivot: swap(7,3) → [3,10,4,7,15,20] pi=0\n    k-1=2 > 0 → recurse [1..3]\n  \n  Partition [1..3] pivot=7:\n    j=1: 10>7 no swap; j=2: 4<=7 swap(10,4) i=2\n    place pivot: swap(10,7) → [3,4,7,10,15,20] pi=2\n    k-1=2 == 2 → return 7\n  \n  Answer: 7 ✓\n\nQuickSelect is a selection algorithm based on quick sort partitioning. It partitions the array and then recurses only into the partition containing the kth element, achieving average O(n) time instead of sorting the entire array. Time complexity: average O(n), worst O(n²). Space: O(1) in-place.\n\nDiagram:\n  arr = [7, 10, 4, 3, 20, 15], k=3 (0-indexed k-1=2)\n\n  Partition [0..5] pivot=15 -> [7,10,4,3,15,20] pi=4, target=2 < 4\n  Partition [0..3] pivot=3  -> [3,10,4,7,15,20] pi=0, target=2 > 0\n  Partition [1..3] pivot=7  -> [3,4,7,10,15,20] pi=2, target=2 == pi\n  Result: 7",
+    complexity: {"time":"O(n) avg, O(n²) worst","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int quickSelect(int arr[],int l,int r,int k){int pi=partition(arr,l,r);if(k==pi)return arr[k];return(k<pi)?quickSelect(arr,l,pi-1,k):quickSelect(arr,pi+1,r,k);}",
+    techniques: ["sorting"],
+  },
   {
     id: "radix-sort",
     title: "Radix Sort Implementation",
@@ -162,14 +170,6 @@ export default [
       {"input":"8\n170 45 75 90 802 24 2 66","output":"2 24 45 66 75 90 170 802"}
     ],
     test_cases: [
-      {"input":"8\n170 45 75 90 802 24 2 66","expected":"2 24 45 66 75 90 170 802"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nvoid countSort(int arr[], int n, int exp) {\n  int out[n], cnt[10] = {0};\n  for (int i = 0; i < n; i++) cnt[(arr[i]/exp)%10]++;\n  for (int i = 1; i < 10; i++) cnt[i] += cnt[i-1];\n  for (int i = n-1; i >= 0; i--) {\n    out[cnt[(arr[i]/exp)%10]-1] = arr[i];\n    cnt[(arr[i]/exp)%10]--;\n  }\n  for (int i = 0; i < n; i++) arr[i] = out[i];\n}\n\nvoid radixSort(int arr[], int n) {\n  int mx = *max_element(arr, arr+n);\n  for (int exp = 1; mx/exp > 0; exp *= 10) countSort(arr, n, exp);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  radixSort(arr, n);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Sort digit by digit using counting sort as subroutine (LSD first).",
-    complexity: {"time":"O(d×(n+k))","space":"O(n+k)"},
-    sheet: "Striver A2Z",
-    solution_code: "int getMax(int arr[],int n){int mx=arr[0];for(int i=1;i<n;i++)if(arr[i]>mx)mx=arr[i];return mx;} // then countSort for each digit (exp = 1, 10, 100...)",
-  }
       {"input":"8\n170 45 75 90 802 24 2 66","expected":"2 24 45 66 75 90 170 802"}
     ],
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nvoid countSort(int arr[], int n, int exp) {\n  int out[n], cnt[10] = {0};\n  for (int i = 0; i < n; i++) cnt[(arr[i]/exp)%10]++;\n  for (int i = 1; i < 10; i++) cnt[i] += cnt[i-1];\n  for (int i = n-1; i >= 0; i--) {\n    out[cnt[(arr[i]/exp)%10]-1] = arr[i];\n    cnt[(arr[i]/exp)%10]--;\n  }\n  for (int i = 0; i < n; i++) arr[i] = out[i];\n}\n\nvoid radixSort(int arr[], int n) {\n  int mx = *max_element(arr, arr+n);\n  for (int exp = 1; mx/exp > 0; exp *= 10) countSort(arr, n, exp);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  radixSort(arr, n);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
