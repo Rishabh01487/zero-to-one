@@ -58,5 +58,15 @@ export default [
     difficulty: "Intermediate",
     icon: "||",
     order: 6,
+  },
+  {
+    id: "sorting",
+    name: "Sorting Algorithms",
+    description: "Foundational algorithms for ordering data. Compare-based (O(n log n)) vs linear-time (O(n+k)) sorting.",
+    when_to_use: "When data needs to be ordered, problems requiring sorted input, or as a subroutine in more complex algorithms.",
+    techniques: ["Divide & Conquer","Partitioning","Counting Sort","Heapify"],
+    difficulty: "Beginner to Advanced",
+    icon: "\\/",
+    order: 7,
   }
 ]
