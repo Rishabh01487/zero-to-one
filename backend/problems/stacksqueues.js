@@ -113,11 +113,18 @@ export default [
     test_cases: [
       {"input":"8\n1 3 -1 -3 5 3 6 7\n3","expected":"3 3 5 5 6 7"}
     ],
+    approach: "The Sliding Window Maximum problem asks, given an array and window size k, to find the maximum in every contiguous subarray of size k. A brute-force scans all k elements per window in O(n*k). The optimal O(n) solution uses a deque storing indices in decreasing order of their values.\n\nDiagram:\n  arr = [1, 3, -1, -3, 5, 3, 6, 7], k=3\n\n  i=0, arr[0]=1: dq=[0]\n  i=1, arr[1]=3: pop back 0 (1<=3), dq=[1]\n  i=2, arr[2]=-1: dq=[1,2], output arr[1]=3\n  i=3, arr[3]=-3: front 1 in window, dq=[1,2,3], output arr[1]=3\n  i=4, arr[4]=5: front 1 out(4-3=1), pop back 3,-3,2,-1 (<=5), dq=[4], output 5\n  i=5, arr[5]=3: dq=[4,5], output 5\n  i=6, arr[6]=6: pop back 5,4 (<=6), dq=[6], output 6\n  i=7, arr[7]=7: pop back 6 (<=7), dq=[7], output 7\n\n  result = [3, 3, 5, 5, 6, 7]\n\nEdge cases: k=1 outputs the array itself; k=n produces global max. Complexity: O(n) time, O(k) space for deque.",
+    complexity: {"time":"O(n)","space":"O(k)"},
+    sheet: "Striver A2Z",
+    solution_code: "deque<int> dq; for(int i=0;i<n;i++){while(!dq.empty()&&dq.front()<=i-k)dq.pop_front();while(!dq.empty()&&arr[dq.back()]<=arr[i])dq.pop_back();dq.push_back(i);if(i>=k-1)cout<<arr[dq.front()]<<\" \";}",
+    solution_template: "#include <iostream>\n#include <deque>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n\n  deque<int> dq; // store indices\n\n  // maintain decreasing deque\n\n  return 0;\n}",
+  },
   {
     id: "celebrity",
     title: "The Celebrity Problem",
     category: "stack-queue",
     difficulty: "medium",
+    techniques: ["stack-queue"],
     description: "Find celebrity (everyone knows them, they know no one).",
     constraints: "1 <= n <= 10^3",
     examples: [
@@ -126,8 +133,8 @@ export default [
     test_cases: [
       {"input":"3\n0 1 1\n0 0 1\n0 0 0","expected":"2"}
     ],
-    approach: "Stack elimination: if A knows B, A can't be celebrity. Last remaining is candidate. Verify with everyone.",
-    complexity: {"time":"O(n²)","space":"O(1)"},
+    approach: "The Celebrity Problem asks to identify a person known by everyone but who knows nobody. A brute-force checks each person against all others in O(n^2). The optimal stack elimination approach narrows down the candidate in O(n).\n\nDiagram:\n  M = [[0,1,1],\n       [0,0,1],\n       [0,0,0]]\n\n  stack = [0, 1, 2]\n\n  pop 2,1: M[2][1]=0 (2 does not know 1) -> keep 2, discard 1, push(2)\n  stack = [0, 2]\n\n  pop 2,0: M[2][0]=0 (2 does not know 0) -> keep 2, discard 0, push(2)\n  stack = [2]\n\n  candidate = 2\n  Verify: M[2][0]=0, M[2][1]=0 (knows no one) ✓\n          M[0][2]=1, M[1][2]=1 (everyone knows 2) ✓\n  -> celebrity = 2\n\nEdge cases: no celebrity returns -1; single person is trivially a celebrity. Complexity: O(n) elimination, O(n^2) for matrix construction, O(1) extra space.",
+    complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "stack<int> st; for(int i=0;i<n;i++)st.push(i); while(st.size()>1){int a=st.top();st.pop();int b=st.top();st.pop();if(M[a][b])st.push(b);else st.push(a);} int c=st.top(); for(int i=0;i<n;i++)if(i!=c&&(M[c][i]||!M[i][c])){cout<<-1;return 0;}cout<<c;",
     solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int M[n][n];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n      cin >> M[i][j];\n\n  // stack elimination\n\n  cout << celebrity << endl;\n  return 0;\n}",
@@ -137,6 +144,7 @@ export default [
     title: "Infix to Postfix Conversion",
     category: "stack-queue",
     difficulty: "medium",
+    techniques: ["stack-queue"],
     description: "Convert infix expression to postfix.",
     constraints: "1 <= |s| <= 10^4",
     examples: [
@@ -144,14 +152,6 @@ export default [
     ],
     test_cases: [
       {"input":"a+b","expected":"ab+"},
-      {"input":"a*b+c","expected":"ab*c+"}
-    ],
-    approach: "Shunting-yard: operators go to stack. Higher precedence operators pop first. '(' pushes, ')' pops until '('.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "stack<char> st; string res; for(char c:s){if(isalnum(c))res+=c;else if(c=='(')st.push(c);else if(c==')'){while(st.top()!='('){res+=st.top();st.pop();}st.pop();}else{while(!st.empty()&&prec(c)<=prec(st.top())){res+=st.top();st.pop();}st.push(c);}} while(!st.empty()){res+=st.top();st.pop();}cout<<res;",
-    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint prec(char c) {\n  if (c == '^') return 3;\n  if (c == '*' || c == '/') return 2;\n  if (c == '+' || c == '-') return 1;\n  return 0;\n}\n\nint main() {\n  string s;\n  cin >> s;\n  stack<char> st;\n\n  // Shunting-yard algorithm\n\n  cout << result << endl;\n  return 0;\n}",
-  },
   {
     id: "impl-stack-queue",
     title: "Stack Using Queues",
