@@ -79,6 +79,37 @@ Diagram:
     solution_code: "vector<int> dp(n,1); int mx=1; for(int i=0;i<n;i++){for(int j=0;j<i;j++)if(arr[j]<arr[i])dp[i]=max(dp[i],dp[j]+1);mx=max(mx,dp[i]);}cout<<mx;",
   },
   {
+    id: "0-1-knapsack",
+    title: "0/1 Knapsack",
+    category: "dp",
+    difficulty: "medium",
+    description: "Given weights and values, find max value that fits in knapsack capacity.",
+    constraints: "1 <= n <= 100, 1 <= W <= 1000",
+    examples: [
+      {"input":"3\n10 20 30\n60 100 120\n50","output":"220","explanation":"Items 2+3 = 100+120 = 220, weight 20+30=50"}
+    ],
+    test_cases: [
+      {"input":"3\n10 20 30\n60 100 120\n50","expected":"220"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, W;\n  cin >> n;\n  int wt[n], val[n];\n  for (int i = 0; i < n; i++) cin >> wt[i];\n  for (int i = 0; i < n; i++) cin >> val[i];\n  cin >> W;\n\n  // DP: dp[w] = max(dp[w], dp[w-wt[i]] + val[i])\n\n  cout << dp[W] << endl;\n  return 0;\n}",
+    approach: `DP 1D: for each item, iterate capacity backwards, dp[w]=max(dp[w],dp[w-wt[i]]+val[i]).
+
+Diagram:
+  wt=[10,20,30], val=[60,100,120], W=50
+
+  Item\\W   0  10  20  30  40  50
+    0      0   0   0   0   0   0
+    1(10)  0  60  60  60  60  60
+    2(20)  0  60 100 160 160 160
+    3(30)  0  60 100 160 180 220
+
+  dp[i][w] = max(dp[i-1][w], val[i-1]+dp[i-1][w-wt[i-1]])
+  Result: 220 (items 2+3)`,
+    complexity: {"time":"O(n*W)","space":"O(W)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dp(W+1,0); for(int i=0;i<n;i++)for(int w=W;w>=wt[i];w--)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]); cout<<dp[W];",
+  },
+  {
     id: "edit-distance",
     title: "Edit Distance (Levenshtein)",
     category: "dp",
@@ -88,37 +119,6 @@ Diagram:
     examples: [
       {"input":"horse\nros","output":"3","explanation":"horse->rorse->rose->ros (3 ops)"}
     ],
-    test_cases: [
-      {"input":"horse\nros","expected":"3"},
-      {"input":"intention\nexecution","expected":"5"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s1, s2;\n  cin >> s1 >> s2;\n  int n = s1.size(), m = s2.size();\n\n  // 2D DP: dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+(s1[i]!=s2[j]))\n\n  cout << dp[n][m] << endl;\n  return 0;\n}",
-    approach: "2D DP: dp[i][j]=min(insert,delete,replace). Insert=dp[i][j-1]+1, Delete=dp[i-1][j]+1, Replace=dp[i-1][j-1]+(s1[i]!=s2[j]).",
-    complexity: {"time":"O(n*m)","space":"O(n*m)"},
-    sheet: "Striver A2Z",
-    solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=dp[i-1][j-1];else dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});}cout<<dp[n][m];",
-  },
-  {
-    id: "lcs",
-    title: "Longest Common Subsequence",
-    category: "dp",
-    difficulty: "medium",
-    description: "Find length of longest common subsequence between two strings.",
-    constraints: "1 <= |s1|,|s2| <= 1000",
-    examples: [
-      {"input":"abcde\nace","output":"3","explanation":"LCS = \"ace\""}
-    ],
-    test_cases: [
-      {"input":"abcde\nace","expected":"3"},
-      {"input":"abc\nabc","expected":"3"},
-      {"input":"abc\ndef","expected":"0"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s1, s2;\n  cin >> s1 >> s2;\n  int n = s1.size(), m = s2.size();\n\n  // 2D DP: if match dp[i][j]=1+dp[i-1][j-1], else max(dp[i-1][j], dp[i][j-1])\n\n  cout << dp[n][m] << endl;\n  return 0;\n}",
-    approach: "2D DP: if chars match, dp[i][j]=1+dp[i-1][j-1]; else dp[i][j]=max(dp[i-1][j],dp[i][j-1]).",
-    complexity: {"time":"O(n*m)","space":"O(n*m)"},
-    sheet: "Striver A2Z",
-    solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=1+dp[i-1][j-1];else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);}cout<<dp[n][m];",
-  },
   {
     id: "rod-cutting",
     title: "Rod Cutting",
