@@ -354,6 +354,24 @@ export default [
   },
   {
     id: "chocolate-dist",
+    title: "Chocolate Distribution",
+    category: "arrays",
+    difficulty: "easy",
+    description: "Given packets with chocolates, distribute to m children so that max-min difference is minimized.",
+    constraints: "1 <= n <= 10^5, 1 <= m <= n",
+    techniques: ["sliding-window"],
+    examples: [
+      {"input":"8\n3 4 1 9 56 7 9 12\n5","output":"6","explanation":"Pick packets: 3,4,7,9,9 => max-min = 9-3 = 6"}
+    ],
+    test_cases: [
+      {"input":"8\n3 4 1 9 56 7 9 12\n5","expected":"6"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> m;\n\n  sort(arr, arr + n);\n  // sliding window of size m\n\n  cout << minDiff << endl;\n  return 0;\n}",
+    approach: "This problem asks us to minimize the difference between the maximum and minimum number of chocolates when distributing exactly m packets to m children, where each child gets exactly one packet and we can choose any m packets from the array. A brute force approach generates all combinations of m packets from n, computes the max-min difference for each, and tracks the minimum. This is C(n,m), which is exponential and completely infeasible for n up to 10^5. The optimal approach uses sorting and a sliding window. First, sort the array. The key insight is that to minimize the difference between max and min, the chosen m packets must be consecutive in the sorted order because any gap would only increase the difference. After sorting, use a sliding window of size m: for each window starting at index i, compute diff = arr[i+m-1] - arr[i] (max minus min in that window). Track the minimum diff across all windows. For [3,4,1,9,56,7,9,12] with m=5: sort -> [1,3,4,7,9,9,12,56]. Window 0: [1,3,4,7,9], diff=8; window 1: [3,4,7,9,9], diff=6; window 2: [4,7,9,9,12], diff=8; window 3: [7,9,9,12,56], diff=49. Minimum diff=6, achieved by choosing packets 3,4,7,9,9. Edge cases include m=1 (difference is always 0 since max=min), m=n (must take all packets), and arrays with fewer than m elements (invalid input). Time complexity is O(n log n) due to sorting, and the sliding window scan is O(n). Space complexity is O(1) ignoring the sorting overhead.\n\nDiagram:\n  Array: [3, 4, 1, 9, 56, 7, 9, 12], m=5\n  Sorted: [1, 3, 4, 7, 9, 9, 12, 56]\n  \n  Window 0: [1, 3, 4, 7, 9]   \u2192 diff=9-1=8\n  Window 1: [3, 4, 7, 9, 9]   \u2192 diff=9-3=6  \u2190 minimum\n  Window 2: [4, 7, 9, 9, 12]  \u2192 diff=12-4=8\n  Window 3: [7, 9, 9, 12, 56] \u2192 diff=56-7=49\n  \n  Result: 6",
+    complexity: {"time":"O(n log n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "sort(arr,arr+n);\nint mn=INT_MAX;\nfor(int i=0;i+m-1<n;i++){\n  mn=min(mn,arr[i+m-1]-arr[i]);\n}\ncout << mn;",
+  },
   {
     id: "product-array",
     title: "Product of Array Except Self",
@@ -361,6 +379,7 @@ export default [
     difficulty: "medium",
     description: "Return array where answer[i] = product of all elements except arr[i].",
     constraints: "1 <= n <= 10^5",
+    techniques: ["prefix-sum"],
     examples: [
       {"input":"4\n1 2 3 4","output":"24 12 8 6","explanation":"Without division, O(n)"}
     ],
@@ -368,29 +387,10 @@ export default [
       {"input":"4\n1 2 3 4","expected":"24 12 8 6"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // prefix and suffix products\n\n  for (int i = 0; i < n; i++) cout << ans[i] << \" \";\n  return 0;\n}",
-    approach: "Compute prefix products and suffix products. Answer[i] = prefix[i-1] * suffix[i+1].",
+    approach: "This problem asks us to return an array where each element at index i equals the product of all elements of the original array except the element at i, without using division. A brute force approach uses two nested loops: for each index i, compute the product of all elements except arr[i] by iterating through the array and multiplying all elements while skipping i. For example, with [1,2,3,4], for i=0 compute 2*3*4=24, for i=1 compute 1*3*4=12, for i=2 compute 1*2*4=8, for i=3 compute 1*2*3=6. This is O(n^2) time. The optimal approach uses prefix and suffix products in two passes. In the first pass, compute prefix products: prefix[i] holds the product of all elements before index i. Initialize prefix[0]=1, then for i=1 to n-1: prefix[i] = prefix[i-1] * arr[i-1]. In the second pass, traverse from right to left maintaining a suffix product variable. For i from n-1 down to 0: answer[i] = prefix[i] * suffix, then update suffix *= arr[i]. This gives each position the product of everything before it (prefix) times everything after it (suffix). For [1,2,3,4]: first pass: prefix=[1,1,2,6]; second pass: suffix=1; i=3: ans[3]=6*1=6, suffix=4; i=2: ans[2]=2*4=8, suffix=12; i=1: ans[1]=1*12=12, suffix=24; i=0: ans[0]=1*24=24. Result=[24,12,8,6]. Edge cases include arrays with zeros (handled naturally since prefix/suffix products include zeros), arrays with one element (answer is [1]), and handling overflow for large arrays. Time complexity is O(n) for two passes, and space complexity is O(n) for the prefix array (can be optimized to O(1) extra by storing the result first then using it as prefix).\n\nDiagram:\n  Array: [1, 2, 3, 4]\n  \n  Prefix pass (left to right):\n    pre[0]=1\n    pre[1]=1*arr[0]=1*1=1\n    pre[2]=1*arr[1]=1*2=2\n    pre[3]=2*arr[2]=2*3=6\n  \n  Suffix pass (right to left):\n    suf[3]=1\n    suf[2]=1*arr[3]=1*4=4\n    suf[1]=4*arr[2]=4*3=12\n    suf[0]=12*arr[1]=12*2=24\n  \n  Result: pre[0]*suf[0]=24, pre[1]*suf[1]=12, pre[2]*suf[2]=8, pre[3]*suf[3]=6\n  Final: [24, 12, 8, 6]",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int pre[n],suf[n];\npre[0]=1;\nfor(int i=1;i<n;i++) pre[i]=pre[i-1]*arr[i-1];\nsuf[n-1]=1;\nfor(int i=n-2;i>=0;i--) suf[i]=suf[i+1]*arr[i+1];\nfor(int i=0;i<n;i++) cout << pre[i]*suf[i] << \" \";",
-  },
-  {
-    id: "min-jumps",
-    title: "Minimum Jumps to Reach End",
-    category: "arrays",
-    difficulty: "hard",
-    description: "Each element is max jump length. Find min jumps to reach end.",
-    constraints: "1 <= n <= 10^5",
-    examples: [
-      {"input":"11\n1 3 5 8 9 2 6 7 6 8 9","output":"3","explanation":"1->3->9->end"}
-    ],
-    test_cases: [
-      {"input":"11\n1 3 5 8 9 2 6 7 6 8 9","expected":"3"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // greedy: track maxReach and steps\n\n  cout << jumps << endl;\n  return 0;\n}",
-    approach: "Greedy: track current end and farthest reachable. When i reaches current end, increment jump and set new end.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int jumps=0,curEnd=0,far=0;\nfor(int i=0;i<n-1;i++){\n  far=max(far,i+arr[i]);\n  if(i==curEnd){\n    jumps++;\n    curEnd=far;\n  }\n}\ncout << jumps;",
   },
   {
     id: "pascal-triangle",
