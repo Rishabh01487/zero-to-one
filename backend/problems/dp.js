@@ -118,5 +118,24 @@ export default [
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
     solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=1+dp[i-1][j-1];else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);}cout<<dp[n][m];",
+  },
+  {
+    id: "rod-cutting",
+    title: "Rod Cutting",
+    category: "dp",
+    difficulty: "medium",
+    description: "Find max value from cutting a rod of length n.",
+    constraints: "1 <= n <= 100",
+    examples: [
+      {"input":"8\n1 5 8 9 10 17 17 20","output":"22","explanation":"Cut into 2+6 = 5+17 = 22"}
+    ],
+    test_cases: [
+      {"input":"8\n1 5 8 9 10 17 17 20","expected":"22"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int price[n];\n  for (int i = 0; i < n; i++) cin >> price[i];\n\n  // dp[i] = max(price[j] + dp[i-j-1]) for all j\n\n  cout << dp[n] << endl;\n  return 0;\n}",
+    approach: "DP: for each length i, try all cuts j, dp[i]=max(price[j]+dp[i-j-1]).",
+    complexity: {"time":"O(n²)","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int dp[n+1]={0}; for(int i=1;i<=n;i++)for(int j=0;j<i;j++)dp[i]=max(dp[i],price[j]+dp[i-j-1]);cout<<dp[n];",
   }
 ]
