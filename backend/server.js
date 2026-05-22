@@ -19,12 +19,14 @@ import compileRoutes from './routes/compile.js';
 import lessonsRoutes from './routes/lessons.js';
 import problemsRoutes from './routes/problems.js';
 import progressRoutes from './routes/progress.js';
+import patternsRoutes from './routes/patterns.js';
 import { instrumentCode } from './services/visualizer.js';
 
 app.use('/api/compile', compileRoutes);
 app.use('/api/lessons', lessonsRoutes);
 app.use('/api/problems', problemsRoutes);
 app.use('/api/progress', progressRoutes);
+app.use('/api/patterns', patternsRoutes);
 
 app.post('/api/visualize', async (req, res) => {
   const { code, input } = req.body;
@@ -41,7 +43,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 httpServer.listen(PORT, async () => {
   try {
     const { seedDatabase } = await import('./seed.js');
