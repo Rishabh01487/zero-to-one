@@ -8,6 +8,7 @@ import treeLessons from './lessons/trees.js';
 import advancedLessons from './lessons/advanced.js';
 
 import arrayProblems from './problems/arrays.js';
+import stringProblems from './problems/strings.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -314,6 +315,7 @@ export function seedDatabase() {
   const allProblems = [
     ...problems,
     ...arrayProblems,
+    ...stringProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
