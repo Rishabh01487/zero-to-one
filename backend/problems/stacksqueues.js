@@ -152,11 +152,20 @@ export default [
     ],
     test_cases: [
       {"input":"a+b","expected":"ab+"},
+      {"input":"a*b+c","expected":"ab*c+"}
+    ],
+    approach: "Infix to Postfix conversion transforms human-readable infix into postfix using Dijkstra's shunting-yard algorithm with an operator stack.\n\nDiagram:\n  infix: a+b*c\n\n  char 'a':  output = \"a\"\n  char '+':  stack = [+]\n  char 'b':  output = \"ab\"\n  char '*':  stack = [+,*]   (* prec 2 > + prec 1, push)\n  char 'c':  output = \"abc\"\n  end:       pop * -> output = \"abc*\", pop + -> output = \"abc*+\"\n\n  Result: \"abc*+\"\n\n  infix: (a+b)*c\n\n  char '(':  stack = [(]\n  char 'a':  output = \"a\"\n  char '+':  stack = [(,+]\n  char 'b':  output = \"ab\"\n  char ')':  pop + -> output = \"ab+\", pop (\n  char '*':  stack = [*]\n  char 'c':  output = \"ab+c\"\n  end:       pop * -> output = \"ab+c*\"\n\n  Result: \"ab+c*\"\n\nEdge cases: mismatched parentheses error; single operand returns itself. Complexity: O(n) time, O(n) space.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "stack<char> st; string res; for(char c:s){if(isalnum(c))res+=c;else if(c=='(')st.push(c);else if(c==')'){while(st.top()!='('){res+=st.top();st.pop();}st.pop();}else{while(!st.empty()&&prec(c)<=prec(st.top())){res+=st.top();st.pop();}st.push(c);}} while(!st.empty()){res+=st.top();st.pop();}cout<<res;",
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint prec(char c) {\n  if (c == '^') return 3;\n  if (c == '*' || c == '/') return 2;\n  if (c == '+' || c == '-') return 1;\n  return 0;\n}\n\nint main() {\n  string s;\n  cin >> s;\n  stack<char> st;\n\n  // Shunting-yard algorithm\n\n  cout << result << endl;\n  return 0;\n}",
+  },
   {
     id: "impl-stack-queue",
     title: "Stack Using Queues",
     category: "stack-queue",
     difficulty: "easy",
+    techniques: ["stack-queue"],
     description: "Implement stack using two queues.",
     constraints: "1 <= q <= 10^5",
     examples: [
@@ -165,7 +174,7 @@ export default [
     test_cases: [
       {"input":"5\npush 1\npush 2\ntop\npop\ntop","expected":"2 1"}
     ],
-    approach: "Use a single queue. On push, add and rotate all previous elements to front.",
+    approach: "The Stack Using Queues problem asks to implement a LIFO stack using FIFO queue operations. The optimal single-queue approach makes push O(n) and pop O(1) by rotating elements after each push.\n\nDiagram:\n  push(1): q = [1]\n  push(2): enqueue 2 -> q=[1,2], rotate size-1=1: dequeue 1 -> q=[2,1]\n  push(3): enqueue 3 -> q=[2,1,3], rotate 2x: dequeue 2 -> q=[1,3,2], dequeue 1 -> q=[3,2,1]\n  top():   return front = 3\n  pop():   return front = 3, q=[2,1]\n  top():   return front = 2\n\n  Queue state always has newest element at front.\n\nEdge cases: pop/top on empty stack throws exception. Complexity: O(n) push, O(1) pop/top/empty, O(n) space.",
     complexity: {"time":"O(n) push, O(1) pop","space":"O(n)"},
     sheet: "Love Babbar 450",
     solution_code: "// push: q.push(x); for i in 0..size-2: q.push(q.front()); q.pop();",
@@ -176,20 +185,11 @@ export default [
     title: "Max Rectangle in Binary Matrix",
     category: "stack-queue",
     difficulty: "hard",
+    techniques: ["monotonic-stack"],
     description: "Find the largest rectangle containing only 1s in binary matrix.",
     constraints: "1 <= n,m <= 200",
     examples: [
       {"input":"4 5\n10100\n10111\n11111\n10010","output":"6","explanation":"Largest rectangle of 1s has area 6"}
-    ],
-    test_cases: [
-      {"input":"4 5\n10100\n10111\n11111\n10010","expected":"6"}
-    ],
-    approach: "Treat each row as base of histogram. Use largest rectangle in histogram per row.",
-    complexity: {"time":"O(n*m)","space":"O(m)"},
-    sheet: "Striver A2Z",
-    solution_code: "int h[200]={0},mx=0; for(int i=0;i<n;i++){for(int j=0;j<m;j++)h[j]=(mat[i][j]=='1')?h[j]+1:0;mx=max(mx,largestArea(h,m));}cout<<mx;",
-    solution_template: "#include <iostream>\n#include <stack>\n#include <algorithm>\nusing namespace std;\n\nint largestArea(int heights[], int n) {\n  stack<int> st;\n  int maxA = 0;\n  for (int i = 0; i <= n; i++) {\n    while (!st.empty() && (i == n || heights[st.top()] > heights[i])) {\n      int h = heights[st.top()]; st.pop();\n      int w = st.empty() ? i : i - st.top() - 1;\n      maxA = max(maxA, h * w);\n    }\n    st.push(i);\n  }\n  return maxA;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  int heights[m] = {0};\n  int maxArea = 0;\n  for (int i = 0; i < n; i++) {\n    string row; cin >> row;\n    for (int j = 0; j < m; j++)\n      heights[j] = (row[j] == '1') ? heights[j] + 1 : 0;\n    maxArea = max(maxArea, largestArea(heights, m));\n  }\n  cout << maxArea << endl;\n  return 0;\n}",
-  }
     ],
     test_cases: [
       {"input":"4 5\n10100\n10111\n11111\n10010","expected":"6"}
