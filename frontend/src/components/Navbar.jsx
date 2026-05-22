@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
   { path: '/lessons', label: 'Lessons' },
+  { path: '/patterns', label: 'Patterns' },
   { path: '/playground', label: 'Playground' },
   { path: '/visualizer', label: 'Visualizer' },
   { path: '/problems', label: 'Problems' },
@@ -15,8 +16,7 @@ export default function Navbar({ username, onLogout }) {
   return (
     <nav style={{
       height: 'var(--nav-height)',
-      background: 'rgba(15,15,26,0.9)',
-      backdropFilter: 'blur(16px)',
+      background: 'var(--bg-primary)',
       borderBottom: '1px solid var(--border)',
       display: 'flex',
       alignItems: 'center',
@@ -28,36 +28,22 @@ export default function Navbar({ username, onLogout }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
         <Link to="/" style={{
-          fontSize: 20,
-          fontWeight: 800,
+          fontSize: 15,
+          fontWeight: 600,
           textDecoration: 'none',
           color: 'var(--text-primary)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8
+          letterSpacing: '-0.3px'
         }}>
-          <span style={{
-            width: 32,
-            height: 32,
-            background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-            borderRadius: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 16,
-            fontWeight: 800,
-            color: 'white'
-          }}>Z</span>
-          Zero to One
+          zero<span style={{ color: 'var(--text-muted)' }}>to</span>one
         </Link>
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div style={{ display: 'flex', gap: 2 }}>
           {navItems.map(item => (
             <Link key={item.path} to={item.path} style={{
-              padding: '8px 16px',
+              padding: '6px 12px',
               borderRadius: 'var(--radius)',
               textDecoration: 'none',
               fontSize: 13,
-              fontWeight: 500,
+              fontWeight: 450,
               color: location.pathname.startsWith(item.path) ? 'var(--text-primary)' : 'var(--text-muted)',
               background: location.pathname.startsWith(item.path) ? 'var(--bg-tertiary)' : 'transparent',
               transition: 'var(--transition)'
@@ -67,19 +53,14 @@ export default function Navbar({ username, onLogout }) {
           ))}
         </div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         {username ? (
           <>
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: 'white' }}>
-                {username[0].toUpperCase()}
-              </span>
-              {username}
-            </span>
-            <button onClick={onLogout} className="btn btn-secondary btn-sm">Sign Out</button>
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{username}</span>
+            <button onClick={onLogout} className="btn btn-ghost btn-sm" style={{ color: 'var(--text-muted)' }}>Sign out</button>
           </>
         ) : (
-          <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>Guest</span>
+          <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>guest</span>
         )}
       </div>
     </nav>
