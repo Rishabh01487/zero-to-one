@@ -499,4 +499,4 @@ export default [
     solution_code: "for(int pos=maxLen-1;pos>=0;pos--){int cnt[256]={0};for(int i=0;i<n;i++)cnt[(pos<arr[i].size())?arr[i][pos]:0]++;for(int i=1;i<256;i++)cnt[i]+=cnt[i-1];vector<string> out(n);for(int i=n-1;i>=0;i--){int c=(pos<arr[i].size())?arr[i][pos]:0;out[--cnt[c]]=arr[i];}arr=out;}",
     techniques: ["sorting"],
   },
-]
+];

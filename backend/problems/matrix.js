@@ -560,4 +560,4 @@ export default [
     solution_code: "vector<int> rowMin(n, INT_MAX), colMax(m, 0);\nfor (int i=0; i<n; i++)\n  for (int j=0; j<m; j++) {\n    rowMin[i] = min(rowMin[i], mat[i][j]);\n    colMax[j] = max(colMax[j], mat[i][j]);\n  }\nfor (int i=0; i<n; i++)\n  for (int j=0; j<m; j++)\n    if (mat[i][j] == rowMin[i] && mat[i][j] == colMax[j])\n      cout << mat[i][j] << \" \";",
     solution_template: "#include <iostream>\n#include <vector>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[50][50];\n  for (int i=0; i<n; i++) for (int j=0; j<m; j++) cin >> mat[i][j];\n  // lucky numbers\n  return 0;\n}",
   },
-]
+];

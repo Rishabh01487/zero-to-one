@@ -581,4 +581,4 @@ export default [
     solution_code: "while (n > m) n &= n - 1;\ncout << n;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int m, n; cin >> m >> n;\n  // bitwise and range\n  return 0;\n}",
   },
-]
+];
