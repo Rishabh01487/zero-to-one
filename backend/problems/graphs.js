@@ -152,5 +152,25 @@ export default [
     complexity: {"time":"O((V+E) log V)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<bool> vis(n); priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq; pq.push({0,0}); int mst=0; while(!pq.empty()){auto[w,u]=pq.top();pq.pop();if(vis[u])continue;vis[u]=1;mst+=w;for(auto[v,w2]:g[u])if(!vis[v])pq.push({w2,v});}cout<<mst;",
+  },
+  {
+    id: "bipartite",
+    title: "Check Bipartite Graph",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Check if graph is bipartite (2-colorable).",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 0","output":"No","explanation":"Odd cycle = not bipartite"}
+    ],
+    test_cases: [
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 0","expected":"No"},
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 1","expected":"Yes"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); g[v].push_back(u); }\n\n  vector<int> color(n, -1);\n  bool bipartite = true;\n\n  for (int i = 0; i < n && bipartite; i++) {\n    if (color[i] != -1) continue;\n    queue<int> q; q.push(i); color[i] = 0;\n    while (!q.empty() && bipartite) {\n      int u = q.front(); q.pop();\n      for (int v : g[u]) {\n        if (color[v] == color[u]) { bipartite = false; break; }\n        if (color[v] == -1) { color[v] = 1 - color[u]; q.push(v); }\n      }\n    }\n  }\n\n  cout << (bipartite ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "BFS with 2-coloring: assign alternating colors. If neighbor has same color, not bipartite.",
+    complexity: {"time":"O(V+E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> col(n,-1); queue<int> q; for(int i=0;i<n;i++)if(col[i]==-1){q.push(i);col[i]=0;while(!q.empty()){int u=q.front();q.pop();for(int v:g[u]){if(col[v]==col[u]){cout<<\"No\";return 0;}if(col[v]==-1){col[v]=1-col[u];q.push(v);}}}}cout<<\"Yes\";",
   }
 ]
