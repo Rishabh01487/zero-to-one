@@ -93,5 +93,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "stack<int> st; int maxA=0; for(int i=0;i<=n;i++){while(!st.empty()&&(i==n||heights[st.top()]>heights[i])){int h=heights[st.top()];st.pop();int w=st.empty()?i:i-st.top()-1;maxA=max(maxA,h*w);}st.push(i);}cout<<maxA;",
     solution_template: "#include <iostream>\n#include <stack>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int heights[n];\n  for (int i = 0; i < n; i++) cin >> heights[i];\n\n  stack<int> st;\n  int maxArea = 0;\n\n  // monotonic stack: pop when height drops\n\n  cout << maxArea << endl;\n  return 0;\n}",
+  },
+  {
+    id: "sliding-window-max",
+    title: "Sliding Window Maximum",
+    category: "stack-queue",
+    difficulty: "hard",
+    description: "Find maximum in every sliding window of size k.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    examples: [
+      {"input":"8\n1 3 -1 -3 5 3 6 7\n3","output":"3 3 5 5 6 7"}
+    ],
+    test_cases: [
+      {"input":"8\n1 3 -1 -3 5 3 6 7\n3","expected":"3 3 5 5 6 7"}
+    ],
+    approach: "Deque storing indices. Maintain decreasing deque. Front is max. Remove out-of-window indices from front.",
+    complexity: {"time":"O(n)","space":"O(k)"},
+    sheet: "Striver A2Z",
+    solution_code: "deque<int> dq; for(int i=0;i<n;i++){while(!dq.empty()&&dq.front()<=i-k)dq.pop_front();while(!dq.empty()&&arr[dq.back()]<=arr[i])dq.pop_back();dq.push_back(i);if(i>=k-1)cout<<arr[dq.front()]<<\" \";}",
+    solution_template: "#include <iostream>\n#include <deque>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n\n  deque<int> dq; // store indices\n\n  // maintain decreasing deque\n\n  return 0;\n}",
   }
 ]
