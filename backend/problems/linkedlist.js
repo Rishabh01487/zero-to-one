@@ -173,5 +173,24 @@ export default [
     complexity: {"time":"O(n+m)","space":"O(max(n,m))"},
     sheet: "Striver A2Z",
     solution_code: "Node dummy(0); Node* t=&dummy; int carry=0; while(a||b||carry){int s=carry; if(a){s+=a->data;a=a->next;}if(b){s+=b->data;b=b->next;}t->next=new Node(s%10);carry=s/10;t=t->next;} return dummy.next;",
+  },
+  {
+    id: "rotate-list",
+    title: "Rotate Linked List by K",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Rotate linked list to the right by k places.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= 10^5",
+    examples: [
+      {"input":"5\n1 2 3 4 5\n2","output":"4 5 1 2 3"}
+    ],
+    test_cases: [
+      {"input":"5\n1 2 3 4 5\n2","expected":"4 5 1 2 3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n  k %= n;\n  if (k == 0) { Node* t = head; while (t) { cout << t->data << \" \"; t = t->next; } return 0; }\n\n  // make circular, break at n-k\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: "Make list circular by connecting tail to head. Break at new head position (n-k%n).",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node* t=head; int len=1; while(t->next){t=t->next;len++;} t->next=head; k%=len; int steps=len-k; while(steps--)t=t->next; head=t->next; t->next=nullptr;",
   }
 ]
