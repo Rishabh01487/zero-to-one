@@ -193,6 +193,18 @@ export default [
     constraints: "1 <= n <= 10^5",
     examples: [
       {"input":"3\n2 1 3","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"3\n2 1 3","expected":"Yes"},
+      {"input":"3\n5 1 4","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <climits>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nbool isValid(TreeNode* root, long long mn, long long mx) {\n  if (!root) return true;\n  if (root->val <= mn || root->val >= mx) return false;\n  return isValid(root->left, mn, root->val) &&\n         isValid(root->right, root->val, mx);\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cout << (isValid(nodes[0], LLONG_MIN, LLONG_MAX) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Validate BST uses recursive range-checking: each node must be within (min, max). Left subtree narrows max to node.val, right narrows min to node.val.\n\nDiagram:\n  Valid BST:\n        2 [-inf, +inf]\n       /  \\\n      1    3\n     [-inf,2] [2,+inf]\n    Check: 2 ok, 1 in (-inf,2) ok, 3 in (2,+inf) ok -> Yes\n\n  Invalid BST:\n        5 [-inf,+inf]\n       /  \\\n      1    4\n    Check: 5 ok, 1 ok, 4 in (5,+inf)? No -> No\n\nTime O(n), Space O(n).",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "function<bool(TreeNode*,long long,long long)> v=[&](TreeNode* r,long long mn,long long mx){return !r||(r->val>mn&&r->val<mx&&v(r->left,mn,r->val)&&v(r->right,r->val,mx));}; cout<<(v(root,LLONG_MIN,LLONG_MAX)?\"Yes\":\"No\");",
+    techniques: ["binary-search-tree", "tree-dfs"]
+  },
   {
     id: "kth-smallest-bst",
     title: "Kth Smallest Element in BST",
@@ -204,33 +216,21 @@ export default [
       {"input":"5\n3 1 4 -1 2\n1","output":"1","explanation":"Inorder: 1,2,3,4 => 1st = 1"}
     ],
     test_cases: [
-      {"input":"5\n3 1 4 -1 2\n1","expected":"1"}
+      {"input":"5\n3 1 4 -1 2\n1","expected":"1"},
+      {"input":"5\n3 1 4 -1 2\n3","expected":"3"}
     ],
     solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint main() {\n  int n, k; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cin >> k;\n\n  // iterative inorder, stop at kth\n\n  return 0;\n}",
-    approach: "Iterative inorder. Stop when counter reaches k.",
+    approach: "Kth Smallest leverages inorder traversal order (ascending in BST). Iterative inorder with a counter; stop when count reaches k.\n\nDiagram:\n      3\n     / \\\n    1   4\n     \\\n      2\n\nInorder: 1, 2, 3, 4\nFor k=1: push 3,1 -> pop 1, count=1 -> output 1\nFor k=3: push 3,1 -> pop 1(c=1), push 2 -> pop 2(c=2), pop 3(c=3) -> output 3\n\nTime O(k + height), Space O(height).",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "stack<TreeNode*> st; TreeNode* cur=root; int cnt=0; while(cur||!st.empty()){while(cur){st.push(cur);cur=cur->left;}cur=st.top();st.pop();if(++cnt==k){cout<<cur->val;return 0;}cur=cur->right;}",
+    techniques: ["binary-search-tree", "tree-dfs"]
   },
   {
     id: "serialize-deserialize",
     title: "Serialize and Deserialize Binary Tree",
     category: "trees",
     difficulty: "hard",
-    description: "Serialize a binary tree to string and deserialize back.",
-    constraints: "1 <= n <= 10^4",
-    examples: [
-      {"input":"7\n1 2 3 4 5 6 7","output":"1 2 3 4 5 6 7"}
-    ],
-    test_cases: [
-      {"input":"7\n1 2 3 4 5 6 7","expected":"1 2 3 4 5 6 7"}
-    ],
-    solution_template: "#include <iostream>\n#include <sstream>\n#include <queue>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nstring serialize(TreeNode* root) {\n  // BFS, use \"#\" for null\n}\n\nTreeNode* deserialize(const string& data) {\n  // reconstruct from BFS order\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  string s = serialize(nodes[0]);\n  TreeNode* root2 = deserialize(s);\n  queue<TreeNode*> q; q.push(root2);\n  while (!q.empty()) {\n    auto* f = q.front(); q.pop();\n    if (f) { cout << f->val << \" \"; q.push(f->left); q.push(f->right); }\n  }\n  return 0;\n}",
-    approach: "BFS level order for serialization. Use queue to reconstruct tree from string.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "// serialize: queue BFS, '#' for null. deserialize: queue, build left+right from tokens.",
-  },
   {
     id: "max-path-sum",
     title: "Binary Tree Maximum Path Sum",
