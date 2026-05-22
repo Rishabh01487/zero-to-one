@@ -78,27 +78,27 @@ export default [
     complexity: {"time":"O(n log log n)","space":"O(n)"},
     sheet: "Love Babbar 450",
     techniques: ["maths-technique"],
+    solution_code: "vector<bool> isPrime(n, true);\nfor (int i = 2; i * i < n; i++) if (isPrime[i]) for (int j = i * i; j < n; j += i) isPrime[j] = false;\nfor (int i = 2; i < n; i++) if (isPrime[i]) cout << i << \" \";",
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // sieve\n  return 0;\n}",
+  },
   {
-    id: "next-palindrome",
-    title: "Next Palindrome Number",
+    id: "factorial-trailing-zeros",
+    title: "Factorial Trailing Zeros",
     category: "maths",
-    difficulty: "medium",
-    description: "Find smallest palindrome greater than or equal to given number.",
-    constraints: "1 <= n <= 10^18",
+    difficulty: "easy",
+    description: "Count the number of trailing zeros in n!.",
+    constraints: "1 <= n <= 10^9",
     examples: [
-      {"input":"121","output":"121"},
-      {"input":"123","output":"131"}
+      {"input":"25","output":"6"},
+      {"input":"10","output":"2"}
     ],
     test_cases: [
-      {"input":"121","expected":"121"},
-      {"input":"123","expected":"131"}
+      {"input":"25","expected":"6"},
+      {"input":"10","expected":"2"}
     ],
-    approach: "Mirror left half to right. If result <= original, increment the middle and mirror again. Handle carries.",
-    complexity: {"time":"O(log n)","space":"O(1)"},
+    approach: "Count factors of 5 in n! since factors of 2 are always more abundant.\n\nDiagram:\n```\nn=25: 25/5=5, 25/25=1, 25/125=0 → total=6\nnn=10: 10/5=2, 10/25=0 → total=2\nnn=100: 100/5=20, 100/25=4, 100/125=0 → total=24\n\nVerification:\n  10! = 3628800 (2 trailing zeros) ✓\n  25! = 15511210043330985984000000 (6 trailing zeros) ✓\n```\n\nTime O(log₅ n), Space O(1).",
+    complexity: {"time":"O(log_5 n)","space":"O(1)"},
     sheet: "Love Babbar 450",
-    solution_code: "// convert to string, mirror left half\nstring s = to_string(n);\nint len = s.size();\nfor (int i = 0; i < len/2; i++) s[len-1-i] = s[i];\nif (stoll(s) < n) {\n  // increment middle\n}",
-    solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  long long n; cin >> n;\n  // next palindrome\n  return 0;\n}",
-  }
     techniques: ["maths-technique"],
     solution_code: "int count = 0;\nfor (int d = 5; d <= n; d *= 5) count += n / d;\ncout << count;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // count trailing zeros\n  return 0;\n}",
