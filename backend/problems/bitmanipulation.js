@@ -78,44 +78,44 @@ export default [
     approach: "Generates all 2^n subsets by treating each bit as inclusion flag.\n\nDiagram:\n```\narr = [1, 2, 3], n = 3, 2^3 = 8 subsets\n\nmask 0 (000) → []        mask 4 (100) → [3]\nmask 1 (001) → [1]       mask 5 (101) → [1,3]\nmask 2 (010) → [2]       mask 6 (110) → [2,3]\nmask 3 (011) → [1,2]     mask 7 (111) → [1,2,3]\n\nBit positions:\n  arr[0]=1 → bit 0 (LSB)\n  arr[1]=2 → bit 1\n  arr[2]=3 → bit 2\n\nmask=5 (101): bit0=1 include 1, bit1=0 skip 2, bit2=1 include 3 → [1,3]\n```\n\nTime complexity is O(n * 2^n), space O(n * 2^n).",
     complexity: {"time":"O(n * 2^n)","space":"O(n * 2^n)"},
     sheet: "Love Babbar 450",
-  {
-    id: "two-odd-occuring",
-    title: "Two Numbers with Odd Occurrences",
-    category: "bit-manipulation",
-    difficulty: "medium",
-    description: "Find two elements that appear odd number of times.",
-    constraints: "2 <= n <= 10^5",
-    examples: [
-      {"input":"8\n4 3 4 4 5 3 5 2","output":"4 2"}
-    ],
-    test_cases: [
-      {"input":"8\n4 3 4 4 5 3 5 2","expected":"4 2"}
-    ],
-    approach: "XOR all elements to get xor of two odd-occurring numbers. Find a set bit in this xor, partition array based on that bit, XOR each group separately.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Love Babbar 450",
-    solution_code: "int xorAll = 0;\nfor (int i = 0; i < n; i++) xorAll ^= arr[i];\nint setBit = xorAll & ~(xorAll - 1);\nint x = 0, y = 0;\nfor (int i = 0; i < n; i++) {\n  if (arr[i] & setBit) x ^= arr[i];\n  else y ^= arr[i];\n}",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // XOR partitioning\n  return 0;\n}",
+    techniques: ["bit-manipulation"],
+    solution_code: "int n = arr.size();\nvector<vector<int>> result;\nfor (int mask = 0; mask < (1 << n); mask++) {\n  vector<int> subset;\n  for (int i = 0; i < n; i++) if (mask & (1 << i)) subset.push_back(arr[i]);\n  result.push_back(subset);\n}",
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // bitmask subsets\n  return 0;\n}",
   },
   {
-    id: "bit-difference",
-    title: "Sum of Bit Differences Among All Pairs",
+    id: "find-msb",
+    title: "Find Most Significant Bit",
     category: "bit-manipulation",
-    difficulty: "medium",
-    description: "Sum of (number of differing bits) over all pairs.",
-    constraints: "1 <= n <= 10^5, 0 <= arr[i] <= 10^9",
+    difficulty: "easy",
+    description: "Find the value of the most significant set bit (MSB) in an integer.",
+    constraints: "1 <= n <= 10^9",
     examples: [
-      {"input":"3\n1 3 5","output":"8"}
+      {"input":"18","output":"16"}
     ],
     test_cases: [
-      {"input":"3\n1 3 5","expected":"8"}
+      {"input":"18","expected":"16"},
+      {"input":"1","expected":"1"}
     ],
-    approach: "For each bit position, count how many numbers have that bit set (c) and not set (n-c). Contribution to sum = c * (n-c) * 2.",
-    complexity: {"time":"O(n * 32)","space":"O(1)"},
+    approach: "Finds the largest power of two ≤ n by propagating bits rightward.\n\nDiagram:\n```\nn = 18 → binary: 10010\n\nStep 1: n |= n >> 1\n  10010 | 01001 = 11011\n\nStep 2: n |= n >> 2\n  11011 | 00110 = 11111\n\nStep 3: n |= n >> 4\n  11111 | 00001 = 11111  (unchanged)\n\nStep 4: n |= n >> 8\n  11111 | 00000 = 11111  (unchanged)\n\nStep 5: (n + 1) >> 1\n  n = 11111 → n+1 = 100000 → >>1 = 10000 = 16\n\nn = 1 → binary: 1\n  1 | 0 = 1 → (1+1)>>1 = 1\n  MSB = 1\n```\n\nTime O(1), Space O(1).",
+    complexity: {"time":"O(1)","space":"O(1)"},
     sheet: "Love Babbar 450",
-    solution_code: "long long sum = 0;\nfor (int b = 0; b < 32; b++) {\n  int countSet = 0;\n  for (int i = 0; i < n; i++) if (arr[i] & (1 << b)) countSet++;\n  sum += (long long)countSet * (n - countSet) * 2;\n}",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // bit contribution\n  return 0;\n}",
-  }
+    techniques: ["bit-manipulation"],
+    solution_code: "int msb = n;\nmsb |= msb >> 1; msb |= msb >> 2; msb |= msb >> 4; msb |= msb >> 8; msb |= msb >> 16;\ncout << ((msb + 1) >> 1);",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // find MSB\n  return 0;\n}",
+  },
+  {
+    id: "swap-bits",
+    title: "Swap Two Bits",
+    category: "bit-manipulation",
+    difficulty: "medium",
+    description: "Swap the bits at positions i and j in a given integer.",
+    constraints: "0 <= i,j < 32",
+    examples: [
+      {"input":"8 1 3","output":"2"},
+      {"input":"10 0 2","output":"10"}
+    ],
+    test_cases: [
+      {"input":"8 1 3","expected":"2"},
       {"input":"10 0 2","expected":"10"}
     ],
     approach: "Uses XOR to toggle bits only when they differ.\n\nDiagram:\n```\nExample 1: x=8 (1000), i=1, j=3\n  bit at pos 1: (8>>1)&1 = 0\n  bit at pos 3: (8>>3)&1 = 1\n  bits differ → need swap\n\n  mask = (1<<1) | (1<<3) = 0010 | 1000 = 1010\n  x ^ mask = 1000 ^ 1010 = 0010 = 2\n\n  Result: 2 (binary 0010, bit 1=1, bit 3=0)\n\nExample 2: x=10 (1010), i=0, j=2\n  bit at pos 0: (10>>0)&1 = 0\n  bit at pos 2: (10>>2)&1 = 0\n  bits equal → no swap needed, return x=10\n\nExample 3: x=5 (0101), i=0, j=2\n  bit 0=1, bit 2=1 → equal → no change (5)\nExample 4: x=5 (0101), i=1, j=3\n  bit 1=0, bit 3=0 → equal → no change (5)\n```\n\nTime O(1), Space O(1).",
