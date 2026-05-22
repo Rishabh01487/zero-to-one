@@ -153,6 +153,14 @@ export default [
     ],
     test_cases: [
       {"input":"5 7\n0 1 2\n0 3 6\n1 2 3\n1 3 8\n1 4 5\n2 4 7\n3 4 9","expected":"16"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<pair<int,int>>> g(n);\n  for (int i = 0; i < m; i++) { int u, v, w; cin >> u >> v >> w; g[u].push_back({v,w}); g[v].push_back({u,w}); }\n\n  vector<bool> vis(n, false);\n  priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;\n  pq.push({0, 0});\n  int mstWeight = 0;\n\n  while (!pq.empty()) {\n    auto [w, u] = pq.top(); pq.pop();\n    if (vis[u]) continue;\n    vis[u] = true;\n    mstWeight += w;\n    for (auto [v, w2] : g[u]) if (!vis[v]) pq.push({w2, v});\n  }\n\n  cout << mstWeight << endl;\n  return 0;\n}",
+    approach: "\n\nDiagram:\n```\nmst-prim:\n     2\n  0 ── 1\n  │    │ \\\n  6    3  5\n  │    │   \\\n  3 ── 2 ── 4\n  9    7\n\n  vis: [F, F, F, F, F]  pq: [(0,0)]  mst=0\n  Pop (0,0) → vis[0]=T, push (2,1),(6,3)  mst=0\n  Pop (2,1) → vis[1]=T, push (3,2),(8,3),(5,4)  mst=2\n  Pop (3,2) → vis[2]=T, push (7,4)  mst=5\n  Pop (5,4) → vis[4]=T  mst=10\n  Pop (6,3) → vis[3]=T  mst=16\n\n  MST edges: 0-1(2), 1-2(3), 1-4(5), 0-3(6) = 16\n```\nPrim's algorithm finds the Minimum Spanning Tree (MST) of a connected, undirected, weighted graph: a subset of edges connecting all vertices with minimum total weight. The graph is represented as an adjacency list of (neighbor, weight) pairs. Prim's is a greedy algorithm that grows the MST one vertex at a time using a min-heap (priority queue) of edges crossing the cut between visited and unvisited vertices. We maintain a visited boolean array and a min-heap storing (weight, vertex) pairs. Starting from node 0, we push (0, 0) into the heap. While the heap is non-empty, we pop the edge with minimum weight. If the vertex u is already visited, we skip it. Otherwise, we mark u visited, add its weight to the total MST weight, and for every neighbor v with weight w, if v is unvisited, we push (w, v) into the heap. This continues until the heap is empty or all nodes are visited. For a dry run on 5 nodes with edges (0-1:2, 0-3:6, 1-2:3, 1-3:8, 1-4:5, 2-4:7, 3-4:9): heap=[(0,0)], pop (0,0), visited[0]=1, mst=0. Push (2,1), (6,3). Pop (2,1), visited[1]=1, mst=2. Push (3,2), (8,3), (5,4). Pop (3,2), visited[2]=1, mst=5. Push (7,4). Pop (5,4), visited[4]=1, mst=10. Pop (6,3), visited[3]=1, mst=16. Total MST weight = 16. Edge cases include disconnected graphs where some nodes remain unvisited and no spanning tree exists. Graphs with equal-weight edges can produce different valid MSTs. Self-loops are ignored. Time complexity is O((V+E) log V) due to heap operations, and space complexity is O(V+E).",
+    complexity: {"time":"O((V+E) log V)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<bool> vis(n); priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq; pq.push({0,0}); int mst=0; while(!pq.empty()){auto[w,u]=pq.top();pq.pop();if(vis[u])continue;vis[u]=1;mst+=w;for(auto[v,w2]:g[u])if(!vis[v])pq.push({w2,v});}cout<<mst;",
+    techniques: ["mst"],
+  },
   {
     id: "bipartite",
     title: "Check Bipartite Graph",
@@ -168,10 +176,11 @@ export default [
       {"input":"4 4\n0 1\n1 2\n2 3\n3 1","expected":"Yes"}
     ],
     solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); g[v].push_back(u); }\n\n  vector<int> color(n, -1);\n  bool bipartite = true;\n\n  for (int i = 0; i < n && bipartite; i++) {\n    if (color[i] != -1) continue;\n    queue<int> q; q.push(i); color[i] = 0;\n    while (!q.empty() && bipartite) {\n      int u = q.front(); q.pop();\n      for (int v : g[u]) {\n        if (color[v] == color[u]) { bipartite = false; break; }\n        if (color[v] == -1) { color[v] = 1 - color[u]; q.push(v); }\n      }\n    }\n  }\n\n  cout << (bipartite ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "BFS with 2-coloring: assign alternating colors. If neighbor has same color, not bipartite.",
+    approach: "\n\nDiagram:\n```\nbipartite:\n  Bipartite (even cycle) — Yes:\n  0 ─ 1\n  │   │\n  3 ─ 2\n  Colors: 0(0), 1(1), 2(0), 3(1) → no conflict ✓\n\n  Not bipartite (odd cycle) — No:\n  0 ─ 1\n  │ ╱ │\n  2 ─ 3 (triangle-based odd cycle)\n\n  BFS coloring:\n  queue [0] → color[0]=0\n  Pop 0 → color[1]=1, color[2]=1  queue [1,2]\n  Pop 1 → color[3]=0  queue [2,3]\n  Pop 2 → neighbor 3 same color 0! → conflict! Not bipartite!\n```\nA bipartite graph has vertices that can be partitioned into two disjoint sets such that every edge connects a vertex from one set to the other, which is equivalent to the graph being 2-colorable with no odd cycle. The graph is represented using an adjacency list. The algorithm uses BFS with an integer color array initialized to -1 (uncolored). For each uncolored node, we assign it color 0, enqueue it, and begin BFS. While the queue is not empty, we dequeue node u. For each neighbor v, if v is uncolored, assign v the opposite color (1 - color[u]) and enqueue it. If v already has the same color as u, the graph is not bipartite because two adjacent nodes share the same color, requiring edges within a single partition and indicating an odd cycle. Since the graph may be disconnected, we repeat this coloring process for every unvisited component. For a dry run on a 4-node cycle (0-1, 1-2, 2-3, 3-0): color[0]=0, BFS from 0 assigns color[1]=1, from 1 assigns color[2]=0, from 2 assigns color[3]=1, from 3 checks neighbor 0 which has color 0 != color[3]=1, so bipartite = Yes. For a triangle (0-1, 1-2, 2-0): color[0]=0, assigns color[1]=1, neighbor 2 gets opposite from 1 = 0, but neighbor 2 also neighbors 0 which is color 0 -> same color conflict, not bipartite. Edge cases include a single node with no edges (trivially bipartite), a graph with one edge (bipartite), self-loops (immediately not bipartite), and disconnected components where each must independently satisfy bipartiteness. Time complexity is O(V+E) and space is O(V). DFS-based coloring with the same alternate-color logic also works correctly.",
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> col(n,-1); queue<int> q; for(int i=0;i<n;i++)if(col[i]==-1){q.push(i);col[i]=0;while(!q.empty()){int u=q.front();q.pop();for(int v:g[u]){if(col[v]==col[u]){cout<<\"No\";return 0;}if(col[v]==-1){col[v]=1-col[u];q.push(v);}}}}cout<<\"Yes\";",
+    techniques: ["tree-bfs", "tree-dfs"],
   },
   {
     id: "floyd-warshall",
@@ -183,15 +192,6 @@ export default [
     examples: [
       {"input":"4 7\n0 1 5\n0 3 10\n1 2 3\n1 3 2\n2 3 1\n3 0 7\n3 2 6","output":"0 5 8 7\n7 0 3 2\n8 5 0 1\n7 12 6 0"}
     ],
-    test_cases: [
-      {"input":"4 7\n0 1 5\n0 3 10\n1 2 3\n1 3 2\n2 3 1\n3 0 7\n3 2 6","expected":"0 5 8 7\n7 0 3 2\n8 5 0 1\n7 12 6 0"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int INF = 1e9;\n  int dist[n][n];\n  for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) dist[i][j] = (i == j) ? 0 : INF;\n  for (int i = 0; i < m; i++) { int u, v, w; cin >> u >> v >> w; dist[u][v] = w; }\n\n  for (int k = 0; k < n; k++)\n    for (int i = 0; i < n; i++)\n      for (int j = 0; j < n; j++)\n        if (dist[i][k] < INF && dist[k][j] < INF)\n          dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);\n\n  for (int i = 0; i < n; i++) { for (int j = 0; j < n; j++) cout << dist[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
-    approach: "DP: dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]) for all k.",
-    complexity: {"time":"O(V³)","space":"O(V²)"},
-    sheet: "Striver A2Z",
-    solution_code: "for(int k=0;k<n;k++)for(int i=0;i<n;i++)for(int j=0;j<n;j++)if(dist[i][k]<INF&&dist[k][j]<INF)dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);",
-  },
   {
     id: "islands",
     title: "Number of Islands",
