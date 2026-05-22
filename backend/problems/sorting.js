@@ -75,6 +75,10 @@ export default [
     solution_template: "#include <iostream>\nusing namespace std;\n\nvoid merge(int arr[], int l, int m, int r) {\n  int n1 = m-l+1, n2 = r-m;\n  int L[n1], R[n2];\n  for (int i = 0; i < n1; i++) L[i] = arr[l+i];\n  for (int i = 0; i < n2; i++) R[i] = arr[m+1+i];\n  int i = 0, j = 0, k = l;\n  while (i < n1 && j < n2) arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];\n  while (i < n1) arr[k++] = L[i++];\n  while (j < n2) arr[k++] = R[j++];\n}\n\nvoid mergeSort(int arr[], int l, int r) {\n  if (l >= r) return;\n  int m = l + (r-l)/2;\n  mergeSort(arr, l, m);\n  mergeSort(arr, m+1, r);\n  merge(arr, l, m, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  mergeSort(arr, 0, n-1);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
     approach: "merge-sort:\n  arr = [38, 27, 43, 3, 9, 82, 10]\n  \n  Split: [38, 27, 43, 3] | [9, 82, 10]\n         [38, 27] | [43, 3] | [9, 82] | [10]\n         [38] [27] | [43] [3] | [9] [82] | [10]\n  \n  Merge: [27, 38] | [3, 43] | [9, 82] | [10]\n         [3, 27, 38, 43] | [9, 10, 82]\n         [3, 9, 10, 27, 38, 43, 82]  sorted!\n\nMerge sort is a divide-and-conquer algorithm that recursively splits the array into halves until each subarray has one element, then merges adjacent pairs back together in sorted order using an auxiliary array. The merge procedure compares the front elements of two sorted subarrays and copies the smaller into the output array, then copies remaining elements. Time complexity: O(n log n) in all cases. Space: O(n) for the auxiliary array plus O(log n) recursion stack. Stable: yes.\n\nDiagram:\n  arr = [38, 27, 43, 3, 9, 82, 10]\n\n  Split: [38,27,43,3] [9,82,10]\n  Split: [38,27] [43,3] [9,82] [10]\n  Split: [38] [27] [43] [3] [9] [82] [10]\n  Merge: [27,38] [3,43] [9,82] [10]\n  Merge: [3,27,38,43] [9,10,82]\n  Merge: [3,9,10,27,38,43,82]",
     complexity: {"time":"O(n log n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "void merge(int arr[],int l,int m,int r){int n1=m-l+1,n2=r-m;int L[n1],R[n2];for(int i=0;i<n1;i++)L[i]=arr[l+i];for(int j=0;j<n2;j++)R[j]=arr[m+1+j];int i=0,j=0,k=l;while(i<n1&&j<n2)arr[k++]=(L[i]<=R[j])?L[i++]:R[j++];while(i<n1)arr[k++]=L[i++];while(j<n2)arr[k++]=R[j++];}",
+    techniques: ["sorting"],
+  },
   {
     id: "quick-sort-prob",
     title: "Quick Sort Implementation",
@@ -89,10 +93,11 @@ export default [
       {"input":"8\n10 7 8 9 1 5 4 3","expected":"1 3 4 5 7 8 9 10"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint partition(int arr[], int lo, int hi) {\n  int pivot = arr[hi];\n  int i = lo - 1;\n  for (int j = lo; j < hi; j++)\n    if (arr[j] < pivot) swap(arr[++i], arr[j]);\n  swap(arr[i+1], arr[hi]);\n  return i+1;\n}\n\nvoid quickSort(int arr[], int lo, int hi) {\n  if (lo >= hi) return;\n  int pi = partition(arr, lo, hi);\n  quickSort(arr, lo, pi-1);\n  quickSort(arr, pi+1, hi);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  quickSort(arr, 0, n-1);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Choose pivot (e.g., last element). Partition: smaller elements left, larger right. Recurse.",
+    approach: "quick-sort (pivot=last element):\n  arr = [10, 7, 8, 9, 1, 5, 4, 3]\n  \n  Partition (pivot=3):\n    j=0(10>=3) no swap\n    j=1(7>=3)  no swap\n    j=2(8>=3)  no swap\n    j=3(9>=3)  no swap\n    j=4(1<3)   swap(10,1)  → [1, 7, 8, 9, 10, 5, 4, 3]\n    j=5(5>=3)  no swap\n    j=6(4>=3)  no swap\n    place pivot: swap(7,3) → [1, 3, 8, 9, 10, 5, 4, 7]\n    pivot 3 at index 1, recurse left [1] and right [8,9,10,5,4,7]\n  \n  Recurse right (pivot=7):\n    [8, 9, 10, 5, 4, 7] → partition → [5, 4, 7, 9, 10, 8] → pivot 7 at idx 2\n    recurse left [5,4] → partition → [4,5] → done\n    recurse right [9,10,8] → partition → [8,9,10] → done\n  \n  Result: [1, 3, 4, 5, 7, 8, 9, 10] sorted!\n\nQuick sort is a divide-and-conquer algorithm that selects a pivot element, partitions the array so elements ≤ pivot go left and > pivot go right, then recursively applies the same process to left and right partitions. Time complexity: average O(n log n), worst O(n²) (rare with randomization). Space: O(log n) for recursion stack. In-place: yes. Stable: no.\n\nDiagram:\n  arr = [3, 6, 8, 10, 1, 2, 1], pivot=last=1\n\n  Partition: [1, 2, 1, 10, 6, 8, 3] pivot at idx 2\n  Left: [1] sorted\n  Right: [10, 6, 8, 3] pivot=3 -> [3, 6, 8, 10]\n    Recurse right: [6, 8, 10] -> [6, 8, 10]\n  Result: [1, 1, 2, 3, 6, 8, 10]",
     complexity: {"time":"O(n log n) avg, O(n²) worst","space":"O(log n)"},
     sheet: "Striver A2Z",
     solution_code: "int partition(int arr[],int lo,int hi){int p=arr[hi],i=lo;for(int j=lo;j<hi;j++)if(arr[j]<=p)swap(arr[i++],arr[j]);swap(arr[i],arr[hi]);return i;}",
+    techniques: ["sorting"],
   },
   {
     id: "count-inversions",
@@ -108,11 +113,6 @@ export default [
       {"input":"5\n2 4 1 3 5","expected":"3"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nlong long inversions = 0;\n\nvoid merge(int arr[], int l, int m, int r) {\n  int n1 = m-l+1, n2 = r-m;\n  int L[n1], R[n2];\n  for (int i = 0; i < n1; i++) L[i] = arr[l+i];\n  for (int i = 0; i < n2; i++) R[i] = arr[m+1+i];\n  int i = 0, j = 0, k = l;\n  while (i < n1 && j < n2) {\n    if (L[i] <= R[j]) arr[k++] = L[i++];\n    else { arr[k++] = R[j++]; inversions += n1 - i; }\n  }\n  while (i < n1) arr[k++] = L[i++];\n  while (j < n2) arr[k++] = R[j++];\n}\n\nvoid mergeSort(int arr[], int l, int r) {\n  if (l >= r) return;\n  int m = l + (r-l)/2;\n  mergeSort(arr, l, m);\n  mergeSort(arr, m+1, r);\n  merge(arr, l, m, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  mergeSort(arr, 0, n-1);\n  cout << inversions << endl;\n  return 0;\n}",
-    approach: "Count frequency of each value. Compute prefix sum. Place elements in correct positions.",
-    complexity: {"time":"O(n+k)","space":"O(k)"},
-    sheet: "Striver A2Z",
-    solution_code: "int count[100001]={0},out[n]; for(int i=0;i<n;i++)count[arr[i]]++; for(int i=1;i<=100000;i++)count[i]+=count[i-1]; for(int i=n-1;i>=0;i--)out[--count[arr[i]]]=arr[i];",
-  },
   {
     id: "heap-sort",
     title: "Heap Sort Implementation",
