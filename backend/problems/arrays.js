@@ -406,5 +406,20 @@ export default [
       {"input":"5","expected":"1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n\n  // generate rows using previous row\n\n  return 0;\n}",
+  },
+  {
+    id: "merge-intervals",
+    title: "Merge Intervals",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Given intervals, merge all overlapping intervals.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"4\n1 3\n2 6\n8 10\n15 18","output":"1 6\n8 10\n15 18","explanation":"[1,3] and [2,6] overlap -> [1,6]"}
+    ],
+    test_cases: [
+      {"input":"4\n1 3\n2 6\n8 10\n15 18","expected":"1 6\n8 10\n15 18"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  vector<pair<int,int>> intervals(n);\n  for (int i = 0; i < n; i++)\n    cin >> intervals[i].first >> intervals[i].second;\n\n  // sort by start time, then merge\n\n  return 0;\n}",
   }
 ]
