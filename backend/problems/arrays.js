@@ -100,5 +100,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int l=0,m=0,h=n-1;\nwhile(m<=h){\n  if(arr[m]==0){\n    swap(arr[l],arr[m]);\n    l++; m++;\n  } else if(arr[m]==1){\n    m++;\n  } else {\n    swap(arr[m],arr[h]);\n    h--;\n  }\n}",
+  },
+  {
+    id: "missing-number",
+    title: "Find Missing Number",
+    category: "arrays",
+    difficulty: "easy",
+    description: "Given array of n-1 numbers from 1..n, find the missing one.",
+    constraints: "2 <= n <= 10^5",
+    examples: [
+      {"input":"5\n1 2 4 5","output":"3","explanation":"Numbers 1..5, 3 is missing"}
+    ],
+    test_cases: [
+      {"input":"5\n1 2 4 5","expected":"3"},
+      {"input":"3\n1 3","expected":"2"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n-1];\n  for (int i = 0; i < n-1; i++) cin >> arr[i];\n\n  // find missing number using XOR\n\n  cout << missing << endl;\n  return 0;\n}",
+    approach: "XOR all numbers 1..n with all array elements. Paired numbers cancel, leaving the missing one.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int x=0;\nfor(int i=1;i<=n;i++) x^=i;\nfor(int i=0;i<n-1;i++) x^=arr[i];\ncout << x;",
   }
 ]
