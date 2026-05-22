@@ -172,5 +172,24 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> col(n,-1); queue<int> q; for(int i=0;i<n;i++)if(col[i]==-1){q.push(i);col[i]=0;while(!q.empty()){int u=q.front();q.pop();for(int v:g[u]){if(col[v]==col[u]){cout<<\"No\";return 0;}if(col[v]==-1){col[v]=1-col[u];q.push(v);}}}}cout<<\"Yes\";",
+  },
+  {
+    id: "floyd-warshall",
+    title: "Floyd-Warshall (All Pairs)",
+    category: "graphs",
+    difficulty: "hard",
+    description: "Find shortest distances between all pairs of vertices.",
+    constraints: "1 <= n <= 500",
+    examples: [
+      {"input":"4 7\n0 1 5\n0 3 10\n1 2 3\n1 3 2\n2 3 1\n3 0 7\n3 2 6","output":"0 5 8 7\n7 0 3 2\n8 5 0 1\n7 12 6 0"}
+    ],
+    test_cases: [
+      {"input":"4 7\n0 1 5\n0 3 10\n1 2 3\n1 3 2\n2 3 1\n3 0 7\n3 2 6","expected":"0 5 8 7\n7 0 3 2\n8 5 0 1\n7 12 6 0"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int INF = 1e9;\n  int dist[n][n];\n  for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) dist[i][j] = (i == j) ? 0 : INF;\n  for (int i = 0; i < m; i++) { int u, v, w; cin >> u >> v >> w; dist[u][v] = w; }\n\n  for (int k = 0; k < n; k++)\n    for (int i = 0; i < n; i++)\n      for (int j = 0; j < n; j++)\n        if (dist[i][k] < INF && dist[k][j] < INF)\n          dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);\n\n  for (int i = 0; i < n; i++) { for (int j = 0; j < n; j++) cout << dist[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
+    approach: "DP: dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]) for all k.",
+    complexity: {"time":"O(V³)","space":"O(V²)"},
+    sheet: "Striver A2Z",
+    solution_code: "for(int k=0;k<n;k++)for(int i=0;i<n;i++)for(int j=0;j<n;j++)if(dist[i][k]<INF&&dist[k][j]<INF)dist[i][j]=min(dist[i][j],dist[i][k]+dist[k][j]);",
   }
 ]
