@@ -37,11 +37,14 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "stack<int> st; for(int i=n-1;i>=0;i--){while(!st.empty()&&st.top()<=arr[i])st.pop();nge[i]=st.empty()?-1:st.top();st.push(arr[i]);}",
+    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n], nge[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  stack<int> st;\n  // traverse from right\n\n  for (int i = 0; i < n; i++) cout << nge[i] << \" \";\n  return 0;\n}",
+  },
   {
     id: "queue-using-stack",
     title: "Queue Using Stacks",
     category: "stack-queue",
     difficulty: "medium",
+    techniques: ["stack-queue"],
     description: "Implement Queue using two stacks.",
     constraints: "1 <= q <= 10^5",
     examples: [
@@ -50,7 +53,7 @@ export default [
     test_cases: [
       {"input":"6\npush 1\npush 2\npeek\npop\npush 3\npeek","expected":"1 2"}
     ],
-    approach: "Two stacks: input stack for push, output stack for pop/peek. Transfer when output is empty.",
+    approach: "The Queue Using Stacks problem asks to implement a FIFO queue using two LIFO stacks. A brute-force approach transfers all elements between stacks on every operation. The optimal amortized O(1) solution uses an input stack for pushes and an output stack for pop/peek with lazy transfers.\n\nDiagram:\n  push(1):    in=[1],         out=[]\n  push(2):    in=[1,2],       out=[]\n  peek():     in=[],          out=[2,1]   (transfer: pop 2->push out, pop 1->push out), return out.top()=1\n  pop():      in=[],          out=[2]     (pop out), return 1\n  push(3):    in=[3],         out=[2]\n  peek():     in=[3],         out=[2]     (out not empty), return out.top()=2\n\nEdge cases: pop/peek on empty queue throws exception; empty() checks both stacks. Complexity: O(1) amortized per operation, O(n) space.",
     complexity: {"time":"O(1) amortized","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// push: stack in. pop: if out empty, transfer in to out, then pop. peek: same as pop but without removal.",
@@ -61,6 +64,7 @@ export default [
     title: "Stock Span Problem",
     category: "stack-queue",
     difficulty: "medium",
+    techniques: ["monotonic-stack"],
     description: "For each day, find number of consecutive days price <= current day.",
     constraints: "1 <= n <= 10^5",
     examples: [
@@ -69,12 +73,8 @@ export default [
     test_cases: [
       {"input":"7\n100 80 60 70 60 75 85","expected":"1 1 1 2 1 4 6"}
     ],
-    approach: "Monotonic decreasing stack of {price, index}. While stack.top <= current, pop. Span = i - stack.top.index.",
+    approach: "The Stock Span problem asks, for each day's stock price, to count how many consecutive days before (and including) today had price <= today's price. A brute-force leftward scan costs O(n^2). The optimal O(n) solution uses a monotonic decreasing stack storing (price, span) pairs.\n\nDiagram:\n  prices = [100, 80, 60, 70, 60, 75, 85]\n\n  i=0, p=100: stack=[], span=1, push(100,1)               -> span[0]=1\n  i=1, p=80:  stack=[(100,1)], 100>80, span=1, push(80,1) -> span[1]=1\n  i=2, p=60:  stack=[(100,1),(80,1)], 80>60, span=1, push(60,1) -> span[2]=1\n  i=3, p=70:  pop (60,1) -> span=2, 80>70, push(70,2)     -> span[3]=2\n  i=4, p=60:  stack=[(100,1),(80,1),(70,2)], 70>60, span=1, push(60,1) -> span[4]=1\n  i=5, p=75:  pop (60,1)->span=2, pop (70,2)->span=4, 80>75, push(75,4) -> span[5]=4\n  i=6, p=85:  pop (75,4)->span=5, pop (80,1)->span=6, 100>85, push(85,6) -> span[6]=6\n\n  result = [1, 1, 1, 2, 1, 4, 6]\n\nEdge cases: strictly decreasing -> all spans = 1; strictly increasing -> span = i+1. Complexity: O(n) time, O(n) space.",
     complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "stack<pair<int,int>> st; for(int i=0;i<n;i++){int span=1; while(!st.empty()&&st.top().first<=prices[i]){span+=st.top().second;st.pop();}st.push({prices[i],span});cout<<span<<\" \";}",
-    solution_template: "#include <iostream>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int prices[n], span[n];\n  for (int i = 0; i < n; i++) cin >> prices[i];\n\n  stack<int> st;\n  // monotonic decreasing stack\n\n  for (int i = 0; i < n; i++) cout << span[i] << \" \";\n  return 0;\n}",
-  },
   {
     id: "largest-rect-hist",
     title: "Largest Rectangle in Histogram",
