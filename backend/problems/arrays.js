@@ -393,35 +393,35 @@ export default [
     solution_code: "int pre[n],suf[n];\npre[0]=1;\nfor(int i=1;i<n;i++) pre[i]=pre[i-1]*arr[i-1];\nsuf[n-1]=1;\nfor(int i=n-2;i>=0;i--) suf[i]=suf[i+1]*arr[i+1];\nfor(int i=0;i<n;i++) cout << pre[i]*suf[i] << \" \";",
   },
   {
+    id: "min-jumps",
+    title: "Minimum Jumps to Reach End",
+    category: "arrays",
+    difficulty: "hard",
+    description: "Each element is max jump length. Find min jumps to reach end.",
+    constraints: "1 <= n <= 10^5",
+    techniques: ["greedy"],
+    examples: [
+      {"input":"11\n1 3 5 8 9 2 6 7 6 8 9","output":"3","explanation":"1->3->9->end"}
+    ],
+    test_cases: [
+      {"input":"11\n1 3 5 8 9 2 6 7 6 8 9","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // greedy: track maxReach and steps\n\n  cout << jumps << endl;\n  return 0;\n}",
+    approach: "This problem asks us to find the minimum number of jumps needed to reach the last index of an array, where each element represents the maximum number of steps you can jump forward from that position. A brute force approach uses recursion or dynamic programming: from each position i, try all possible jump lengths from 1 to arr[i], recursively compute the minimum jumps to reach the end, and take the minimum. This DP approach is O(n^2) because for each of n positions we iterate over up to n jump lengths. The optimal approach is a BFS-like greedy algorithm using three variables: jumps (number of jumps taken), currentEnd (the farthest index reachable with the current number of jumps), and farthest (the farthest index reachable overall). Traverse the array from index 0 to n-2. For each position i, update farthest = max(farthest, i + arr[i]). When i reaches currentEnd, we must take a jump: increment jumps and set currentEnd = farthest. If at any point currentEnd >= n-1, we can stop early. For [1,3,5,8,9,2,6,7,6,8,9]: i=0, arr=1, far=1, i==curEnd(0) -> jumps=1, curEnd=1; i=1, arr=3, far=max(1,4)=4, i==curEnd -> jumps=2, curEnd=4; i=2, arr=5, far=7; i=3, arr=8, far=11; i=4, arr=9, far=11; i==curEnd(4) -> jumps=3, curEnd=11>=10(n-1) -> done. Answer=3 jumps (1->3->9->end). Edge cases include arr[0]=0 (cannot move, unreachable), n=1 (0 jumps needed), and cases where the end is unreachable even with jumps (handle by returning -1). Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Array: [1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9]\n  \n  jumps=0, curEnd=0, farthest=0\n  \n  i=0 (arr=1): farthest=max(0,0+1)=1\n    i==curEnd → jumps=1, curEnd=1\n  i=1 (arr=3): farthest=max(1,1+3)=4\n    i==curEnd → jumps=2, curEnd=4\n  i=2 (arr=5): farthest=max(4,2+5)=7\n  i=3 (arr=8): farthest=max(7,3+8)=11\n  i=4 (arr=9): farthest=max(11,4+9)=13\n    i==curEnd → jumps=3, curEnd=13≥10 → done\n  \n  Jumps: 1→3→8→end  (3 jumps)\n  Result: 3",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int jumps=0,curEnd=0,far=0;\nfor(int i=0;i<n-1;i++){\n  far=max(far,i+arr[i]);\n  if(i==curEnd){\n    jumps++;\n    curEnd=far;\n  }\n}\ncout << jumps;",
+  },
+  {
     id: "pascal-triangle",
     title: "Pascal Triangle",
     category: "arrays",
     difficulty: "medium",
     description: "Generate first n rows of Pascal triangle.",
     constraints: "1 <= n <= 30",
+    techniques: ["arrays"],
     examples: [
       {"input":"5","output":"1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1","explanation":"First 5 rows"}
-    ],
-    test_cases: [
-      {"input":"5","expected":"1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n\n  // generate rows using previous row\n\n  return 0;\n}",
-  },
-  {
-    id: "merge-intervals",
-    title: "Merge Intervals",
-    category: "arrays",
-    difficulty: "medium",
-    description: "Given intervals, merge all overlapping intervals.",
-    constraints: "1 <= n <= 10^4",
-    examples: [
-      {"input":"4\n1 3\n2 6\n8 10\n15 18","output":"1 6\n8 10\n15 18","explanation":"[1,3] and [2,6] overlap -> [1,6]"}
-    ],
-    test_cases: [
-      {"input":"4\n1 3\n2 6\n8 10\n15 18","expected":"1 6\n8 10\n15 18"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  vector<pair<int,int>> intervals(n);\n  for (int i = 0; i < n; i++)\n    cin >> intervals[i].first >> intervals[i].second;\n\n  // sort by start time, then merge\n\n  return 0;\n}",
-  }
     ],
     test_cases: [
       {"input":"5","expected":"1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1"}
