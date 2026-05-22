@@ -39,44 +39,44 @@ Diagram:
 Edge cases: empty list (return null), single node (return head as-is). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
+    solution_code: "Node *prev=nullptr,*curr=head; while(curr){Node* nxt=curr->next; curr->next=prev; prev=curr; curr=nxt;} return prev;",
+    techniques: ["inplace-reversal"],
+  },
   {
-    id: "detect-cycle",
-    title: "Detect Cycle in Linked List",
+    id: "mid-linked-list",
+    title: "Middle of Linked List",
     category: "linked-list",
-    difficulty: "medium",
-    description: "Check if linked list has a cycle (Floyd cycle detection).",
+    difficulty: "easy",
+    description: "Return the middle node of linked list. If even, return second middle.",
     constraints: "1 <= n <= 10^5",
     examples: [
-      {"input":"4\n1 2 3 4\n2","output":"Yes","explanation":"Last node connects to node at position 2 (1-indexed)"}
+      {"input":"5\n1 2 3 4 5","output":"3"}
     ],
     test_cases: [
-      {"input":"4\n1 2 3 4\n-1","expected":"No"}
+      {"input":"5\n1 2 3 4 5","expected":"3"},
+      {"input":"6\n1 2 3 4 5 6","expected":"4"}
     ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nbool hasCycle(Node* head) {\n  // Floyd's algorithm\n}\n\nint main() {\n  int n, pos;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr, *cycleNode = nullptr;\n  for (int i = 0; i < n; i++) {\n    int x; cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> pos;\n  // create cycle if pos != -1\n  if (pos >= 0) {\n    Node* t = head;\n    for (int i = 0; i < pos; i++) t = t->next;\n    tail->next = t;\n  }\n  cout << (hasCycle(head) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "Floyd cycle detection: slow and fast pointers. If they meet, cycle exists.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;if(slow==fast)return true;} return false;",
-  },
-  {
-    id: "merge-sorted-lists",
-    title: "Merge Two Sorted Linked Lists",
-    category: "linked-list",
-    difficulty: "medium",
-    description: "Merge two sorted linked lists into one sorted list.",
-    constraints: "1 <= n,m <= 10^5",
-    examples: [
-      {"input":"3\n1 2 4\n3\n1 3 4","output":"1 1 2 3 4 4"}
-    ],
-    test_cases: [
-      {"input":"3\n1 2 4\n3\n1 3 4","expected":"1 1 2 3 4 4"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* merge(Node* a, Node* b) {\n  // dummy node + two pointers\n}\n\nint main() {\n  int n, m, x;\n  cin >> n; Node *a = nullptr, *at = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!a) a = at = nn; else { at->next = nn; at = nn; }\n  }\n  cin >> m; Node *b = nullptr, *bt = nullptr;\n  for (int i = 0; i < m; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!b) b = bt = nn; else { bt->next = nn; bt = nn; }\n  }\n  Node* res = merge(a, b);\n  while (res) { cout << res->data << \" \"; res = res->next; }\n  return 0;\n}",
-    approach: "Dummy node + two-pointer merge. Compare nodes, attach smaller one.",
-    complexity: {"time":"O(n+m)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node dummy(0); Node* t=&dummy; while(a&&b){if(a->data<b->data){t->next=a;a=a->next;}else{t->next=b;b=b->next;}t=t->next;} t->next=a?a:b; return dummy.next;",
-  },
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n\n  // slow/fast pointer\n\n  cout << slow->data << endl;\n  return 0;\n}",
+    approach: `This problem asks for the middle node of a singly linked list. For a list with an odd number of nodes, return the exact middle. For an even number, return the second middle (e.g., for 6 nodes, return the 4th). The brute-force approach counts the total nodes in one pass, then traverses again to the n/2-th node. This works but requires two passes. We can do better with a single pass using the slow/fast pointer technique.
+
+Initialize two pointers, slow and fast, both at head. In each iteration, slow moves one step (slow = slow→next) while fast moves two steps (fast = fast→next→next). When fast reaches the end of the list (fast is null for even-length lists, or fast→next is null for odd-length lists), slow will be at the middle.
+
+Diagram:
+\`\`\`
+  1 → 2 → 3 → 4 → 5 → null
+  s,f
+
+  Step 1: 1 → 2 → 3 → 4 → 5 → null
+           s   f
+
+  Step 2: 1 → 2 → 3 → 4 → 5 → null
+               s   →   f
+
+  Step 3: fast→next is null, stop. slow is at 3 (middle).
+
+  Even case (1→2→3→4→5→6):
+  Step 1: 1 → 2 → 3 → 4 → 5 → 6
+           s   f
   {
     id: "remove-nth-end",
     title: "Remove Nth Node From End",
