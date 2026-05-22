@@ -37,5 +37,26 @@ export default [
     sheet: "Love Babbar 450",
     solution_code: "int count = 0;\nwhile (n) { count++; n &= n - 1; }\ncout << count;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // count set bits\n  return 0;\n}",
+  },
+  {
+    id: "power-two",
+    title: "Power of Two",
+    category: "bit-manipulation",
+    difficulty: "easy",
+    description: "Check if n is a power of two.",
+    constraints: "-2^31 <= n <= 2^31-1",
+    examples: [
+      {"input":"16","output":"Yes"},
+      {"input":"18","output":"No"}
+    ],
+    test_cases: [
+      {"input":"16","expected":"Yes"},
+      {"input":"0","expected":"No"}
+    ],
+    approach: "Power of two has exactly one set bit. n & (n-1) clears the lowest set bit, so result is 0 for powers of two.",
+    complexity: {"time":"O(1)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "cout << (n > 0 && (n & (n-1)) == 0 ? \"Yes\" : \"No\");",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  // check power of two\n  return 0;\n}",
   }
 ]
