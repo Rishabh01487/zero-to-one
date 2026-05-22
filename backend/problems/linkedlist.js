@@ -77,46 +77,46 @@ Diagram:
   Even case (1→2→3→4→5→6):
   Step 1: 1 → 2 → 3 → 4 → 5 → 6
            s   f
-  {
-    id: "remove-nth-end",
-    title: "Remove Nth Node From End",
-    category: "linked-list",
-    difficulty: "medium",
-    description: "Remove the nth node from the end of the linked list.",
-    constraints: "1 <= n <= 10^5, 1 <= k <= n",
-    examples: [
-      {"input":"5\n1 2 3 4 5\n2","output":"1 2 3 5","explanation":"Remove 2nd from end (4)"}
-    ],
-    test_cases: [
-      {"input":"5\n1 2 3 4 5\n2","expected":"1 2 3 5"},
-      {"input":"1\n1\n1","expected":""}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n\n  // fast pointer goes k steps ahead\n\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
-    approach: "Fast pointer goes n steps ahead. Then advance both until fast hits end. Slow->next is the node to remove.",
+  Step 2: 1 → 2 → 3 → 4 → 5 → 6
+               s   →   f
+  Step 3: 1 → 2 → 3 → 4 → 5 → 6
+                   s   →   →   f
+  Step 4: fast is null, stop. slow is at 4 (second middle).
+\`\`\`
+
+Edge cases: empty list (return null), single node (return head). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "Node *fast=head,*slow=head; for(int i=0;i<k;i++)fast=fast->next; if(!fast)return head->next; while(fast->next){slow=slow->next;fast=fast->next;} slow->next=slow->next->next;",
+    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} cout<<slow->data;",
+    techniques: ["fast-slow-pointers"],
   },
   {
-    id: "palindrome-list",
-    title: "Palindrome Linked List",
+    id: "detect-cycle",
+    title: "Detect Cycle in Linked List",
     category: "linked-list",
     difficulty: "medium",
-    description: "Check if linked list is a palindrome.",
+    description: "Check if linked list has a cycle (Floyd cycle detection).",
     constraints: "1 <= n <= 10^5",
     examples: [
-      {"input":"4\n1 2 2 1","output":"Yes"}
+      {"input":"4\n1 2 3 4\n2","output":"Yes","explanation":"Last node connects to node at position 2 (1-indexed)"}
     ],
     test_cases: [
-      {"input":"4\n1 2 2 1","expected":"Yes"},
-      {"input":"3\n1 2 3","expected":"No"}
+      {"input":"4\n1 2 3 4\n-1","expected":"No"}
     ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* reverse(Node* head) {\n  Node *prev = nullptr, *curr = head;\n  while (curr) {\n    Node* nxt = curr->next;\n    curr->next = prev;\n    prev = curr; curr = nxt;\n  }\n  return prev;\n}\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n\n  // find mid, reverse second half, compare\n\n  cout << (isPal ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "Find middle, reverse second half, compare both halves.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} Node *rev=nullptr,*cur=slow; while(cur){Node* n=cur->next;cur->next=rev;rev=cur;cur=n;} Node* a=head,*b=rev; while(b){if(a->data!=b->data){cout<<\"No\";return 0;}a=a->next;b=b->next;}cout<<\"Yes\";",
-  },
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nbool hasCycle(Node* head) {\n  // Floyd's algorithm\n}\n\nint main() {\n  int n, pos;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr, *cycleNode = nullptr;\n  for (int i = 0; i < n; i++) {\n    int x; cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> pos;\n  // create cycle if pos != -1\n  if (pos >= 0) {\n    Node* t = head;\n    for (int i = 0; i < pos; i++) t = t->next;\n    tail->next = t;\n  }\n  cout << (hasCycle(head) ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: `This problem asks whether a singly linked list contains a cycle, where a later node's next pointer points back to an earlier node, creating an infinite loop when traversing. The brute-force approach uses a hash set to store visited node addresses: traverse the list, checking if each node is already in the set. This works but uses O(n) extra space.
+
+Floyd's Cycle Detection (Tortoise and Hare) eliminates the space overhead. Initialize slow and fast pointers both at head. Slow advances one step per iteration, fast advances two steps. If there is no cycle, fast will reach null. If there is a cycle, slow and fast will eventually meet inside the cycle.
+
+Diagram:
+\`\`\`
+  1 → 2 → 3 → 4 → 5 → 6
+              ↑         ↓
+              ← ← ← ← ←
+
+  Step 1: s=1, f=1
+  Step 2: s=2, f=3
+  Step 3: s=3, f=5
   {
     id: "intersection-lists",
     title: "Intersection of Two Linked Lists",
