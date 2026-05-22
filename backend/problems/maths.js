@@ -582,15 +582,15 @@ export default [
     Diagram:
     ```
     arr = [1, 2, 3, 3, 3], target = 3
-
+    
     i=0: arr[0]=1 ≠ 3 → skip
     i=1: arr[1]=2 ≠ 3 → skip
     i=2: arr[2]=3 == 3 → count=1, pick idx=2 (prob 1/1)
     i=3: arr[3]=3 == 3 → count=2, pick idx=3 (prob 1/2)
     i=4: arr[4]=3 == 3 → count=3, pick idx=4 (prob 1/3)
-
+    
     Each index with value 3 has equal probability (1/3) of being selected.
-
+    
     Distribution over many runs:
       idx=2: 1/3
       idx=3: 1/3
@@ -638,15 +638,15 @@ int main() {
     Diagram:
     ```
     List: 1 → 2 → 3 → 4 → 5
-
+    
     i=0: val=1, count=1, pick val=1 (prob 1/1)
     i=1: val=2, count=2, pick val=2 (prob 1/2)
     i=2: val=3, count=3, pick val=3 (prob 1/3)
     i=3: val=4, count=4, pick val=4 (prob 1/4)
     i=4: val=5, count=5, pick val=5 (prob 1/5)
-
+    
     After full traversal, each node has exactly 1/5 probability of being selected.
-
+    
     Proof by induction:
     At i=0, prob(val=1) = 1
     At i=1, prob(val=1) = 1*(1-1/2) = 1/2, prob(val=2) = 1/2
@@ -704,10 +704,10 @@ int main() {
     Diagram:
     ```
     weights = [1, 3, 2]
-
+    
     prefix = [1, 4, 6]
     total = 6
-
+    
     random r in [1, 6]:
       r=1 → prefix ≥ 1 at idx 0 → return 0 (weight 1, prob 1/6)
       r=2 → prefix ≥ 2 at idx 1 → return 1 (prob 3/6)
@@ -715,13 +715,13 @@ int main() {
       r=4 → prefix ≥ 4 at idx 1 → return 1
       r=5 → prefix ≥ 5 at idx 2 → return 2 (prob 2/6)
       r=6 → prefix ≥ 6 at idx 2 → return 2
-
+    
     Visual distribution:
-
+    
     Index 0: [1]        1 space
     Index 1: [2 3 4]    3 spaces
     Index 2: [5 6]      2 spaces
-
+    
     r=1 → 0, r=2,3,4 → 1, r=5,6 → 2
     ````,
     complexity: {"time":"O(log n) per query","space":"O(n)"},
@@ -767,29 +767,29 @@ int main() {
     Diagram:
     ```
     n = 12
-
+    
     Factors come in pairs:
-
+    
     i=1: 1×12 → factors: 1, 12
     i=2: 2×6  → factors: 2, 6
     i=3: 3×4  → factors: 3, 4
     i=4: 4≥√12 → stop
-
+    
     Sorted factors: [1, 2, 3, 4, 6, 12]
-
+    
     k=1 → 1
     k=2 → 2
     k=3 → 3 ✓
     k=4 → 4
     k=5 → 6
     k=6 → 12
-
+    
     n = 7 (prime):
     i=1: 1×7 → factors: 1, 7
     i=2: 2≥√7 → stop
     Sorted: [1, 7]
     k=2 → 7
-
+    
     n = 16:
     i=1: 1,16
     i=2: 2,8
@@ -839,27 +839,27 @@ int main() {
     Diagram:
     ```
     n=3, a=2, b=3, c=5
-
+    
     Numbers divisible by 2, 3, or 5:
     1, 2, 3, 4, 5, 6, 8, 9, 10, 12, ...
     Index: 1  2  3  4  5  6  7  8  9  10
-
+    
     3rd ugly number is 4.
-
+    
     Binary search for answer:
     low=1, high=2*10^9
-
+    
     mid=10: count=10/2 + 10/3 + 10/5 - 10/6 - 10/15 - 10/10 + 10/30
          = 5+3+2-1-0-1+0 = 8 → too big, high=9
-
+    
     mid=5: count=5/2+5/3+5/5-5/6-5/15-5/10+5/30
          = 2+1+1-0-0-0+0 = 4 → too big, high=4
-
+    
     mid=3: count=3/2+3/3+3/5-...= 0+1+0-... = 1 → too small, low=4
-
+    
     mid=4: count=4/2+4/3+4/5-4/6-4/15-4/10+4/30
          = 2+1+0-0-0-0+0 = 3 → ans=4
-
+    
     For (a,b,c)=(2,3,4), n=4:
     Divisible by 2,3,4: 2,3,4,6,8,9,10,12,14,15,16,18,20...
     4th = 6 ✓
@@ -889,4 +889,4 @@ int main() {
   return 0;
 }`,
   },
-]
+];

@@ -17,12 +17,12 @@ export default [
 Diagram:
 max-sum-subarray-k:
   arr = [2, 1, 5, 1, 3, 2], k = 3
-
+  
   Window [0..2]: [2, 1, 5] sum=8  max=8
   Window [1..3]: [1, 5, 1] sum=7  max=8
   Window [2..4]: [5, 1, 3] sum=9  max=9
   Window [3..5]: [1, 3, 2] sum=6  max=9
-
+  
   Result: 9`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -48,14 +48,14 @@ max-sum-subarray-k:
 Diagram:
 longest-substring-k-distinct:
   s = "araaci", k = 2
-
+  
   Window [0..0]: "a"            distinct=1  maxLen=1
   Window [0..1]: "ar"           distinct=2  maxLen=2
   Window [0..2]: "ara"          distinct=2  maxLen=3
   Window [0..3]: "araa"         distinct=2  maxLen=4
   Window [0..4]: "araac"        distinct=3  shrink to [1..4]: "raac" distinct=3, shrink to [2..4]: "aac" distinct=2  maxLen=4
   Window [2..5]: "aaci"         distinct=2  maxLen=4
-
+  
   Result: 4`,
     complexity: {"time":"O(n)","space":"O(k)"},
     sheet: "Striver A2Z",
@@ -82,7 +82,7 @@ Diagram:
 min-window-substr:
   s = "ADOBECODEBANC", t = "ABC"
   need = {A:1, B:1, C:1}, needCnt = 3
-
+  
   Expand [0..5]: "ADOBEC"     have={A:1,D:1,O:1,B:1,E:1,C:1} haveCnt=3  minLen=6
   Shrink  [1..5]: "DOBEC"     have={D:1,O:1,B:1,E:1,C:1}    haveCnt=2 (lost A)
   Expand [1..9]: "DOBECODEBA" have={D:1,O:2,B:2,E:2,C:1,A:1} haveCnt=3  minLen=6
@@ -91,7 +91,7 @@ min-window-substr:
   Shrink  [6..9]: "ODEBA"     have={O:1,D:1,E:1,B:1,A:1}     haveCnt=2 (lost C)
   Expand [6..12]: "ODEBANC"   have={O:1,D:1,E:1,B:1,A:1,N:1,C:1} haveCnt=3  minLen=6
   Shrink  [9..12]: "BANC"     have={B:1,A:1,N:1,C:1}         haveCnt=3  len=4  minLen=4
-
+  
   Result: "BANC"`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -117,7 +117,7 @@ min-window-substr:
 Diagram:
 fruit-baskets:
   arr = [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]
-
+  
   Window [0..2]: [3,3,3]        distinct=1  maxLen=3
   Window [0..3]: [3,3,3,1]      distinct=2  maxLen=4
   Window [0..4]: [3,3,3,1,2]    distinct=3  shrink...
@@ -129,7 +129,7 @@ fruit-baskets:
   Window [7..8]: [2,3]          distinct=2  maxLen=5
   Window [7..9]: [2,3,3]        distinct=2  maxLen=5
   Window [7..10]: [2,3,3,4]     distinct=3  shrink...
-
+  
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
@@ -155,19 +155,19 @@ fruit-baskets:
 Diagram:
 longest-repeating-replacement:
   s = "AABABBA", k = 1
-
+  
   Window [0..0]: "A"    maxFreq=1  valid(1-1=0<=1)  maxLen=1
   Window [0..1]: "AA"   maxFreq=2  valid(2-2=0<=1)  maxLen=2
   Window [0..2]: "AAB"  maxFreq=2  valid(3-2=1<=1)  maxLen=3
   Window [0..3]: "AABA" maxFreq=3  valid(4-3=1<=1)  maxLen=4
   Window [0..4]: "AABAB" maxFreq=3 invalid(5-3=2>1) shrink left -> [1..4]: "ABAB" maxFreq=2  valid(4-2=2>1) shrink -> [2..4]: "BAB" maxFreq=1  valid  maxLen=4
   Window [2..5]: "BABB" maxFreq=3 invalid(4-3=1<=1) wait... let's re-check
-
+  
   Actually: [2..5]=B,A,B,B -> freq{B:3,A:1} maxFreq=3, len=4, 4-3=1<=1 valid maxLen=4
   Window [2..6]: "BABBA" freq{B:3,A:2} maxFreq=3 len=5 5-3=2>1 invalid
     shrink [3..6]: "ABBA" freq{A:2,B:2} maxFreq=2 len=4 4-2=2>1 invalid
     shrink [4..6]: "BBA" freq{B:2,A:1} maxFreq=2 len=3 3-2=1<=1 valid
-
+  
   Result: 4`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -195,7 +195,7 @@ longest-repeating-replacement:
 Diagram:
 longest-substr-without-repeating:
   s = "abcabcbb"
-
+  
   Window [0..0]: "a"         maxLen=1
   Window [0..1]: "ab"        maxLen=2
   Window [0..2]: "abc"       maxLen=3
@@ -204,7 +204,7 @@ longest-substr-without-repeating:
   Window [3..5]: "abc"       maxLen=3  (c repeats at 5, left jumps to 3)
   Window [5..6]: "cb"        maxLen=3  (b repeats at 6, left jumps to 5)
   Window [6..7]: "b"         maxLen=3  (b repeats at 7, left jumps to 7)
-
+  
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -230,14 +230,14 @@ longest-substr-without-repeating:
 Diagram:
 min-sum-subarray-len:
   arr = [2, 3, 1, 2, 4, 3], target = 7
-
+  
   Window [0..0]: [2]         sum=2  <7
   Window [0..1]: [2,3]       sum=5  <7
   Window [0..2]: [2,3,1]     sum=6  <7
   Window [0..3]: [2,3,1,2]   sum=8 >=7  minLen=4  shrink-> [1..3]: [3,1,2] sum=6 <7
   Window [1..4]: [3,1,2,4]   sum=10>=7  minLen=4  shrink-> [2..4]: [1,2,4] sum=7 >=7 minLen=3 shrink-> [3..4]: [2,4] sum=6 <7
   Window [3..5]: [2,4,3]     sum=9 >=7  minLen=3  shrink-> [4..5]: [4,3] sum=7 >=7 minLen=2 shrink-> [5..5]: [3] sum=3 <7
-
+  
   Result: 2`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -263,14 +263,14 @@ min-sum-subarray-len:
 Diagram:
 max-consecutive-ones:
   arr = [1, 1, 0, 1, 1, 1]
-
+  
   i=0: [1]           count=1  max=1
   i=1: [1,1]         count=2  max=2
   i=2: [1,1,0]       count=0  (reset)
   i=3: [0,1]         count=1  max=2
   i=4: [0,1,1]       count=2  max=2
   i=5: [0,1,1,1]     count=3  max=3
-
+  
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
@@ -296,7 +296,7 @@ max-consecutive-ones:
 Diagram:
 max-consecutive-ones-iii:
   arr = [1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0], k = 2
-
+  
   Window [0..2]: [1,1,1]           zeros=0 len=3 max=3
   Window [0..3]: [1,1,1,0]         zeros=1 len=4 max=4
   Window [0..4]: [1,1,1,0,0]       zeros=2 len=5 max=5
@@ -306,7 +306,7 @@ max-consecutive-ones-iii:
   Window [4..8]: [0,0,1,1,1]       zeros=2 len=5 max=5
   Window [4..9]: [0,0,1,1,1,1]     zeros=2 len=6 max=6
   Window [4..10]: [0,0,1,1,1,1,0]  zeros=3 >2 shrink-> [5..10]: zeros=2 len=6 max=6
-
+  
   Result: 6`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -333,7 +333,7 @@ Diagram:
 nice-subarrays-count:
   arr = [1, 1, 2, 1, 1], k = 3
   atMost(3) - atMost(2) = ?
-
+  
   atMost(3):
   [0..0]: [1]       odds=1 count+=1 total=1
   [0..1]: [1,1]     odds=2 count+=2 total=3
@@ -341,7 +341,7 @@ nice-subarrays-count:
   [0..3]: [1,1,2,1] odds=3 count+=4 total=10
   [0..4]: [1,1,2,1,1] odds=4 >3 shrink-> [1..4]: odds=3 count+=4 total=14
   atMost(3) = 14
-
+  
   atMost(2):
   [0..0]: [1]       odds=1 count+=1 total=1
   [0..1]: [1,1]     odds=2 count+=2 total=3
@@ -349,7 +349,7 @@ nice-subarrays-count:
   [0..3]: [1,1,2,1] odds=3 >2 shrink-> [1..3]: odds=2 count+=3 total=9
   [1..4]: [1,2,1,1] odds=3 >2 shrink-> [2..4]: odds=2 count+=3 total=12
   atMost(2) = 12
-
+  
   Result: 14 - 12 = 2`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
@@ -375,13 +375,13 @@ nice-subarrays-count:
 Diagram:
 max-erasure:
   arr = [4, 2, 4, 5, 6]
-
+  
   Window [0..0]: [4]         sum=4  max=4
   Window [0..1]: [4,2]       sum=6  max=6
   Window [0..2]: [4,2,4]     sum=10 duplicate 4 -> shrink-> [1..2]: [2,4] sum=6 max=6
   Window [1..3]: [2,4,5]     sum=11 max=11
   Window [1..4]: [2,4,5,6]   sum=17 max=17
-
+  
   Result: 17`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Hackos",
@@ -408,14 +408,14 @@ Diagram:
 longest-harmonious-sub:
   arr = [1, 3, 2, 2, 5, 2, 3, 7]
   freq map approach: for each unique value v, count = freq[v] + freq[v+1]
-
+  
   freq: {1:1, 3:2, 2:3, 5:1, 7:1}
   v=1: 1+3=4 (values 1 and 2)
   v=2: 3+2=5 (values 2 and 3) max=5
   v=3: 2+0=2 (values 3 and 4, none)
   v=5: 1+0=1
   v=7: 1+0=1
-
+  
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Love Babbar 450",
@@ -443,12 +443,12 @@ Diagram:
 contains-nearby-duplicate:
   arr = [1, 2, 3, 1], k = 3
   set = {}
-
+  
   i=0: arr[0]=1 not in set, add 1 -> set={1}
   i=1: arr[1]=2 not in set, add 2 -> set={1,2}
   i=2: arr[2]=3 not in set, add 3 -> set={1,2,3}
   i=3: arr[3]=1 IS in set! Return true.
-
+  
   Result: true`,
     complexity: {"time":"O(n)","space":"O(k)"},
     sheet: "Love Babbar 450",
@@ -477,14 +477,14 @@ grumpy-owner:
   grumpy    = [0, 1, 0, 1, 0, 1, 0, 1]
   k = 3
   base = 1 + 0 + 1 + 0 + 1 + 0 + 7 + 0 = 10 (when grumpy=0)
-
+  
   Window [0..2]: grumpy=[0,1,0] gain=0   maxGain=0
   Window [1..3]: grumpy=[1,0,1] gain=2   maxGain=2
   Window [2..4]: grumpy=[0,1,0] gain=0   maxGain=2
   Window [3..5]: grumpy=[1,0,1] gain=3   maxGain=3
   Window [4..6]: grumpy=[0,1,0] gain=0   maxGain=3
   Window [5..7]: grumpy=[1,0,1] gain=1+5=6 maxGain=6
-
+  
   Result: base + maxGain = 10 + 6 = 16`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Hackos",
@@ -539,7 +539,7 @@ Diagram:
 sliding-window-max:
   arr = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
   deque stores indices, values shown in []
-
+  
   i=0: arr=1  deque=[0(1)]                          window=[1]      max=-
   i=1: arr=3  pop back 0(1)<3, deque=[1(3)]         window=[1,3]    max=-
   i=2: arr=-1 deque=[1(3),2(-1)]                    window=[1,3,-1] max=3
@@ -549,7 +549,7 @@ sliding-window-max:
   i=5: arr=3  deque=[4(5),5(3)]                     window=[-3,5,3] max=5
   i=6: arr=6  pop back 5(3)<6, deque=[4(5),6(6)]    window=[5,3,6]  max=5->pop front 4 out? 6-4=3>=3 pop front, deque=[6(6)] max=6
   i=7: arr=7  pop back 6(6)<7, deque=[7(7)]          window=[3,6,7]  max=6->pop front, deque=[7(7)] max=7
-
+  
   Result: [3, 3, 5, 5, 6, 7]`,
     complexity: {"time":"O(n)","space":"O(k)"},
     sheet: "Striver A2Z",
@@ -575,12 +575,12 @@ sliding-window-max:
 Diagram:
 max-points-from-cards:
   arr = [1, 2, 3, 4, 5, 6, 1], k = 3
-
+  
   All left:          [1,2,3]-,-,-,-   sum=6   max=6
   Replace 1 left:    -,[2,3]-,-,-,[1] sum=6   max=6
   Replace 2 left:    -,-,[3]-,-,[6,1] sum=10  max=10
   Replace 3 left:    -,-,-,-,[5,6,1]  sum=12  max=12
-
+  
   Result: 12`,
     complexity: {"time":"O(k)","space":"O(1)"},
     sheet: "Hackos",
@@ -606,11 +606,11 @@ max-points-from-cards:
 Diagram:
 min-flips-ones:
   arr = [0, 1, 0], k = 1
-
+  
   i=0: arr[0]=0, flipped=0, effective=0 -> flip! flipCount=1, isFlipped[0]=1, flipped=1
   i=1: arr[1]=1, flipped=1, effective=0 (1+1)%2=0 -> flip! flipCount=2, isFlipped[1]=1, flipped=0
   i=2: arr[2]=0, flipped=0, effective=0 -> flip! flipCount=3, isFlipped[2]=1, flipped=1
-
+  
   Result: 2? Wait, k=1, so each flip just toggles one position. Actually with k=1:
   flip position 0: [1,1,0]
   flip position 2: [1,1,1]
@@ -640,7 +640,7 @@ Diagram:
 max-vowels:
   s = "abciiidef", k = 3
   isVowel: a=Y b=N c=N i=Y i=Y i=Y d=N e=Y f=N
-
+  
   Window [0..2]: "abc" vowels=1 max=1
   Window [1..3]: "bci" vowels=1 max=1
   Window [2..4]: "cii" vowels=2 max=2
@@ -648,7 +648,7 @@ max-vowels:
   Window [4..6]: "iid" vowels=2 max=3
   Window [5..7]: "ide" vowels=2 max=3
   Window [6..8]: "def" vowels=1 max=3
-
+  
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
@@ -675,7 +675,7 @@ Diagram:
 longest-turbulent-arr:
   arr = [9, 4, 2, 10, 7, 8, 8, 1, 9]
   Comparison: [9>4] [4>2] [2<10] [10>7] [7<8] [8==8] [8>1] [1<9]
-
+  
   i=0: [9]           len=1  max=1
   i=1: [9,4]         len=2  max=2  (9>4)
   i=2: [9,4,2]       len=2  max=2  (4>2 same dir as 9>4, not turbulent)
@@ -686,7 +686,7 @@ longest-turbulent-arr:
   i=6: [7,8,8]       len=2  max=5  (8==8 reset)
   i=7: [8,8,1]       len=2  max=5  (reset)
   i=8: [8,1,9]       len=3  max=5  (1<9 alt)
-
+  
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Hackos",
@@ -712,7 +712,7 @@ longest-turbulent-arr:
 Diagram:
 longest-subarray-after-delete:
   arr = [1, 1, 0, 1, 1, 1, 0, 1, 1]
-
+  
   Window [0..1]: [1,1]          zeros=0  windowLen=2  maxAfterDel=1
   Window [0..2]: [1,1,0]        zeros=1  windowLen=3  maxAfterDel=2
   Window [0..3]: [1,1,0,1]      zeros=1  windowLen=4  maxAfterDel=3
@@ -721,7 +721,7 @@ longest-subarray-after-delete:
   Window [0..6]: [1,1,0,1,1,1,0] zeros=2 shrink-> [1..6]: zeros=2 shrink-> [2..6]: zeros=1 windowLen=5 maxAfterDel=4
   Window [2..7]: [0,1,1,1,0,1]  zeros=2 shrink-> [3..7]: zeros=1 windowLen=5 maxAfterDel=4
   Window [3..8]: [1,1,1,0,1,1]  zeros=1 windowLen=6 maxAfterDel=5
-
+  
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Hackos",
@@ -747,14 +747,14 @@ longest-subarray-after-delete:
 Diagram:
 sliding-window-median:
   arr = [1, 3, -1, -3, 5, 3, 6, 7], k = 3
-
+  
   Window [0..2]: [1,3,-1] sorted=[-1,1,3] median=1
   Window [1..3]: [3,-1,-3] sorted=[-3,-1,3] median=-1
   Window [2..4]: [-1,-3,5] sorted=[-3,-1,5] median=-1
   Window [3..5]: [-3,5,3] sorted=[-3,3,5] median=3
   Window [4..6]: [5,3,6] sorted=[3,5,6] median=5
   Window [5..7]: [3,6,7] sorted=[3,6,7] median=6
-
+  
   Result: [1, -1, -1, 3, 3, 6]`,
     complexity: {"time":"O(n log k)","space":"O(k)"},
     sheet: "Hackos",
@@ -781,7 +781,7 @@ Diagram:
 subarrays-k-distinct:
   arr = [1, 2, 1, 2, 3], k = 2
   atMost(2) - atMost(1) = ?
-
+  
   atMost(2):
   [0..0]: [1]         distinct=1 total+=1 =>1
   [0..1]: [1,2]       distinct=2 total+=2 =>3
@@ -789,7 +789,7 @@ subarrays-k-distinct:
   [0..3]: [1,2,1,2]   distinct=2 total+=4 =>10
   [0..4]: [1,2,1,2,3] distinct=3 shrink->[1..4]: distinct=3 shrink->[2..4]: distinct=2 total+=3 =>13
   atMost(2)=13
-
+  
   atMost(1):
   [0..0]: [1]         distinct=1 total+=1 =>1
   [0..1]: [1,2]       distinct=2 shrink->[1..1]: distinct=1 total+=1 =>2
@@ -797,7 +797,7 @@ subarrays-k-distinct:
   [2..3]: [1,2]       distinct=2 shrink->[3..3]: distinct=1 total+=1 =>4
   [3..4]: [2,3]       distinct=2 shrink->[4..4]: distinct=1 total+=1 =>5
   atMost(1)=5
-
+  
   Result: 13-5 = 7`,
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
@@ -824,14 +824,14 @@ Diagram:
 longest-nice-subarray:
   arr = [1, 3, 8, 48, 10]
   bits: 1=0001, 3=0011, 8=1000, 48=110000, 10=1010
-
+  
   Window [0..0]: [1]       OR=0001  nice  maxLen=1
   Window [0..1]: [1,3]     OR=0011  nice (1&3=0) maxLen=2
   Window [0..2]: [1,3,8]   OR=1011  nice (all pairwise AND=0) maxLen=3
   Window [0..3]: [1,3,8,48] OR=111011 check: 48&3=0? 48=110000, 3=000011 -> 0 yes. 48&1=0 yes. 48&8=0? 48=110000, 8=001000 -> 0 yes. But OR has many bits. Actually 48&8=0 since bits don't overlap. All pairwise AND=0, so len=4? Wait let's check: 48=110000 (bits 4 and 5), 8=001000 (bit 3), 3=000011 (bits 0,1), 1=000001 (bit 0). 1&3=1 (overlap bit 0)! So [1,3,8,48] is NOT nice. Correct max is 3.
   Window [3..5]: [8,48,10] 8&48=0, 8&10=0? 8=1000, 10=1010 -> 1000&1010=1000 -> NOT 0. So not nice.
   Window [1..3]: [3,8,48] 3&8=0, 3&48=0, 8&48=0 -> nice! len=3 max=3
-
+  
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Hackos",
@@ -857,11 +857,11 @@ longest-nice-subarray:
 Diagram:
 diet-plan-performance:
   calories = [1, 2, 3, 4, 5], k = 3, lower = 3, upper = 4
-
+  
   Window [0..2]: [1,2,3] sum=6 >4  +1  points=1
   Window [1..3]: [2,3,4] sum=9 >4  +1  points=2
   Window [2..4]: [3,4,5] sum=12 >4 +1  points=3
-
+  
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Hackos",
@@ -887,7 +887,7 @@ diet-plan-performance:
 Diagram:
 longest-continuous-increasing:
   arr = [1, 3, 5, 4, 7, 8, 9, 2]
-
+  
   i=0: [1]       len=1  max=1
   i=1: [1,3]     len=2  max=2  (3>1)
   i=2: [1,3,5]   len=3  max=3  (5>3)
@@ -896,7 +896,7 @@ longest-continuous-increasing:
   i=5: [4,7,8]   len=3  max=3  (8>7)
   i=6: [4,7,8,9] len=4  max=4  (9>8)
   i=7: [9,2]     len=1  max=4  (2<9, reset)
-
+  
   Result: 4`,
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
@@ -904,4 +904,4 @@ longest-continuous-increasing:
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window\n  return 0;\n}",
     techniques: ["sliding-window"],
   },
-]
+];
