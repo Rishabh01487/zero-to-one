@@ -55,5 +55,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "// dirs array for 4 moves. Check bounds and open cell. Recurse on valid move.",
     solution_template: "#include <iostream>\n#include <vector>\n#include <algorithm>\nusing namespace std;\n\nint dirs[4][2] = {{1,0},{0,-1},{0,1},{-1,0}};\nchar moves[4] = {'D','L','R','U'};\n\nvoid solve(int maze[][10], int n, int r, int c, string path, vector<string>& ans) {\n  if (r == n-1 && c == n-1) { ans.push_back(path); return; }\n  maze[r][c] = 0;\n  for (int i = 0; i < 4; i++) {\n    int nr = r + dirs[i][0], nc = c + dirs[i][1];\n    if (nr >= 0 && nr < n && nc >= 0 && nc < n && maze[nr][nc] == 1)\n      solve(maze, n, nr, nc, path + moves[i], ans);\n  }\n  maze[r][c] = 1;\n}\n\nint main() {\n  int n; cin >> n;\n  int maze[10][10];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n      cin >> maze[i][j];\n  vector<string> ans;\n  if (maze[0][0] == 1) solve(maze, n, 0, 0, \"\", ans);\n  sort(ans.begin(), ans.end());\n  for (string s : ans) cout << s << \" \";\n  return 0;\n}",
+  },
+  {
+    id: "permutations",
+    title: "All Permutations of Array",
+    category: "recursion",
+    difficulty: "medium",
+    description: "Generate all permutations of distinct integers.",
+    constraints: "1 <= n <= 8",
+    examples: [
+      {"input":"3\n1 2 3","output":"1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 3","expected":"1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1"}
+    ],
+    approach: "Backtracking with swapping: swap each element into current position, recurse, swap back.",
+    complexity: {"time":"O(n*n!)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// for i from idx to n-1: swap(arr[idx],arr[i]), permute(idx+1), swap back",
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nvoid permute(vector<int>& arr, int idx, vector<vector<int>>& ans) {\n  if (idx == (int)arr.size()) { ans.push_back(arr); return; }\n  for (int i = idx; i < (int)arr.size(); i++) {\n    swap(arr[idx], arr[i]);\n    permute(arr, idx+1, ans);\n    swap(arr[idx], arr[i]);\n  }\n}\n\nint main() {\n  int n; cin >> n;\n  vector<int> arr(n);\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  vector<vector<int>> ans;\n  permute(arr, 0, ans);\n  sort(ans.begin(), ans.end());\n  for (auto& v : ans) {\n    for (int x : v) cout << x << \" \";\n    cout << endl;\n  }\n  return 0;\n}",
   }
 ]
