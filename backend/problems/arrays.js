@@ -277,6 +277,20 @@ export default [
     category: "arrays",
     difficulty: "hard",
     description: "Given elevation map, compute how much water can be trapped.",
+    constraints: "1 <= n <= 10^5, 0 <= height[i] <= 10^5",
+    techniques: ["two-pointers"],
+    examples: [
+      {"input":"12\n0 1 0 2 1 0 1 3 2 1 2 1","output":"6","explanation":"6 units of water trapped"}
+    ],
+    test_cases: [
+      {"input":"12\n0 1 0 2 1 0 1 3 2 1 2 1","expected":"6"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int height[n];\n  for (int i = 0; i < n; i++) cin >> height[i];\n\n  // two-pointer approach\n\n  cout << water << endl;\n  return 0;\n}",
+    approach: "This problem asks us to compute the total units of water that can be trapped between bars of varying heights in an elevation map, where each bar has width 1. Water accumulates at any position only when there are taller bars on both the left and right sides. A brute force approach computes for each position the maximum height to its left and the maximum height to its right, then the water at that position is min(leftMax, rightMax) - height[i]. Summing across all positions gives the answer. For example, with heights [0,1,0,2,1,0,1,3,2,1,2,1], at position 2 (height 0): leftMax=1 (from position 1), rightMax=3 (from position 7), so water = min(1,3)-0 = 1 unit. This approach is O(n^2) because for each of n positions we scan left and right. The optimal approach uses two pointers (left and right) with two tracking variables (leftMax and rightMax). Initialize left=0, right=n-1, leftMax=0, rightMax=0, and water=0. While left < right, compare height[left] and height[right]. Always process the side with the smaller height, since the water level at that position is determined by the smaller of the two maximum heights. If height[left] < height[right]: if height[left] >= leftMax, update leftMax; otherwise add leftMax - height[left] to water; then increment left. Symmetrically for the right side. For heights [0,1,0,2,1,0,1,3,2,1,2,1]: left=0(h=0), right=11(h=1), left side smaller: leftMax=0, 0>=0 so leftMax=0, left=1; h[1]=1 vs h[11]=1, equal so process right: rightMax=0, 1>=0 so rightMax=1, right=10; continue tracking increments and water accumulation to get total 6. Edge cases include flat surfaces (no water), strictly increasing or decreasing heights, and arrays with fewer than 3 elements (no water possible). Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Heights: [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]\n  \n  l=0(h=0), r=11(h=1), lMax=0, rMax=0, water=0\n  \n  h[l]=0 < h[r]=1: 0>=0 → lMax=0, l=1\n  h[l]=1, h[r]=1: process right → 1>=0 → rMax=1, r=10\n  h[l]=1, h[r]=2: process left → 1>=1? yes → lMax=1, l=2\n  h[l]=0, h[r]=2: process left → 0<1 → water+=1-0=1, l=3, water=1\n  h[l]=2, h[r]=2: process right → 2>=1 → rMax=2, r=9\n  h[l]=2, h[r]=1: process right → 1<2 → water+=2-1=1, r=8, water=2\n  ... continues for each position\n  \n  Result: 6 units of water",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int l=0,r=n-1,lMax=0,rMax=0,water=0;\nwhile(l<r){\n  if(height[l]<height[r]){\n    if(height[l]>=lMax) lMax=height[l];\n    else water+=lMax-height[l];\n    l++;\n  } else {\n    if(height[r]>=rMax) rMax=height[r];\n    else water+=rMax-height[r];\n    r--;\n  }\n}\ncout << water;",
+  },
   {
     id: "find-duplicate",
     title: "Find the Duplicate Number",
@@ -284,6 +298,7 @@ export default [
     difficulty: "medium",
     description: "Given n+1 numbers from 1..n, find the duplicate (without modifying array).",
     constraints: "1 <= n <= 10^5",
+    techniques: ["fast-slow-pointers", "cyclic-sort"],
     examples: [
       {"input":"5\n1 3 4 2 2","output":"2","explanation":"2 appears twice"}
     ],
@@ -292,7 +307,7 @@ export default [
       {"input":"4\n3 1 3 2","expected":"3"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // Floyd's cycle detection: slow/fast pointer\n\n  cout << duplicate << endl;\n  return 0;\n}",
-    approach: "Floyd cycle detection: treat array values as linked list pointers. Slow/fast pointers meet at cycle entry (duplicate).",
+    approach: "This problem asks us to find the one duplicate number in an array of size n+1 containing integers from 1 to n, without modifying the original array and using only constant extra space. A brute force approach uses a hash set or boolean visited array to track seen numbers, requiring O(n) extra space. For example, with [1,3,4,2,2], a visited array would detect that 2 appears twice. The constraint of O(1) space rules this out. The optimal approach treats the array as a linked list where each index i points to the value arr[i] (the next node). Since values are in [1,n] and there are n+1 elements, there must be a cycle. Floyd's cycle detection algorithm finds the duplicate in two phases. Phase 1: initialize slow and fast pointers to arr[0]. Move slow one step (slow = arr[slow]) and fast two steps (fast = arr[arr[fast]]) until they meet. The meeting point is inside the cycle. Phase 2: reset slow to arr[0] and keep fast at the meeting point. Move both one step at a time (slow = arr[slow], fast = arr[fast]) until they meet again. The meeting point is the start of the cycle, which corresponds to the duplicate number. For [1,3,4,2,2]: phase 1: slow=1, fast=1; slow=arr[1]=3, fast=arr[arr[1]]=arr[3]=2; slow=arr[3]=2, fast=arr[arr[2]]=arr[4]=2; they meet at value 2. Phase 2: slow=arr[0]=1, fast=2; slow=arr[1]=3, fast=arr[2]=4; slow=arr[3]=2, fast=arr[4]=2; they meet at value 2. The duplicate is 2. Edge cases include n=1 with array [1,1] and arrays where the duplicate appears many times. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  Array: [1, 3, 4, 2, 2] (treat as linked list: index → arr[index])\n  \n  Phase 1: Detect cycle\n    slow=arr[0]=1, fast=arr[0]=1\n    slow=arr[1]=3, fast=arr[arr[1]]=arr[3]=2\n    slow=arr[3]=2, fast=arr[arr[2]]=arr[4]=2 → meet at 2\n  \n  Phase 2: Find cycle start\n    slow=arr[0]=1, fast=2\n    slow=arr[1]=3, fast=arr[2]=4\n    slow=arr[3]=2, fast=arr[4]=2 → meet at 2\n  \n  Result: Duplicate = 2",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int slow=arr[0],fast=arr[0];\ndo{\n  slow=arr[slow];\n  fast=arr[arr[fast]];\n} while(slow!=fast);\nslow=arr[0];\nwhile(slow!=fast){\n  slow=arr[slow];\n  fast=arr[fast];\n}\ncout << slow;",
@@ -301,21 +316,6 @@ export default [
     id: "longest-consecutive",
     title: "Longest Consecutive Sequence",
     category: "arrays",
-    difficulty: "medium",
-    description: "Find the length of the longest consecutive elements sequence.",
-    constraints: "1 <= n <= 10^5",
-    examples: [
-      {"input":"6\n100 4 200 1 3 2","output":"4","explanation":"Longest: [1,2,3,4]"}
-    ],
-    test_cases: [
-      {"input":"6\n100 4 200 1 3 2","expected":"4"}
-    ],
-    solution_template: "#include <iostream>\n#include <unordered_set>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // use hash set\n\n  cout << longest << endl;\n  return 0;\n}",
-    approach: "Use hash set. For each element, check if it is the start of a sequence (prev not in set). Count consecutive elements.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "unordered_set<int> s(arr,arr+n);\nint mx=0;\nfor(int x:s){\n  if(!s.count(x-1)){\n    int len=1;\n    while(s.count(x+len)) len++;\n    mx=max(mx,len);\n  }\n}\ncout << mx;",
-  },
   {
     id: "common-three-sorted",
     title: "Common Elements in Three Sorted Arrays",
