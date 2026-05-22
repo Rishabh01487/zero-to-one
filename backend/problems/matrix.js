@@ -74,5 +74,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "int i = 0, j = m-1;\nwhile (i < n && j >= 0) {\n  if (mat[i][j] == target) { cout << \"Yes\"; return 0; }\n  if (mat[i][j] > target) j--;\n  else i++;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[100][100];\n  for (int i=0; i<n; i++) for (int j=0; j<m; j++) cin >> mat[i][j];\n  int target; cin >> target;\n  // staircase search\n  return 0;\n}",
+  },
+  {
+    id: "maximal-rectangle",
+    title: "Maximal Rectangle of 1s",
+    category: "matrix",
+    difficulty: "hard",
+    description: "Find largest rectangle containing only 1s in binary matrix.",
+    constraints: "1 <= n,m <= 200",
+    examples: [
+      {"input":"4 5\n10100\n10111\n11111\n10010","output":"6"}
+    ],
+    test_cases: [
+      {"input":"4 5\n10100\n10111\n11111\n10010","expected":"6"}
+    ],
+    approach: "Treat each row as histogram base. Calculate heights array (consecutive 1s from top). Use largest rectangle in histogram algorithm for each row.",
+    complexity: {"time":"O(n*m)","space":"O(m)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> heights(m, 0);\nint maxArea = 0;\nfor (int i = 0; i < n; i++) {\n  for (int j = 0; j < m; j++) heights[j] = (mat[i][j] == '1') ? heights[j] + 1 : 0;\n  maxArea = max(maxArea, largestRectangleArea(heights));\n}",
+    solution_template: "#include <iostream>\n#include <vector>\n#include <stack>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<string> mat(n);\n  for (int i=0; i<n; i++) cin >> mat[i];\n  // histogram based\n  return 0;\n}",
   }
 ]
