@@ -230,6 +230,18 @@ export default [
     description: "Find shortest paths from source (handles negative edges).",
     constraints: "1 <= n,m <= 10^5",
     examples: [
+      {"input":"4 5 0\n0 1 4\n1 2 -3\n0 2 5\n2 3 2\n1 3 6","output":"0 4 1 3"}
+    ],
+    test_cases: [
+      {"input":"4 5 0\n0 1 4\n1 2 -3\n0 2 5\n2 3 2\n1 3 6","expected":"0 4 1 3"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m, s; cin >> n >> m >> s;\n  struct Edge { int u, v, w; };\n  vector<Edge> edges(m);\n  for (int i = 0; i < m; i++) cin >> edges[i].u >> edges[i].v >> edges[i].w;\n\n  vector<int> dist(n, INT_MAX);\n  dist[s] = 0;\n\n  for (int i = 0; i < n-1; i++)\n    for (auto& e : edges)\n      if (dist[e.u] != INT_MAX && dist[e.u] + e.w < dist[e.v])\n        dist[e.v] = dist[e.u] + e.w;\n\n  for (int i = 0; i < n; i++) cout << dist[i] << \" \";\n  return 0;\n}",
+    approach: "\n\nDiagram:\n```\nbellman-ford:\n  source=0, edges: 0→1(4), 1→2(-3), 0→2(5), 2→3(2), 1→3(6)\n\n  dist: [0, INF, INF, INF]\n\n  Iteration 1:\n    0→1: dist[1] = 4\n    0→2: dist[2] = min(INF, 5) = 5\n    1→2: dist[2] = min(5, 4+(-3)) = 1\n    1→3: dist[3] = min(INF, 4+6) = 10\n    2→3: dist[3] = min(10, 1+2) = 3\n\n  Iteration 2: no changes\n  Final: [0, 4, 1, 3]\n\n  Path: 0 → 1 → 2 → 3 (cost = 4 + (-3) + 2 = 3)\n  Negative edge 1→2(-3) works correctly\n```\nThe Bellman-Ford algorithm finds shortest paths from a source node to all other vertices in a weighted graph, handling negative edge weights and detecting negative cycles. Unlike Dijkstra, it does not require non-negative weights. The graph is stored as an edge list of (u, v, w) triplets. The algorithm repeatedly relaxes all edges V-1 times. We initialize a distance array with INF, set dist[source] = 0, then iterate V-1 times over all edges. For each edge (u, v, w), if dist[u] is not INF and dist[u] + w < dist[v], update dist[v] = dist[u] + w. This relaxation is based on the principle that the shortest path without negative cycles has at most V-1 edges. After V-1 iterations, we perform one more pass to detect negative cycles: if any edge can still be relaxed, a negative cycle reachable from the source exists. For a dry run with 4 nodes, source=0, edges (0->1:4, 1->2:-3, 0->2:5, 2->3:2, 1->3:6): dist=[0,INF,INF,INF]. Iteration 1: relax 0->1 -> dist[1]=4, 0->2 -> dist[2]=5, 1->2 -> dist[2]=min(5,4-3=1), 1->3 -> dist[3]=10, 2->3 -> dist[3]=min(10,1+2=3). Iteration 2: no changes. Final dist=[0,4,1,3]. No negative cycle detected. Edge cases include negative cycles where distances keep decreasing and the V-th iteration detects further relaxation. Disconnected nodes remain at INF. A graph with a single node has distance 0. Bellman-Ford is slower than Dijkstra at O(V*E) but handles negative weights. For dense graphs this can be O(V^3), so it is best suited for sparse graphs or when negative edges are present.",
+    complexity: {"time":"O(V*E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dist(n,INT_MAX); dist[s]=0; for(int i=0;i<n-1;i++)for(auto& e:edges)if(dist[e.u]!=INT_MAX&&dist[e.u]+e.w<dist[e.v])dist[e.v]=dist[e.u]+e.w;",
+    techniques: ["shortest-path"],
+  },
   {
     id: "course-schedule",
     title: "Course Schedule (Topological)",
@@ -238,18 +250,6 @@ export default [
     description: "Check if all courses can be finished given prerequisites.",
     constraints: "1 <= n <= 10^5",
     examples: [
-      {"input":"4 3\n1 0\n2 1\n3 2","output":"Yes"}
-    ],
-    test_cases: [
-      {"input":"4 3\n1 0\n2 1\n3 2","expected":"Yes"},
-      {"input":"2 2\n1 0\n0 1","expected":"No"}
-    ],
-    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  vector<int> indeg(n, 0);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[v].push_back(u); indeg[u]++; }\n\n  queue<int> q;\n  for (int i = 0; i < n; i++) if (indeg[i] == 0) q.push(i);\n  int cnt = 0;\n  while (!q.empty()) { int u = q.front(); q.pop(); cnt++; for (int v : g[u]) if (--indeg[v] == 0) q.push(v); }\n\n  cout << (cnt == n ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "Topological sort via Kahn's algorithm. If all courses processed, possible.",
-    complexity: {"time":"O(V+E)","space":"O(V)"},
-    sheet: "Striver A2Z",
-    solution_code: "queue<int> q; for(int i=0;i<n;i++)if(!indeg[i])q.push(i); int cnt=0; while(!q.empty()){int u=q.front();q.pop();cnt++;for(int v:g[u])if(--indeg[v]==0)q.push(v);}cout<<(cnt==n?\"Yes\":\"No\");",
-  }
       {"input":"4 3\n1 0\n2 1\n3 2","output":"Yes"}
     ],
     test_cases: [
