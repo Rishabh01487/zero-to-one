@@ -4,15 +4,16 @@ import db from '../db/schema.js';
 const router = Router();
 
 router.get('/', (req, res) => {
-  const { difficulty, category } = req.query;
+  const { difficulty, category, technique } = req.query;
   let problems = db.query('problems');
   if (difficulty) problems = problems.filter(p => p.difficulty === difficulty);
   if (category) problems = problems.filter(p => p.category === category);
+  if (technique) problems = problems.filter(p => p.techniques && p.techniques.includes(technique));
   problems.sort((a, b) => {
     const diffOrder = { easy: 0, medium: 1, hard: 2 };
     return (diffOrder[a.difficulty] || 0) - (diffOrder[b.difficulty] || 0) || a.title.localeCompare(b.title);
   });
-  res.json(problems.map(({ id, title, difficulty, category }) => ({ id, title, difficulty, category })));
+  res.json(problems.map(({ id, title, difficulty, category, techniques }) => ({ id, title, difficulty, category, techniques: techniques || [] })));
 });
 
 router.get('/:id', (req, res) => {
@@ -41,7 +42,8 @@ router.post('/seed', (req, res) => {
       approach: p.approach || '',
       complexity: p.complexity || {},
       sheet: p.sheet || '',
-      solution_code: p.solution_code || ''
+      solution_code: p.solution_code || '',
+      techniques: p.techniques || []
     });
   }
   res.json({ seeded: problems.length });
