@@ -37,6 +37,8 @@ export default [
     complexity: {"time":"O(n²)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "for(int i=0;i<n-1;i++){int minIdx=i;for(int j=i+1;j<n;j++)if(arr[j]<arr[minIdx])minIdx=j;swap(arr[i],arr[minIdx]);}",
+    techniques: ["sorting"],
+  },
   {
     id: "insertion-sort",
     title: "Insertion Sort Implementation",
@@ -51,10 +53,11 @@ export default [
       {"input":"6\n12 11 13 5 6 7","expected":"5 6 7 11 12 13"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  for (int i = 1; i < n; i++) {\n    int key = arr[i];\n    int j = i - 1;\n    while (j >= 0 && arr[j] > key) { arr[j+1] = arr[j]; j--; }\n    arr[j+1] = key;\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Pick element and insert into correct position in sorted portion by shifting elements right.",
+    approach: "insertion-sort:\n  arr = [12, 11, 13, 5, 6]\n  \n  Step 1: key=11, shift 12 right\n          [_, 12, 13, 5, 6] → insert 11\n          [11, 12, 13, 5, 6]\n  \n  Step 2: key=13, 13>12 → no shift\n          [11, 12, 13, 5, 6]\n  \n  Step 3: key=5, shift 13,12,11 right\n          [_, 11, 12, 13, 6] → insert 5\n          [5, 11, 12, 13, 6]\n  \n  Step 4: key=6, shift 13,12,11 right\n          [5, _, 11, 12, 13] → insert 6\n          [5, 6, 11, 12, 13]  sorted!\n\nInsertion sort builds the final sorted array one element at a time by repeatedly taking the next unsorted element and inserting it into its correct position among the previously sorted elements, shifting larger elements right to make room. Time complexity: best O(n) (already sorted), average/worst O(n²). Space: O(1) in-place. Stable: yes.\n\nDiagram:\n  arr = [12, 11, 13, 5, 6]\n\n  Step 1: key=11 -> [11, 12, 13, 5, 6]\n  Step 2: key=13 -> [11, 12, 13, 5, 6]\n  Step 3: key=5  -> [5, 11, 12, 13, 6]\n  Step 4: key=6  -> [5, 6, 11, 12, 13] sorted!",
     complexity: {"time":"O(n²)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "for(int i=1;i<n;i++){int key=arr[i],j=i-1;while(j>=0&&arr[j]>key){arr[j+1]=arr[j];j--;}arr[j+1]=key;}",
+    techniques: ["sorting"],
   },
   {
     id: "merge-sort-prob",
@@ -70,11 +73,8 @@ export default [
       {"input":"7\n38 27 43 3 9 82 10","expected":"3 9 10 27 38 43 82"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nvoid merge(int arr[], int l, int m, int r) {\n  int n1 = m-l+1, n2 = r-m;\n  int L[n1], R[n2];\n  for (int i = 0; i < n1; i++) L[i] = arr[l+i];\n  for (int i = 0; i < n2; i++) R[i] = arr[m+1+i];\n  int i = 0, j = 0, k = l;\n  while (i < n1 && j < n2) arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];\n  while (i < n1) arr[k++] = L[i++];\n  while (j < n2) arr[k++] = R[j++];\n}\n\nvoid mergeSort(int arr[], int l, int r) {\n  if (l >= r) return;\n  int m = l + (r-l)/2;\n  mergeSort(arr, l, m);\n  mergeSort(arr, m+1, r);\n  merge(arr, l, m, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  mergeSort(arr, 0, n-1);\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Divide array into halves, recursively sort each half, merge sorted halves.",
+    approach: "merge-sort:\n  arr = [38, 27, 43, 3, 9, 82, 10]\n  \n  Split: [38, 27, 43, 3] | [9, 82, 10]\n         [38, 27] | [43, 3] | [9, 82] | [10]\n         [38] [27] | [43] [3] | [9] [82] | [10]\n  \n  Merge: [27, 38] | [3, 43] | [9, 82] | [10]\n         [3, 27, 38, 43] | [9, 10, 82]\n         [3, 9, 10, 27, 38, 43, 82]  sorted!\n\nMerge sort is a divide-and-conquer algorithm that recursively splits the array into halves until each subarray has one element, then merges adjacent pairs back together in sorted order using an auxiliary array. The merge procedure compares the front elements of two sorted subarrays and copies the smaller into the output array, then copies remaining elements. Time complexity: O(n log n) in all cases. Space: O(n) for the auxiliary array plus O(log n) recursion stack. Stable: yes.\n\nDiagram:\n  arr = [38, 27, 43, 3, 9, 82, 10]\n\n  Split: [38,27,43,3] [9,82,10]\n  Split: [38,27] [43,3] [9,82] [10]\n  Split: [38] [27] [43] [3] [9] [82] [10]\n  Merge: [27,38] [3,43] [9,82] [10]\n  Merge: [3,27,38,43] [9,10,82]\n  Merge: [3,9,10,27,38,43,82]",
     complexity: {"time":"O(n log n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "void merge(int arr[],int l,int m,int r){int n1=m-l+1,n2=r-m;int L[n1],R[n2];for(int i=0;i<n1;i++)L[i]=arr[l+i];for(int j=0;j<n2;j++)R[j]=arr[m+1+j];int i=0,j=0,k=l;while(i<n1&&j<n2)arr[k++]=(L[i]<=R[j])?L[i++]:R[j++];while(i<n1)arr[k++]=L[i++];while(j<n2)arr[k++]=R[j++];}",
-  },
   {
     id: "quick-sort-prob",
     title: "Quick Sort Implementation",
