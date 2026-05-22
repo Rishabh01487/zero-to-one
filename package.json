@@ -10,5 +10,13 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
-  }
+  },
+  "description": "Master C++ and DSA from absolute scratch. Full-stack learning platform with 152 problems, code visualizer, and live compiler.",
+  "keywords": [
+    "c++",
+    "dsa",
+    "education",
+    "visualizer",
+    "competitive-programming"
+  ]
 }
