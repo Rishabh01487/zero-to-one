@@ -88,5 +88,15 @@ export default [
     difficulty: "Intermediate to Advanced",
     icon: "^Y",
     order: 9,
+  },
+  {
+    id: "graphs",
+    name: "Graphs",
+    description: "Nodes connected by edges. Model networks, relationships, paths, and dependencies with traversal and shortest-path algorithms.",
+    when_to_use: "Networks, paths, connectivity, dependency resolution, shortest path, cycles, or topological ordering.",
+    techniques: ["DFS","BFS","Dijkstra","Union-Find","Topological Sort","Floyd-Warshall","Bellman-Ford"],
+    difficulty: "Advanced",
+    icon: "/\\",
+    order: 10,
   }
 ]
