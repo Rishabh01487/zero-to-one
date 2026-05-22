@@ -120,44 +120,44 @@ Diagram:
            lo=0     mid=3     hi=6
            left sorted [4..7], target 0 not in [4,7)
            -> lo=4
-  {
-    id: "aggressive-cows",
-    title: "Aggressive Cows (Binary Search)",
-    category: "binary-search",
-    difficulty: "medium",
-    description: "Place c cows in stalls maximizing minimum distance between them.",
-    constraints: "2 <= n <= 10^5, 2 <= c <= n",
-    examples: [
-      {"input":"5 3\n1 2 8 4 9","output":"3","explanation":"Place at 1,4,8 => min dist=3"}
-    ],
-    test_cases: [
-      {"input":"5 3\n1 2 8 4 9","expected":"3"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nbool canPlace(int stalls[], int n, int c, int dist) {\n  int cnt = 1, last = stalls[0];\n  for (int i = 1; i < n; i++)\n    if (stalls[i] - last >= dist) { cnt++; last = stalls[i]; }\n  return cnt >= c;\n}\n\nint main() {\n  int n, c; cin >> n >> c;\n  int stalls[n];\n  for (int i = 0; i < n; i++) cin >> stalls[i];\n  sort(stalls, stalls + n);\n\n  int lo = 0, hi = stalls[n-1] - stalls[0], ans = 0;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if (canPlace(stalls, n, c, mid)) { ans = mid; lo = mid + 1; }\n    else hi = mid - 1;\n  }\n  cout << ans << endl;\n  return 0;\n}",
-    approach: "Binary search on answer (min distance). Check if cows can be placed with at least 'mid' distance apart.",
-    complexity: {"time":"O(n log range)","space":"O(1)"},
+
+  Step 2: [4, 5, 6, 7, 0, 1, 2]
+                          ^  ^  ^
+                         lo mid hi
+           left sorted [0..1], target 0 in [0,1)
+           -> hi=4
+
+  Step 3: [4, 5, 6, 7, 0, 1, 2]
+                          ^
+                        lo=hi=4
+           arr[4]=0 == 0 -> return 4
+
+At every mid, at least one half is fully sorted. Check arr[lo]<=arr[mid] to identify the sorted left half; if target lies within its range, search there; otherwise search the other half.`,
+    complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "sort(stalls,stalls+n); int lo=0,hi=stalls[n-1]-stalls[0],ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if(canPlace(stalls,n,c,m)){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
+    solution_code: "int lo=0,hi=n-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){cout<<m;return 0;}if(arr[lo]<=arr[m]){if(target>=arr[lo]&&target<arr[m])hi=m-1;else lo=m+1;}else{if(target>arr[m]&&target<=arr[hi])lo=m+1;else hi=m-1;}}cout<<-1;",
+    techniques: ["binary-search"],
   },
   {
-    id: "book-allocation",
-    title: "Book Allocation Problem",
+    id: "peak-element",
+    title: "Find Peak Element",
     category: "binary-search",
-    difficulty: "hard",
-    description: "Allocate m books to n students minimizing max pages per student.",
-    constraints: "1 <= n <= m <= 10^5",
+    difficulty: "medium",
+    description: "Find a peak element (greater than neighbors).",
+    constraints: "1 <= n <= 10^5",
     examples: [
-      {"input":"4 2\n12 34 67 90","output":"113"}
+      {"input":"4\n1 2 3 1","output":"2","explanation":"arr[2] = 3 is a peak"}
     ],
     test_cases: [
-      {"input":"4 2\n12 34 67 90","expected":"113"}
+      {"input":"4\n1 2 3 1","expected":"2"},
+      {"input":"7\n1 2 1 3 5 6 4","expected":"5"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nbool canAlloc(int pages[], int n, int m, int maxP) {\n  int cnt = 1, sum = 0;\n  for (int i = 0; i < n; i++) {\n    if (pages[i] > maxP) return false;\n    if (sum + pages[i] > maxP) { cnt++; sum = pages[i]; }\n    else sum += pages[i];\n  }\n  return cnt <= m;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  int pages[n];\n  int lo = 0, hi = 0;\n  for (int i = 0; i < n; i++) { cin >> pages[i]; hi += pages[i]; lo = max(lo, pages[i]); }\n\n  int ans = hi;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if (canAlloc(pages, n, m, mid)) { ans = mid; hi = mid - 1; }\n    else lo = mid + 1;\n  }\n  cout << ans << endl;\n  return 0;\n}",
-    approach: "Binary search on max pages. Check if allocation possible with 'mid' as max pages per student.",
-    complexity: {"time":"O(n log sum)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int lo=*max_element(pages,pages+n),hi=accumulate(pages,pages+n,0),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;if(canAlloc(pages,n,m,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
-  }
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  int lo = 0, hi = n-1;\n  while (lo < hi) {\n    int mid = lo + (hi-lo)/2;\n    if (arr[mid] > arr[mid+1]) hi = mid;\n    else lo = mid + 1;\n  }\n  cout << lo << endl;\n  return 0;\n}",
+    approach: `Binary search to find a peak using slope direction.
+
+Diagram:
+
+  arr = [1, 2, 3, 1]
 
   Step 1: [1, 2, 3, 1]
             ^     ^  ^
