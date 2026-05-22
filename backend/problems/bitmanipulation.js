@@ -96,5 +96,24 @@ export default [
     sheet: "Love Babbar 450",
     solution_code: "int xorAll = 0;\nfor (int i = 0; i < n; i++) xorAll ^= arr[i];\nint setBit = xorAll & ~(xorAll - 1);\nint x = 0, y = 0;\nfor (int i = 0; i < n; i++) {\n  if (arr[i] & setBit) x ^= arr[i];\n  else y ^= arr[i];\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // XOR partitioning\n  return 0;\n}",
+  },
+  {
+    id: "bit-difference",
+    title: "Sum of Bit Differences Among All Pairs",
+    category: "bit-manipulation",
+    difficulty: "medium",
+    description: "Sum of (number of differing bits) over all pairs.",
+    constraints: "1 <= n <= 10^5, 0 <= arr[i] <= 10^9",
+    examples: [
+      {"input":"3\n1 3 5","output":"8"}
+    ],
+    test_cases: [
+      {"input":"3\n1 3 5","expected":"8"}
+    ],
+    approach: "For each bit position, count how many numbers have that bit set (c) and not set (n-c). Contribution to sum = c * (n-c) * 2.",
+    complexity: {"time":"O(n * 32)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "long long sum = 0;\nfor (int b = 0; b < 32; b++) {\n  int countSet = 0;\n  for (int i = 0; i < n; i++) if (arr[i] & (1 << b)) countSet++;\n  sum += (long long)countSet * (n - countSet) * 2;\n}",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // bit contribution\n  return 0;\n}",
   }
 ]
