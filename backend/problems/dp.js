@@ -176,5 +176,24 @@ export default [
     complexity: {"time":"O(n*target)","space":"O(target)"},
     sheet: "Striver A2Z",
     solution_code: "vector<bool> dp(target+1); dp[0]=1; for(int x:arr)for(int s=target;s>=x;s--)if(dp[s-x])dp[s]=1; cout<<(dp[target]?\"Yes\":\"No\");",
+  },
+  {
+    id: "unbounded-knapsack",
+    title: "Unbounded Knapsack",
+    category: "dp",
+    difficulty: "medium",
+    description: "Each item can be picked unlimited times.",
+    constraints: "1 <= n <= 100, 1 <= W <= 1000",
+    examples: [
+      {"input":"2\n1 3\n10 40\n4","output":"120","explanation":"Item 3x weight 3+3+3=9, value 40+40+40=120"}
+    ],
+    test_cases: [
+      {"input":"2\n1 3\n10 40\n4","expected":"120"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, W; cin >> n;\n  int wt[n], val[n];\n  for (int i = 0; i < n; i++) cin >> wt[i];\n  for (int i = 0; i < n; i++) cin >> val[i];\n  cin >> W;\n\n  // for each w: dp[w] = max(dp[w], dp[w-wt[i]] + val[i])\n\n  cout << dp[W] << endl;\n  return 0;\n}",
+    approach: "DP 1D forward iteration: for each weight, dp[w]=max(dp[w],dp[w-wt[i]]+val[i]).",
+    complexity: {"time":"O(n*W)","space":"O(W)"},
+    sheet: "Love Babbar 450",
+    solution_code: "vector<int> dp(W+1,0); for(int w=1;w<=W;w++)for(int i=0;i<n;i++)if(wt[i]<=w)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]);cout<<dp[W];",
   }
 ]
