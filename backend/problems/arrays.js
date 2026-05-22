@@ -353,5 +353,24 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "sort(arr,arr+n);\nint mn=INT_MAX;\nfor(int i=0;i+m-1<n;i++){\n  mn=min(mn,arr[i+m-1]-arr[i]);\n}\ncout << mn;",
+  },
+  {
+    id: "product-array",
+    title: "Product of Array Except Self",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Return array where answer[i] = product of all elements except arr[i].",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4\n1 2 3 4","output":"24 12 8 6","explanation":"Without division, O(n)"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 3 4","expected":"24 12 8 6"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // prefix and suffix products\n\n  for (int i = 0; i < n; i++) cout << ans[i] << \" \";\n  return 0;\n}",
+    approach: "Compute prefix products and suffix products. Answer[i] = prefix[i-1] * suffix[i+1].",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int pre[n],suf[n];\npre[0]=1;\nfor(int i=1;i<n;i++) pre[i]=pre[i-1]*arr[i-1];\nsuf[n-1]=1;\nfor(int i=n-2;i>=0;i--) suf[i]=suf[i+1]*arr[i+1];\nfor(int i=0;i<n;i++) cout << pre[i]*suf[i] << \" \";",
   }
 ]
