@@ -36,5 +36,24 @@ export default [
     complexity: {"time":"O(n²)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "for(int i=0;i<n-1;i++){int minIdx=i;for(int j=i+1;j<n;j++)if(arr[j]<arr[minIdx])minIdx=j;swap(arr[i],arr[minIdx]);}",
+  },
+  {
+    id: "insertion-sort",
+    title: "Insertion Sort Implementation",
+    category: "sorting",
+    difficulty: "easy",
+    description: "Implement insertion sort and return sorted array.",
+    constraints: "1 <= n <= 10^3",
+    examples: [
+      {"input":"6\n12 11 13 5 6 7","output":"5 6 7 11 12 13"}
+    ],
+    test_cases: [
+      {"input":"6\n12 11 13 5 6 7","expected":"5 6 7 11 12 13"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  for (int i = 1; i < n; i++) {\n    int key = arr[i];\n    int j = i - 1;\n    while (j >= 0 && arr[j] > key) { arr[j+1] = arr[j]; j--; }\n    arr[j+1] = key;\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
+    approach: "Pick element and insert into correct position in sorted portion by shifting elements right.",
+    complexity: {"time":"O(n²)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "for(int i=1;i<n;i++){int key=arr[i],j=i-1;while(j>=0&&arr[j]>key){arr[j+1]=arr[j];j--;}arr[j+1]=key;}",
   }
 ]
