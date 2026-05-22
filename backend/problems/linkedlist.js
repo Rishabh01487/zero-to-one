@@ -96,5 +96,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node *fast=head,*slow=head; for(int i=0;i<k;i++)fast=fast->next; if(!fast)return head->next; while(fast->next){slow=slow->next;fast=fast->next;} slow->next=slow->next->next;",
+  },
+  {
+    id: "palindrome-list",
+    title: "Palindrome Linked List",
+    category: "linked-list",
+    difficulty: "medium",
+    description: "Check if linked list is a palindrome.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4\n1 2 2 1","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 2 1","expected":"Yes"},
+      {"input":"3\n1 2 3","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* reverse(Node* head) {\n  Node *prev = nullptr, *curr = head;\n  while (curr) {\n    Node* nxt = curr->next;\n    curr->next = prev;\n    prev = curr; curr = nxt;\n  }\n  return prev;\n}\n\nint main() {\n  int n, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) {\n    cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n\n  // find mid, reverse second half, compare\n\n  cout << (isPal ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Find middle, reverse second half, compare both halves.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} Node *rev=nullptr,*cur=slow; while(cur){Node* n=cur->next;cur->next=rev;rev=cur;cur=n;} Node* a=head,*b=rev; while(b){if(a->data!=b->data){cout<<\"No\";return 0;}a=a->next;b=b->next;}cout<<\"Yes\";",
   }
 ]
