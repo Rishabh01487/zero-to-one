@@ -236,45 +236,45 @@ Diagram:
   Result: 7  (path: 1->3->1->1->1)`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
     sheet: "Striver A2Z",
-  {
-    id: "wildcard-match-dp",
-    title: "Wildcard Matching (DP)",
-    category: "dp",
-    difficulty: "hard",
-    description: "Match string with pattern: ? = any char, * = any sequence.",
-    constraints: "1 <= |s|,|p| <= 2000",
-    examples: [
-      {"input":"aa a*","output":"Yes"}
-    ],
-    test_cases: [
-      {"input":"aa a*","expected":"Yes"},
-      {"input":"cb ?a","expected":"No"}
-    ],
-    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  string s, p;\n  cin >> s >> p;\n  int n = s.size(), m = p.size();\n\n  // 2D boolean DP\n\n  cout << (dp[n][m] ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "2D DP: handle ? matches single char, * matches empty/one/many.",
-    complexity: {"time":"O(n*m)","space":"O(n*m)"},
-    sheet: "Striver A2Z",
-    solution_code: "int n=s.size(),m=p.size(); vector<vector<bool>> dp(n+1,vector<bool>(m+1)); dp[0][0]=1; for(int j=1;j<=m;j++)if(p[j-1]=='*')dp[0][j]=dp[0][j-1]; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(p[j-1]=='*')dp[i][j]=dp[i-1][j]||dp[i][j-1];else if(p[j-1]=='?'||s[i-1]==p[j-1])dp[i][j]=dp[i-1][j-1];}cout<<(dp[n][m]?\"Yes\":\"No\");",
+    solution_code: "int dp[n][m]; dp[0][0]=grid[0][0]; for(int i=1;i<n;i++)dp[i][0]=dp[i-1][0]+grid[i][0]; for(int j=1;j<m;j++)dp[0][j]=dp[0][j-1]+grid[0][j]; for(int i=1;i<n;i++)for(int j=1;j<m;j++)dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]);cout<<dp[n-1][m-1];",
   },
   {
-    id: "max-square",
-    title: "Max Square of 1s in Binary Matrix",
+    id: "subset-sum",
+    title: "Subset Sum Problem",
     category: "dp",
     difficulty: "medium",
-    description: "Find the largest square submatrix of 1s.",
-    constraints: "1 <= n,m <= 300",
+    description: "Check if subset with given sum exists.",
+    constraints: "1 <= n <= 200, 1 <= sum <= 10^4",
     examples: [
-      {"input":"4 5\n10100\n10111\n11111\n10010","output":"2","explanation":"Max side length = 2 (area 4)"}
+      {"input":"6\n3 34 4 12 5 2\n9","output":"Yes","explanation":"4+5=9"}
     ],
     test_cases: [
-      {"input":"4 5\n10100\n10111\n11111\n10010","expected":"2"}
+      {"input":"6\n3 34 4 12 5 2\n9","expected":"Yes"},
+      {"input":"4\n1 2 3 7\n10","expected":"No"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[n][m];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      scanf(\"%1d\", &mat[i][j]);\n\n  // dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])\n\n  cout << maxSide * maxSide << endl;\n  return 0;\n}",
-    approach: "DP: dp[i][j]=1+min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]) if mat[i][j]=1. Track max side.",
-    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  // dp[s] = can we achieve sum s?\n\n  cout << (dp[target] ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: `DP boolean: dp[s]=true if sum s achievable. For each num, iterate sums backwards: dp[s]=dp[s]||dp[s-num].
+
+Diagram:
+  arr=[3,34,4,12,5,2], target=9
+
+  i\\arr    0  1  2  3  4  5  6  7  8  9
+   0       T  F  F  F  F  F  F  F  F  F
+   1(3)    T  F  F  T  F  F  F  F  F  F
+   2(34)   T  F  F  T  F  F  F  F  F  F
+   3(4)    T  F  F  T  T  F  F  F  F  F
+   4(12)   T  F  F  T  T  F  F  F  F  F
+   5(5)    T  F  F  T  T  T  F  T  F  F
+   6(2)    T  F  T  T  T  T  F  T  T  T
+
+  dp[i][s] = dp[i-1][s] || dp[i-1][s-arr[i-1]]
+  Result: Yes ({4,5}=9)`,
+    complexity: {"time":"O(n*target)","space":"O(target)"},
     sheet: "Striver A2Z",
-    solution_code: "vector<vector<int>> dp(n,vector<int>(m)); int mx=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++){if(i==0||j==0)dp[i][j]=mat[i][j];else if(mat[i][j])dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});else dp[i][j]=0;mx=max(mx,dp[i][j]);}cout<<mx;",
+    solution_code: "vector<bool> dp(target+1); dp[0]=1; for(int x:arr)for(int s=target;s>=x;s--)if(dp[s-x])dp[s]=1; cout<<(dp[target]?\"Yes\":\"No\");",
   },
+  {
+    id: "unbounded-knapsack",
   {
     id: "house-robber",
     title: "House Robber",
