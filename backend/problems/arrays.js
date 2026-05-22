@@ -39,5 +39,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int mx=arr[0],mn=arr[0];\nfor(int i=1;i<n;i++){\n  if(arr[i]>mx) mx=arr[i];\n  if(arr[i]<mn) mn=arr[i];\n}\ncout << mx << \" \" << mn;",
+  },
+  {
+    id: "kth-largest",
+    title: "Kth Largest Element in Array",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Find the kth largest element in an unsorted array.",
+    constraints: "1 <= n <= 10^5, 1 <= k <= n",
+    examples: [
+      {"input":"6\n3 2 1 5 6 4\n2","output":"5","explanation":"Sorted: [1,2,3,4,5,6], 2nd largest = 5"}
+    ],
+    test_cases: [
+      {"input":"6\n3 2 1 5 6 4\n2","expected":"5"},
+      {"input":"5\n7 2 9 1 8\n3","expected":"7"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, k;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n\n  // find kth largest\n\n  return 0;\n}",
+    approach: "Use min-heap of size k. For each element, push to heap; if heap size exceeds k, pop smallest. Root is kth largest.",
+    complexity: {"time":"O(n log k)","space":"O(k)"},
+    sheet: "Striver A2Z",
+    solution_code: "priority_queue<int,vector<int>,greater<int>> pq;\nfor(int x:arr){\n  pq.push(x);\n  if(pq.size()>k) pq.pop();\n}\ncout << pq.top();",
   }
 ]
