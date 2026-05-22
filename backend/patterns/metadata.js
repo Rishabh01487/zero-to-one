@@ -28,5 +28,15 @@ export default [
     difficulty: "Intermediate",
     icon: "<->",
     order: 3,
+  },
+  {
+    id: "two-pointers",
+    name: "Two Pointers",
+    description: "Use two pointers to traverse data in one pass instead of nested loops. Classic for sorted arrays and linked lists.",
+    when_to_use: "Sorted arrays, palindrome checking, removing duplicates, finding pairs that satisfy conditions.",
+    techniques: ["Opposite Direction","Same Direction (Fast/Slow)","Sliding Window variant","Collision Pointers"],
+    difficulty: "Beginner to Intermediate",
+    icon: "<-",
+    order: 4,
   }
 ]
