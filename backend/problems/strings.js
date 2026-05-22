@@ -199,5 +199,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int val[256]={0}; val['I']=1;val['V']=5;val['X']=10;val['L']=50;val['C']=100;val['D']=500;val['M']=1000; int res=0; for(int i=0;i<s.size();i++){if(i+1<s.size()&&val[s[i]]<val[s[i+1]])res-=val[s[i]];else res+=val[s[i]];}cout<<res;",
+  },
+  {
+    id: "encode-decode",
+    title: "String Compression (Run-Length)",
+    category: "strings",
+    difficulty: "medium",
+    description: "Run-length encode a string: aabbbcc -> a2b3c2.",
+    constraints: "1 <= |s| <= 10^4",
+    examples: [
+      {"input":"aabbbcccc","output":"a2b3c4"}
+    ],
+    test_cases: [
+      {"input":"aabbbcccc","expected":"a2b3c4"},
+      {"input":"abc","expected":"a1b1c1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // count consecutive chars\n\n  cout << encoded << endl;\n  return 0;\n}",
+    approach: "Count consecutive characters. Append char and count to result.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Love Babbar 450",
+    solution_code: "string r; int cnt=1; for(int i=1;i<=s.size();i++){if(i<s.size()&&s[i]==s[i-1])cnt++;else{r+=s[i-1]+to_string(cnt);cnt=1;}}cout<<r;",
   }
 ]
