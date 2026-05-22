@@ -37,8 +37,10 @@ export default [
     sheet: "Striver A2Z",
     techniques: ["matrix"],
     solution_code: "bool firstRow = false, firstCol = false;\nfor (int i=0; i<n; i++) for (int j=0; j<m; j++) if (mat[i][j]==0) { if (i==0) firstRow=true; if (j==0) firstCol=true; mat[i][0]=0; mat[0][j]=0; }\nfor (int i=1; i<n; i++) for (int j=1; j<m; j++) if (mat[i][0]==0 || mat[0][j]==0) mat[i][j]=0;\nif (firstRow) for (int j=0; j<m; j++) mat[0][j]=0;\nif (firstCol) for (int i=0; i<n; i++) mat[i][0]=0;",
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[200][200];\n  for (int i=0; i<n; i++) for (int j=0; j<m; j++) cin >> mat[i][j];\n  // set zeroes\n  for (int i=0; i<n; i++) { for (int j=0; j<m; j++) cout << mat[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
+  },
   {
-    id: "rotate-image",
+    id: "rotate-matrix",
     title: "Rotate Image (90 degrees)",
     category: "matrix",
     difficulty: "medium",
@@ -50,14 +52,15 @@ export default [
     test_cases: [
       {"input":"3\n1 2 3\n4 5 6\n7 8 9","expected":"7 4 1\n8 5 2\n9 6 3"}
     ],
-    approach: "Transpose the matrix (swap across diagonal), then reverse each row. Both operations are in-place.",
+    approach: "Transpose then reverse each row.\n\nDiagram:\n```\nOriginal:    Transpose:    Reverse each row:\n1 2 3       1 4 7         7 4 1\n4 5 6   →   2 5 8    →    8 5 2\n7 8 9       3 6 9         9 6 3\n\nTranspose: swap mat[i][j] with mat[j][i]\n  (0,1)→(1,0): 2↔4, (0,2)→(2,0): 3↔7, (1,2)→(2,1): 6↔8\n\nReverse each row:\n  Row 0: [1,4,7] → [7,4,1]\n  Row 1: [2,5,8] → [8,5,2]\n  Row 2: [3,6,9] → [9,6,3]\n```\n\nTime O(n²), Space O(1).",
     complexity: {"time":"O(n²)","space":"O(1)"},
     sheet: "Striver A2Z",
+    techniques: ["matrix"],
     solution_code: "for (int i=0; i<n; i++) for (int j=i; j<n; j++) swap(mat[i][j], mat[j][i]);\nfor (int i=0; i<n; i++) for (int j=0; j<n/2; j++) swap(mat[i][j], mat[i][n-1-j]);",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int mat[100][100];\n  for (int i=0; i<n; i++) for (int j=0; j<n; j++) cin >> mat[i][j];\n  // rotate\n  for (int i=0; i<n; i++) { for (int j=0; j<n; j++) cout << mat[i][j] << \" \"; cout << endl; }\n  return 0;\n}",
   },
   {
-    id: "search-2d-matrix",
+    id: "search-matrix-2d",
     title: "Search in a 2D Matrix",
     category: "matrix",
     difficulty: "medium",
@@ -69,12 +72,9 @@ export default [
     test_cases: [
       {"input":"3 4\n1 3 5 7\n10 11 16 20\n23 30 34 60\n3","expected":"Yes"}
     ],
-    approach: "Start from top-right corner. If current > target, move left. If current < target, move down. O(n+m).",
+    approach: "Staircase search from top-right corner.\n\nDiagram:\n```\nMatrix:\n  1   3   5   7\n 10  11  16  20\n 23  30  34  60\n\nSearch target=3:\n  (0,3)=7 > 3 → col-- (move left)\n  (0,2)=5 > 3 → col--\n  (0,1)=3 == 3 → found ✓\n\nSearch target=34:\n  (0,3)=7 < 34 → row++ (move down)\n  (1,3)=20 < 34 → row++\n  (2,3)=60 > 34 → col--\n  (2,2)=34 == 34 → found ✓\n```\n\nTime O(n+m), Space O(1).",
     complexity: {"time":"O(n + m)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "int i = 0, j = m-1;\nwhile (i < n && j >= 0) {\n  if (mat[i][j] == target) { cout << \"Yes\"; return 0; }\n  if (mat[i][j] > target) j--;\n  else i++;\n}",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int mat[100][100];\n  for (int i=0; i<n; i++) for (int j=0; j<m; j++) cin >> mat[i][j];\n  int target; cin >> target;\n  // staircase search\n  return 0;\n}",
-  },
   {
     id: "maximal-rectangle",
     title: "Maximal Rectangle of 1s",
