@@ -77,6 +77,10 @@ export default [
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint diameter = 0;\nint height(TreeNode* root) {\n  if (!root) return 0;\n  int lh = height(root->left);\n  int rh = height(root->right);\n  diameter = max(diameter, lh + rh);\n  return 1 + max(lh, rh);\n}\n\nint main() {\n  int n; cin >> n;\n  if (n == 0) { cout << 0; return 0; }\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  height(nodes[0]);\n  cout << diameter << endl;\n  return 0;\n}",
     approach: "Diameter of Binary Tree computes the longest path (edges) between any two nodes. Use post-order DFS returning height while tracking max(lh + rh) globally.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nHeights: h(4)=1, h(5)=1 -> candidate thru 2 = 1+1=2, h(2)=2\nh(6)=1, h(7)=1 -> candidate thru 3 = 1+1=2, h(3)=2\ncandidate thru 1 = 2+2=4, global max = 4\n\nPath: 4-2-1-3-7 (4 edges)\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int dia=0; function<int(TreeNode*)> h=[&](TreeNode* r){if(!r)return 0;int l=h(r->left),rh=h(r->right);dia=max(dia,l+rh);return 1+max(l,rh);}; h(root); cout<<dia;",
+    techniques: ["tree-dfs", "recursion"]
+  },
   {
     id: "balanced-tree",
     title: "Check Balanced Binary Tree",
@@ -88,13 +92,15 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7","output":"Yes"}
     ],
     test_cases: [
-      {"input":"7\n1 2 3 4 5 6 7","expected":"Yes"}
+      {"input":"7\n1 2 3 4 5 6 7","expected":"Yes"},
+      {"input":"4\n1 2 -1 3","expected":"No"}
     ],
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint check(TreeNode* root) {\n  if (!root) return 0;\n  int l = check(root->left);\n  if (l == -1) return -1;\n  int r = check(root->right);\n  if (r == -1) return -1;\n  if (abs(l - r) > 1) return -1;\n  return 1 + max(l, r);\n}\n\nint main() {\n  int n; cin >> n;\n  if (n == 0) { cout << \"Yes\"; return 0; }\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cout << (check(nodes[0]) != -1 ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "DFS: compute height. If left/right differ by >1 at any node, tree is unbalanced. Return -1 as sentinel.",
+    approach: "Check Balanced Binary Tree verifies height difference between left and right subtrees of every node is <= 1. Bottom-up DFS returns height or -1 (unbalanced).\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nHeights: 4(1), 5(1), 6(1), 7(1) -> leaves\n2: l=1,r=1 diff=0 ok -> h=2\n3: l=1,r=1 diff=0 ok -> h=2\n1: l=2,r=2 diff=0 ok -> h=3\nResult: Yes (balanced)\n\nUnbalanced example:\n    1\n   /\n  2\n /\n3\ncheck(3)=1, check(2): l=1,r=0 diff=1 ok -> h=2\ncheck(1): l=2,r=0 diff=2 > 1 -> returns -1\nResult: No\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "function<int(TreeNode*)> ch=[&](TreeNode* r){if(!r)return 0;int l=ch(r->left);if(l==-1)return -1;int rh=ch(r->right);if(rh==-1)return -1;if(abs(l-rh)>1)return -1;return 1+max(l,rh);}; cout<<(ch(root)!=-1?\"Yes\":\"No\");",
+    techniques: ["tree-dfs", "recursion"]
   },
   {
     id: "lca-tree",
@@ -110,12 +116,6 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7\n4 5","expected":"2"},
       {"input":"7\n1 2 3 4 5 6 7\n4 6","expected":"1"}
     ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nTreeNode* lca(TreeNode* root, int p, int q) {\n  if (!root || root->val == p || root->val == q) return root;\n  auto* l = lca(root->left, p, q);\n  auto* r = lca(root->right, p, q);\n  if (l && r) return root;\n  return l ? l : r;\n}\n\nint main() {\n  int n, p, q; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cin >> p >> q;\n  TreeNode* ans = lca(nodes[0], p, q);\n  cout << (ans ? ans->val : -1) << endl;\n  return 0;\n}",
-    approach: "Recursive: if root matches p or q, return root. Get LCA from left and right. If both non-null, root is LCA.",
-    complexity: {"time":"O(n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "function<TreeNode*(TreeNode*)> l=[&](TreeNode* r){if(!r||r->val==p||r->val==q)return r;auto* lf=l(r->left),*ri=l(r->right);if(lf&&ri)return r;return lf?lf:ri;}; auto* a=l(root);cout<<(a?a->val:-1);",
-  },
   {
     id: "right-view",
     title: "Right Side View of Binary Tree",
