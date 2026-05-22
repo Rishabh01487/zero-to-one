@@ -38,5 +38,25 @@ export default [
     complexity: {"time":"O(n*amount)","space":"O(amount)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(amount+1,amount+1); dp[0]=0; for(int a=1;a<=amount;a++)for(int c:coins)if(c<=a)dp[a]=min(dp[a],dp[a-c]+1); cout<<(dp[amount]>amount?-1:dp[amount]);",
+  },
+  {
+    id: "longest-inc-subseq",
+    title: "Longest Increasing Subsequence",
+    category: "dp",
+    difficulty: "medium",
+    description: "Find the length of the longest strictly increasing subsequence.",
+    constraints: "1 <= n <= 2500",
+    examples: [
+      {"input":"8\n10 9 2 5 3 7 101 18","output":"4","explanation":"LIS: [2,3,7,101]"}
+    ],
+    test_cases: [
+      {"input":"8\n10 9 2 5 3 7 101 18","expected":"4"},
+      {"input":"6\n0 1 0 3 2 3","expected":"4"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n\n  // DP[i] = 1 + max(DP[j]) for j < i and arr[j] < arr[i]\n\n  cout << maxLen << endl;\n  return 0;\n}",
+    approach: "DP: dp[i]=1+LIS ending at i. For each j<i, if arr[j]<arr[i], dp[i]=max(dp[i],dp[j]+1).",
+    complexity: {"time":"O(n²)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dp(n,1); int mx=1; for(int i=0;i<n;i++){for(int j=0;j<i;j++)if(arr[j]<arr[i])dp[i]=max(dp[i],dp[j]+1);mx=max(mx,dp[i]);}cout<<mx;",
   }
 ]
