@@ -76,44 +76,44 @@ Diagram:
 Step 1: Sort by value/weight ratio descending
   Sorted: Item1(6.0), Item2(5.0), Item3(4.0)
 
-  {
-    id: "min-platforms",
-    title: "Minimum Platforms Required",
-    category: "greedy",
-    difficulty: "medium",
-    description: "Find min platforms needed at a railway station.",
-    constraints: "1 <= n <= 10^5",
-    examples: [
-      {"input":"6\n900 940 950 1100 1500 1800\n910 1200 1120 1130 1900 2000","output":"3"}
-    ],
-    test_cases: [
-      {"input":"6\n900 940 950 1100 1500 1800\n910 1200 1120 1130 1900 2000","expected":"3"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n], dep[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  for (int i = 0; i < n; i++) cin >> dep[i];\n\n  sort(arr, arr+n);\n  sort(dep, dep+n);\n\n  int plat = 1, maxPlat = 1, i = 1, j = 0;\n  while (i < n && j < n) {\n    if (arr[i] <= dep[j]) { plat++; i++; }\n    else { plat--; j++; }\n    maxPlat = max(maxPlat, plat);\n  }\n\n  cout << maxPlat << endl;\n  return 0;\n}",
-    approach: "Sort arrivals and departions separately. Two-pointer: if arr <= dep, platform++; else platform--.",
+Step 2: Take greedily until capacity fills
+  Pick Item1 (entire): value=60, remaining cap=40
+  Pick Item2 (entire): value=100, remaining cap=20
+  Pick Item3 (fractional 20/30=2/3): value=120*20/30=80, remaining cap=0
+
+  Visual fill:
+  |---Item1 (10/10)---|---Item2 (20/20)---|---Item3 (20/30)---|
+  |<------- capacity 50 ------------------->|
+
+  Total = 60 + 100 + 80 = 240.0
+
+The greedy choice of highest ratio per unit weight is optimal because
+any unit of capacity is best filled with the highest-ratio item available.
+This holds because items are divisible (fractional).`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "sort(arr,arr+n);sort(dep,dep+n); int plat=1,maxP=1,i=1,j=0; while(i<n&&j<n){if(arr[i]<=dep[j]){plat++;i++;}else{plat--;j++;}maxP=max(maxP,plat);}cout<<maxP;",
+    solution_code: "sort(items,items+n,[](auto& a,auto& b){return a.value*b.weight>b.value*a.weight;}); double profit=0; for(int i=0;i<n&&W>0;i++){int take=min(items[i].weight,W);profit+=take*items[i].value/items[i].weight;W-=take;}cout<<fixed<<setprecision(2)<<profit;",
+    techniques: ["greedy"]
   },
   {
-    id: "huffman",
-    title: "Huffman Coding",
+    id: "n-meetings",
+    title: "N Meetings in One Room",
     category: "greedy",
-    difficulty: "hard",
-    description: "Build Huffman tree and print codes.",
-    constraints: "1 <= n <= 10^3",
+    difficulty: "easy",
+    description: "Schedule maximum meetings in one room.",
+    constraints: "1 <= n <= 10^5",
     examples: [
-      {"input":"6\na 5\nb 9\nc 12\nd 13\ne 16\nf 45","output":"f:0 c:100 d:101 a:1100 b:1101 e:111"}
+      {"input":"6\n1 3 0 5 8 5\n2 4 6 7 9 9","output":"1 2 4 5"}
     ],
     test_cases: [
-      {"input":"6\na 5\nb 9\nc 12\nd 13\ne 16\nf 45","expected":"f:0 c:100 d:101 a:1100 b:1101 e:111"}
+      {"input":"6\n1 3 0 5 8 5\n2 4 6 7 9 9","expected":"1 2 4 5"}
     ],
-    solution_template: "#include <iostream>\n#include <queue>\n#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nstruct Node {\n  char ch;\n  int freq;\n  Node *left, *right;\n  Node(char c, int f) : ch(c), freq(f), left(nullptr), right(nullptr) {}\n};\n\nstruct Compare {\n  bool operator()(Node* a, Node* b) { return a->freq > b->freq; }\n};\n\nvoid encode(Node* root, string code, unordered_map<char,string>& codes) {\n  if (!root) return;\n  if (!root->left && !root->right) { codes[root->ch] = code; }\n  encode(root->left, code + \"0\", codes);\n  encode(root->right, code + \"1\", codes);\n}\n\nint main() {\n  int n; cin >> n;\n  char ch; int freq;\n  priority_queue<Node*, vector<Node*>, Compare> pq;\n  for (int i = 0; i < n; i++) { cin >> ch >> freq; pq.push(new Node(ch, freq)); }\n\n  while (pq.size() > 1) {\n    Node *l = pq.top(); pq.pop();\n    Node *r = pq.top(); pq.pop();\n    Node *p = new Node('$', l->freq + r->freq);\n    p->left = l; p->right = r;\n    pq.push(p);\n  }\n\n  unordered_map<char,string> codes;\n  encode(pq.top(), \"\", codes);\n  for (auto& [c, code] : codes) cout << c << \":\" << code << \" \";\n  return 0;\n}",
-    approach: "Build min-heap of nodes. Extract two smallest, merge with sum weight, push back. Repeat until one node remains.",
-    complexity: {"time":"O(n log n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "// Build min-heap of nodes. While size > 1: extract min2, create parent = sum, insert. Last node is root.",
-  },
+    solution_template: "#include <iostream>\n#include <algorithm>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int start[n], end[n];\n  for (int i = 0; i < n; i++) cin >> start[i];\n  for (int i = 0; i < n; i++) cin >> end[i];\n\n  vector<pair<int,int>> meet(n);\n  for (int i = 0; i < n; i++) meet[i] = {end[i], start[i]};\n  sort(meet.begin(), meet.end());\n\n  int lastEnd = -1;\n  for (int i = 0; i < n; i++) {\n    if (meet[i].second > lastEnd) {\n      cout << i+1 << \" \";\n      lastEnd = meet[i].first;\n    }\n  }\n  return 0;\n}",
+    approach: `N Meetings - Greedy Step-by-Step:
+
+Meetings: (start, end) arrays given
+  start = [1, 3, 0, 5, 8, 5]
+  end   = [2, 4, 6, 7, 9, 9]
   {
     id: "gas-station",
     title: "Gas Station (Circular Tour)",
