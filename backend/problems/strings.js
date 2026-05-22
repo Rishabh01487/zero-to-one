@@ -39,23 +39,11 @@ export default [
     description: "Check if two strings are anagrams of each other.",
     constraints: "1 <= |s|,|t| <= 10^5",
     examples: [{"input":"anagram nagaram","output":"Yes"}],
-  {
-    id: "anagram",
-    title: "Valid Anagram",
-    category: "strings",
-    difficulty: "easy",
-    description: "Check if two strings are anagrams of each other.",
-    constraints: "1 <= |s|,|t| <= 10^5",
-    examples: [
-      {"input":"anagram nagaram","output":"Yes"}
-    ],
-    test_cases: [
-      {"input":"anagram nagaram","expected":"Yes"},
-      {"input":"cat rat","expected":"No"}
-    ],
+    test_cases: [{"input":"anagram nagaram","expected":"Yes"},{"input":"cat rat","expected":"No"}],
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  string s, t;\n  cin >> s >> t;\n\n  // character count\n\n  cout << (isAnagram ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
-    approach: "Count char frequencies. If all counts match, strings are anagrams.",
+    approach: "An anagram is formed by rearranging the letters of one word to form another, meaning both strings must contain identical characters with identical frequencies. A brute-force method would sort both strings and compare them lexicographically, which costs O(n log n) time and O(n) space for the sorted copies. The optimal approach leverages the constraint that input strings consist only of lowercase English letters, allowing us to use a fixed-size frequency array of 26 integers initialized to zero. First, iterate through the first string and increment the count at index (c - 'a') for each character c, mapping 'a' to index 0, 'b' to index 1, and so on. Next, iterate through the second string and decrement the corresponding count for each character. Finally, check all 26 entries in the frequency array. If every entry is exactly zero, the strings have identical character frequencies and are anagrams; otherwise they are not. For 'anagram' and 'nagaram', each letter's increments and decrements balance perfectly to zero. For 'cat' and 'rat', after processing, the count for 'c' will be 1 and for 'r' will be -1, indicating they are not anagrams. Edge cases include strings of different lengths, which can never be anagrams and should return false immediately without further processing. Time complexity is O(n) for the two linear passes, and space complexity is O(1) because the frequency array occupies constant memory regardless of input size.\n\nDiagram:\n```\nvalid-anagram:\n  s = \"anagram\", t = \"nagaram\"\n  freq array [26] initialized to 0\n\n  Pass 1 (count s):\n    a→1 n→1 a→2 g→1 r→1 a→3 m→1\n  Pass 2 (decrement t):\n    n→0 a→2 g→0 a→1 r→0 a→0 m→0\n  Final check:\n    all 26 entries = 0 → anagram ✓\n```",
     complexity: {"time":"O(n)","space":"O(1)"},
+    techniques: ["prefix-sum"],
     sheet: "Love Babbar 450",
     solution_code: "int cnt[26]={0}; for(char c:s)cnt[c-'a']++; for(char c:t)cnt[c-'a']--; for(int i=0;i<26;i++)if(cnt[i]!=0){cout<<\"No\";return 0;}cout<<\"Yes\";",
   },
@@ -66,18 +54,30 @@ export default [
     difficulty: "easy",
     description: "Find the first non-repeating character in a string.",
     constraints: "1 <= |s| <= 10^5",
-    examples: [
-      {"input":"geeksforgeeks","output":"f"}
-    ],
-    test_cases: [
-      {"input":"geeksforgeeks","expected":"f"},
-      {"input":"aabbcc","expected":"-"}
-    ],
+    examples: [{"input":"geeksforgeeks","output":"f"}],
+    test_cases: [{"input":"geeksforgeeks","expected":"f"},{"input":"aabbcc","expected":"-"}],
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // frequency array\n\n  cout << result << endl;\n  return 0;\n}",
-    approach: "Count frequencies in first pass. Second pass finds first char with count 1.",
+    approach: "We need to find the first character in a string that does not repeat anywhere else in the entire string, returning a sentinel like '-' if every character repeats. A naive approach would take each character and scan the rest of the string to check for a duplicate, which leads to O(n^2) time. The optimal approach uses two linear passes with a frequency map. In the first pass, iterate through the string and record the frequency of every character in a hash map or an integer array of size 256 covering the full ASCII range. This pass counts how many times each character appears across the entire string. In the second pass, iterate through the string again in the original order, and for each character consult its frequency count from the map. The very first character whose frequency is exactly 1 is the first non-repeating character and should be returned immediately. If the second pass completes without finding any character with count exactly 1, return the sentinel '-'. For 'geeksforgeeks', the first pass builds frequencies: g appears 2 times, e appears 4 times, k appears 2 times, s appears 2 times, f appears 1 time, o appears 1 time, r appears 1 time. In the second pass, g (count 2) is skipped, e (count 4) is skipped, e is skipped again, k (count 2) is skipped, s (count 2) is skipped, and then f (count 1) is found and returned. Edge cases include an empty string returning '-', and strings like 'aabbcc' where all characters repeat, also returning '-'. Time complexity is O(n) for the two combined passes, and space is O(1) since the frequency array has a fixed size of 256.\n\nDiagram:\n```\nfirst-non-repeating:\n  s = \"geeksforgeeks\"\n\n  Pass 1 - Frequency:\n    g:2  e:4  k:2  s:2  f:1  o:1  r:1\n\n  Pass 2 - Scan in order:\n    g (2) → skip\n    e (4) → skip\n    e (4) → skip\n    k (2) → skip\n    s (2) → skip\n    f (1) → FOUND! Return 'f'\n\n  Result: 'f'\n```",
     complexity: {"time":"O(n)","space":"O(1)"},
+    techniques: ["prefix-sum"],
     sheet: "Love Babbar 450",
     solution_code: "int cnt[256]={0}; for(char c:s)cnt[c]++; for(char c:s)if(cnt[c]==1){cout<<c;return 0;}cout<<'-';",
+  },
+  {
+    id: "longest-substr-no-repeat",
+    title: "Longest Substring Without Repeating Characters",
+    category: "strings",
+    difficulty: "medium",
+    description: "Find the length of the longest substring without repeating characters.",
+    constraints: "1 <= |s| <= 10^5",
+    examples: [{"input":"abcabcbb","output":"3","explanation":"abc"}],
+    test_cases: [{"input":"abcabcbb","expected":"3"},{"input":"bbbbb","expected":"1"},{"input":"pwwkew","expected":"3"}],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // sliding window + last index map\n\n  cout << maxLen << endl;\n  return 0;\n}",
+    approach: "The goal is to find the maximum length of a contiguous substring that contains no repeating characters. A brute-force approach would generate every possible substring and check each for uniqueness, resulting in O(n^3) or O(n^2) time, which is infeasible for n up to 10^5. The optimal approach employs a sliding window maintained by two pointers (left and right) combined with a hash map that stores the most recent index at which each character was seen. Start with both left and right at 0, and a variable maxLen initialized to 0. Expand the right pointer one position at a time, adding the character at that position to the window. Before adding, check whether the current character has been seen before by looking up its last index in the map. If it has been seen and its last occurrence is at or after the left pointer, a duplicate exists inside the current window, so move the left pointer to one position right of the previous occurrence, effectively removing the duplicate from the window. Update the last seen index of the current character to the current right position. At each step, compute the current window length as right minus left plus one, and update maxLen if this is larger. For 'abcabcbb', the window grows to 'abc' length 3, then at right=3 encountering 'a', the previous 'a' was at index 0 which is at left=0, so left moves to 1; the window becomes 'bca', still length 3. This pattern continues, yielding a maximum of 3. For 'bbbbb', each new 'b' causes left to jump to the previous position plus one, so the window never exceeds length 1. Edge cases include an empty string returning 0, and strings with all unique characters where the window simply grows to the full string length. Time complexity is O(n) because each character is processed at most twice (once when right expands past it and once when left moves past it), and space is O(1) for a fixed-size map of 256 ASCII characters.\n\nDiagram:\n```\nlongest-substring-no-repeat:\n  s = \"abcabcbb\"\n  Step 1: [a]          l=0,r=0  len=1  max=1\n  Step 2: [a b]        l=0,r=1  len=2  max=2\n  Step 3: [a b c]      l=0,r=2  len=3  max=3\n  Step 4: a[b c a]     l=1,r=3  len=3  (prev 'a' at 0, move l→1)\n  Step 5: ab[c a b]    l=2,r=4  len=3  (prev 'b' at 1, move l→2)\n  Step 6: abc[a b c]   l=3,r=5  len=3  (prev 'c' at 2, move l→3)\n  Step 7: abca[b c b]  l=4,r=6  'b' at l=4 → len=2\n  Step 8: abcab[c b b] l=5,r=7  'c' at l=5 → len=2\n  Max length = 3\n```",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    techniques: ["sliding-window"],
+    sheet: "Striver A2Z",
+    solution_code: "int last[256]; memset(last,-1,sizeof(last)); int l=0,mx=0; for(int r=0;r<s.size();r++){if(last[s[r]]>=l)l=last[s[r]]+1;last[s[r]]=r;mx=max(mx,r-l+1);}cout<<mx;",
   },
   {
     id: "longest-substr-no-repeat",
