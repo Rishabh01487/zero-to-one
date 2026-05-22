@@ -981,4 +981,4 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "queue<TreeNode*> q; q.push(root); int sum=0; while(!q.empty()){int sz=q.size();sum=0;for(int i=0;i<sz;i++){auto* f=q.front();q.pop();sum+=f->val;if(f->left)q.push(f->left);if(f->right)q.push(f->right);}} cout<<sum;",
   },
-]
+];
