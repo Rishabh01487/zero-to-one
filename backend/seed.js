@@ -6,6 +6,23 @@ import sortingLessons from './lessons/sorting.js';
 import linkedListLessons from './lessons/linkedlist.js';
 import treeLessons from './lessons/trees.js';
 import advancedLessons from './lessons/advanced.js';
+import arrayProblems from './problems/arrays.js';
+import stringProblems from './problems/strings.js';
+import linkedListProblems from './problems/linkedlist.js';
+import treeProblems from './problems/trees.js';
+import stackQueueProblems from './problems/stacksqueues.js';
+import dpProblems from './problems/dp.js';
+import recursionProblems from './problems/recursion.js';
+import graphProblems from './problems/graphs.js';
+import binarySearchProblems from './problems/binarysearch.js';
+import heapProblems from './problems/heaps.js';
+import greedyProblems from './problems/greedy.js';
+import sortingProblems from './problems/sorting.js';
+import slidingWindowProblems from './problems/slidingwindow.js';
+import twoPointerProblems from './problems/twopointers.js';
+import bitManipulationProblems from './problems/bitmanipulation.js';
+import mathsProblems from './problems/maths.js';
+import matrixProblems from './problems/matrix.js';
 
 const lessons = [
   {
@@ -310,14 +327,34 @@ export function seedDatabase() {
   console.log(`Seeded ${allLessons.length} lessons`);
 
   // Seed problems
-  for (const problem of problems) {
+  const allProblems = [
+    ...problems,
+    ...arrayProblems,
+    ...stringProblems,
+    ...linkedListProblems,
+    ...treeProblems,
+    ...stackQueueProblems,
+    ...dpProblems,
+    ...recursionProblems,
+    ...graphProblems,
+    ...binarySearchProblems,
+    ...heapProblems,
+    ...greedyProblems,
+    ...sortingProblems,
+    ...slidingWindowProblems,
+    ...twoPointerProblems,
+    ...bitManipulationProblems,
+    ...mathsProblems,
+    ...matrixProblems,
+  ];
+  for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
       ...problem,
       examples: JSON.stringify(problem.examples),
       test_cases: JSON.stringify(problem.test_cases)
     });
   }
-  console.log(`Seeded ${problems.length} problems`);
+  console.log(`Seeded ${allProblems.length} problems`);
 
   console.log('Database seeded successfully!');
   return { lessons: allLessons.length, problems: problems.length };
