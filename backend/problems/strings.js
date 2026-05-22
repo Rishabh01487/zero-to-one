@@ -277,5 +277,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Love Babbar 450",
     solution_code: "string t=s+'#'+string(s.rbegin(),s.rend()); int lps[t.size()]={0}; for(int i=1;i<t.size();i++){int j=lps[i-1];while(j>0&&t[i]!=t[j])j=lps[j-1];if(t[i]==t[j])j++;lps[i]=j;}cout<<s.size()-lps[t.size()-1];",
+  },
+  {
+    id: "wildcard-match",
+    title: "Wildcard Pattern Matching",
+    category: "strings",
+    difficulty: "hard",
+    description: "Match string with wildcards: ? matches single char, * matches any sequence.",
+    constraints: "1 <= |s|,|p| <= 2000",
+    examples: [
+      {"input":"aa a*","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"aa a*","expected":"Yes"},
+      {"input":"cb ?a","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s, p;\n  cin >> s >> p;\n\n  // 2D DP\n\n  cout << (match ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "2D DP: dp[i][j] = match s[0..i] with p[0..j]. Handle ?, and * as empty/single/multiple.",
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
+    solution_code: "int n=s.size(),m=p.size(); vector<vector<bool>> dp(n+1,vector<bool>(m+1)); dp[0][0]=1; for(int j=1;j<=m;j++)if(p[j-1]=='*')dp[0][j]=dp[0][j-1]; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(p[j-1]=='*')dp[i][j]=dp[i-1][j]||dp[i][j-1];else if(p[j-1]=='?'||s[i-1]==p[j-1])dp[i][j]=dp[i-1][j-1];} cout<<(dp[n][m]?\"Yes\":\"No\");",
   }
 ]
