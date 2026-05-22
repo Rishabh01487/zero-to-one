@@ -75,25 +75,25 @@ i=1 (-1), continue:
   [-4, -1, -1, 0, 1, 2]
        i      ↑   ↑
           left=0 right=1
+  sum = 0+1 = 1 → record [-1,0,1]; skip duplicates
+
+Edge cases: no triplets, all zeros, large negatives, all same element.`,
+    complexity: {"time":"O(n²)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "sort(nums, nums+n);\nfor (int i = 0; i < n-2; i++) {\n  if (i > 0 && nums[i] == nums[i-1]) continue;\n  int j = i+1, k = n-1;\n  while (j < k) {\n    int sum = nums[i] + nums[j] + nums[k];\n    if (sum == 0) { /* record triplet */ j++; k--; while (j < k && nums[j]==nums[j-1]) j++; while (j < k && nums[k]==nums[k+1]) k--; }\n    else if (sum < 0) j++;\n    else k--;\n  }\n}",
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sort + two pointers\n  return 0;\n}",
+    techniques: ["two-pointers"],
+  },
   {
-    id: "four-sum",
-    title: "4Sum",
+    id: "container-water",
+    title: "Container With Most Water",
     category: "two-pointers",
     difficulty: "medium",
-    description: "Find all unique quadruplets summing to target.",
-    constraints: "1 <= n <= 200",
+    description: "Find max water container formed by two vertical lines.",
+    constraints: "2 <= n <= 10^5",
     examples: [
-      {"input":"6\n1 0 -1 0 -2 2\n0","output":"-2 -1 1 2\n-2 0 0 2\n-1 0 0 1"}
+      {"input":"9\n1 8 6 2 5 4 8 3 7","output":"49"}
     ],
-    test_cases: [
-      {"input":"6\n1 0 -1 0 -2 2\n0","expected":"-2 -1 1 2\n-2 0 0 2\n-1 0 0 1"}
-    ],
-    approach: "Sort array. Fix i and j, then use two pointers for the remaining two. Skip duplicates at each level.",
-    complexity: {"time":"O(n³)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "sort(nums, nums+n);\nfor (int i = 0; i < n-3; i++) {\n  if (i > 0 && nums[i] == nums[i-1]) continue;\n  for (int j = i+1; j < n-2; j++) {\n    if (j > i+1 && nums[j] == nums[j-1]) continue;\n    int k = j+1, l = n-1;\n    while (k < l) {\n      long long sum = (long long)nums[i]+nums[j]+nums[k]+nums[l];\n      if (sum == target) { /* record */ k++; l--; while (k<l && nums[k]==nums[k-1]) k++; while (k<l && nums[l]==nums[l+1]) l--; }\n      else if (sum < target) k++;\n      else l--;\n    }\n  }\n}",
-    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n  // sort + 2 nested loops + 2 pointers\n  return 0;\n}",
-  }
     test_cases: [
       {"input":"9\n1 8 6 2 5 4 8 3 7","expected":"49"}
     ],
