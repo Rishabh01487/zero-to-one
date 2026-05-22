@@ -79,47 +79,47 @@ Diagram:
             ^        ^        ^
            arr[2]=7<8 -> lo=3
 
-  {
-    id: "sqrt-binsearch",
-    title: "Square Root (Binary Search)",
-    category: "binary-search",
-    difficulty: "easy",
-    description: "Find integer square root of x using binary search.",
-    constraints: "1 <= x <= 10^9",
-    examples: [
-      {"input":"8","output":"2"},
-      {"input":"16","output":"4"}
-    ],
-    test_cases: [
-      {"input":"8","expected":"2"},
-      {"input":"16","expected":"4"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int x; cin >> x;\n  if (x < 2) { cout << x << endl; return 0; }\n\n  int lo = 1, hi = x / 2, ans = 0;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if ((long long)mid * mid <= x) { ans = mid; lo = mid + 1; }\n    else hi = mid - 1;\n  }\n  cout << ans << endl;\n  return 0;\n}",
-    approach: "Binary search 1..x/2. If mid*mid <= x, record answer and search right. Otherwise search left.",
-    complexity: {"time":"O(log x)","space":"O(1)"},
+  Step 2: [5, 7, 7, 8, 8, 10]
+                       ^  ^  ^
+           arr[4]=8==8, ans=4, lo=5
+
+  Step 3: [5, 7, 7, 8, 8, 10]
+                             ^
+                            lo=hi=5
+           arr[5]=10>8 -> hi=4, exit, ans=4
+
+Brute force O(n) scans left for first and right for last. For first occurrence, when match found store ans and move hi=mid-1. For last occurrence, store ans and move lo=mid+1.`,
+    complexity: {"time":"O(log n)","space":"O(1)"},
     sheet: "Striver A2Z",
-    solution_code: "int lo=1,hi=x/2,ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if((long long)m*m<=x){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
+    solution_code: "int lo=0,hi=n-1,first=-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){first=m;hi=m-1;}else if(arr[m]<target)lo=m+1;else hi=m-1;} lo=0;hi=n-1;int last=-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){last=m;lo=m+1;}else if(arr[m]<target)lo=m+1;else hi=m-1;}cout<<first<<\" \"<<last;",
+    techniques: ["binary-search"],
   },
   {
-    id: "median-two-sorted",
-    title: "Median of Two Sorted Arrays",
+    id: "search-rotated",
+    title: "Search in Rotated Sorted Array",
     category: "binary-search",
-    difficulty: "hard",
-    description: "Find median of two sorted arrays in O(log(min(n,m))).",
-    constraints: "1 <= n,m <= 1000",
+    difficulty: "medium",
+    description: "Search for target in a rotated sorted array.",
+    constraints: "1 <= n <= 10^5",
     examples: [
-      {"input":"2\n1 3\n2\n2","output":"2.00000"}
+      {"input":"7\n4 5 6 7 0 1 2\n0","output":"4"}
     ],
     test_cases: [
-      {"input":"2\n1 3\n2\n2","expected":"2.00000"},
-      {"input":"2\n1 2\n2\n3 4","expected":"2.50000"}
+      {"input":"7\n4 5 6 7 0 1 2\n0","expected":"4"},
+      {"input":"7\n4 5 6 7 0 1 2\n3","expected":"-1"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n;\n  int a[n]; for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m;\n  int b[m]; for (int i = 0; i < m; i++) cin >> b[i];\n\n  // binary search on smaller array\n\n  return 0;\n}",
-    approach: "Binary search on smaller array. Partition both such that left half has n+1/2 elements. Check crossover condition.",
-    complexity: {"time":"O(log min(n,m))","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "if(n>m)swap(n,m),swap(a,b); int lo=0,hi=n; while(lo<=hi){int p1=lo+(hi-lo)/2,p2=(n+m+1)/2-p1;int l1=(p1?INT_MIN:p1-1);int r1=(p1==n?INT_MAX:a[p1]);int l2=(p2?INT_MIN:b[p2-1]);int r2=(p2==m?INT_MAX:b[p2]);if(l1<=r2&&l2<=r1){if((n+m)%2)cout<<max(l1,l2);else cout<<(max(l1,l2)+min(r1,r2))/2.0;return 0;}if(l1>r2)hi=p1-1;else lo=p1+1;}",
-  },
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n\n  int lo = 0, hi = n-1;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if (arr[mid] == target) { cout << mid << endl; return 0; }\n    if (arr[lo] <= arr[mid]) {\n      if (target >= arr[lo] && target < arr[mid]) hi = mid - 1;\n      else lo = mid + 1;\n    } else {\n      if (target > arr[mid] && target <= arr[hi]) lo = mid + 1;\n      else hi = mid - 1;\n    }\n  }\n  cout << -1 << endl;\n  return 0;\n}",
+    approach: `Binary search with sorted-half detection for rotated arrays.
+
+Diagram:
+
+  arr = [4, 5, 6, 7, 0, 1, 2], target = 0
+
+  Step 1: [4, 5, 6, 7, 0, 1, 2]
+            ^        ^         ^
+           lo=0     mid=3     hi=6
+           left sorted [4..7], target 0 not in [4,7)
+           -> lo=4
   {
     id: "aggressive-cows",
     title: "Aggressive Cows (Binary Search)",
