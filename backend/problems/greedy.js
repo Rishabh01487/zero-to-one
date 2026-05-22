@@ -113,5 +113,24 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "// Build min-heap of nodes. While size > 1: extract min2, create parent = sum, insert. Last node is root.",
+  },
+  {
+    id: "gas-station",
+    title: "Gas Station (Circular Tour)",
+    category: "greedy",
+    difficulty: "medium",
+    description: "Find starting station to complete circular tour.",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"4\n4 6 7 4\n6 5 3 5","output":"1","explanation":"Start at index 1"}
+    ],
+    test_cases: [
+      {"input":"4\n4 6 7 4\n6 5 3 5","expected":"1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int gas[n], cost[n];\n  for (int i = 0; i < n; i++) cin >> gas[i];\n  for (int i = 0; i < n; i++) cin >> cost[i];\n\n  int total = 0, cur = 0, start = 0;\n  for (int i = 0; i < n; i++) {\n    total += gas[i] - cost[i];\n    cur += gas[i] - cost[i];\n    if (cur < 0) { start = i + 1; cur = 0; }\n  }\n\n  cout << (total >= 0 ? start : -1) << endl;\n  return 0;\n}",
+    approach: "Greedy: track total and current surplus. If cur < 0, reset start to next station. If total >= 0, start is valid.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int total = 0, cur = 0, start = 0; for (int i = 0; i < n; i++) { total += gas[i] - cost[i]; cur += gas[i] - cost[i]; if (cur < 0) { start = i + 1; cur = 0; } } cout << (total >= 0 ? start : -1) << endl;",
   }
 ]
