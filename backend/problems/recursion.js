@@ -93,5 +93,24 @@ export default [
     sheet: "Striver A2Z",
     solution_code: "// for i from start to n: push, recurse with i+1, pop",
     solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nvoid comb(int n, int k, int start, vector<int>& cur, vector<vector<int>>& ans) {\n  if ((int)cur.size() == k) { ans.push_back(cur); return; }\n  for (int i = start; i <= n; i++) {\n    cur.push_back(i);\n    comb(n, k, i+1, cur, ans);\n    cur.pop_back();\n  }\n}\n\nint main() {\n  int n, k; cin >> n >> k;\n  vector<vector<int>> ans;\n  vector<int> cur;\n  comb(n, k, 1, cur, ans);\n  for (auto& v : ans) {\n    for (int x : v) cout << x << \" \";\n    cout << endl;\n  }\n  return 0;\n}",
+  },
+  {
+    id: "subset-generation",
+    title: "Subsets (Power Set)",
+    category: "recursion",
+    difficulty: "medium",
+    description: "Generate all subsets of a set of distinct integers.",
+    constraints: "1 <= n <= 12",
+    examples: [
+      {"input":"3\n1 2 3","output":"\n1\n1 2\n1 2 3\n1 3\n2\n2 3\n3"}
+    ],
+    test_cases: [
+      {"input":"3\n1 2 3","expected":"\n1\n1 2\n1 2 3\n1 3\n2\n2 3\n3"}
+    ],
+    approach: "Pick or skip each element: include arr[idx] and recurse, then exclude and recurse.",
+    complexity: {"time":"O(2^n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// push, rec(idx+1), pop, rec(idx+1)",
+    solution_template: "#include <iostream>\n#include <vector>\n#include <algorithm>\nusing namespace std;\n\nvoid gen(vector<int>& arr, int idx, vector<int>& cur, vector<vector<int>>& ans) {\n  if (idx == (int)arr.size()) { ans.push_back(cur); return; }\n  cur.push_back(arr[idx]);\n  gen(arr, idx+1, cur, ans);\n  cur.pop_back();\n  gen(arr, idx+1, cur, ans);\n}\n\nint main() {\n  int n; cin >> n;\n  vector<int> arr(n);\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  sort(arr.begin(), arr.end());\n  vector<vector<int>> ans;\n  vector<int> cur;\n  gen(arr, 0, cur, ans);\n  for (auto& v : ans) {\n    for (int x : v) cout << x << \" \";\n    cout << endl;\n  }\n  return 0;\n}",
   }
 ]
