@@ -36,5 +36,25 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<bool> vis(n); function<void(int)> dfs=[&](int u){vis[u]=1;cout<<u<<\" \";for(int v:g[u])if(!vis[v])dfs(v);}; dfs(0);",
+  },
+  {
+    id: "cycle-undirected",
+    title: "Detect Cycle in Undirected Graph",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Check if undirected graph contains a cycle.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"5 6\n0 1\n0 2\n1 3\n1 4\n2 4\n3 4","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"5 6\n0 1\n0 2\n1 3\n1 4\n2 4\n3 4","expected":"Yes"},
+      {"input":"3 2\n0 1\n1 2","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nbool dfs(vector<vector<int>>& g, vector<bool>& vis, int u, int parent) {\n  vis[u] = true;\n  for (int v : g[u]) {\n    if (!vis[v]) { if (dfs(g, vis, v, u)) return true; }\n    else if (v != parent) return true;\n  }\n  return false;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); g[v].push_back(u); }\n  vector<bool> vis(n, false);\n  bool cycle = false;\n  for (int i = 0; i < n; i++) if (!vis[i] && dfs(g, vis, i, -1)) { cycle = true; break; }\n  cout << (cycle ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "DFS with parent tracking. If a neighbor is visited and is not parent, cycle exists.",
+    complexity: {"time":"O(V+E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<bool> vis(n); function<bool(int,int)> dfs=[&](int u,int p){vis[u]=1;for(int v:g[u]){if(!vis[v]){if(dfs(v,u))return 1;}else if(v!=p)return 1;}return 0;}; bool cycle=0; for(int i=0;i<n;i++)if(!vis[i]&&dfs(i,-1))cycle=1; cout<<(cycle?\"Yes\":\"No\");",
   }
 ]
