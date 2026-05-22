@@ -75,25 +75,25 @@ longest-substring-k-distinct:
     ],
     test_cases: [
       {"input":"ADOBECODEBANC\nABC","expected":"BANC"}
-  {
-    id: "longest-repeating-replacement",
-    title: "Longest Repeating Character Replacement",
-    category: "sliding-window",
-    difficulty: "medium",
-    description: "Find longest substring containing same letter after at most k replacements.",
-    constraints: "1 <= |s| <= 10^5, 1 <= k <= 10^5",
-    examples: [
-      {"input":"AABABBA\n1","output":"4","explanation":"Replace one B with A -> \"AAAA\" or \"AAAB\""}
     ],
-    test_cases: [
-      {"input":"AABABBA\n1","expected":"4"}
-    ],
-    approach: "Sliding window tracking max frequency of any char in window. Valid window when windowLen - maxFreq <= k. Expand right, shrink if invalid.",
+    approach: `This problem asks for the smallest contiguous substring of s that contains all characters of t (including duplicates). The brute force generates every substring of s (O(n^2)) and checks whether it contains all characters of t using frequency counting, yielding O(n^3) worst-case -- far too slow. The optimal solution uses a sliding window with two frequency arrays (or hashmaps). We first build a 'need' map from t, counting how many of each character are required, and a 'needCnt' tracking how many unique characters must be satisfied. Two pointers, left and right, define the current window. The right pointer expands the window, updating the 'have' map. When the count of a character in 'have' matches its requirement in 'need', we increment haveCnt. Once haveCnt equals needCnt, the window contains all required characters -- we then try to minimize it. We shrink from the left while the window remains valid: before removing left, we record the window length if it beats the current minimum. When shrinking causes a character's count in 'have' to fall below what 'need' requires, we decrement haveCnt and the window becomes invalid, resuming expansion from the right.
+
+Diagram:
+min-window-substr:
+  s = "ADOBECODEBANC", t = "ABC"
+  need = {A:1, B:1, C:1}, needCnt = 3
+
+  Expand [0..5]: "ADOBEC"     have={A:1,D:1,O:1,B:1,E:1,C:1} haveCnt=3  minLen=6
+  Shrink  [1..5]: "DOBEC"     have={D:1,O:1,B:1,E:1,C:1}    haveCnt=2 (lost A)
+  Expand [1..9]: "DOBECODEBA" have={D:1,O:2,B:2,E:2,C:1,A:1} haveCnt=3  minLen=6
+  Shrink  [4..9]: "ECODEBA"   have={E:2,C:1,O:1,D:1,B:1,A:1} haveCnt=3  len=6
+  Shrink  [5..9]: "CODEBA"    have={C:1,O:1,D:1,E:1,B:1,A:1} haveCnt=3  len=5
+  Shrink  [6..9]: "ODEBA"     have={O:1,D:1,E:1,B:1,A:1}     haveCnt=2 (lost C)
+  Expand [6..12]: "ODEBANC"   have={O:1,D:1,E:1,B:1,A:1,N:1,C:1} haveCnt=3  minLen=6
+  Shrink  [9..12]: "BANC"     have={B:1,A:1,N:1,C:1}         haveCnt=3  len=4  minLen=4
+
+  Result: "BANC"`,
     complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int freq[26] = {0}, maxFreq = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < s.size(); right++) {\n  maxFreq = max(maxFreq, ++freq[s[right]-'A']);\n  while ((right - left + 1) - maxFreq > k) {\n    freq[s[left++]-'A']--;\n    maxFreq = 0;\n    for (int i = 0; i < 26; i++) maxFreq = max(maxFreq, freq[i]);\n  }\n  maxLen = max(maxLen, right - left + 1);\n}",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; int k; cin >> s >> k;\n  // sliding window\n  return 0;\n}",
-  }
     sheet: "Striver A2Z",
     solution_code: "int need[128] = {0}, have[128] = {0}, needCnt = 0, haveCnt = 0, left = 0, minLen = INT_MAX, start = 0;\nfor (char c : t) if (need[c]++ == 0) needCnt++;\nfor (int right = 0; right < s.size(); right++) {\n  char c = s[right]; have[c]++;\n  if (have[c] == need[c]) haveCnt++;\n  while (haveCnt == needCnt) {\n    if (right - left + 1 < minLen) { minLen = right - left + 1; start = left; }\n    char lc = s[left++]; have[lc]--;\n    if (have[lc] < need[lc]) haveCnt--;\n  }\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s, t; cin >> s >> t;\n  // sliding window\n  return 0;\n}",
