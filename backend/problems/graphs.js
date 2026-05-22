@@ -114,5 +114,24 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<int> dist(n,-1); queue<int> q; q.push(s); dist[s]=0; while(!q.empty()){int u=q.front();q.pop();for(int v:g[u])if(dist[v]==-1){dist[v]=dist[u]+1;q.push(v);}} for(int i=0;i<n;i++)cout<<i<<\" \"<<dist[i]<<endl;",
+  },
+  {
+    id: "dijkstra",
+    title: "Dijkstra's Shortest Path",
+    category: "graphs",
+    difficulty: "hard",
+    description: "Find shortest path distances from source in weighted graph.",
+    constraints: "1 <= n,m <= 10^5, edge weight >= 0",
+    examples: [
+      {"input":"5 6 0\n0 1 4\n0 2 2\n1 2 1\n1 3 5\n2 3 8\n2 4 10","output":"0 0\n1 3\n2 2\n3 8\n4 12"}
+    ],
+    test_cases: [
+      {"input":"5 6 0\n0 1 4\n0 2 2\n1 2 1\n1 3 5\n2 3 8\n2 4 10","expected":"0 0\n1 3\n2 2\n3 8\n4 12"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\n#include <queue>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n, m, s; cin >> n >> m >> s;\n  vector<vector<pair<int,int>>> g(n);\n  for (int i = 0; i < m; i++) { int u, v, w; cin >> u >> v >> w; g[u].push_back({v,w}); g[v].push_back({u,w}); }\n\n  vector<int> dist(n, INT_MAX);\n  priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;\n  dist[s] = 0; pq.push({0, s});\n\n  while (!pq.empty()) {\n    auto [d, u] = pq.top(); pq.pop();\n    if (d > dist[u]) continue;\n    for (auto [v, w] : g[u]) if (dist[u] + w < dist[v]) { dist[v] = dist[u] + w; pq.push({dist[v], v}); }\n  }\n\n  for (int i = 0; i < n; i++) cout << i << \" \" << dist[i] << endl;\n  return 0;\n}",
+    approach: "Priority queue (min-heap). Relax edges from the closest unvisited node.",
+    complexity: {"time":"O((V+E) log V)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> dist(n,INT_MAX); priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>> pq; dist[s]=0; pq.push({0,s}); while(!pq.empty()){auto[d,u]=pq.top();pq.pop();if(d>dist[u])continue;for(auto[v,w]:g[u])if(dist[u]+w<dist[v]){dist[v]=dist[u]+w;pq.push({dist[v],v});}}",
   }
 ]
