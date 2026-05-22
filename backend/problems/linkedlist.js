@@ -230,5 +230,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "Node* cur=head; while(cur){Node* n=new Node(cur->val);n->next=cur->next;cur->next=n;cur=n->next;} cur=head; while(cur){if(cur->random)cur->next->random=cur->random->next;cur=cur->next->next;} Node* newHead=head->next; cur=head; while(cur){Node* n=cur->next;cur->next=n->next;if(n->next)n->next=n->next->next;cur=cur->next;} return newHead;",
+  },
+  {
+    id: "reverse-k-group",
+    title: "Reverse Nodes in K-Group",
+    category: "linked-list",
+    difficulty: "hard",
+    description: "Reverse nodes in groups of k. Leftover nodes stay as-is.",
+    constraints: "1 <= n <= 10^4, 1 <= k <= n",
+    examples: [
+      {"input":"5\n1 2 3 4 5\n3","output":"3 2 1 4 5"}
+    ],
+    test_cases: [
+      {"input":"5\n1 2 3 4 5\n3","expected":"3 2 1 4 5"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node* next;\n  Node(int d) : data(d), next(nullptr) {}\n};\n\nNode* reverseKGroup(Node* head, int k) {\n  // recursive: reverse first k, recurse on rest\n}\n\nint main() {\n  int n, k, x;\n  cin >> n;\n  Node *head = nullptr, *tail = nullptr;\n  for (int i = 0; i < n; i++) { cin >> x;\n    Node* nn = new Node(x);\n    if (!head) head = tail = nn;\n    else { tail->next = nn; tail = nn; }\n  }\n  cin >> k;\n  head = reverseKGroup(head, k);\n  Node* t = head;\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: "Recursively reverse first k nodes, then recurse on remaining list.",
+    complexity: {"time":"O(n)","space":"O(n/k)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node* cur=head; int cnt=0; while(cur&&cnt<k){cur=cur->next;cnt++;} if(cnt<k)return head; Node *prev=nullptr,*curr=head; for(int i=0;i<k;i++){Node* n=curr->next;curr->next=prev;prev=curr;curr=n;} head->next=reverseKGroup(curr,k); return prev;",
   }
 ]
