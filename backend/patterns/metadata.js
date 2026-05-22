@@ -18,5 +18,15 @@ export default [
     difficulty: "Beginner to Advanced",
     icon: "Aa",
     order: 2,
+  },
+  {
+    id: "sliding-window",
+    name: "Sliding Window",
+    description: "Maintain a window over array/string that expands/contracts to satisfy constraints. Transform O(n²) brute-force into O(n).",
+    when_to_use: "Problems asking for subarray/substring with specific properties — max sum, min length, distinct characters, target sum.",
+    techniques: ["Fixed Window","Variable Window","HashMap + Window","Deque for Max/Min"],
+    difficulty: "Intermediate",
+    icon: "<->",
+    order: 3,
   }
 ]
