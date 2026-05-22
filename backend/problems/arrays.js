@@ -121,6 +121,12 @@ export default [
       {"input":"5\n1 2 4 5","expected":"3"},
       {"input":"3\n1 3","expected":"2"}
     ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  int arr[n-1];\n  for (int i = 0; i < n-1; i++) cin >> arr[i];\n\n  // find missing number using XOR\n\n  cout << missing << endl;\n  return 0;\n}",
+    approach: "This problem asks us to find the missing number from an array that contains n-1 integers taken from the range 1 to n, with each number appearing exactly once except for the missing one. A brute force approach uses a boolean visited array of size n+1, marks all present numbers, then scans to find the unmarked one. For example, with n=5 and array [1,2,4,5], the visited array would be [false, true, true, false, true, true], revealing 3 as missing. This uses O(n) extra space. The optimal approach leverages the XOR bitwise operator: any number XORed with itself yields 0, and XOR is commutative. Initialize a variable x to 0. First, XOR x with all integers from 1 to n. Then, XOR x with every element in the array. Numbers appearing in both the range and the array will be XORed twice and cancel out. Only the missing number, which appears only in the range XOR but not in the array XOR, will remain. For n=5, array=[1,2,4,5]: x = (1^2^3^4^5) ^ (1^2^4^5) = (1^1)^(2^2)^3^(4^4)^(5^5) = 0^0^3^0^0 = 3. Edge cases include n=2 with array [1] (missing=2), and large n where XOR values stay within integer bounds. The same approach works using the sum formula (n*(n+1)/2 - sum(arr)), but XOR avoids potential integer overflow. Time complexity is O(n) and space complexity is O(1).\n\nDiagram:\n  n=5, arr=[1, 2, 4, 5]\n  \n  XOR 1..5:  1 ^ 2 ^ 3 ^ 4 ^ 5 = 1\n  XOR arr:   1 ^ 2 ^ 4 ^ 5 = 2\n  Combine:   1 ^ 2 = 3\n  (Step by step: (1^1)^(2^2)^3^(4^4)^(5^5) = 0^0^3^0^0 = 3)\n  \n  Result: Missing number = 3",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int x=0;\nfor(int i=1;i<=n;i++) x^=i;\nfor(int i=0;i<n-1;i++) x^=arr[i];\ncout << x;",
+  },
   {
     id: "rotate-array",
     title: "Rotate Array by K",
@@ -128,6 +134,7 @@ export default [
     difficulty: "medium",
     description: "Rotate the array to the right by k steps.",
     constraints: "1 <= n <= 10^5, 1 <= k <= 10^5",
+    techniques: ["two-pointers"],
     examples: [
       {"input":"7\n1 2 3 4 5 6 7\n3","output":"5 6 7 1 2 3 4","explanation":"Rotate right by 3"}
     ],
@@ -135,7 +142,7 @@ export default [
       {"input":"7\n1 2 3 4 5 6 7\n3","expected":"5 6 7 1 2 3 4"}
     ],
     solution_template: "#include <iostream>\nusing namespace std;\n\nvoid reverse(int arr[], int l, int r) {\n  while (l < r) {\n    int t = arr[l]; arr[l] = arr[r]; arr[r] = t;\n    l++; r--;\n  }\n}\n\nint main() {\n  int n, k;\n  cin >> n;\n  int arr[n];\n  for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  k = k % n;\n\n  // rotate using reversal algorithm\n\n  for (int i = 0; i < n; i++) cout << arr[i] << \" \";\n  return 0;\n}",
-    approach: "Reversal algorithm: reverse entire array, then reverse first k, then reverse remaining n-k.",
+    approach: "This problem asks us to rotate an array to the right by k positions, where elements that move beyond the last index wrap around to the front. A brute force approach rotates one position at a time: save the last element, shift all other elements right by one, place the saved element at the front, and repeat k times. For example, rotating [1,2,3,4,5,6,7] right by 3 requires three full shifts, each taking O(n) time, for a total of O(n*k). When both n and k are up to 10^5, this becomes prohibitively slow. The optimal approach is the reversal algorithm. First, normalize k by taking k = k % n to handle cases where k exceeds n. Then perform three reversals in-place: reverse the entire array, reverse the first k elements, and reverse the remaining n-k elements. Each reversal swaps pairs from the outer ends inward. For [1,2,3,4,5,6,7] with k=3: reverse entire array -> [7,6,5,4,3,2,1]; reverse first 3 -> [5,6,7,4,3,2,1]; reverse remaining 4 -> [5,6,7,1,2,3,4]. The result matches the expected output. Edge cases include k=0 (array unchanged), k being a multiple of n (no net rotation), k larger than n (handled by modulo), and single-element arrays. Time complexity is O(n) since each of the three reversals takes O(n) time (3n total, which is O(n)), and space complexity is O(1) because all reversals are done in-place.\n\nDiagram:\n  Array: [1, 2, 3, 4, 5, 6, 7], k=3\n  \n  Step 1: Reverse entire array\n    [1,2,3,4,5,6,7] → [7,6,5,4,3,2,1]\n  \n  Step 2: Reverse first k=3 elements\n    [7,6,5,4,3,2,1] → [5,6,7,4,3,2,1]\n  \n  Step 3: Reverse remaining n-k=4 elements\n    [5,6,7,4,3,2,1] → [5,6,7,1,2,3,4]\n  \n  Result: [5, 6, 7, 1, 2, 3, 4]",
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "k%=n;\nreverse(arr,arr+n);\nreverse(arr,arr+k);\nreverse(arr+k,arr+n);",
@@ -147,18 +154,11 @@ export default [
     difficulty: "medium",
     description: "Given two sorted arrays, merge them into one sorted array.",
     constraints: "1 <= n,m <= 10^5",
+    techniques: ["two-pointers"],
     examples: [
       {"input":"4\n1 3 5 7\n4\n2 4 6 8","output":"1 2 3 4 5 6 7 8","explanation":"Two-pointer merge"}
     ],
     test_cases: [
-      {"input":"4\n1 3 5 7\n4\n2 4 6 8","expected":"1 2 3 4 5 6 7 8"}
-    ],
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m;\n  cin >> n;\n  int a[n];\n  for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m;\n  int b[m];\n  for (int i = 0; i < m; i++) cin >> b[i];\n\n  // two-pointer merge\n\n  return 0;\n}",
-    approach: "Two-pointer merge: compare elements from both arrays, place smaller one into result.",
-    complexity: {"time":"O(n+m)","space":"O(n+m)"},
-    sheet: "Love Babbar 450",
-    solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m){\n  res[k++]=(a[i]<b[j])?a[i++]:b[j++];\n}\nwhile(i<n) res[k++]=a[i++];\nwhile(j<m) res[k++]=b[j++];",
-  },
   {
     id: "two-sum",
     title: "Two Sum",
