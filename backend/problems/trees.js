@@ -76,5 +76,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int dia=0; function<int(TreeNode*)> h=[&](TreeNode* r){if(!r)return 0;int l=h(r->left),rh=h(r->right);dia=max(dia,l+rh);return 1+max(l,rh);}; h(root); cout<<dia;",
+  },
+  {
+    id: "balanced-tree",
+    title: "Check Balanced Binary Tree",
+    category: "trees",
+    difficulty: "medium",
+    description: "Check if tree is height-balanced (difference <= 1 at every node).",
+    constraints: "1 <= n <= 10^5",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"Yes"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint check(TreeNode* root) {\n  if (!root) return 0;\n  int l = check(root->left);\n  if (l == -1) return -1;\n  int r = check(root->right);\n  if (r == -1) return -1;\n  if (abs(l - r) > 1) return -1;\n  return 1 + max(l, r);\n}\n\nint main() {\n  int n; cin >> n;\n  if (n == 0) { cout << \"Yes\"; return 0; }\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  cout << (check(nodes[0]) != -1 ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "DFS: compute height. If left/right differ by >1 at any node, tree is unbalanced. Return -1 as sentinel.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "function<int(TreeNode*)> ch=[&](TreeNode* r){if(!r)return 0;int l=ch(r->left);if(l==-1)return -1;int rh=ch(r->right);if(rh==-1)return -1;if(abs(l-rh)>1)return -1;return 1+max(l,rh);}; cout<<(ch(root)!=-1?\"Yes\":\"No\");",
   }
 ]
