@@ -78,5 +78,26 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int cnt[256]={0}; for(char c:s)cnt[c]++; for(char c:s)if(cnt[c]==1){cout<<c;return 0;}cout<<'-';",
+  },
+  {
+    id: "longest-substr-no-repeat",
+    title: "Longest Substring Without Repeating Characters",
+    category: "strings",
+    difficulty: "medium",
+    description: "Find the length of the longest substring without repeating characters.",
+    constraints: "1 <= |s| <= 10^5",
+    examples: [
+      {"input":"abcabcbb","output":"3","explanation":"abc"}
+    ],
+    test_cases: [
+      {"input":"abcabcbb","expected":"3"},
+      {"input":"bbbbb","expected":"1"},
+      {"input":"pwwkew","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // sliding window + last index map\n\n  cout << maxLen << endl;\n  return 0;\n}",
+    approach: "Sliding window with last index map. Expand right, shrink left when duplicate found.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "int last[256]; memset(last,-1,sizeof(last)); int l=0,mx=0; for(int r=0;r<s.size();r++){if(last[s[r]]>=l)l=last[s[r]]+1;last[s[r]]=r;mx=max(mx,r-l+1);}cout<<mx;",
   }
 ]
