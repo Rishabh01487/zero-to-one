@@ -231,6 +231,21 @@ export default [
     title: "Serialize and Deserialize Binary Tree",
     category: "trees",
     difficulty: "hard",
+    description: "Serialize a binary tree to string and deserialize back.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7","output":"1 2 3 4 5 6 7"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"1 2 3 4 5 6 7"}
+    ],
+    solution_template: "#include <iostream>\n#include <sstream>\n#include <queue>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nstring serialize(TreeNode* root) {\n  // BFS, use \"#\" for null\n}\n\nTreeNode* deserialize(const string& data) {\n  // reconstruct from BFS order\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  string s = serialize(nodes[0]);\n  TreeNode* root2 = deserialize(s);\n  queue<TreeNode*> q; q.push(root2);\n  while (!q.empty()) {\n    auto* f = q.front(); q.pop();\n    if (f) { cout << f->val << \" \"; q.push(f->left); q.push(f->right); }\n  }\n  return 0;\n}",
+    approach: "Serialize uses BFS level-order, writing node values or '#' for nulls. Deserialize tokenizes the string and uses a queue to rebuild left and right children.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nSerialize BFS: \"1 2 3 4 5 6 7\"\n\nDeserialize:\nRead 1 -> root, queue=[1]\nDequeue 1, next tokens: 2(left), 3(right), queue=[2,3]\nDequeue 2, next tokens: 4(left), 5(right), queue=[3,4,5]\nDequeue 3, next tokens: 6(left), 7(right), queue=[4,5,6,7]\n... tree reconstructed\n\nTime O(n), Space O(n).",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "string serialize(TreeNode* r){if(!r)return\"\";ostringstream o;queue<TreeNode*> q;q.push(r);while(!q.empty()){auto* f=q.front();q.pop();if(f){o<<f->val<<\" \";q.push(f->left);q.push(f->right);}else o<<\"# \";}return o.str();}\nTreeNode* des(const string& d){if(d.empty())return nullptr;istringstream in(d);string v;in>>v;auto* r=new TreeNode(stoi(v));queue<TreeNode*> q;q.push(r);while(!q.empty()){auto* f=q.front();q.pop();if(in>>v&&v!=\"#\"){f->left=new TreeNode(stoi(v));q.push(f->left);}if(in>>v&&v!=\"#\"){f->right=new TreeNode(stoi(v));q.push(f->right);}}return r;}",
+    techniques: ["tree-bfs", "tree-dfs"]
+  },
   {
     id: "max-path-sum",
     title: "Binary Tree Maximum Path Sum",
@@ -239,36 +254,21 @@ export default [
     description: "Find maximum path sum (path can start/end at any node).",
     constraints: "1 <= n <= 10^4, -10^3 <= val <= 10^3",
     examples: [
-      {"input":"7\n1 2 3 4 5 6 7","output":"18","explanation":"4+2+1+3+7 = 17 or 5+2+1+3+7 = 18"}
+      {"input":"7\n1 2 3 4 5 6 7","output":"18","explanation":"5+2+1+3+7 = 18"}
     ],
     test_cases: [
       {"input":"7\n1 2 3 4 5 6 7","expected":"18"}
     ],
     solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint maxSum = INT_MIN;\n\nint maxGain(TreeNode* root) {\n  if (!root) return 0;\n  int l = max(0, maxGain(root->left));\n  int r = max(0, maxGain(root->right));\n  maxSum = max(maxSum, l + r + root->val);\n  return root->val + max(l, r);\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  maxGain(nodes[0]);\n  cout << maxSum << endl;\n  return 0;\n}",
-    approach: "DFS: maxGain = val + max(0, leftGain) + max(0, rightGain). Update global max.",
+    approach: "Maximum Path Sum finds the max sum of any path between any two nodes. Post-order DFS returns max gain (node + max(0, leftGain, rightGain)) while updating global max with l+r+node.val.\n\nDiagram:\n       1\n      / \\\n     2   3\n    / \\ / \\\n   4  5 6  7\n\nGains:\n4: l=0,r=0 -> candidate=4, gain=4\n5: l=0,r=0 -> candidate=5, gain=5\n2: l=4,r=5 -> candidate=2+4+5=11, gain=2+5=7\n6: l=0,r=0 -> candidate=6, gain=6\n7: l=0,r=0 -> candidate=7, gain=7\n3: l=6,r=7 -> candidate=3+6+7=16, gain=3+7=10\n1: l=7,r=10 -> candidate=1+7+10=18, gain=1+10=11\n\nGlobal max: 18 (path 5-2-1-3-7)\n\nTime O(n), Space O(n).",
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int mx=INT_MIN; function<int(TreeNode*)> g=[&](TreeNode* r){if(!r)return 0;int l=max(0,g(r->left)),ri=max(0,g(r->right));mx=max(mx,l+ri+r->val);return r->val+max(l,ri);}; g(root); cout<<mx;",
+    techniques: ["tree-dfs", "recursion"]
   },
   {
     id: "construct-bt",
     title: "Construct Binary Tree from Preorder and Inorder",
-    category: "trees",
-    difficulty: "hard",
-    description: "Build a binary tree from preorder and inorder traversals.",
-    constraints: "1 <= n <= 10^4",
-    examples: [
-      {"input":"6\n3 9 20 15 7\n9 3 15 20 7","output":"3 9 20 15 7","explanation":"Preorder + Inorder => unique tree"}
-    ],
-    test_cases: [
-      {"input":"6\n3 9 20 15 7\n9 3 15 20 7","expected":"3 9 20 15 7"}
-    ],
-    solution_template: "#include <iostream>\n#include <unordered_map>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nint preIdx = 0;\nunordered_map<int,int> inMap;\n\nTreeNode* build(int preorder[], int inorder[], int l, int r) {\n  if (l > r) return nullptr;\n  int val = preorder[preIdx++];\n  TreeNode* root = new TreeNode(val);\n  int mid = inMap[val];\n  root->left = build(preorder, inorder, l, mid-1);\n  root->right = build(preorder, inorder, mid+1, r);\n  return root;\n}\n\nvoid pre(TreeNode* r) { if (!r) return; cout << r->val << \" \"; pre(r->left); pre(r->right); }\n\nint main() {\n  int n; cin >> n;\n  int preorder[n], inorder[n];\n  for (int i = 0; i < n; i++) cin >> preorder[i];\n  for (int i = 0; i < n; i++) { cin >> inorder[i]; inMap[inorder[i]] = i; }\n  TreeNode* root = build(preorder, inorder, 0, n-1);\n  pre(root);\n  return 0;\n}",
-    approach: "Preorder gives root. Find root position in inorder. Left subtree = elements before root in inorder.",
-    complexity: {"time":"O(n log n)","space":"O(n)"},
-    sheet: "Striver A2Z",
-    solution_code: "// recursively: root = preorder[preIdx++], mid = index in inorder via hashmap, build left(inorder[l..mid-1]) and right(inorder[mid+1..r])",
-  }
     category: "trees",
     difficulty: "hard",
     description: "Build a binary tree from preorder and inorder traversals.",
