@@ -196,46 +196,46 @@ Diagram:
     approach: `DP: for each length i, try all cuts j, dp[i]=max(price[j]+dp[i-j-1]).
 
 Diagram:
-  {
-    id: "palindrome-part",
-    title: "Palindrome Partitioning (Min Cuts)",
-    category: "dp",
-    difficulty: "hard",
-    description: "Find minimum cuts needed to partition string into all palindromes.",
-    constraints: "1 <= |s| <= 2000",
-    examples: [
-      {"input":"aab","output":"1","explanation":"aa | b = 1 cut"}
-    ],
-    test_cases: [
-      {"input":"aab","expected":"1"},
-      {"input":"abcbdd","expected":"2"}
-    ],
-    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  string s; cin >> s;\n  int n = s.size();\n  bool pal[n][n] = {false};\n  int dp[n];\n\n  // O(n^2): mark palindromes + DP for cuts\n\n  cout << dp[n-1] << endl;\n  return 0;\n}",
-    approach: "Precompute palindrome table. DP: dp[i]=min cuts for prefix i. If s[j..i] palindrome, dp[i]=min(dp[i],dp[j-1]+1).",
-    complexity: {"time":"O(n²)","space":"O(n²)"},
+  price=[1,5,8,9,10,17,17,20], n=8
+
+  length i  0   1   2   3   4   5   6   7   8
+  price[i]  1   5   8   9  10  17  17  20
+  dp[i]     0   1   5   8  10  13  17  18  22
+
+  dp[i] = max(price[j] + dp[i-j-1]) for 0 <= j < i
+  Result: 22 (cut 2+6 = 5+17)`,
+    complexity: {"time":"O(n²)","space":"O(n)"},
     sheet: "Love Babbar 450",
-    solution_code: "vector<vector<bool>> pal(n,vector<bool>(n,0)); for(int i=0;i<n;i++)pal[i][i]=1; for(int len=2;len<=n;len++)for(int i=0;i+len-1<n;i++){int j=i+len-1;if(s[i]==s[j]&&(len==2||pal[i+1][j-1]))pal[i][j]=1;} vector<int> dp(n,0); for(int i=0;i<n;i++){if(pal[0][i])dp[i]=0;else{dp[i]=i;for(int j=0;j<i;j++)if(pal[j+1][i])dp[i]=min(dp[i],dp[j]+1);}}cout<<dp[n-1];",
+    solution_code: "int dp[n+1]={0}; for(int i=1;i<=n;i++)for(int j=0;j<i;j++)dp[i]=max(dp[i],price[j]+dp[i-j-1]);cout<<dp[n];",
   },
   {
-    id: "egg-drop",
-    title: "Egg Dropping Problem",
+    id: "min-path-sum",
+    title: "Minimum Path Sum in Grid",
     category: "dp",
-    difficulty: "hard",
-    description: "Find min attempts to find critical floor with k eggs and n floors.",
-    constraints: "1 <= k <= 100, 1 <= n <= 10^4",
+    difficulty: "medium",
+    description: "Find min sum path from top-left to bottom-right (only down/right).",
+    constraints: "1 <= n,m <= 200",
     examples: [
-      {"input":"2 10","output":"4"}
+      {"input":"3 3\n1 3 1\n1 5 1\n4 2 1","output":"7","explanation":"1->3->1->1->1 = 7"}
     ],
     test_cases: [
-      {"input":"2 10","expected":"4"},
-      {"input":"1 5","expected":"5"}
+      {"input":"3 3\n1 3 1\n1 5 1\n4 2 1","expected":"7"}
     ],
-    solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int k, n; cin >> k >> n;\n\n  // dp[e][f] = min(max(dp[e-1][x-1], dp[e][f-x]) + 1)\n\n  cout << dp[k][n] << endl;\n  return 0;\n}",
-    approach: "DP: dp[e][f]=min(1+max(dp[e-1][x-1],dp[e][f-x])) over all floors x. Binary search optimization possible.",
-    complexity: {"time":"O(k*n²)","space":"O(k*n)"},
-    sheet: "Love Babbar 450",
-    solution_code: "vector<vector<int>> dp(k+1,vector<int>(n+1)); for(int i=1;i<=k;i++){dp[i][0]=0;dp[i][1]=1;} for(int j=1;j<=n;j++)dp[1][j]=j; for(int i=2;i<=k;i++)for(int j=2;j<=n;j++){dp[i][j]=INT_MAX;for(int x=1;x<=j;x++)dp[i][j]=min(dp[i][j],1+max(dp[i-1][x-1],dp[i][j-x]));}cout<<dp[k][n];",
-  },
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, m; cin >> n >> m;\n  int grid[n][m];\n  for (int i = 0; i < n; i++)\n    for (int j = 0; j < m; j++)\n      cin >> grid[i][j];\n\n  // dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])\n\n  cout << dp[n-1][m-1] << endl;\n  return 0;\n}",
+    approach: `DP: first row/col are cumulative sums. For other cells, dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]).
+
+Diagram:
+  grid = [[1,3,1],[1,5,1],[4,2,1]]
+
+  Original:        DP table:
+  1   3   1        1   4   5
+  1   5   1        2   7   6
+  4   2   1        6   8   7
+
+  dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
+  Result: 7  (path: 1->3->1->1->1)`,
+    complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    sheet: "Striver A2Z",
   {
     id: "wildcard-match-dp",
     title: "Wildcard Matching (DP)",
