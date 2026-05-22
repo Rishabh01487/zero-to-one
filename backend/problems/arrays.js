@@ -139,5 +139,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "k%=n;\nreverse(arr,arr+n);\nreverse(arr,arr+k);\nreverse(arr+k,arr+n);",
+  },
+  {
+    id: "merge-sorted",
+    title: "Merge Two Sorted Arrays",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Given two sorted arrays, merge them into one sorted array.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"4\n1 3 5 7\n4\n2 4 6 8","output":"1 2 3 4 5 6 7 8","explanation":"Two-pointer merge"}
+    ],
+    test_cases: [
+      {"input":"4\n1 3 5 7\n4\n2 4 6 8","expected":"1 2 3 4 5 6 7 8"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, m;\n  cin >> n;\n  int a[n];\n  for (int i = 0; i < n; i++) cin >> a[i];\n  cin >> m;\n  int b[m];\n  for (int i = 0; i < m; i++) cin >> b[i];\n\n  // two-pointer merge\n\n  return 0;\n}",
+    approach: "Two-pointer merge: compare elements from both arrays, place smaller one into result.",
+    complexity: {"time":"O(n+m)","space":"O(n+m)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int i=0,j=0,k=0;\nwhile(i<n&&j<m){\n  res[k++]=(a[i]<b[j])?a[i++]:b[j++];\n}\nwhile(i<n) res[k++]=a[i++];\nwhile(j<m) res[k++]=b[j++];",
   }
 ]
