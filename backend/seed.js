@@ -13,6 +13,7 @@ import linkedListProblems from './problems/linkedlist.js';
 import treeProblems from './problems/trees.js';
 import stackQueueProblems from './problems/stacksqueues.js';
 import dpProblems from './problems/dp.js';
+import recursionProblems from './problems/recursion.js';
 const lessons = [
   {
     id: 'lesson-01', title: 'Hello World & Basic Syntax', category: 'basics', order_index: 1,
@@ -324,6 +325,7 @@ export function seedDatabase() {
     ...treeProblems,
     ...stackQueueProblems,
     ...dpProblems,
+    ...recursionProblems,
   ];
   for (const problem of allProblems) {
     db.upsert('problems', problem.id, {
