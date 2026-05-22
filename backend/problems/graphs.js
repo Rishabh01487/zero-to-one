@@ -56,5 +56,25 @@ export default [
     complexity: {"time":"O(V+E)","space":"O(V)"},
     sheet: "Striver A2Z",
     solution_code: "vector<bool> vis(n); function<bool(int,int)> dfs=[&](int u,int p){vis[u]=1;for(int v:g[u]){if(!vis[v]){if(dfs(v,u))return 1;}else if(v!=p)return 1;}return 0;}; bool cycle=0; for(int i=0;i<n;i++)if(!vis[i]&&dfs(i,-1))cycle=1; cout<<(cycle?\"Yes\":\"No\");",
+  },
+  {
+    id: "cycle-directed",
+    title: "Detect Cycle in Directed Graph",
+    category: "graphs",
+    difficulty: "medium",
+    description: "Check if directed graph contains a cycle.",
+    constraints: "1 <= n,m <= 10^5",
+    examples: [
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 1","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"4 4\n0 1\n1 2\n2 3\n3 1","expected":"Yes"},
+      {"input":"4 3\n0 1\n1 2\n2 3","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nbool dfs(vector<vector<int>>& g, vector<int>& state, int u) {\n  state[u] = 1;\n  for (int v : g[u]) {\n    if (state[v] == 1) return true;\n    if (state[v] == 0 && dfs(g, state, v)) return true;\n  }\n  state[u] = 2;\n  return false;\n}\n\nint main() {\n  int n, m; cin >> n >> m;\n  vector<vector<int>> g(n);\n  for (int i = 0; i < m; i++) { int u, v; cin >> u >> v; g[u].push_back(v); }\n  vector<int> state(n, 0);\n  bool cycle = false;\n  for (int i = 0; i < n; i++) if (state[i] == 0 && dfs(g, state, i)) { cycle = true; break; }\n  cout << (cycle ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "DFS with three-state tracking: 0=unvisited, 1=in current path, 2=done. If neighbor in current path, cycle.",
+    complexity: {"time":"O(V+E)","space":"O(V)"},
+    sheet: "Striver A2Z",
+    solution_code: "vector<int> state(n); function<bool(int)> dfs=[&](int u){state[u]=1;for(int v:g[u]){if(state[v]==1)return 1;if(state[v]==0&&dfs(v))return 1;}state[u]=2;return 0;}; bool cycle=0; for(int i=0;i<n;i++)if(!state[i]&&dfs(i))cycle=1; cout<<(cycle?\"Yes\":\"No\");",
   }
 ]
