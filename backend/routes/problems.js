@@ -37,7 +37,11 @@ router.post('/seed', (req, res) => {
       examples: p.examples,
       constraints: p.constraints || '',
       solution_template: p.solution_template,
-      test_cases: p.test_cases
+      test_cases: p.test_cases,
+      approach: p.approach || '',
+      complexity: p.complexity || {},
+      sheet: p.sheet || '',
+      solution_code: p.solution_code || ''
     });
   }
   res.json({ seeded: problems.length });
