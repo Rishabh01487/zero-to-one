@@ -211,5 +211,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "stack<TreeNode*> st; TreeNode* cur=root; int cnt=0; while(cur||!st.empty()){while(cur){st.push(cur);cur=cur->left;}cur=st.top();st.pop();if(++cnt==k){cout<<cur->val;return 0;}cur=cur->right;}",
+  },
+  {
+    id: "serialize-deserialize",
+    title: "Serialize and Deserialize Binary Tree",
+    category: "trees",
+    difficulty: "hard",
+    description: "Serialize a binary tree to string and deserialize back.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"7\n1 2 3 4 5 6 7","output":"1 2 3 4 5 6 7"}
+    ],
+    test_cases: [
+      {"input":"7\n1 2 3 4 5 6 7","expected":"1 2 3 4 5 6 7"}
+    ],
+    solution_template: "#include <iostream>\n#include <sstream>\n#include <queue>\nusing namespace std;\n\nstruct TreeNode {\n  int val;\n  TreeNode *left, *right;\n  TreeNode(int v) : val(v), left(nullptr), right(nullptr) {}\n};\n\nstring serialize(TreeNode* root) {\n  // BFS, use \"#\" for null\n}\n\nTreeNode* deserialize(const string& data) {\n  // reconstruct from BFS order\n}\n\nint main() {\n  int n; cin >> n;\n  int vals[n];\n  for (int i = 0; i < n; i++) cin >> vals[i];\n  TreeNode* nodes[n];\n  for (int i = 0; i < n; i++) nodes[i] = new TreeNode(vals[i]);\n  for (int i = 0; i < n; i++) {\n    if (2*i+1 < n && vals[2*i+1] != -1) nodes[i]->left = nodes[2*i+1];\n    if (2*i+2 < n && vals[2*i+2] != -1) nodes[i]->right = nodes[2*i+2];\n  }\n  string s = serialize(nodes[0]);\n  TreeNode* root2 = deserialize(s);\n  queue<TreeNode*> q; q.push(root2);\n  while (!q.empty()) {\n    auto* f = q.front(); q.pop();\n    if (f) { cout << f->val << \" \"; q.push(f->left); q.push(f->right); }\n  }\n  return 0;\n}",
+    approach: "BFS level order for serialization. Use queue to reconstruct tree from string.",
+    complexity: {"time":"O(n)","space":"O(n)"},
+    sheet: "Striver A2Z",
+    solution_code: "// serialize: queue BFS, '#' for null. deserialize: queue, build left+right from tokens.",
   }
 ]
