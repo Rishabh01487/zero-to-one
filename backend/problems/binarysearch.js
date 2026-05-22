@@ -119,5 +119,24 @@ export default [
     complexity: {"time":"O(log min(n,m))","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "if(n>m)swap(n,m),swap(a,b); int lo=0,hi=n; while(lo<=hi){int p1=lo+(hi-lo)/2,p2=(n+m+1)/2-p1;int l1=(p1?INT_MIN:p1-1);int r1=(p1==n?INT_MAX:a[p1]);int l2=(p2?INT_MIN:b[p2-1]);int r2=(p2==m?INT_MAX:b[p2]);if(l1<=r2&&l2<=r1){if((n+m)%2)cout<<max(l1,l2);else cout<<(max(l1,l2)+min(r1,r2))/2.0;return 0;}if(l1>r2)hi=p1-1;else lo=p1+1;}",
+  },
+  {
+    id: "aggressive-cows",
+    title: "Aggressive Cows (Binary Search)",
+    category: "binary-search",
+    difficulty: "medium",
+    description: "Place c cows in stalls maximizing minimum distance between them.",
+    constraints: "2 <= n <= 10^5, 2 <= c <= n",
+    examples: [
+      {"input":"5 3\n1 2 8 4 9","output":"3","explanation":"Place at 1,4,8 => min dist=3"}
+    ],
+    test_cases: [
+      {"input":"5 3\n1 2 8 4 9","expected":"3"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nbool canPlace(int stalls[], int n, int c, int dist) {\n  int cnt = 1, last = stalls[0];\n  for (int i = 1; i < n; i++)\n    if (stalls[i] - last >= dist) { cnt++; last = stalls[i]; }\n  return cnt >= c;\n}\n\nint main() {\n  int n, c; cin >> n >> c;\n  int stalls[n];\n  for (int i = 0; i < n; i++) cin >> stalls[i];\n  sort(stalls, stalls + n);\n\n  int lo = 0, hi = stalls[n-1] - stalls[0], ans = 0;\n  while (lo <= hi) {\n    int mid = lo + (hi-lo)/2;\n    if (canPlace(stalls, n, c, mid)) { ans = mid; lo = mid + 1; }\n    else hi = mid - 1;\n  }\n  cout << ans << endl;\n  return 0;\n}",
+    approach: "Binary search on answer (min distance). Check if cows can be placed with at least 'mid' distance apart.",
+    complexity: {"time":"O(n log range)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "sort(stalls,stalls+n); int lo=0,hi=stalls[n-1]-stalls[0],ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if(canPlace(stalls,n,c,m)){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
   }
 ]
