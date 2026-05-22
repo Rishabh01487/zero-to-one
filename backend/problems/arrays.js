@@ -391,5 +391,20 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int jumps=0,curEnd=0,far=0;\nfor(int i=0;i<n-1;i++){\n  far=max(far,i+arr[i]);\n  if(i==curEnd){\n    jumps++;\n    curEnd=far;\n  }\n}\ncout << jumps;",
+  },
+  {
+    id: "pascal-triangle",
+    title: "Pascal Triangle",
+    category: "arrays",
+    difficulty: "medium",
+    description: "Generate first n rows of Pascal triangle.",
+    constraints: "1 <= n <= 30",
+    examples: [
+      {"input":"5","output":"1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1","explanation":"First 5 rows"}
+    ],
+    test_cases: [
+      {"input":"5","expected":"1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n\n  // generate rows using previous row\n\n  return 0;\n}",
   }
 ]
