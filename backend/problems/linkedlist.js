@@ -211,5 +211,24 @@ export default [
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "stack<Node*> st; Node* cur=head; while(cur){if(cur->child&&cur->next)st.push(cur->next);if(cur->child)cur->next=cur->child;else if(!cur->next&&!st.empty()){cur->next=st.top();st.pop();}cur=cur->next;}",
+  },
+  {
+    id: "clone-random",
+    title: "Clone Linked List with Random Pointer",
+    category: "linked-list",
+    difficulty: "hard",
+    description: "Clone a linked list where each node has next and random pointers.",
+    constraints: "1 <= n <= 10^3",
+    examples: [
+      {"input":"4\n1 2 3 4\n-1 0 1 2","output":"1 2 3 4","explanation":"Random: 1->null, 2->1, 3->2, 4->3"}
+    ],
+    test_cases: [
+      {"input":"4\n1 2 3 4\n-1 0 1 2","expected":"1 2 3 4"}
+    ],
+    solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nstruct Node {\n  int data;\n  Node *next, *random;\n  Node(int d) : data(d), next(nullptr), random(nullptr) {}\n};\n\nint main() {\n  int n;\n  cin >> n;\n  vector<Node*> nodes(n);\n  for (int i = 0; i < n; i++) { int x; cin >> x; nodes[i] = new Node(x); }\n  for (int i = 0; i < n-1; i++) nodes[i]->next = nodes[i+1];\n  for (int i = 0; i < n; i++) {\n    int r; cin >> r;\n    if (r >= 0) nodes[i]->random = nodes[r];\n  }\n\n  // interleave clone nodes, set random, separate\n\n  Node* t = nodes[0];\n  while (t) { cout << t->data << \" \"; t = t->next; }\n  return 0;\n}",
+    approach: "Interleave clone nodes (A->A'->B->B'). Set random pointers using original->next->random = original->random->next. Separate lists.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "Node* cur=head; while(cur){Node* n=new Node(cur->val);n->next=cur->next;cur->next=n;cur=n->next;} cur=head; while(cur){if(cur->random)cur->next->random=cur->random->next;cur=cur->next->next;} Node* newHead=head->next; cur=head; while(cur){Node* n=cur->next;cur->next=n->next;if(n->next)n->next=n->next->next;cur=cur->next;} return newHead;",
   }
 ]
