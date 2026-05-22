@@ -37,44 +37,44 @@ Edge cases: no valid pair (loop exits without return), duplicates in array, targ
     sheet: "Striver A2Z",
     solution_code: "int i = 0, j = n-1;\nwhile (i < j) {\n  int sum = arr[i] + arr[j];\n  if (sum == target) { cout << i+1 << \" \" << j+1; return 0; }\n  else if (sum < target) i++;\n  else j--;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n  // two pointers\n  return 0;\n}",
+    techniques: ["two-pointers"],
+  },
   {
-    id: "container-water",
-    title: "Container With Most Water",
+    id: "three-sum",
+    title: "3Sum",
     category: "two-pointers",
     difficulty: "medium",
-    description: "Find max water container formed by two vertical lines.",
-    constraints: "2 <= n <= 10^5",
+    description: "Find all unique triplets that sum to zero.",
+    constraints: "1 <= n <= 3000",
     examples: [
-      {"input":"9\n1 8 6 2 5 4 8 3 7","output":"49"}
+      {"input":"6\n-1 0 1 2 -1 -4","output":"-1 -1 2\n-1 0 1"}
     ],
     test_cases: [
-      {"input":"9\n1 8 6 2 5 4 8 3 7","expected":"49"}
+      {"input":"6\n-1 0 1 2 -1 -4","expected":"-1 -1 2\n-1 0 1"}
     ],
-    approach: "Two pointers at ends. Area = min(height[i],height[j]) * (j-i). Move the pointer with smaller height inward. Track max area.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Striver A2Z",
-    solution_code: "int i = 0, j = n-1, maxArea = 0;\nwhile (i < j) {\n  int area = min(height[i], height[j]) * (j - i);\n  maxArea = max(maxArea, area);\n  if (height[i] < height[j]) i++;\n  else j--;\n}",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int h[n]; for (int i = 0; i < n; i++) cin >> h[i];\n  // two pointers\n  cout << maxArea << endl;\n  return 0;\n}",
-  },
-  {
-    id: "remove-duplicates",
-    title: "Remove Duplicates from Sorted Array",
-    category: "two-pointers",
-    difficulty: "easy",
-    description: "Remove duplicates in-place from sorted array, return new length.",
-    constraints: "1 <= n <= 10^5",
-    examples: [
-      {"input":"5\n1 1 2 2 3","output":"3"}
-    ],
-    test_cases: [
-      {"input":"5\n1 1 2 2 3","expected":"3"}
-    ],
-    approach: "Slow/fast pointer. Fast scans forward; when fast finds new value, copy to slow+1 and advance slow.",
-    complexity: {"time":"O(n)","space":"O(1)"},
-    sheet: "Love Babbar 450",
-    solution_code: "if (n == 0) return 0;\nint slow = 0;\nfor (int fast = 1; fast < n; fast++)\n  if (arr[fast] != arr[slow]) arr[++slow] = arr[fast];",
-    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // two pointer removal\n  return 0;\n}",
-  },
+    approach: `Sort the array. Fix i from 0 to n-3. Use left=i+1, right=n-1 to find pairs summing to -arr[i]. Skip duplicates at i, left, and right levels. Move left++ when sum < 0, right-- when sum > 0.
+
+Diagram:
+arr = [-1,0,1,2,-1,-4], target = 0
+sorted = [-4,-1,-1,0,1,2]
+
+i=0 (-4), need sum=4:
+  [-4, -1, -1, 0, 1, 2]
+   i   ↑              ↑
+      left=-1       right=2
+  sum = -1+2 = 1 < 4 → left++
+  → left=-1 sum=1 <4 → left=0 sum=2 <4 → left=1 sum=3 <4 → left=2 stop
+
+i=1 (-1), need sum=1:
+  [-4, -1, -1, 0, 1, 2]
+       i   ↑         ↑
+         left=-1  right=2
+  sum = -1+2 = 1 → record [-1,-1,2]
+
+i=1 (-1), continue:
+  [-4, -1, -1, 0, 1, 2]
+       i      ↑   ↑
+          left=0 right=1
   {
     id: "four-sum",
     title: "4Sum",
