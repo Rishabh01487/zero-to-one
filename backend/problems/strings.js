@@ -18,5 +18,25 @@ export default [
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=s.size()-1; while(i<j)swap(s[i++],s[j--]); cout<<s;",
+  },
+  {
+    id: "palindrome-string",
+    title: "Check Palindrome String",
+    category: "strings",
+    difficulty: "easy",
+    description: "Given a string, check if it is a palindrome.",
+    constraints: "1 <= |s| <= 10^5",
+    examples: [
+      {"input":"racecar","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"racecar","expected":"Yes"},
+      {"input":"hello","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s;\n  cin >> s;\n\n  // two-pointer check\n\n  cout << (isPalindrome ? \"Yes\" : \"No\") << endl;\n  return 0;\n}",
+    approach: "Two-pointer: compare characters from both ends moving inward.",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Love Babbar 450",
+    solution_code: "int i=0,j=s.size()-1; while(i<j)if(s[i++]!=s[j--]){cout<<\"No\";return 0;}cout<<\"Yes\";",
   }
 ]
