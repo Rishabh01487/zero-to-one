@@ -55,5 +55,25 @@ export default [
     complexity: {"time":"O(n log n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "sort(meetings,meetings+n,[](auto& a,auto& b){return a.end<b.end;}); int cnt=1,last=meetings[0].end; for(int i=1;i<n;i++){if(meetings[i].start>last){cnt++;last=meetings[i].end;}}cout<<cnt;",
+  },
+  {
+    id: "jump-game",
+    title: "Jump Game (Can Reach End)",
+    category: "greedy",
+    difficulty: "medium",
+    description: "Check if you can reach the last index.",
+    constraints: "1 <= n <= 10^4",
+    examples: [
+      {"input":"5\n2 3 1 1 4","output":"Yes"}
+    ],
+    test_cases: [
+      {"input":"5\n2 3 1 1 4","expected":"Yes"},
+      {"input":"5\n3 2 1 0 4","expected":"No"}
+    ],
+    solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int nums[n];\n  for (int i = 0; i < n; i++) cin >> nums[i];\n\n  int maxReach = 0;\n  for (int i = 0; i < n; i++) {\n    if (i > maxReach) { cout << \"No\" << endl; return 0; }\n    maxReach = max(maxReach, i + nums[i]);\n  }\n  cout << \"Yes\" << endl;\n  return 0;\n}",
+    approach: "Greedy: track maxReach. If i > maxReach, unreachable. Else maxReach = max(maxReach, i + nums[i]).",
+    complexity: {"time":"O(n)","space":"O(1)"},
+    sheet: "Striver A2Z",
+    solution_code: "int maxReach = 0; for (int i = 0; i < n; i++) { if (i > maxReach) { cout << \"No\" << endl; return 0; } maxReach = max(maxReach, i + nums[i]); } cout << \"Yes\" << endl;",
   }
 ]
