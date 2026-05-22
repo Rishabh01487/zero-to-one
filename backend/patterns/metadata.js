@@ -98,5 +98,15 @@ export default [
     difficulty: "Advanced",
     icon: "/\\",
     order: 10,
+  },
+  {
+    id: "dp",
+    name: "Dynamic Programming",
+    description: "Break problems into overlapping subproblems, solve each once, and store results. Optimized recursion with memoization/tabulation.",
+    when_to_use: "Optimal substructure, overlapping subproblems, counting/optimization — Fibonacci, knapsack, LCS, matrix chain.",
+    techniques: ["Memoization (Top-Down)","Tabulation (Bottom-Up)","1D/2D DP","Knapsack","LCS/LIS","DP on Trees"],
+    difficulty: "Advanced",
+    icon: "DP",
+    order: 11,
   }
 ]
