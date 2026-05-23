@@ -1,7 +1,13 @@
 import { Router } from 'express';
 import db from '../db/schema.js';
+import patterns from '../patterns/metadata.js';
 
 const router = Router();
+
+function categoryOrder(cat) {
+  const p = patterns.find(x => x.id === cat && x.type === 'broad');
+  return p ? p.order : 999;
+}
 
 router.get('/', (req, res) => {
   const { difficulty, category, technique } = req.query;
@@ -11,7 +17,9 @@ router.get('/', (req, res) => {
   if (technique) problems = problems.filter(p => p.techniques && p.techniques.includes(technique));
   problems.sort((a, b) => {
     const diffOrder = { easy: 0, medium: 1, hard: 2 };
-    return (diffOrder[a.difficulty] || 0) - (diffOrder[b.difficulty] || 0) || a.title.localeCompare(b.title);
+    return categoryOrder(a.category) - categoryOrder(b.category)
+        || (diffOrder[a.difficulty] || 0) - (diffOrder[b.difficulty] || 0)
+        || a.title.localeCompare(b.title);
   });
   res.json(problems.map(({ id, title, difficulty, category, techniques }) => ({ id, title, difficulty, category, techniques: techniques || [] })));
 });
