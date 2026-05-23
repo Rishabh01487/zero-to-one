@@ -11,7 +11,7 @@ const navItems = [
 ];
 
 const externalLinks = [
-  { href: 'https://mockmate-interview-platform-eosin.vercel.app', label: 'Mock Interview', icon: '🎤' },
+  { href: 'https://mockmate-interview-platform-phi.vercel.app', label: 'Mock Interview', icon: '🎤' },
 ];
 
 export default function Navbar({ username, onLogout }) {
