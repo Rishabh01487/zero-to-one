@@ -10,6 +10,13 @@ export default [
     difficulty: "Beginner to Advanced",
     icon: "[]",
     order: 1,
+    recognition: {
+      signals: "Problem mentions array, subarray, contiguous segment, index manipulation, in-place modification, or asks for min/max within a range. Keywords: 'subarray', 'contiguous', 'traverse', 'rotate', 'partition'.",
+      decision_flow: "1. Does the problem involve sequential data? → Arrays. 2. Is the data structure a contiguous block of elements with index-based access? → Arrays. 3. Does the problem need sorting, searching, or rearrangement of elements? → Start with arrays. 4. If elements need to be processed in order with pointers on both ends → Two Pointers. 5. If a contiguous window needs tracking → Sliding Window.",
+      example_problems: "LeetCode: Two Sum (1), Best Time to Buy/Sell Stock (121), Product of Array Except Self (238), Rotate Array (189). Codeforces: 1512C - A-B Palindrome, 1730B - Meeting on the Line. CodeChef: SUBARRAYXOR, MAXSUMSUB. HackerRank: Array Manipulation, Left Rotation, Sparse Arrays.",
+      beginner_mistakes: "Assuming O(n²) brute force is always unacceptable when O(n) exists. Off-by-one errors in boundary conditions. Forgetting to handle empty arrays. Modifying array while iterating (use copy or reverse loop). Using extra space unnecessarily when in-place O(1) approach works.",
+      alternative_patterns: "Two Pointers (sorted data), Sliding Window (contiguous subarray constraints), Prefix Sum (range sum queries), Kadane's Algorithm (max subarray sum), Binary Search (sorted/search space)"
+    },
   },
   {
     id: "two-pointers",
@@ -21,6 +28,13 @@ export default [
     difficulty: "Beginner to Intermediate",
     icon: "<-",
     order: 2,
+    recognition: {
+      signals: "Input array is sorted (ascending/descending). Problem asks to find a pair/triplet with a given sum. Keywords: 'sorted', 'pair', 'triplet', 'palindrome', 'two sum', 'three sum', 'remove duplicates', 'two-pointer', 'opposite ends'.",
+      decision_flow: "1. Is the array sorted? → Use Two Pointers. 2. Do you need to find pairs that satisfy a condition in O(n)? → Two Pointers. 3. Are you checking if a string is a palindrome? → Two Pointers from ends. 4. Do you need O(1) extra space while scanning? → Two Pointers. 5. If elements move in same direction at different speeds → Fast & Slow Pointers variant.",
+      example_problems: "LeetCode: Two Sum II (167), 3Sum (15), Container With Most Water (11), Valid Palindrome (125), Remove Duplicates (26). Codeforces: 1730A - Planets, 1660C - Get an Even String. CodeChef: TWOARR, PALINDR. HackerRank: Pairs, Triple Sum, Missing Numbers (sorted variant).",
+      beginner_mistakes: "Forgetting to sort the array first (two pointers only works on sorted data). Moving both pointers simultaneously instead of conditionally. Off-by-one in while condition (use left < right, not left <= right). Not handling duplicate values properly when counting unique pairs.",
+      alternative_patterns: "Fast & Slow Pointers (linked list cycle), Sliding Window (contiguous subarray conditions), Binary Search (when you need to find one element, not a pair), HashMap (when array is unsorted and you need pair sum)"
+    },
   },
   {
     id: "sliding-window",
@@ -32,6 +46,13 @@ export default [
     difficulty: "Intermediate",
     icon: "<->",
     order: 3,
+    recognition: {
+      signals: "Problem involves subarray or substring with constraints (size k, at most k distinct, min length satisfying condition). Keywords: 'subarray', 'substring', 'contiguous', 'window', 'consecutive', 'max sum of size k', 'longest substring without repeating', 'at most k', 'average of subarray'.",
+      decision_flow: "1. Does the problem ask about a contiguous range (subarray/substring)? → Window candidate. 2. Is the constraint about the size (fixed k) or content (sum, distinct chars)? → Fixed vs Variable window. 3. Is it asking for min/max/longest/shortest with a condition? → Variable size sliding window. 4. Can you maintain a window that grows/shrinks while tracking some property? → Sliding Window. 5. If O(n²) brute force exists, can you maintain state while sliding? → Yes, use Sliding Window.",
+      example_problems: "LeetCode: Maximum Subarray of Size K, Longest Substring Without Repeating Characters (3), Minimum Window Substring (76), Sliding Window Maximum (239), Fruit Into Baskets (904). Codeforces: 1730C - Minimum Notation. CodeChef: SUBARRAY, LONGSUB. HackerRank: The Maximum Subarray, Sherlock and Array (sliding window variant).",
+      beginner_mistakes: "Not resetting window state correctly when shrinking from left. Using O(n²) when O(n) sliding window is possible. Forgetting that sliding window only works for contiguous elements. Confusing fixed-size with variable-size window. Not handling edge cases (empty string, k > array length).",
+      alternative_patterns: "Two Pointers (sorted arrays, pair finding), Prefix Sum (range sum queries without tracking window properties), Dynamic Programming (subsequence, not contiguous), Kadane's Algorithm (max subarray sum without size constraint), Deque/Queue (sliding window maximum with monotonic queue)"
+    },
   },
   {
     id: "linked-list",
@@ -43,6 +64,13 @@ export default [
     difficulty: "Intermediate",
     icon: "->",
     order: 4,
+    recognition: {
+      signals: "Problem mentions node, linked list, pointer, next, cycle, merge two lists, reverse list. Keywords: 'linked list', 'node', 'next', 'prev', 'cycle', 'merge lists', 'reverse', 'intersection', 'middle', 'remove nth from end', 'doubly linked'.",
+      decision_flow: "1. Is data stored in nodes connected by pointers (not array indices)? → Linked List. 2. Do you need frequent insertions/deletions at arbitrary positions? → Linked List. 3. Does the problem involve operations on nodes (reverse, merge, detect cycle)? → Linked List. 4. Can the solution use slow/fast pointers? → Fast & Slow Pointers. 5. Do you need to reverse part of the list? → In-place Reversal.",
+      example_problems: "LeetCode: Reverse Linked List (206), Merge Two Sorted Lists (21), Linked List Cycle (141), Intersection of Two Linked Lists (160), Remove Nth Node From End (19). Codeforces: 1730B - Meeting on the Line (linked simulation). CodeChef: LNKED, REVLL. HackerRank: Print the Elements, Insert a Node, Get Node Value, Cycle Detection.",
+      beginner_mistakes: "Losing reference to next node before saving it (when reversing). Not handling empty list case. Forgetting to update tail's next to null. Infinite loops from improper cycle handling. Using array-like index thinking when linked lists require pointer traversal. Not using dummy node for edge cases (head changes).",
+      alternative_patterns: "Arrays (random access needed), Fast & Slow Pointers (cycle detection, middle finding), In-place Reversal (reverse sub-list), Dummy Node Technique (head modification), Recursion (recursive reversal, merging)"
+    },
   },
   {
     id: "strings",
@@ -54,6 +82,13 @@ export default [
     difficulty: "Beginner to Advanced",
     icon: "Aa",
     order: 5,
+    recognition: {
+      signals: "Input/output involves text, characters, words, sentences. Keywords: 'string', 'substring', 'palindrome', 'anagram', 'character', 'word', 'pattern', 'reverse string', 'longest common prefix', 'parentheses', 'vowel', 'consonant'.",
+      decision_flow: "1. Is the input type string/text/characters? → Strings. 2. Do you need to compare characters, find patterns, or transform text? → Strings. 3. Is character frequency/counting involved? → HashMap/Frequency Array. 4. Does substring matching need to be efficient? → KMP/Rabin-Karp/Rolling Hash. 5. Are you building a dictionary of words? → Trie.",
+      example_problems: "LeetCode: Longest Substring Without Repeating (3), Valid Anagram (242), Longest Palindromic Substring (5), Group Anagrams (49), Implement strStr (28). Codeforces: 1730C - Minimum Notation (string manipulation). CodeChef: PALIN, ANAGRAM, STRSUB. HackerRank: Super Reduced String, Caesar Cipher, Palindrome Index, Sherlock and the Valid String.",
+      beginner_mistakes: "Not accounting for uppercase/lowercase differences. Forgetting about Unicode/multi-byte characters. Using O(n²) substring extraction when O(1) slicing or pointers would work. Confusing subsequence (non-contiguous, DP) with substring (contiguous, sliding window). Ineffective character frequency counting (use array of 26 or 128, not hashmap for ASCII).",
+      alternative_patterns: "Sliding Window (substring constraints), Two Pointers (palindrome checking), Trie (prefix matching, dictionary), KMP/Rabin-Karp (pattern matching), Dynamic Programming (edit distance, LCS for non-contiguous), Recursion (generate parentheses)"
+    },
   },
   {
     id: "stack-queue",
@@ -66,6 +101,13 @@ export default [
     difficulty: "Intermediate",
     icon: "||",
     order: 6,
+    recognition: {
+      signals: "Problem involves order of processing, nested structures, expression evaluation, or BFS/DFS traversal. Keywords: 'stack', 'queue', 'LIFO', 'FIFO', 'parentheses', 'bracket', 'valid expression', 'nearest greater', 'daily temperature', 'min stack', 'queue using stacks', 'deque', 'circular buffer'.",
+      decision_flow: "1. Does the problem require last-in-first-out processing? → Stack. 2. Is it first-in-first-out processing? → Queue. 3. Do you need to evaluate expressions or check balanced parentheses? → Stack. 4. Are you looking for nearest greater/smaller element? → Monotonic Stack. 5. Is level-order or BFS required? → Queue. 6. Do you need both FIFO and LIFO, or sliding window extremes? → Deque.",
+      example_problems: "LeetCode: Valid Parentheses (20), Min Stack (155), Daily Temperatures (739), Implement Queue using Stacks (232), Sliding Window Maximum (239 - deque). Codeforces: 1730B - Queue simulation. CodeChef: PARENTHESIS, STACKOP. HackerRank: Balanced Brackets, Queue Using Two Stacks, Game of Two Stacks, Equal Stacks.",
+      beginner_mistakes: "Using stack/queue when simple variables work (e.g., tracking depth with counter, not stack). Forgetting to check if stack is empty before pop/peek. Using BFS queue for problems that need DFS (or vice versa). Confusing Deque operations (addFirst vs addLast, pollFirst vs pollLast). Not using sentinel values to avoid edge cases.",
+      alternative_patterns: "Monotonic Stack (nearest greater/smaller), Deque (sliding window min/max), Recursion (natural stack for DFS), Two Pointers (when O(1) space possible without stack), Heap/PriorityQueue (when ordering priority matters, not just LIFO/FIFO)"
+    },
   },
   {
     id: "trees",
@@ -77,6 +119,13 @@ export default [
     difficulty: "Intermediate to Advanced",
     icon: "^Y",
     order: 7,
+    recognition: {
+      signals: "Input is hierarchical, tree-shaped, or has parent-child relationships. Keywords: 'tree', 'binary tree', 'BST', 'node', 'root', 'leaf', 'depth', 'height', 'traversal', 'inorder', 'preorder', 'postorder', 'level order', 'subtree', 'path sum', 'LCA', 'ancestor', 'descendant'.",
+      decision_flow: "1. Is data organized hierarchically with parent-child relationships? → Tree. 2. Does each node have at most 2 children? → Binary Tree. 3. Is left < root < right for all nodes? → BST (Binary Search Tree). 4. Do you need to visit every node? → DFS (stack/recursion) or BFS (queue). 5. Are you searching for a value in BST? → Binary search on tree. 6. Do you need shortest path in unweighted tree? → BFS.",
+      example_problems: "LeetCode: Maximum Depth of Binary Tree (104), Invert Binary Tree (226), Validate BST (98), Lowest Common Ancestor (236), Binary Tree Level Order Traversal (102), Diameter of Binary Tree (543). Codeforces: 1730C - Tree queries. CodeChef: TREE, BSTN, LCA. HackerRank: Tree Preorder Traversal, Height of a Tree, Lowest Common Ancestor, Is This a BST.",
+      beginner_mistakes: "Not handling null/None node in recursive calls (base case). Confusing inorder (sorted for BST) with preorder/postorder. Using recursion without considering stack overflow on skewed trees (use iterative). Not updating result correctly in bottom-up recursion. Forgetting that BFS uses queue (O(n) space) and DFS uses stack (O(h) space).",
+      alternative_patterns: "Graphs (no tree structure, cycles possible), Trie (prefix tree for strings), Heap/PriorityQueue (complete binary tree for ordering), Segment Tree (range queries on arrays), Binary Search Tree (sorted data with search/insert/delete), Union-Find (disjoint sets, not hierarchical)"
+    },
   },
   {
     id: "graphs",
@@ -88,6 +137,13 @@ export default [
     difficulty: "Advanced",
     icon: "/\\",
     order: 8,
+    recognition: {
+      signals: "Input represents nodes, edges, networks, connections, or relationships. Keywords: 'graph', 'node', 'edge', 'vertex', 'connected', 'path', 'cycle', 'network', 'islands', 'adjacent', 'neighbor', 'directed', 'undirected', 'weighted', 'shortest path', 'DAG', 'topological'.",
+      decision_flow: "1. Are entities connected by relationships/edges? → Graph. 2. Do you need to visit all nodes? → BFS (shortest path, level order) or DFS (explore all paths). 3. Unweighted shortest path? → BFS. 4. Weighted shortest path? → Dijkstra (non-negative) or Bellman-Ford (negative). 5. All-pairs shortest? → Floyd-Warshall. 6. Cycle detection? → DFS with visited states or Union-Find. 7. Dependency ordering? → Topological Sort (Kahn's/DFS). 8. Connected components? → Union-Find or DFS.",
+      example_problems: "LeetCode: Number of Islands (200), Clone Graph (133), Course Schedule (207 - Topological Sort), Network Delay Time (743 - Dijkstra), Cheapest Flights (787), Pacific Atlantic Water Flow (417). Codeforces: 1730C - Graph queries. CodeChef: GRAPH, BFS, DIJKSTRA. HackerRank: Roads and Libraries, Find the Nearest Clone, BFS Shortest Reach, Dijkstra Shortest Reach.",
+      beginner_mistakes: "Confusing directed vs undirected graph storage (add one edge vs two). Infinite loops from not tracking visited nodes. Using DFS for shortest path in weighted graphs (use Dijkstra/BFS for unweighted). Stack overflow with deep recursion on large graphs. Not handling disconnected components. Forgetting edge weights when sorting in Dijkstra's PQ.",
+      alternative_patterns: "Trees (graph without cycles, simpler), Union-Find (disjoint set connectivity), Topological Sort (DAG ordering), Shortest Path (Dijkstra/Bellman-Ford/Floyd), Minimum Spanning Tree (Prim/Kruskal), Dynamic Programming (DP on DAG for longest path)"
+    },
   },
   {
     id: "dp",
@@ -99,6 +155,13 @@ export default [
     difficulty: "Advanced",
     icon: "DP",
     order: 9,
+    recognition: {
+      signals: "Problem asks for optimal (min/max) solution, counting ways, or true/false with overlapping subproblems. Keywords: 'maximum', 'minimum', 'longest', 'shortest', 'ways to', 'number of ways', 'optimal', 'maximize', 'minimize', 'knapsack', 'subsequence', 'DP', 'memoization', 'overlapping subproblems', 'optimal substructure'.",
+      decision_flow: "1. Does the problem ask for optimal value (min/max) or count ways? → DP candidate. 2. Can you break into smaller overlapping subproblems? → Yes → DP. 3. Is there a recursive solution with repeated computations? → Add memoization (top-down DP). 4. Can you build from base case upward? → Tabulation (bottom-up DP). 5. Does the current decision depend only on previous state? → 1D DP. 6. Does it depend on two parameters (e.g., index and capacity)? → 2D DP. 7. If greedy works locally → use Greedy (simpler). 8. If no overlapping subproblems → use Divide & Conquer.",
+      example_problems: "LeetCode: Climbing Stairs (70), Coin Change (322), Longest Increasing Subsequence (300), Edit Distance (72), Unique Paths (62), House Robber (198). Codeforces: 1730C - DP with strings. CodeChef: DP, KNAPSACK, LCS. HackerRank: The Coin Change Problem, Fibonacci Modified, Abbreviation, Equal, Candies, Stock Maximize (hybrid).",
+      beginner_mistakes: "Not identifying overlapping subproblems correctly (DP doesn't apply if no overlap). Using greedy when DP is required. Wrong DP dimension (1D vs 2D vs 3D). Incorrect base cases. Off-by-one in DP array indexing. Forgetting to handle large numbers with modulo. Space complexity optimization (1D instead of 2D) missed. Not initializing DP table correctly.",
+      alternative_patterns: "Greedy (local optimal = global optimal, no need for DP), Recursion (exploration without optimality, smaller state space), Divide & Conquer (non-overlapping subproblems), Graph (DP on DAG), Trees (DP on tree for subtree optimization), Bitmask DP (subset problems with small n)"
+    },
   },
   {
     id: "recursion",
@@ -110,6 +173,13 @@ export default [
     difficulty: "Intermediate",
     icon: "Rx",
     order: 10,
+    recognition: {
+      signals: "Problem can be divided into smaller versions of itself. Keywords: 'recursion', 'backtracking', 'generate all', 'permutations', 'subsets', 'combinations', 'N-Queens', 'Sudoku', 'divide and conquer', 'recursive', 'solve', 'explore all possibilities', 'exhaustive search'.",
+      decision_flow: "1. Can the problem be expressed in terms of a smaller instance of itself? → Recursion. 2. Do you need to explore ALL possibilities (generate/check every combination)? → Backtracking. 3. Are you building solutions incrementally and abandoning dead ends? → Backtracking with pruning. 4. Can you split into independent halves and combine? → Divide & Conquer. 5. Is the state space small enough to explore exhaustively? → Backtracking. 6. Do subproblems overlap and need optimal value? → Dynamic Programming is better than plain recursion.",
+      example_problems: "LeetCode: Subsets (78), Permutations (46), N-Queens (51), Generate Parentheses (22), Letter Combinations (17), Combination Sum (39), Pow(x,n) (50 - divide & conquer). Codeforces: 1730C - Combinatorial. CodeChef: RECUR, BACKTRACK. HackerRank: Recursive Digit Sum, The Power Sum, Crossword Puzzle, Password Cracker.",
+      beginner_mistakes: "Missing base case (infinite recursion). Not passing state correctly (modifying and returning instead of copy). Stack overflow on deep recursion (use iterative or increase recursion limit). For backtracking: not reverting state after recursive call (undo changes). Not pruning (exploring obviously invalid branches, wasting time). Confusing permutation vs combination vs subset recursion patterns.",
+      alternative_patterns: "Dynamic Programming (overlapping subproblems, optimal value), Divide & Conquer (non-overlapping independent halves), Iteration (when recursion depth is too large), Stack-based DFS (avoid recursion overflow), Bitmask (exhaustive subset generation for n <= 20)"
+    },
   },
   {
     id: "sorting",
@@ -121,6 +191,13 @@ export default [
     difficulty: "Beginner to Advanced",
     icon: "\\/",
     order: 11,
+    recognition: {
+      signals: "Problem asks to arrange data in order, find kth smallest/largest, or requires sorted input as preprocessing step. Keywords: 'sort', 'sorted', 'order', 'ascending', 'descending', 'merge sorted', 'kth smallest', 'kth largest', 'comparator', 'quick sort', 'merge sort', 'counting sort', 'stable sort', 'inversion count'.",
+      decision_flow: "1. Does the problem require ordered output? → Sorting algorithm. 2. Is the input small (n <= 100)? → Any O(n²) sort works (bubble/insertion/selection). 3. Is n large (n <= 10^5)? → O(n log n) sort (merge/quick/heap sort). 4. Is the range of values small? → Counting Sort (O(n+k)). 5. Is the data nearly sorted? → Insertion Sort (O(n) best case). 6. Does the problem ask for kth element but not full sort? → Quick Select (O(n) average). 7. Need to count inversions? → Merge Sort with counting.",
+      example_problems: "LeetCode: Sort Colors (75), Merge Sorted Array (88), Kth Largest Element (215), Sort an Array (912), Maximum Gap (164). Codeforces: 1730A - Planets (sorting). CodeChef: SORTING, COUNT_SORT. HackerRank: Big Sorting, Insertion Sort Advanced Analysis, Fraudulent Activity Notifications, Closest Numbers.",
+      beginner_mistakes: "Using O(n²) sort when O(n log n) is needed (timeout on large inputs). Implementing custom sort wrong (comparator should return -1/0/1). Forgetting that sort() default is lexicographic, not numeric (use compare function). Not using stable sort when relative order matters. Modifying array during sort. Using sorting when counting/selection would be O(n).",
+      alternative_patterns: "Heap/Priority Queue (kth smallest without full sort), Quick Select (kth smallest in O(n) avg), Counting Sort (small range, linear time), Binary Search (finding element in sorted array), Merge Intervals (sort by start time to merge), Comparator (custom sorting logic)"
+    },
   },
   {
     id: "binary-search",
@@ -132,6 +209,13 @@ export default [
     difficulty: "Intermediate",
     icon: "<>",
     order: 12,
+    recognition: {
+      signals: "Input is sorted OR can be sorted, or problem involves searching for a value/condition in a monotonic search space. Keywords: 'sorted', 'search', 'find', 'target', 'binary search', 'log n', 'search in rotated', 'lower bound', 'upper bound', 'first occurrence', 'last occurrence', 'closest element', 'peak element', 'search space', 'minimize maximum', 'maximize minimum', 'predicate'.",
+      decision_flow: "1. Is the array sorted? → Binary Search. 2. Can you sort the input first? → Consider Binary Search. 3. Does the problem ask for 'minimum X such that condition holds' or 'maximum X such that condition holds'? → Binary Search on Answer (predicate binary search). 4. Is the search space monotonic (if condition holds for X, it holds for all larger/smaller values)? → Binary Search on Answer. 5. Need O(log n) time? → Binary Search is the go-to. 6. Finding first/last occurrence in sorted array? → Lower/Upper Bound binary search variant.",
+      example_problems: "LeetCode: Binary Search (704), Search in Rotated Array (33), First/Last Position (34), Find Peak Element (162), Capacity To Ship Packages (1011), Split Array Largest Sum (410). Codeforces: 1730C - Binary search on answer. CodeChef: BINARY_SEARCH, FIND_PEAK. HackerRank: Ice Cream Parlor (with sort+BS), Climbing the Leaderboard, Minimum Time Required, Maximum Subarray Sum (with prefix+BS).",
+      beginner_mistakes: "Forgetting the array must be SORTED for binary search. Infinite loops from incorrect mid calculation (use mid = left + Math.floor((right-left)/2)). Off-by-one in boundary updates (need to decide if mid is inclusive or exclusive). Not checking if array is empty. Using linear search when O(log n) is possible. Wrong predicate function for binary search on answer (not monotonic).",
+      alternative_patterns: "Two Pointers (pair sum in sorted array), Binary Search Tree (dynamic sorted data), Divide & Conquer (recursive splitting), Ternary Search (unimodal function peak), Hash Map (O(1) search when exact match needed, unsorted), Interpolation Search (uniformly distributed sorted data)"
+    },
   },
   {
     id: "greedy",
@@ -143,6 +227,13 @@ export default [
     difficulty: "Intermediate",
     icon: "Gx",
     order: 13,
+    recognition: {
+      signals: "Problem asks for optimal solution where local decisions lead to global optimum. Keywords: 'maximum', 'minimum', 'greedy', 'as many as possible', 'least number of', 'optimal scheduling', 'earliest deadline', 'activity selection', 'minimum coins', 'Huffman', 'priority', 'sort and select', 'opposite of DP'.",
+      decision_flow: "1. Can you make a locally optimal choice at each step that leads to global optimum? → Try Greedy. 2. Does the problem involve scheduling with start/end times? → Sorting by end time + greedy selection. 3. Minimum coins to make change? → Greedy works for standard currencies but NOT all (check if DP needed). 4. Does the problem ask for 'minimum number of X to achieve Y'? → Try greedy. 5. Can you prove that choosing the best option NOW never hurts later? → Greedy is safe. 6. If you find a counterexample where greedy fails → switch to DP.",
+      example_problems: "LeetCode: Jump Game II (45), Activity Selection (non-LeetCode, classic), Min Coin Change (greedy for standard coins), Fractional Knapsack, Task Scheduler (621), Non-overlapping Intervals (435). Codeforces: 1730A - Planets (greedy selection). CodeChef: GREEDY, MAXDIST. HackerRank: Greedy Florist, Max Min, Luck Balance, Minimum Absolute Difference, Priyanka and Toys.",
+      beginner_mistakes: "Using greedy when DP is required (e.g., coin change for arbitrary denominations, or 0/1 knapsack). Not proving greedy choice property - just assuming it works. Forgetting to sort before greedy selection. Using min-heap when sorting + max selection is simpler. Not considering edge cases where local choice conflicts with future choices.",
+      alternative_patterns: "Dynamic Programming (when greedy fails on arbitrary inputs), Sorting (usually first step before greedy), Heap (dynamic selection of min/max element), Activity Selection (sort by end time, pick non-overlapping), Fractional Knapsack (greedy by value/weight ratio, differs from 0/1 Knapsack DP)"
+    },
   },
   {
     id: "heaps",
@@ -154,6 +245,13 @@ export default [
     difficulty: "Intermediate",
     icon: "Hp",
     order: 14,
+    recognition: {
+      signals: "Problem asks for kth smallest/largest element, top k frequent, median, or merging sorted streams. Keywords: 'kth smallest', 'kth largest', 'top k', 'frequent', 'median', 'merge k', 'priority queue', 'heap', 'min heap', 'max heap', 'stream', 'running median', 'k smallest in array', 'k closest'.",
+      decision_flow: "1. Need to repeatedly get min/max from a changing set? → Heap/Priority Queue. 2. Need kth smallest element? → Max Heap of size k (keep k smallest in heap). 3. Need kth largest? → Min Heap of size k. 4. Need top k frequent elements? → Frequency map + Min Heap of size k. 5. Merging k sorted lists? → Min Heap with head of each list. 6. Running median? → Two Heaps (max-heap for left half, min-heap for right half). 7. Task scheduling with cooldown? → Max Heap for frequency.",
+      example_problems: "LeetCode: Kth Largest in Array (215), Top K Frequent Elements (347), Merge k Sorted Lists (23), Find Median from Data Stream (295), Task Scheduler (621), K Closest Points (973). Codeforces: 1730C - Heap operations. CodeChef: HEAP, MEDIAN, KLARG. HackerRank: QHEAP1, Jesse and Cookies, Running Median, Minimum Average Waiting Time, Find the Running Median.",
+      beginner_mistakes: "Confusing min-heap and max-heap for kth smallest/largest. Using heap when a simple sorted list works better (no dynamic insertions). Forgetting that heap insert/delete is O(log n), not O(1). Not considering edge cases (empty heap, k > n). Using O(n log n) full sort when O(n log k) heap suffices. For two-heap for median: not balancing sizes correctly.",
+      alternative_patterns: "Sorting (one-time kth, no need for heap), Quick Select (kth element O(n) avg, no heap overhead), Bucket Sort (top k frequent with frequency buckets), Balanced BST (ordered statistics tree, supports more operations), Deque (sliding window min/max, O(1) amortized)"
+    },
   },
   {
     id: "bit-manipulation",
@@ -165,6 +263,13 @@ export default [
     difficulty: "Intermediate to Advanced",
     icon: "01",
     order: 15,
+    recognition: {
+      signals: "Problem involves binary representation, bitwise operations, or asks for a solution using very little memory. Keywords: 'bit', 'bitwise', 'XOR', 'AND', 'OR', 'shift', 'binary representation', 'set bit', 'count bits', 'power of two', 'single number', 'find unique', 'toggle', 'mask', 'bitmask', 'subset generation', 'bit manipulation', 'divide by 2'.",
+      decision_flow: "1. Does the problem ask for operations on binary representation? → Bit Manipulation. 2. Find unique element (all others appear twice)? → XOR (a XOR a = 0). 3. Count set bits? → Kernighan's (n & (n-1)) or builtin popcount. 4. Power of two check? → n > 0 && (n & (n-1)) == 0. 5. Subset generation for n <= 15-20? → Bitmask (iterate 0 to 2^n-1). 6. Need to check if ith bit is set? → (n >> i) & 1. 7. Need to set/clear/toggle bit? → mask operations. 8. Swap without temp variable? → XOR swap.",
+      example_problems: "LeetCode: Single Number (136), Number of 1 Bits (191), Power of Two (231), Reverse Bits (190), Sum of Two Integers (371), Counting Bits (338), Maximum XOR of Two Numbers (421). Codeforces: 1730C - Bit operations. CodeChef: BITS, XOR, COUNTSET. HackerRank: Bit Manipulation (lonely integer), Maximizing XOR, Sum vs XOR, Xor sequence, And Product.",
+      beginner_mistakes: "Not considering negative numbers in right shift (use >>> for unsigned). Operator precedence confusion: (n & 1) needs parentheses, n & 1 == 0 is wrong. Using division/modulo instead of bit shift for power of 2 operations. Forgetting 0-indexed vs 1-indexed bit positions. XOR swap fails for same variable (a ^= a; a ^= a; a ^= a gives 0).",
+      alternative_patterns: "Bitmask DP (DP on subsets using bitmasks), Hash Map (find unique element with O(n) extra space), Math (power of two via logarithms), Boolean Array (track presence), Bitset (C++ STL, large bit operations)"
+    },
   },
   {
     id: "maths",
@@ -176,6 +281,13 @@ export default [
     difficulty: "Intermediate",
     icon: "Pi",
     order: 16,
+    recognition: {
+      signals: "Problem involves numbers, primes, divisors, GCD, LCM, combinatorics, probability, or modular arithmetic. Keywords: 'prime', 'factor', 'divisor', 'GCD', 'LCM', 'modulo', 'combinatorics', 'nCr', 'nPr', 'factorial', 'Fibonacci', 'Pascal\'s triangle', 'sieve', 'Euclidean', 'exponentiation', 'modular inverse', 'probability', 'count'.",
+      decision_flow: "1. Problem involves number properties (prime, divisor, factor)? → Math (Number Theory). 2. Need GCD/LCM? → Euclidean algorithm (O(log min(a,b))). 3. Generating primes up to N? → Sieve of Eratosthenes (O(n log log n)). 4. Computing nCr under modulo? → Precompute factorials and inverses (Fermat's little theorem). 5. Counting/arranging objects? → Combinatorics. 6. Fast exponent with large power? → Binary Exponentiation O(log n). 7. Probability calculation? → Count favorable / total (combinatorics + math).",
+      example_problems: "LeetCode: Count Primes (204), Power of Three (326), Happy Number (202), Excel Sheet Column Number (171), Super Pow (372), Nth Magical Number (878). Codeforces: 1730A - Math calculations. CodeChef: PRIME, GCD, FACTORIAL. HackerRank: Find the Point, Connecting Towns, Restaurant (GCD), Best Divisor, Sherlock and Moving Tiles, Dancing in Pairs.",
+      beginner_mistakes: "Using O(n) modulo operations per test case (precompute once). Integer overflow in factorial/combinatorics (use modulo or BigInt). Forgetting modulo operations for large numbers (always mod after operation). Wrong GCD implementation (use Euclidean, not O(min(a,b)) loop). Miscounting in combinatorics (nCr formula: n!/(r!(n-r)!). Not handling n=0 or negative numbers in mathematical functions.",
+      alternative_patterns: "Dynamic Programming (Fibonacci, Pascal's Triangle), Bit Manipulation (power of two, XOR patterns), Recursion (exponentiation by squaring), Matrix Exponentiation (linear recurrences like Fibonacci), Probability + DP (expected value calculations)"
+    },
   },
   {
     id: "matrix",
@@ -187,6 +299,13 @@ export default [
     difficulty: "Intermediate",
     icon: "#",
     order: 17,
+    recognition: {
+      signals: "Input is a 2D grid, matrix, or table. Keywords: 'matrix', 'grid', '2D array', 'row', 'column', 'spiral', 'rotate', 'transpose', 'diagonal', 'island', 'traverse matrix', 'snake pattern', 'search in matrix', 'set zero', 'pacific atlantic', 'flood fill'.",
+      decision_flow: "1. Is the input rectangular/tabular (2D)? → Matrix. 2. Need to traverse in spiral order? → Boundary shrinking (top/left/bottom/right). 3. Need to rotate by 90 degrees? → Transpose + reverse rows (clockwise) or columns (counter-clockwise). 4. Searching in sorted matrix? → Binary search on rows (or start from top-right corner). 5. Flood fill / island count? → DFS/BFS on grid. 6. Path finding in grid? → DP (right/down) or BFS (shortest path/obstacles). 7. Image operations? → Matrix transformations.",
+      example_problems: "LeetCode: Spiral Matrix (54), Rotate Image (48), Set Matrix Zeroes (73), Search a 2D Matrix (74), Word Search (79), Number of Islands (200), Pacific Atlantic Water Flow (417). Codeforces: 1730B - Grid operations. CodeChef: MATRIX, SPIRAL, FLOOD. HackerRank: Diagonal Difference, Matrix Layer Rotation, Connected Cells in a Grid, Grid Challenge, Queen's Attack II.",
+      beginner_mistakes: "Confusing row/column indices (matrix[i][j]: i = row, j = col). Not checking boundary conditions (row < 0, col >= n). Off-by-one in spiral traversal bounds. Using DFS recursion for large grid (stack overflow, use BFS or iterative stack). Modifying matrix while iterating for in-place operations (use copy or process from end). Forgetting that matrix multiplication/rotation requires O(n²) minimum.",
+      alternative_patterns: "Graph DFS/BFS (grid traversal as graph), Dynamic Programming (grid path optimization), Arrays (1D operations on each row/col), Binary Search (search in sorted matrix), Spiral/Boundary Traversal (clockwise/counter-clockwise output)"
+    },
   },
   {
     id: "intervals",
@@ -198,6 +317,13 @@ export default [
     difficulty: "Intermediate",
     icon: "==",
     order: 18,
+    recognition: {
+      signals: "Input is a list of intervals [start, end] with operations like merge, insert, intersect, or schedule. Keywords: 'interval', 'range', 'meeting', 'schedule', 'overlap', 'merge', 'insert interval', 'intersection', 'free time', 'non-overlapping', 'minimum number of arrows', 'meeting rooms', 'calendar'.",
+      decision_flow: "1. Does the problem involve ranges [start, end]? → Intervals. 2. Need to merge overlapping intervals? → Sort by start time → merge. 3. Insert a new interval into existing sorted list? → Find correct position, merge overlapping. 4. Are you checking if intervals overlap? → Sort by start, compare end of prev with start of next. 5. Minimum removal to make non-overlapping? → Sort by end time, greedy pick end. 6. Find all intersections between two interval lists? → Two-pointer sweep. 7. Interval covering / skyline problem? → Sweep line algorithm.",
+      example_problems: "LeetCode: Merge Intervals (56), Insert Interval (57), Non-overlapping Intervals (435), Meeting Rooms (252), Meeting Rooms II (253), Interval List Intersections (986). Codeforces: 1730C - Interval operations. CodeChef: INTERVAL, MERGE. HackerRank: Gridland Metro, Merge Intervals (implementation), Angular (sweep line).",
+      beginner_mistakes: "Not sorting intervals before processing (must sort by start or end time). Off-by-one in overlap check: if a.end >= b.start, they overlap (not >). Forgetting to sort by END time for 'maximum non-overlapping intervals' greedy. Using O(n²) comparison for each interval when O(n log n) sorting + O(n) merge works. Not handling edge case of single interval or empty list.",
+      alternative_patterns: "Sorting (preprocessing for interval problems), Greedy (max non-overlapping, min arrows), Sweep Line (events for calendar, skyline, overlapping count), Segment Tree (range query/update on intervals), Two Pointers (interval list intersection), Graph (interval graph coloring, e.g., Meeting Rooms II with min-heap)"
+    },
   },
 
   // ========== TECHNIQUE PATTERNS ==========
@@ -212,6 +338,13 @@ export default [
     difficulty: "Beginner to Intermediate",
     icon: "<-",
     order: 101,
+    recognition: {
+      signals: "The array is sorted (or can be sorted). Problem asks to find pairs/triplets with a given sum, remove duplicates, or check palindrome. Keywords: 'pair', 'triplet', 'two sum', 'three sum', 'sorted', 'palindrome', 'opposite ends', 'collision', 'two-pointer'.",
+      decision_flow: "1. Is the array sorted? → Two Pointers. 2. Find two numbers that sum to target? → Left at 0, right at n-1, move based on sum. 3. Check palindrome? → Left at 0, right at n-1, compare chars. 4. Remove duplicates in-place? → Left at 0, right at 1, overwrite when different. 5. Three sum? → Fix one element, two-pointer on remainder. 6. If array is NOT sorted, can you sort without breaking problem constraints? → Sort + Two Pointers.",
+      example_problems: "LeetCode: Two Sum II (167), 3Sum (15), 3Sum Closest (16), 4Sum (18), Container With Most Water (11), Valid Palindrome (125). Codeforces: Two pointers problems in 1600-1800 range. CodeChef: TWOPTR, PAIRSUM. HackerRank: Pairs, Triple Sum.",
+      beginner_mistakes: "Forgetting to sort first (two pointers requires sorted order). Sum overflow for large integers. Moving both pointers instead of conditionally. Not handling duplicates when counting unique pairs.",
+      alternative_patterns: "HashMap (pair sum in unsorted array O(n) time, O(n) space), Binary Search (find pair with sum k in sorted array O(n log n)), Sliding Window (contiguous subarray sum, not pair sum), Fast & Slow Pointers (linked list cycle detection)"
+    },
   },
   {
     id: "sliding-window",
@@ -224,6 +357,13 @@ export default [
     difficulty: "Intermediate",
     icon: "<->",
     order: 102,
+    recognition: {
+      signals: "Problem involves contiguous subarray or substring with constraints (size, distinct chars, sum, average). Keywords: 'subarray', 'substring', 'contiguous', 'window', 'consecutive', 'longest substring', 'minimum window', 'at most k distinct', 'max sum of size k', 'average of subarray', 'contains'.",
+      decision_flow: "1. Does the problem ask about a contiguous range in array/string? → Sliding Window. 2. Is the window FIXED size k? → Fixed sliding window (track sum, slide by 1 each step). 3. Is the window VARIABLE size? → Expand right, shrink left as needed. 4. Does the condition involve 'at most k' or 'at least k'? → Variable window with condition. 5. Need maximum window satisfying condition? → Expand as much as possible before shrinking. 6. Need minimum window satisfying condition? → Shrink from left when condition met, try to minimize.",
+      example_problems: "LeetCode: Maximum Average Subarray I (643), Longest Substring Without Repeating (3), Minimum Window Substring (76), Sliding Window Maximum (239), Fruit Into Baskets (904). Codeforces: Subarray problems with constraints. CodeChef: SUBWIN. HackerRank: Sherlock and Array (window variant).",
+      beginner_mistakes: "Using sliding window for NON-contiguous subsequences (use DP). Not shrinking window properly (forget to update state when left moves). O(n²) substring extraction instead of O(1) indices. Confusing fixed vs variable window logic.",
+      alternative_patterns: "Two Pointers (pair sum, palindrome, sorted), Prefix Sum (range sum queries O(1)), Kadane's Algorithm (max subarray sum, no window size constraint), Deque + Sliding Window (max/min in sliding window O(n)), Hash Map + Sliding Window (count distinct chars)"
+    },
   },
   {
     id: "prefix-sum",
@@ -236,6 +376,13 @@ export default [
     difficulty: "Intermediate",
     icon: "∑",
     order: 103,
+    recognition: {
+      signals: "Problem asks for range sum queries, subarray sum equals k, equilibrium index, or difference array operations. Keywords: 'range sum', 'prefix sum', 'cumulative sum', 'subarray sum', 'equilibrium index', 'pivot index', 'difference array', 'range update', '2D prefix sum', 'left sum equals right sum'.",
+      decision_flow: "1. Need to answer multiple range sum queries? → Prefix Sum (precompute O(n), query O(1)). 2. Subarray sum equals k? → Prefix Sum + HashMap (track frequency of prefix sums). 3. Find if array can be split into equal sum halves? → Prefix Sum to find pivot. 4. Range updates on array (add val to [l,r] multiple times)? → Difference Array. 5. 2D range sum queries? → 2D Prefix Sum. 6. Need O(n) time and O(n) space for subarray sum patterns? → Prefix Sum is the foundation.",
+      example_problems: "LeetCode: Range Sum Query (303), Subarray Sum Equals K (560), Find Pivot Index (724), Product of Array Except Self (238), Range Sum Query 2D (304). Codeforces: Prefix sum problems 1500-1700 rating. CodeChef: PREFIX. HackerRank: Array Manipulation (difference array), The Maximum Subarray (with prefix).",
+      beginner_mistakes: "Overflow in prefix sums for large arrays (use 64-bit). Forgetting that prefix[i] includes elements up to i (range sum = prefix[r] - prefix[l-1]). Confusing 0-indexed vs 1-indexed prefix arrays. O(n²) query time instead of O(1) after precomputation.",
+      alternative_patterns: "Sliding Window (contiguous subarray sum with constraints), Kadane's Algorithm (max subarray sum, no queries), Segment Tree/Fenwick Tree (range queries with updates), Difference Array (range updates, point queries)"
+    },
   },
   {
     id: "kadanes-algorithm",
@@ -248,6 +395,13 @@ export default [
     difficulty: "Intermediate",
     icon: "K",
     order: 104,
+    recognition: {
+      signals: "Problem asks for maximum subarray sum, maximum product subarray, or best time to buy/sell stock. Keywords: 'maximum subarray', 'maximum sum', 'subarray sum', 'contiguous', 'best time to buy and sell', 'maximum profit', 'maximum slice', 'circular subarray', 'Kadane'.",
+      decision_flow: "1. Find maximum sum of any contiguous subarray? → Kadane's Algorithm. 2. Is the array circular? → Circular Kadane: max(max subarray, total - min subarray). 3. Find maximum product subarray? → Track both max and min (because negative * negative = positive). 4. Best time to buy/sell stock? → Track min price so far, max profit = max(price - min_price). 5. Maximum sum of any subarray with at most k deletions? → Kadane with DP.",
+      example_problems: "LeetCode: Maximum Subarray (53), Maximum Product Subarray (152), Best Time to Buy/Sell Stock (121), Maximum Sum Circular Subarray (918). Codeforces: Maximum subarray problems. CodeChef: MAXSUB. HackerRank: The Maximum Subarray.",
+      beginner_mistakes: "Initializing maxSoFar = 0 instead of arr[0] (fails when all negative). Not handling the case where empty subarray not allowed. Forgetting to track both min and max for product variant. Circular Kadane: confusing with wrap-around case (all negative numbers).",
+      alternative_patterns: "Divide & Conquer (max subarray across mid O(n log n)), Sliding Window (max sum subarray of size k), Prefix Sum (subarray sum equals k), DP (generalized max subarray with modifications)"
+    },
   },
   {
     id: "merge-intervals",
@@ -260,6 +414,13 @@ export default [
     difficulty: "Intermediate",
     icon: "==",
     order: 105,
+    recognition: {
+      signals: "Input is a list of intervals [start, end] with operations merge, insert, or find intersection. Keywords: 'interval', 'merge', 'overlap', 'insert interval', 'non-overlapping', 'meeting rooms', 'intersection', 'interval list', 'schedule', 'cover'.",
+      decision_flow: "1. Given list of intervals, merge all overlapping? → Sort by start, compare end[i] >= start[i+1]. 2. Insert new interval into sorted interval list? → Find insertion position by comparing start, merge adjacent. 3. Find intersections of two interval lists? → Two-pointer, move the one ending earlier. 4. Minimum intervals to remove to make non-overlapping? → Sort by end, greedy pick earliest finishing. 5. Minimum arrows to burst balloons? → Sort by end, shoot at first end, skip covered.",
+      example_problems: "LeetCode: Merge Intervals (56), Insert Interval (57), Non-overlapping Intervals (435), Minimum Arrows to Burst Balloons (452). Codeforces: Interval covering problems. CodeChef: INTMERGE. HackerRank: Merge Intervals (implementation).",
+      beginner_mistakes: "Not sorting before merging (must sort by start or end). Overlap check: a.end >= b.start (not >). Using O(n²) when O(n log n) sort + O(n) scan works. Forgetting to handle empty list or single interval edge case.",
+      alternative_patterns: "Sweep Line (interval events for skyline/calendar), Greedy (max non-overlapping intervals), Interval Tree (dynamic interval queries), Graph (interval graph coloring with min-heap)"
+    },
   },
   {
     id: "cyclic-sort",
@@ -272,6 +433,13 @@ export default [
     difficulty: "Intermediate",
     icon: "↻",
     order: 106,
+    recognition: {
+      signals: "Array contains numbers in range [1, n] and asks for missing, duplicate, or corrupted numbers. Keywords: 'missing number', 'duplicate number', 'range [1,n]', 'all numbers appear once', 'find all duplicates', 'first missing positive', 'cyclic sort', 'corrupted pair', 'find all disappeared'.",
+      decision_flow: "1. Numbers in range [1, n] and need to find missing or duplicate? → Cyclic Sort. 2. Each number in array is from 1 to n, n = array length? → Place each number at index (value-1). 3. Find first missing positive? → Cyclic sort ignoring negatives, first index where value != index+1. 4. Find all duplicates in [1, n]? → Cyclic sort (or negate visited index approach). 5. Find all missing numbers? → Cyclic sort (or index marking).",
+      example_problems: "LeetCode: Find All Numbers Disappeared in an Array (448), Find the Duplicate Number (287), First Missing Positive (41), Set Mismatch (645). Codeforces: Range problems solvable with cyclic sorting. CodeChef: CYCSORT. HackerRank: Mark and Toys (not cyclic, but sorting related).",
+      beginner_mistakes: "Forgetting that cyclic sort requires numbers in range [1, n]. Using extra O(n) space when O(1) space solution exists. Infinite loop if array contains zero or negative numbers (adjust index by 1). Not handling duplicates correctly (skip already-placed elements).",
+      alternative_patterns: "Hash Map/Frequency Array (track counts with O(n) space), Sorting (O(n log n) time with O(1) space), Bit Manipulation (XOR for missing/duplicate - O(n) time, O(1) space), Linked List Cycle Detection (cycle in index/value graph for duplicate number)"
+    },
   },
   {
     id: "fast-slow-pointers",
@@ -284,6 +452,13 @@ export default [
     difficulty: "Intermediate",
     icon: "»",
     order: 107,
+    recognition: {
+      signals: "Problems involving linked lists with cycle detection, middle finding, or meeting point. Keywords: 'cycle', 'linked list cycle', 'slow and fast', 'tortoise and hare', 'Floyd', 'middle of linked list', 'happy number', 'cycle length', 'cycle start'.",
+      decision_flow: "1. Detect if linked list has a cycle? → Slow (1 step) + Fast (2 steps) pointer. 2. Find start of cycle? → After detecting cycle, reset one pointer to head, both move 1 step until meet. 3. Find middle of list? → Slow (1 step) + Fast (2 steps), when fast reaches end, slow is at middle. 4. Check if number is 'happy'? → Detect cycle in digit-square-sum sequence. 5. Find duplicate number in array with O(1) space? → Treat array index as linked list pointer.",
+      example_problems: "LeetCode: Linked List Cycle (141), Linked List Cycle II (142), Find the Duplicate Number (287), Happy Number (202), Middle of the Linked List (876). Codeforces: Cycle detection problems. CodeChef: CYCLE. HackerRank: Cycle Detection.",
+      beginner_mistakes: "Forgetting to handle empty list or single node (fast.next may be null). Infinite loop if fast moves 2 steps without null check. Not understanding Floyd's cycle proof (they WILL meet if cycle exists). Using slow/fast when simple linear scan would work.",
+      alternative_patterns: "Hash Set (track visited nodes O(n) space), Two Pointers (sorted arrays), Runner Technique (vary speed gap for different problems), In-place Reversal (palindrome check with slow/fast + reverse)"
+    },
   },
   {
     id: "inplace-reversal",
@@ -296,6 +471,13 @@ export default [
     difficulty: "Intermediate",
     icon: "⤾",
     order: 108,
+    recognition: {
+      signals: "Problem asks to reverse a linked list, reverse a portion, or check palindrome by reversing. Keywords: 'reverse linked list', 'reverse between', 'reverse nodes in k-group', 'palindrome linked list', 'rotate linked list', 'in-place reversal', 'prev/curr/next', 'reverse sublist'.",
+      decision_flow: "1. Reverse entire linked list? → Iterative: prev=null, curr=head, save next, point curr.next=prev, move all three. 2. Reverse portion (from position m to n)? → Reach m-1, then reverse next n-m+1 nodes. 3. Reverse in k-groups? → Reverse first k nodes recursively, then k-group on rest. 4. Check if linked list is palindrome? → Find middle, reverse second half, compare. 5. Rotate linked list by k? → Find new head by moving (n-k) steps, break and reattach.",
+      example_problems: "LeetCode: Reverse Linked List (206), Reverse Linked List II (92), Reverse Nodes in k-Group (25), Palindrome Linked List (234), Rotate List (61). Codeforces: List reversal problems. CodeChef: REVLIST. HackerRank: Reverse a linked list, Reverse a doubly linked list.",
+      beginner_mistakes: "Losing reference to next node before saving it. Not handling k=1 or k=n cases. Infinite loop if last node's next is not set to null. Off-by-one in position counting for sublist reversal. Forgetting to update head pointer when reversing entire list.",
+      alternative_patterns: "Recursive Reversal (reverse rest then fix head, O(n) stack space), Slow-Fast Pointers (find middle for palindrome check), Stack (reverse by pushing all nodes, then popping)."
+    },
   },
   {
     id: "monotonic-stack",
@@ -308,6 +490,13 @@ export default [
     difficulty: "Advanced",
     icon: "⊢",
     order: 109,
+    recognition: {
+      signals: "Problem asks for next/previous greater/smaller element, stock span, daily temperature, or largest rectangle in histogram. Keywords: 'next greater element', 'previous smaller element', 'nearest greater', 'daily temperature', 'stock span', 'largest rectangle', 'histogram', 'trapping rain water', 'monotonic stack', 'increasing stack', 'decreasing stack'.",
+      decision_flow: "1. Need next greater element for each array position? → Decreasing monotonic stack (pop while stack top < current). 2. Need previous smaller element? → Increasing monotonic stack (pop while stack top > current). 3. Largest rectangle in histogram? → For each bar, find previous smaller and next smaller (range = next_smaller - prev_smaller - 1). 4. Trapping rain water? → Find next greater on left and right for each position. 5. Remove k digits to make smallest number? → Monotonic stack (pop when current digit < top).",
+      example_problems: "LeetCode: Next Greater Element I (496), Daily Temperatures (739), Largest Rectangle in Histogram (84), Trapping Rain Water (42), Remove K Digits (402). Codeforces: Monotonic stack problems (1500-1900). CodeChef: MONOSTACK. HackerRank: Waiter (stack operations), Largest Rectangle.",
+      beginner_mistakes: "Confusing increasing vs decreasing stack direction. Not storing indices in stack instead of values (needed for range calculations). Forgetting to process remaining elements in stack after loop. Using O(n²) when monotonic stack gives O(n). For histogram: not adding sentinel 0 at end to empty stack.",
+      alternative_patterns: "Stack (expression evaluation, balanced parentheses), Deque (sliding window min/max), Segment Tree (range minimum queries), Two Pass Arrays (compute NGE by scanning from right)"
+    },
   },
   {
     id: "tree-bfs",
@@ -320,6 +509,13 @@ export default [
     difficulty: "Intermediate",
     icon: "⬍",
     order: 110,
+    recognition: {
+      signals: "Problem involves tree traversal level by level, or needs shortest path in an unweighted tree. Keywords: 'level order', 'BFS', 'breadth first', 'zigzag', 'right side view', 'level average', 'connect level', 'binary tree level', 'minimum depth', 'shortest path in tree'.",
+      decision_flow: "1. Need to traverse tree level by level? → BFS (Queue). 2. Print level order output (each level as separate list)? → BFS with level-size tracking. 3. Right side view of tree? → BFS, take last node of each level. 4. Connect nodes at same level? → BFS or level-order pointer linking. 5. Zigzag/alternating direction? → BFS with flag to reverse level. 6. Minimum depth to leaf? → BFS (first leaf found = minimum depth). 7. Level order bottom-up? → BFS then reverse result.",
+      example_problems: "LeetCode: Binary Tree Level Order Traversal (102), Binary Tree Zigzag (103), Binary Tree Right Side View (199), Average of Levels (637), Minimum Depth (111). Codeforces: Tree BFS problems. CodeChef: TREEBFS. HackerRank: Tree Level Order Traversal, Height of a Binary Tree (DFS/BFS).",
+      beginner_mistakes: "Using DFS when BFS is more intuitive (level order). Forgetting to track level size before processing (queue changes size during loop). Not handling null nodes. Confusing BFS for tree (no visited needed) vs graph (visited set needed). Stack overflow with DFS recursion on deep tree.",
+      alternative_patterns: "DFS (path sum, subtree, serialization, needs depth-first), Tree BFS Iterative (queue-based level processing), Tree-in-Array (heap-like level-order storage)"
+    },
   },
   {
     id: "tree-dfs",
@@ -332,6 +528,13 @@ export default [
     difficulty: "Intermediate",
     icon: "⬇",
     order: 111,
+    recognition: {
+      signals: "Problem involves tree traversals (preorder/inorder/postorder), BST validation, path sum, or subtree checks. Keywords: 'DFS', 'preorder', 'inorder', 'postorder', 'tree traversal', 'BST validation', 'path sum', 'max depth', 'diameter', 'subtree', 'identical tree', 'symmetric tree', 'LCA', 'serialize deserialize', 'recursive on tree'.",
+      decision_flow: "1. Need to visit all nodes of a tree? → DFS recursion (pre/in/post order). 2. Validate BST? → Inorder gives sorted order, OR check min/max bounds in preorder. 3. Find path with max sum? → Postorder (children result → current). 4. Find LCA? → DFS, if both sides found return node. 5. Flatten tree to list? → Preorder traversal. 6. Reconstruct tree from traversals? → Use inorder + preorder/postorder. 7. Height/diameter of tree? → Postorder (height from children, diameter = left+right+2).",
+      example_problems: "LeetCode: Binary Tree Inorder Traversal (94), Validate BST (98), Maximum Depth (104), Same Tree (100), Symmetric Tree (101), Path Sum (112), Lowest Common Ancestor (236). Codeforces: Tree DFS problems. CodeChef: TREEDFS. HackerRank: Tree Preorder/Inorder/Postorder, Height, Top View, Is This a BST.",
+      beginner_mistakes: "Not handling null node base case. Infinite recursion (forget to call on left AND right child). Returning wrong value from recursive calls (combine child results correctly). Confusing inorder (L-Root-R) for BST (sorted) with other traversals. Stack overflow on deep trees (use iterative stack for production).",
+      alternative_patterns: "BFS/Level Order (shortest path, level-by-level), Morris Traversal (inorder O(1) space, no recursion/stack), Iterative Stack DFS (avoid recursion depth issues), BST Properties (binary search for value in BST)"
+    },
   },
   {
     id: "trie",
@@ -344,6 +547,13 @@ export default [
     difficulty: "Advanced",
     icon: "△",
     order: 112,
+    recognition: {
+      signals: "Problem involves prefix matching, dictionary lookup, autocomplete, or word search. Keywords: 'trie', 'prefix', 'prefix tree', 'autocomplete', 'dictionary', 'word search', 'word break', 'longest common prefix', 'spell checker', 'search suggest', 'prefix search', 'IP routing'.",
+      decision_flow: "1. Need to search for words by prefix (not exact match)? → Trie. 2. Autocomplete / search suggestions? → Trie with DFS from prefix node. 3. Word break (can string be segmented into dictionary words)? → Trie + DP. 4. Longest common prefix of all strings? → Trie, traverse until branch detected. 5. Spell checker (correct misspellings)? → Trie with edit distance. 6. Many insert/prefix-search operations on dynamic set of strings? → Trie (O(L) per operation).",
+      example_problems: "LeetCode: Implement Trie (208), Word Search II (212), Word Break (139), Replace Words (648), Search Suggestions (1268). Codeforces: String prefix problems. CodeChef: TRIE. HackerRank: Contacts, No Prefix Set, Trie (implementation).",
+      beginner_mistakes: "Not using array[26] for children instead of hashmap (simpler for lowercase letters). Forgetting to mark end-of-word in trie node. Memory overhead from storing full strings in nodes (store only char, not full word). Not handling case sensitivity. Space optimization: use hashmap for sparse alphabets.",
+      alternative_patterns: "Hash Set/Map (exact word lookup, no prefix search), Binary Search + Sorting (prefix search on sorted list), Rolling Hash/Rabin-Karp (substring matching), String Sorting (lexicographic ordering), Regular Expression (pattern matching)"
+    },
   },
   {
     id: "topological-sort",
@@ -356,6 +566,13 @@ export default [
     difficulty: "Advanced",
     icon: "⬆",
     order: 113,
+    recognition: {
+      signals: "Problem involves dependency ordering, prerequisite courses, build order, or scheduling with DAG. Keywords: 'topological sort', 'course schedule', 'prerequisite', 'dependency', 'build order', 'task scheduling', 'alien dictionary', 'ordered', 'DAG', 'indegree', 'Kahn's algorithm'.",
+      decision_flow: "1. Need to order items with dependencies (a must happen before b)? → Topological Sort. 2. Given courses and prerequisites, can all be completed? → Topological Sort (if cycle exists → impossible). 3. Alien dictionary - determine character order? → Build graph from adjacent word differences, topological sort. 4. Find build order of projects? → Topological Sort (Kahn's BFS or DFS). 5. Is graph a DAG? → Try topological sort, if all nodes processed → DAG. 6. Minimum time to complete all tasks with dependencies? → Topological Sort + DP for longest path in DAG.",
+      example_problems: "LeetCode: Course Schedule (207), Course Schedule II (210), Alien Dictionary (269), Sequence Reconstruction (444). Codeforces: DAG + Topological Sort problems. CodeChef: TOPO. HackerRank: Build the graph (topological sort).",
+      beginner_mistakes: "Not detecting cycles (Kahn's: if processed < total nodes, cycle exists). Not using indegree array for Kahn's algorithm. Confusing DFS-based topological sort (reverse postorder) with Kahn's BFS. Forgetting that graph must be DAG (no cycles). Building graph adjacency in wrong direction (prerequisite → course).",
+      alternative_patterns: "DFS with Postorder (reverse finish time = topological order), Union-Find (connectivity but not ordering), Shortest/Longest Path in DAG (DP + topological order)"
+    },
   },
   {
     id: "union-find",
@@ -368,6 +585,13 @@ export default [
     difficulty: "Advanced",
     icon: "∪",
     order: 114,
+    recognition: {
+      signals: "Problem involves dynamic connectivity, disjoint sets, graph components, or cycle detection in undirected graph. Keywords: 'union-find', 'disjoint set', 'DSU', 'connected components', 'number of islands', 'redundant connection', 'accounts merge', 'graph valid tree', 'cycle detection undirected', 'union by rank', 'path compression'.",
+      decision_flow: "1. Need to dynamically connect nodes and check if two nodes are connected? → Union-Find. 2. Detect cycle in undirected graph? → If two nodes of an edge already have same parent → cycle. 3. Find number of connected components? → Union all edges, count unique roots. 4. Redundant connection (extra edge creating a cycle)? → Union edges, return first edge connecting already-connected nodes. 5. Accounts merge (merge accounts with common emails)? → Union emails, group by root. 6. Checking if graph is tree? → Union-Find: n nodes, should have n-1 edges and no cycle.",
+      example_problems: "LeetCode: Number of Islands (200), Redundant Connection (684), Accounts Merge (721), Graph Valid Tree (261), Longest Consecutive Sequence (128). Codeforces: DSU problems (1700-2000). CodeChef: DSU. HackerRank: Merging Communities, Components in a Graph, Kundu and Tree.",
+      beginner_mistakes: "Not implementing path compression (leads to O(log n) instead of near O(1)). Not implementing union by rank/size (leads to skewed tree). Forgetting to call find() with path compression for both operands in union. Treating directed graphs same as undirected (DSU works for undirected connectivity). Using O(n) find() without optimization on large inputs.",
+      alternative_patterns: "DFS/BFS (static connectivity - find all components), Graph Traversal (exploration), Topological Sort (dependency ordering, DAG specific), Minimum Spanning Tree (Kruskal's uses DSU under the hood)"
+    },
   },
   {
     id: "shortest-path",
@@ -380,6 +604,13 @@ export default [
     difficulty: "Advanced",
     icon: "🠖",
     order: 115,
+    recognition: {
+      signals: "Problem asks for shortest path in weighted graph, minimum travel time/cost, or optimal route. Keywords: 'shortest path', 'Dijkstra', 'Bellman-Ford', 'Floyd-Warshall', 'minimum distance', 'cheapest flight', 'network delay', 'weighted graph', 'negative weights', 'all pairs shortest', '0-1 BFS', 'minimum time to reach'.",
+      decision_flow: "1. Shortest path in unweighted graph? → BFS (O(V+E)). 2. Shortest path with non-negative weights? → Dijkstra (min-heap, O((V+E)logV)). 3. Shortest path with negative weights but NO negative cycles? → Bellman-Ford (O(VE)). 4. Need all-pairs shortest paths? → Floyd-Warshall (O(V³), for V <= 400). 5. Shortest path in DAG? → Topological Sort + DP (O(V+E), negative weights OK). 6. Edges with weight 0 or 1? → 0-1 BFS (deque, O(V+E)). 7. Cheapest flight with at most k stops? → Bellman-Ford variant (relax k+1 times).",
+      example_problems: "LeetCode: Network Delay Time (743), Cheapest Flights Within K Stops (787), Path With Minimum Effort (1631), The Maze (490 - BFS). Codeforces: Shortest path problems (1600-2200). CodeChef: SHORTEST. HackerRank: Dijkstra Shortest Reach, Floyd City of Blinding Lights.",
+      beginner_mistakes: "Using Dijkstra with negative weights (fails). Not using visited set in Dijkstra (can revisit with better distance via different path, but PQ ensures first pop is optimal). Forgetting that BFS works only for UNWEIGHTED graphs. O(V³) Floyd-Warshall too slow for large V. Not relaxing edges enough times in Bellman-Ford (need V-1 iterations).",
+      alternative_patterns: "BFS (unweighted shortest path), DFS (path existence, not shortest), Minimum Spanning Tree (connect all nodes with min total weight, not path), A* Search (heuristic-guided shortest path), Dynamic Programming (shortest path in DAG with topo sort)"
+    },
   },
   {
     id: "mst",
@@ -392,6 +623,13 @@ export default [
     difficulty: "Advanced",
     icon: "⊞",
     order: 116,
+    recognition: {
+      signals: "Problem asks to connect all points/nodes with minimum total cost, or find a subset of edges that connects all vertices without cycles. Keywords: 'minimum spanning tree', 'MST', 'Prim's', 'Kruskal's', 'connect all points', 'minimum cost to connect', 'min cost to connect cities', 'remove edges', 'network design', 'minimum total weight'.",
+      decision_flow: "1. Need to connect ALL nodes with minimum total edge weight? → MST. 2. Graph is dense (many edges)? → Prim's algorithm (heap-based, O(E log V)). 3. Graph is sparse (few edges)? → Kruskal's algorithm (sort edges, union-find, O(E log E)). 4. Given points, connect them with min total Manhattan distance? → Prim's on complete graph (optimize with sorted coordinates). 5. Need to find second best MST? → Find MST, remove one edge at a time, find min spanning tree again.",
+      example_problems: "LeetCode: Min Cost to Connect All Points (1584), Connecting Cities With Minimum Cost (non-LeetCode premium), Minimum Cost to Connect Sticks (1167 - greedy/Huffman). Codeforces: MST problems (1700-2100). CodeChef: MST. HackerRank: Kruskal (MST Really Special Subtree), Prim's (MST Special Subtree).",
+      beginner_mistakes: "Using Prim's on sparse graph when Kruskal's is more efficient (or vice versa). Not understanding that Kruskal's uses Union-Find for cycle detection. Forgetting to skip edges that connect already-connected components in Kruskal's. Running O(V²) Prim's on dense graphs without heap optimization. Confusing MST with shortest path tree (they are different).",
+      alternative_patterns: "Union-Find (connected components, underlying DSU for Kruskal's), Dijkstra/Shortest Path (single-source shortest path, not spanning tree), Huffman Coding (greedy tree building, similar min-cost but different structure), Topological Sort (DAG ordering)"
+    },
   },
   {
     id: "binary-search",
@@ -405,6 +643,13 @@ export default [
     difficulty: "Intermediate",
     icon: "<>",
     order: 117,
+    recognition: {
+      signals: "Array is sorted, or problem asks for search in rotated array, first/last occurrence, or finding element in O(log n). Keywords: 'sorted', 'search', 'logarithmic', 'binary search', 'lower bound', 'upper bound', 'search in rotated', 'find peak', 'first bad version', 'sqrt', 'search space', 'monotonic', 'minimum in rotated'.",
+      decision_flow: "1. Is the array sorted? → Standard Binary Search. 2. First/last occurrence of target? → Lower/Upper bound variant. 3. Search in rotated sorted array? → Modified binary search (find pivot or compare mid with left). 4. Find peak element? → Binary search on gradient. 5. Minimize maximum / maximize minimum? → Binary Search on Answer (predicate binary search). 6. Find square root or other monotonic function? → Binary Search on Answer. 7. Search in a range where predicate is monotonic? → Binary Search on Answer (FFFTTT pattern).",
+      example_problems: "LeetCode: Binary Search (704), First Bad Version (278), Search in Rotated Array (33), Find Minimum in Rotated (153), Find Peak Element (162), Search a 2D Matrix (74). Codeforces: Binary search on answer problems (1600-2000). CodeChef: BINSRCH. HackerRank: Sherlock and Array (binary search variant).",
+      beginner_mistakes: "Infinite loop (use while left < right or left <= right depending on variant). Mid calculation overflow (use left + (right-left)/2). Not deciding whether mid is inclusive or exclusive. Using binary search on array that is NOT sorted. Predicate not monotonic for 'binary search on answer'.",
+      alternative_patterns: "Two Pointers (pair finding in sorted), Ternary Search (unimodal function), Linear Search (small arrays or unsorted), Hash Map (O(1) exact match), Binary Search Tree (dynamic sorted data)"
+    },
   },
   {
     id: "backtracking",
@@ -417,6 +662,13 @@ export default [
     difficulty: "Advanced",
     icon: "±",
     order: 118,
+    recognition: {
+      signals: "Problem asks to generate ALL subsets, permutations, combinations, or solve puzzles with constraint satisfaction. Keywords: 'subsets', 'permutations', 'combinations', 'generate all', 'all possible', 'N-Queens', 'Sudoku', 'letter combinations', 'phone number', 'palindrome partitioning', 'combination sum', 'backtracking', 'pruning', 'exhaustive search', 'decision tree'.",
+      decision_flow: "1. Need ALL solutions (not just count)? → Backtracking (explore all branches). 2. Subsets of array? → Include/exclude each element, or length-based recursion. 3. Permutations of array? → Swap each element with current position, or use visited array. 4. Combination sum (can use same element multiple times)? → Include i, then recurse from i (not i+1). 5. N-Queens? → Place queen row by row, check column/diagonal conflicts. 6. Sudoku solver? → Fill empty cells, check row/col/box constraints. 7. Palindrome partitioning? → For each possible prefix, if palindrome, recurse on remainder.",
+      example_problems: "LeetCode: Subsets (78), Permutations (46), Combination Sum (39), N-Queens (51), Generate Parentheses (22), Palindrome Partitioning (131), Sudoku Solver (37). Codeforces: Backtracking problems (lower ratings where n is small). CodeChef: BACKTRACK. HackerRank: Crossword Puzzle, Recursive Digit Sum (basic recursion).",
+      beginner_mistakes: "Not reverting state after recursion (backtracking requires undo). Not using pruning (checking invalid states early). Too deep recursion leading to stack overflow. Including duplicate results (need to handle duplicates in sorted array with skip condition). Not converting recursion to iterative when n is large. Forgetting that backtracking is exponential O(2^n) - only for small n (<= 20).",
+      alternative_patterns: "Bitmask (subsets for n <= 20, iterative), Dynamic Programming (count solutions, not enumerate), Inclusion-Exclusion (combinatorial counting), Recursion (exploring without constraint satisfaction), BFS/DFS on State Space (tree/graph exploration)"
+    },
   },
   {
     id: "knapsack",
@@ -429,6 +681,13 @@ export default [
     difficulty: "Advanced",
     icon: "🎒",
     order: 119,
+    recognition: {
+      signals: "Problem involves items with weights and values, choosing subset with max value without exceeding capacity. Keywords: 'knapsack', '0/1 knapsack', 'partition equal subset sum', 'target sum', 'last stone', 'ones and zeroes', 'subset sum', 'capacity', 'weight', 'value', 'take or not take', 'pick few items'.",
+      decision_flow: "1. Given items with weights and values, maximize value with capacity constraint? → 0/1 Knapsack DP. 2. Can array be partitioned into two equal sum subsets? → Subset Sum DP (target = sum/2). 3. Number of ways to reach target sum? → DP counting. 4. Given binary strings, max count with limited zeros and ones? → 2D Knapsack (0s and 1s as two weights). 5. Can we pick items to exactly match target weight? → Subset Sum DP (boolean). 6. Minimize difference of two subsets? → Subset sum DP to find closest possible sum to total/2.",
+      example_problems: "LeetCode: Partition Equal Subset Sum (416), Target Sum (494), Ones and Zeroes (474), Last Stone Weight II (1049), Coin Change II (518). Codeforces: Knapsack DP problems. CodeChef: KNAPSACK. HackerRank: Knapsack (classic), Equal (not exactly knapsack but similar DP).",
+      beginner_mistakes: "Not handling 0/1 vs unlimited (unbounded knapsack: coin change - re-use same item). Using 2D DP when 1D array suffices (space optimization). Integer overflow in sums (use modulo if needed). Forgetting that items can be used only once (0/1). Wrong DP initialization (DP[0] = true for subset sum, DP[i][0] = 0 for knapsack).",
+      alternative_patterns: "Greedy (Fractional Knapsack, but NOT 0/1), Unbounded Knapsack (reuse items, e.g., Coin Change), Multidimensional Knapsack (2+ constraints), Bitmask DP (small n exhaustive enumeration)"
+    },
   },
   {
     id: "lcs",
@@ -441,6 +700,13 @@ export default [
     difficulty: "Advanced",
     icon: "↔",
     order: 120,
+    recognition: {
+      signals: "Problem asks for longest common subsequence, edit distance, or similarity between two sequences (not necessarily contiguous). Keywords: 'longest common subsequence', 'LCS', 'edit distance', 'Levenshtein distance', 'minimum operations to convert', 'string interleaving', 'palindromic subsequence', 'longest repeating subsequence', 'shortest common supersequence'.",
+      decision_flow: "1. Find longest subsequence common to TWO strings? → LCS DP (2D table). 2. Minimum edits (insert/delete/replace) to convert string A to B? → Edit Distance (similar 2D DP). 3. Longest palindromic subsequence? → LCS of string and its reverse. 4. Shortest common supersequence? → n + m - LCS. 5. Minimum insertions to make palindrome? → n - (LCS with reverse). 6. String interleaving? → 2D DP (similar to LCS but merging). 7. Longest repeating subsequence? → LCS with i != j constraint.",
+      example_problems: "LeetCode: Longest Common Subsequence (1143), Edit Distance (72), Longest Palindromic Subsequence (516), Interleaving String (97), Delete Operation for Two Strings (583). Codeforces: DP with strings. CodeChef: LCS. HackerRank: The Longest Common Subsequence, Shortest Common Supersequence.",
+      beginner_mistakes: "Confusing subsequence (non-contiguous, LCS/DP) with substring (contiguous, sliding window). Wrong DP transition (if chars match: DP[i][j] = DP[i-1][j-1] + 1, else: max(DP[i-1][j], DP[i][j-1])). Off-by-one in DP table indexing (usually use 1-indexed). Not optimizing 2D DP to 1D (space can be O(n) with prev/curr rows). Forgetting that LCS DP builds from bottom-right to top-left for reconstruction.",
+      alternative_patterns: "Sliding Window (substring, contiguous), Longest Increasing Subsequence (LIS, different DP, single array), DP on Strings (palindromic partitioning, word break), Suffix Tree/Automaton (advanced string matching), Rolling Hash (substring equality check)"
+    },
   },
   {
     id: "lis",
@@ -453,6 +719,13 @@ export default [
     difficulty: "Advanced",
     icon: "📈",
     order: 121,
+    recognition: {
+      signals: "Problem asks for longest increasing subsequence (not necessarily contiguous), Russian doll envelopes, or chain length. Keywords: 'longest increasing subsequence', 'LIS', 'patience sorting', 'longest chain', 'Russian doll', 'envelopes', 'maximum chain length', 'minimum deletions to sort', 'longest non-decreasing', 'longest increasing subsequence O(n log n)'.",
+      decision_flow: "1. Find longest increasing subsequence in array? → LIS DP (O(n²) for small n, O(n log n) for large). 2. n <= 1000? → O(n²) DP (DP[i] = 1 + max DP[j] for j < i and arr[j] < arr[i]). 3. n <= 10^5? → O(n log n) with patience sorting (maintain piles of cards). 4. Russian doll envelopes (both width and height must increase)? → Sort by width ASC, height DESC, then LIS on height. 5. Maximum length of pair chain? → Sort by first element ASC, then LIS on second element. 6. Minimum deletions to make array sorted? → n - LIS length.",
+      example_problems: "LeetCode: Longest Increasing Subsequence (300), Russian Doll Envelopes (354), Maximum Length of Pair Chain (646), Minimum Number of Removals to Make Mountain Array (1671). Codeforces: LIS problems. CodeChef: LIS. HackerRank: The Longest Increasing Subsequence, Building a Spanning Tree (LIS variant).",
+      beginner_mistakes: "Confusing LIS (subsequence, O(n²)/O(n log n)) with longest common subsequence (two strings). Using O(n²) when O(n log n) is needed (large n). Forgetting that patience sorting O(n log n) doesn't give the actual subsequence, only length. Not handling equal elements (increasing vs non-decreasing: use < vs <=). Binary search in patience sorting: use lower_bound for strictly increasing.",
+      alternative_patterns: "Longest Common Subsequence (two sequences), DP on Arrays (other subsequence problems), Binary Search (foundation for patience sorting), Greedy + DP (improving LIS to O(n log n)), Fenwick Tree (LIS with values as BIT indices)"
+    },
   },
   {
     id: "dp-on-grid",
@@ -465,6 +738,13 @@ export default [
     difficulty: "Advanced",
     icon: "⊞",
     order: 122,
+    recognition: {
+      signals: "Problem involves grid with movement constraints (right/down), path counting, min/max path sum, or obstacles. Keywords: 'unique paths', 'minimum path sum', 'triangle', 'grid', 'obstacle', 'robot', 'cherry pickup', 'dungeon game', 'matrix path', 'right and down', 'maximum square', 'count paths'.",
+      decision_flow: "1. Number of ways to go from top-left to bottom-right (right/down only)? → 2D DP (DP[i][j] = DP[i-1][j] + DP[i][j-1]). 2. Minimum path sum from top-left to bottom-right? → DP (grid[i][j] + min(up, left)). 3. Maximum square of 1s in binary matrix? → DP (DP[i][j] = 1 + min(up, left, diagonal) if cell is 1). 4. Path with obstacles? → If cell is obstacle, DP[i][j] = 0. 5. Triangle (minimum path from top to bottom)? → Bottom-up DP on last row. 6. Dungeon game (minimum initial health)? → Bottom-right to top-left DP. 7. Cherry pickup (two paths)? → 3D DP (both walk same distance, track positions).",
+      example_problems: "LeetCode: Unique Paths (62), Unique Paths II (63), Minimum Path Sum (64), Triangle (120), Maximal Square (221), Dungeon Game (174). Codeforces: Grid DP problems. CodeChef: GRID. HackerRank: The Grid Search, Matrix (connected cell).",
+      beginner_mistakes: "Not initializing first row and column correctly (base cases). Off-by-one in grid dimensions (rows vs columns). Using DFS recursion for large grid (stack overflow, use DP table). Forgetting obstacles: DP[i][j] = 0 for blocked cells. Confusing 0-indexed vs 1-indexed DP table. O(2^n) recursive without memo instead of O(n²) DP.",
+      alternative_patterns: "DFS/BFS on Grid (path existence, not counting), LIS DP (1D DP on array), Matrix Traversal (spiral, rotation - not DP), Backtracking (all paths exploration), Graph Shortest Path (grid with 4-direction movement and weights)"
+    },
   },
   {
     id: "moores-algorithm",
@@ -477,6 +757,13 @@ export default [
     difficulty: "Intermediate",
     icon: "⅔",
     order: 123,
+    recognition: {
+      signals: "Problem asks for element that appears more than n/2 or n/3 times, or majority votes. Keywords: 'majority element', 'more than half', 'more than n/2', 'more than n/3', 'Boyer-Moore', 'majority vote', 'appears more than', 'minimum index', 'cancellation', 'two candidates'.",
+      decision_flow: "1. Find element appearing more than n/2 times? → Boyer-Moore Majority Vote (cancel pairs, O(n) time, O(1) space). 2. Find elements appearing more than n/3 times? → Two candidates (cancel trios). 3. Is there guaranteed to be a majority element? → Verification phase required (count actual frequency). 4. Minimum index where majority element exists in prefix? → Boyer-Moore tracking prefix. 5. Need O(n) time and O(1) space? → Boyer-Moore (cannot use hashmap).",
+      example_problems: "LeetCode: Majority Element (169), Majority Element II (229), Minimum Index of a Valid Split (non-LeetCode). Codeforces: Majority element problems. CodeChef: MAJOR. HackerRank: Find the Median (sorting-based, related).",
+      beginner_mistakes: "Forgetting verification phase (candidate might not be majority if no element > n/2). Using HashMap (O(n) space) when O(1) space solution exists. Wrong threshold for n/3 (need > n/3, not > n/2). Confusing Moore's algorithm (cancellation) with sorting-based approach (O(n log n)).",
+      alternative_patterns: "Sorting (n/2 element = mid element after sorting O(n log n)), HashMap (frequency count O(n) space), Randomized Algorithm (pick random element, verify O(n)), Divide & Conquer (count majority in left/right halves)"
+    },
   },
   {
     id: "maths-technique",
@@ -489,6 +776,13 @@ export default [
     difficulty: "Intermediate to Advanced",
     icon: "π",
     order: 124,
+    recognition: {
+      signals: "Problem involves GCD/LCM, prime numbers, modular arithmetic, or combinatorial counting. Keywords: 'GCD', 'LCM', 'prime', 'sieve', 'modulo', 'modular inverse', 'exponentiation', 'nCr', 'factorial', 'Euler totient', 'fast exponent', 'power mod', 'trailing zeros', 'nth prime', 'factorization'.",
+      decision_flow: "1. Find GCD of two numbers? → Euclidean algorithm (recursive modulo, O(log min(a,b))). 2. Generate primes up to N? → Sieve of Eratosthenes (O(n log log n)). 3. Compute a^b mod m for large b? → Binary Exponentiation (O(log b)). 4. Compute nCr mod p for large n? → Precompute factorials + Fermat inverse mod p. 5. Count divisors of a number? → Prime factorization. 6. Sum of digits, digital root? → Modulo 9 property. 7. Euclidean algorithm for gcd, extended for modular inverse.",
+      example_problems: "LeetCode: Count Primes (204), Pow(x,n) (50), Super Pow (372), Nth Magical Number (878), Happy Number (202). Codeforces: Number theory problems (1400-2200). CodeChef: NUMBERT. HackerRank: Find the Point (geometry), Restaurant (GCD), Best Divisor, Sherlock and GCD.",
+      beginner_mistakes: "Integer overflow in factorial/combinatorics without modulo. Using O(n) loop for power when O(log n) binary exponentiation exists. Not handling modulo correctly (apply after every multiplication, not just at end). Sieve only up to sqrt(n) for factorization (not full n). Forgetting modular inverse exists only when mod is prime (Fermat's theorem) or numbers are coprime.",
+      alternative_patterns: "Dynamic Programming (combinatorial DP for counting), Bit Manipulation (power of two checks), Big Integer arithmetic (for very large numbers), Probability/Statistics (probabilistic primality testing)"
+    },
   },
   {
     id: "bit-manipulation-technique",
@@ -501,6 +795,13 @@ export default [
     difficulty: "Intermediate",
     icon: "01",
     order: 125,
+    recognition: {
+      signals: "Problem involves low-level bit tricks, XOR properties, bit counting, or subset generation via masks. Keywords: 'XOR', 'bit count', 'set bit', 'clear bit', 'toggle bit', 'bitmask', 'lowest set bit', 'n & (n-1)', 'Kernighan', 'bit hacks', 'reverse bits', 'swap without temp', 'power of two', 'bitwise AND range'.",
+      decision_flow: "1. Count set bits? → n & (n-1) loop or builtin popcount. 2. Check if power of two? → n > 0 && (n & (n-1)) == 0. 3. Find unique element (others appear twice)? → XOR all elements (a XOR a = 0). 4. Find two unique elements? → XOR all to get XOR of both, find differing bit, partition. 5. Get/set/clear ith bit? → Mask operations: (n >> i) & 1, n | (1 << i), n & ~(1 << i). 6. Subset generation for n <= 15? → Bitmask from 0 to (1<<n)-1. 7. Swap two numbers without temp? → a ^= b; b ^= a; a ^= b.",
+      example_problems: "LeetCode: Single Number (136), Number of 1 Bits (191), Counting Bits (338), Power of Two (231), Reverse Bits (190), Bitwise AND of Numbers Range (201). Codeforces: Bit manipulation problems. CodeChef: BITOP. HackerRank: Lonely Integer, Maximizing XOR, Sum vs XOR, Xor sequence, And Product.",
+      beginner_mistakes: "Operator precedence: (n & 1) needs parentheses, n & 1 == 0 is evaluated as n & (1 == 0). Signed right shift (>>) vs unsigned (>>>) for negative numbers. XOR swap fails if a and b refer to same memory location (a ^= a gives 0). Not considering 32-bit vs 64-bit integer limits. Off-by-one in bit positions (0-indexed LSB).",
+      alternative_patterns: "Bitmask DP (DP over subsets using bitmasks), Hash Map (O(n) space for frequency), Math (power of two via logarithms), Boolean Array (bit presence tracking), String Operations (binary string representation)"
+    },
   },
   {
     id: "segment-tree",
@@ -513,6 +814,13 @@ export default [
     difficulty: "Advanced",
     icon: "△",
     order: 126,
+    recognition: {
+      signals: "Problem involves range queries WITH updates (point or range), or requires O(log n) per query/update. Keywords: 'segment tree', 'Fenwick tree', 'binary indexed tree', 'range sum', 'range min', 'range update', 'point update', 'lazy propagation', 'inversion count', 'range query with updates', 'BIT', 'order statistics'.",
+      decision_flow: "1. Range sum query AND point updates? → Fenwick Tree (Binary Indexed Tree, simpler, fewer operations). 2. Range min/max/gcd query AND updates? → Segment Tree (supports any associative operation). 3. Range UPDATE (add or assign) AND range query? → Segment Tree with Lazy Propagation. 4. Count inversions in O(n log n)? → Fenwick Tree or Segment Tree (coordinate compress first). 5. Need order statistics (kth smallest) with updates? → Fenwick Tree with frequency array. 6. 2D range queries? → 2D Fenwick or Segment Tree.",
+      example_problems: "LeetCode: Range Sum Query - Mutable (307), Count of Smaller Numbers After Self (315), Reverse Pairs (493), Range Sum Query 2D - Mutable (308). Codeforces: Range query problems (1600-2200). CodeChef: SEGTREE, FENWICK. HackerRank: Range Sum Query, Bit Array (BIT), Direct Connections (segment tree).",
+      beginner_mistakes: "Using segment tree size 4*n (safety) but forgetting to allocate enough space. Off-by-one in BIT indices (1-indexed vs 0-indexed). Not coordinate-compressing values that are too large (use sorted unique mapping). Confusing point update with range update (need lazy propagation for latter). Forgetting to use long long for sums of large arrays. O(n) build instead of O(n) using bottom-up approach.",
+      alternative_patterns: "Prefix Sum (static range queries, no updates - simpler), Difference Array (range updates, point queries), Square Root Decomposition (sqrt(n) per query/update, simpler to implement), Binary Indexed Tree (limited to prefix queries, simpler than segment tree)"
+    },
   },
   {
     id: "binary-search-tree",
@@ -525,9 +833,14 @@ export default [
     difficulty: "Intermediate",
     icon: "🌲",
     order: 127,
+    recognition: {
+      signals: "Problem involves binary search tree operations, validation, or using BST property for efficient search. Keywords: 'BST', 'binary search tree', 'validate', 'kth smallest', 'kth largest', 'inorder', 'successor', 'predecessor', 'range sum BST', 'sorted array to BST', 'sorted list to BST', 'BST iterator', 'lowest common ancestor BST'.",
+      decision_flow: "1. Validate whether a binary tree is a BST? → Inorder check (should be strictly increasing) OR recursive min/max bounds. 2. Find kth smallest in BST? → Inorder traversal (recursive or iterative with stack, O(h+k)). 3. Find LCA in BST? → BST property: if both values < root, go left; if both > root, go right; else root is LCA. 4. Insert/search/delete in BST? → Compare with root, recurse left/right (O(log n) average). 5. Range sum query in BST? → Traverse, prune when range doesn't overlap. 6. Convert sorted array to balanced BST? → Recursively pick middle as root. 7. BST iterator (next smallest)? → Inorder traversal with explicit stack.",
+      example_problems: "LeetCode: Validate BST (98), Kth Smallest in BST (230), Lowest Common Ancestor of BST (235), Range Sum of BST (938), Convert Sorted Array to BST (108). Codeforces: BST problems. CodeChef: BST. HackerRank: Is This a Binary Search Tree, Lowest Common Ancestor, BST Level Order Traversal.",
+      beginner_mistakes: "Not checking ancestor bounds recursively (only checking immediate children). Allowing duplicates vs strictly increasing BST (< vs <=). Stack overflow in recursive insert/delete for skewed tree (use iterative). Not handling empty/null tree. Confusing BST property with heap property (BST: left < root < right, Heap: children < root).",
+      alternative_patterns: "Tree DFS (general binary tree operations), Balanced BST (self-balancing like AVL/Red-Black for worst-case O(log n)), Binary Search on Array (sorted array gives O(log n) search without BST structure), Heap (min/max access, not ordered traversal), Hash Map (O(1) search, no ordering)"
+    },
   },
-
-  // ========== NEW TECHNIQUE PATTERNS ==========
   {
     id: "divide-conquer",
     name: "Divide & Conquer",
@@ -539,6 +852,13 @@ export default [
     difficulty: "Intermediate to Advanced",
     icon: "⊘",
     order: 128,
+    recognition: {
+      signals: "Problem can be split into independent subproblems, typically involving arrays (merge sort, quick sort), exponentiation, or closest pair. Keywords: 'divide and conquer', 'merge sort', 'quick sort', 'recursive', 'split array', 'binary recursion', 'merge', 'partition', 'closest pair', 'maximum subarray cross', 'Strassen', 'Karatsuba'.",
+      decision_flow: "1. Can you split the problem into two (or more) independent smaller problems and combine results? → Divide & Conquer. 2. Sorting an array? → Merge sort (split, sort, merge) or Quick sort (partition, sort, combine). 3. Maximum subarray sum? → Divide at mid, max is max(left, right, cross-mid). 4. Check if element exists in sorted array? → Binary Search (divide & conquer). 5. Find closest pair of points? → Sort by x, split, solve left/right, combine with strip check. 6. Fast exponentiation? → a^n = a^(n/2) * a^(n/2) (split exponent). 7. Do subproblems OVERLAP? → If yes, use DP. If no overlap → Divide & Conquer.",
+      example_problems: "LeetCode: Maximum Subarray (53 - d&c version), Different Ways to Add Parentheses (241), Majority Element (169 - d&c), Search a 2D Matrix II (240). Codeforces: Divide and conquer problems (1500-2200). CodeChef: DNC. HackerRank: Merge Sort (inversion count), Quick Sort.",
+      beginner_mistakes: "Using divide & conquer for overlapping subproblems (use DP instead). Not correctly combining results from subproblems. Stack overflow from deep recursion (can be iterative in some cases). O(n log n) recursion depth for unbalanced splits (quick sort worst case). Forgetting that divide & conquer may have high constant factors.",
+      alternative_patterns: "Dynamic Programming (overlapping subproblems), Recursion (general problem decomposition, not necessarily 'divide in halves'), Iteration (when recursion is too deep), Binary Search (specific type of d&c for monotonic search)"
+    },
   },
   {
     id: "sweep-line",
@@ -551,6 +871,13 @@ export default [
     difficulty: "Advanced",
     icon: "⇌",
     order: 129,
+    recognition: {
+      signals: "Problem involves intervals, overlapping events, or ranges where you need to track active intervals at any point. Keywords: 'sweep line', 'event processing', 'interval events', 'skyline problem', 'meeting rooms', 'range overlap', 'employee free time', 'number of intervals covering', 'active intervals', 'maximum overlap', 'event sorting'.",
+      decision_flow: "1. Need to find maximum overlapping intervals at any point? → Sweep Line (create start (+1) and end (-1) events, sort, sweep while tracking count). 2. Skyline problem (outline of buildings)? → Event for each building start and end, sort, maintain height multiset. 3. Employee free time (common free periods)? → Merge all intervals, sweep to find gaps. 4. Count how many intervals cover each point? → Sweep line with range update. 5. Minimum number of platforms needed? → Sweep line over train schedules. 6. Range addition (add value to multiple ranges)? → Difference array (simpler sweep line variant).",
+      example_problems: "LeetCode: The Skyline Problem (218), Meeting Rooms II (253), Employee Free Time (759), Interval List Intersections (986). Codeforces: Sweep line problems (1700-2100). CodeChef: SWEEP. HackerRank: Gridland Metro (sweep line variant).",
+      beginner_mistakes: "Not handling events at same coordinate correctly (process end before start, or vice versa, depending on problem). Using O(n²) when O(n log n) sweep line works. Forgetting to use multiset (or max-heap with removal) for skyline's height tracking. Wrong data structure for active set (need fast insert/delete and max query). Confusing sweep line with simple sorting.",
+      alternative_patterns: "Merge Intervals (non-overlapping set after merge), Difference Array (range addition, simpler), Segment Tree with Lazy Propagation (range queries + updates), Two Pointers (interval list intersection), Greedy (minimum platforms, if only count needed)"
+    },
   },
   {
     id: "rolling-hash",
@@ -563,6 +890,13 @@ export default [
     difficulty: "Advanced",
     icon: "#",
     order: 130,
+    recognition: {
+      signals: "Problem involves substring matching, repeated substrings, or comparing substrings efficiently. Keywords: 'Rabin-Karp', 'rolling hash', 'substring matching', 'longest common substring', 'repeated substring', 'palindrome', 'fingerprint', 'hash of substring', 'pattern matching', 'Z-algorithm', 'string matching in O(n)'.",
+      decision_flow: "1. Need to find if pattern exists in text? → Rolling Hash (Rabin-Karp) or KMP. 2. Find longest common substring between two strings? → Binary search on length + rolling hash. 3. Find the longest repeated substring in a string? → Binary search on length + rolling hash. 4. Need O(n) string matching? → KMP (LPS array) or Rabin-Karp (rolling hash, O(n) average). 5. Check if two substrings are equal (multiple queries)? → Precompute rolling hashes, compare O(1) per query. 6. Find all palindromic substrings? → Rolling hash (compare string and reverse hash) or Expand Around Center (simpler).",
+      example_problems: "LeetCode: Implement strStr (28), Repeated Substring Pattern (459), Longest Duplicate Substring (1044), Palindromic Substrings (647). Codeforces: String hashing problems (1700-2200). CodeChef: HASH. HackerRank: String Similarity (Z-algorithm), Build a String, Determining DNA Health (rolling hash).",
+      beginner_mistakes: "Hash collisions (use double hash or large prime modulus like 10^9+7 or 10^9+9). Not handling modulo operations correctly (negative values, overflow). Power precomputation off-by-one. Choosing bad base (should be > alphabet size, use 26 or 131 or random). Forgetting that substring equality confirmed only if hashes match AND optionally compare directly on collision.",
+      alternative_patterns: "KMP (pattern matching, no false positives), Z-algorithm (pattern matching, LPS-like), Suffix Array / Suffix Tree (advanced string problems), Trie (prefix matching), Dynamic Programming (longest common subsequence)"
+    },
   },
   {
     id: "reservoir-sampling",
@@ -575,6 +909,13 @@ export default [
     difficulty: "Advanced",
     icon: "⌲",
     order: 131,
+    recognition: {
+      signals: "Problem involves random sampling from a stream/array of unknown size, or selecting k random elements with equal probability. Keywords: 'reservoir sampling', 'random pick', 'random node', 'stream', 'unknown size', 'uniformly random', 'sample k elements', 'online sampling', 'shuffle', 'random selection', 'data stream'.",
+      decision_flow: "1. Need to pick 1 random element from a stream of unknown size? → Simple reservoir: keep first element, for ith element, replace with probability 1/i. 2. Need to pick k random elements from stream? → Reservoir of size k: keep first k elements, for each new element i, replace random element with probability k/i. 3. Random node from linked list? → Reservoir sampling (unknown length). 4. Random pick with weight? → Prefix sum of weights + binary search on random value (not reservoir, but related). 5. Fisher-Yates shuffle for array in-place? → For i from n-1 to 1, swap with random index 0..i.",
+      example_problems: "LeetCode: Linked List Random Node (382), Random Pick Index (398), Shuffle an Array (384), Random Pick with Weight (528). Codeforces: Randomized algorithms. CodeChef: RANDOM. HackerRank: Randomly select elements (implementation).",
+      beginner_mistakes: "Not implementing reservoir correctly (for first k elements, add to reservoir; for later elements, replace with probability k/(current_length)). Using O(n) memory to store the stream when reservoir uses O(k). Not understanding probability proof (each element has equal k/n probability of being in final sample). Using reservoir when stream size is known (use simple random indexing instead).",
+      alternative_patterns: "Fisher-Yates Shuffle (array shuffling, O(n)), Random Index (known length, O(1) space+time per sample), Rejection Sampling (sample from complex distribution), Prefix Sum + Binary Search (weighted random selection)"
+    },
   },
   {
     id: "design-ds",
@@ -587,5 +928,12 @@ export default [
     difficulty: "Advanced",
     icon: "⚙",
     order: 132,
+    recognition: {
+      signals: "Problem asks to design a data structure with specific time/space constraints for operations. Keywords: 'design', 'LRU cache', 'LFU cache', 'insert delete random', 'time-based key-value', 'stream median', 'all O(1)', 'data structure design', 'implement', 'build', 'support operations', 'O(1) operations'.",
+      decision_flow: "1. Need O(1) get and put with eviction policy? → LRU Cache (HashMap + Doubly Linked List). 2. Need LFU (least frequently used) eviction? → LFU Cache (HashMap of frequency buckets). 3. Insert, delete, getRandom all O(1)? → HashMap (value→index) + Array (actual values), for delete swap with last. 4. Time-based key-value store? → HashMap of (key → list of (timestamp, value) sorted by timestamp) + binary search on get. 5. Stream median? → Two Heaps (max-heap for left half, min-heap for right half). 6. Need all operations O(1) average? → Combine appropriate primitives (arrays, hashmaps, linked lists).",
+      example_problems: "LeetCode: LRU Cache (146), LFU Cache (460), Insert Delete GetRandom (380), Time Based Key-Value Store (981), Find Median from Data Stream (295). Codeforces: Data structure design problems. CodeChef: DESIGN. HackerRank: Simple Text Editor, Data Structure Design (LRU).",
+      beginner_mistakes: "Not handling capacity limits correctly. For LRU: forgetting to update ordering on get operation. For getRandom: O(n) implementation instead of O(1) with HashMap + Array. For stream median: not balancing two heaps correctly (left.size - right.size <= 1). For time-based KV: using array instead of binary search for timestamp lookup. Not using dummy head/tail nodes for linked list (simplifies boundary cases).",
+      alternative_patterns: "HashMap (most design problems use HashMap as building block), Doubly Linked List (LRU, frequent insert/delete), Array (O(1) random access), Heap/PriorityQueue (stream median, top k), Stack/Queue (simpler LIFO/FIFO design)"
+    },
   },
-];
+  ];

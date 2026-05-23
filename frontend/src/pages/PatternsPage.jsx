@@ -65,7 +65,7 @@ export default function PatternsPage() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 14 }}>
         {filtered.map(p => (
-          <Link key={p.id} to={p.type === 'technique' ? `/problems?technique=${p.id}` : `/problems?category=${p.id}`} style={{ textDecoration: 'none' }}>
+          <Link key={p.id} to={`/patterns/${p.id}`} style={{ textDecoration: 'none' }}>
             <div className="card card-hover" style={{ padding: 20, cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
                 <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>{p.name}</div>

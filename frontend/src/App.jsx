@@ -7,6 +7,7 @@ import PlaygroundPage from './pages/PlaygroundPage';
 import ProblemsPage from './pages/ProblemsPage';
 import ProblemDetailPage from './pages/ProblemDetailPage';
 import PatternsPage from './pages/PatternsPage';
+import PatternDetailPage from './pages/PatternDetailPage';
 import VisualizerPage from './pages/VisualizerPage';
 import DashboardPage from './pages/DashboardPage';
 import Navbar from './components/Navbar';
@@ -25,6 +26,7 @@ function AppContent() {
         <Route path="/lessons/:id" element={<LessonDetailPage username={username} />} />
         <Route path="/playground" element={<PlaygroundPage />} />
         <Route path="/patterns" element={<PatternsPage />} />
+        <Route path="/patterns/:id" element={<PatternDetailPage />} />
         <Route path="/problems" element={<ProblemsPage />} />
         <Route path="/problems/:id" element={<ProblemDetailPage username={username} />} />
         <Route path="/visualizer" element={<VisualizerPage />} />
