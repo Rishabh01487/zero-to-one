@@ -34,6 +34,7 @@ Step 3: left=0 right=1
 
 Edge cases: no valid pair (loop exits without return), duplicates in array, target as sum of first+last.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Two Sum II - Input Array Sorted\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int i = 0, j = n-1;\nwhile (i < j) {\n  int sum = arr[i] + arr[j];\n  if (sum == target) { cout << i+1 << \" \" << j+1; return 0; }\n  else if (sum < target) i++;\n  else j--;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n  // two pointers\n  return 0;\n}",
@@ -79,6 +80,7 @@ i=1 (-1), continue:
 
 Edge cases: no triplets, all zeros, large negatives, all same element.`,
     complexity: {"time":"O(n²)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"3Sum\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nfor (int i = 0; i < n-2; i++) {\n  if (i > 0 && nums[i] == nums[i-1]) continue;\n  int j = i+1, k = n-1;\n  while (j < k) {\n    int sum = nums[i] + nums[j] + nums[k];\n    if (sum == 0) { /* record triplet */ j++; k--; while (j < k && nums[j]==nums[j-1]) j++; while (j < k && nums[k]==nums[k+1]) k--; }\n    else if (sum < 0) j++;\n    else k--;\n  }\n}",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sort + two pointers\n  return 0;\n}",
@@ -122,6 +124,7 @@ Continue until pointers cross. Final max = 49.
 
 Edge cases: increasing heights, decreasing heights, only 2 lines, equal heights.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Container With Most Water\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int i = 0, j = n-1, maxArea = 0;\nwhile (i < j) {\n  int area = min(height[i], height[j]) * (j - i);\n  maxArea = max(maxArea, area);\n  if (height[i] < height[j]) i++;\n  else j--;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int h[n]; for (int i = 0; i < n; i++) cin >> h[i];\n  // two pointers\n  cout << maxArea << endl;\n  return 0;\n}",
@@ -166,6 +169,7 @@ Return slow+1 = 3. Array = [1,2,3,...].
 
 Edge cases: n=0 (return 0), n=1 (return 1), all same, all unique.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Remove Duplicates from Sorted Array\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "if (n == 0) return 0;\nint slow = 0;\nfor (int fast = 1; fast < n; fast++)\n  if (arr[fast] != arr[slow]) arr[++slow] = arr[fast];",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // two pointer removal\n  return 0;\n}",
@@ -207,6 +211,7 @@ Continue for all (i,j) pairs. Skip duplicate i and j values.
 
 Edge cases: large target overflow (use long long), no quadruplets, all same.`,
     complexity: {"time":"O(n³)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"4Sum\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nfor (int i = 0; i < n-3; i++) {\n  if (i > 0 && nums[i] == nums[i-1]) continue;\n  for (int j = i+1; j < n-2; j++) {\n    if (j > i+1 && nums[j] == nums[j-1]) continue;\n    int k = j+1, l = n-1;\n    while (k < l) {\n      long long sum = (long long)nums[i]+nums[j]+nums[k]+nums[l];\n      if (sum == target) { /* record */ k++; l--; while (k<l && nums[k]==nums[k-1]) k++; while (k<l && nums[l]==nums[l+1]) l--; }\n      else if (sum < target) k++;\n      else l--;\n    }\n  }\n}",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n  // sort + 2 nested loops + 2 pointers\n  return 0;\n}",
@@ -246,6 +251,7 @@ Total = 2
 
 Edge cases: all zeros, large numbers (use long long), no valid tuples.`,
     complexity: {"time":"O(n²)","space":"O(n²)"},
+    mermaid: "flowchart TD\n  A[\"4Sum II\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "unordered_map<int,int> mp;\nfor (int a : A) for (int b : B) mp[a+b]++;\nint cnt = 0;\nfor (int c : C) for (int d : D) cnt += mp[-(c+d)];",
     solution_template: "#include <iostream>\n#include <unordered_map>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int A[n],B[n],C[n],D[n];\n  for (int i=0;i<n;i++) cin>>A[i];\n  for (int i=0;i<n;i++) cin>>B[i];\n  for (int i=0;i<n;i++) cin>>C[i];\n  for (int i=0;i<n;i++) cin>>D[i];\n  // hashmap of pair sums\n  return 0;\n}",
@@ -292,6 +298,7 @@ Result: [0,0,1,1,2,2]
 
 Edge cases: all 0s, all 2s, n=1.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Sort Colors (Dutch National Flag)\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int low=0, mid=0, high=n-1;\nwhile (mid <= high) {\n  if (arr[mid]==0) swap(arr[low++], arr[mid++]);\n  else if (arr[mid]==1) mid++;\n  else swap(arr[mid], arr[high--]);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // DNF sort\n  for (int i=0;i<n;i++) cout << arr[i] << \" \";\n  return 0;\n}",
@@ -336,6 +343,7 @@ Return slow = 2. First 2 elements = [2,2].
 
 Edge cases: all equal to val (return 0), none equal to val (return n), empty array.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Remove Element\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "int slow = 0;\nfor (int fast = 0; fast < n; fast++)\n  if (arr[fast] != val) arr[slow++] = arr[fast];\nreturn slow;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, val; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> val;\n  // two pointer remove\n  return 0;\n}",
@@ -384,6 +392,7 @@ Return slow = 5.
 
 Edge cases: array length < 3, all same, all unique.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Remove Duplicates from Sorted Array II\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "if (n <= 2) return n;\nint slow = 2;\nfor (int fast = 2; fast < n; fast++)\n  if (arr[fast] != arr[slow-2]) arr[slow++] = arr[fast];\nreturn slow;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // two pointer, keep at most 2\n  return 0;\n}",
@@ -432,6 +441,7 @@ Result: [1, 3, 12, 0, 0]
 
 Edge cases: no zeroes, all zeroes, n=1.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Move Zeroes\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "int slow = 0;\nfor (int fast = 0; fast < n; fast++)\n  if (arr[fast] != 0) swap(arr[slow++], arr[fast]);",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // move zeroes\n  for (int i=0;i<n;i++) cout << arr[i] << \" \";\n  return 0;\n}",
@@ -469,6 +479,7 @@ s == t → true
 
 Edge cases: multiple consecutive #, leading #, empty string after backspaces.`,
     complexity: {"time":"O(n+m)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Backspace String Compare\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "int i = s.size()-1, j = t.size()-1, skipS = 0, skipT = 0;\nwhile (i >= 0 || j >= 0) {\n  while (i >= 0) { if (s[i]=='#') { skipS++; i--; } else if (skipS>0) { skipS--; i--; } else break; }\n  while (j >= 0) { if (t[j]=='#') { skipT++; j--; } else if (skipT>0) { skipT--; j--; } else break; }\n  if (i<0 && j<0) return true;\n  if (i<0 || j<0 || s[i]!=t[j]) return false;\n  i--; j--;\n}\nreturn true;",
     solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  string s, t; getline(cin, s); getline(cin, t);\n  // two pointer backspace compare\n  return 0;\n}",
@@ -508,6 +519,7 @@ Return true.
 
 Edge cases: already palindrome, empty/1-char string, delete first or last char, mismatch at center.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Valid Palindrome II\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "int i = 0, j = s.size()-1;\nwhile (i < j) {\n  if (s[i] != s[j]) {\n    auto check = [&](int l, int r) { while (l<r) if (s[l++]!=s[r--]) return false; return true; };\n    return check(i+1,j) || check(i,j-1);\n  }\n  i++; j--;\n}\nreturn true;",
     solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  string s; cin >> s;\n  // two pointers with one deletion\n  return 0;\n}",
@@ -553,6 +565,7 @@ Return 2.
 
 Edge cases: exact match returns early, n=3, all same numbers.`,
     complexity: {"time":"O(n²)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"3Sum Closest\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nint closest = nums[0]+nums[1]+nums[2];\nfor (int i=0; i<n-2; i++) {\n  int j=i+1, k=n-1;\n  while (j < k) {\n    int sum = nums[i]+nums[j]+nums[k];\n    if (sum == target) return target;\n    if (abs(sum-target) < abs(closest-target)) closest = sum;\n    if (sum < target) j++;\n    else k--;\n  }\n}\nreturn closest;",
     solution_template: "#include <iostream>\n#include <algorithm>\n#include <cstdlib>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i=0;i<n;i++) cin>>arr[i];\n  cin >> target;\n  // sort + two pointers\n  return 0;\n}",
@@ -598,6 +611,7 @@ Total count = 2 → triplets: [-2,0,1], [-2,0,3]
 
 Edge cases: no triplets with sum < target, all triplets valid, n=3.`,
     complexity: {"time":"O(n²)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"3Sum Smaller\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nint count = 0;\nfor (int i=0; i<n-2; i++) {\n  int j=i+1, k=n-1;\n  while (j < k) {\n    if (nums[i]+nums[j]+nums[k] < target) { count += k-j; j++; }\n    else k--;\n  }\n}\nreturn count;",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i=0;i<n;i++) cin>>arr[i];\n  cin >> target;\n  // sort + two pointers\n  return 0;\n}",
@@ -640,6 +654,7 @@ Result = [2]
 
 Edge cases: no intersection, one empty array, all elements intersect, duplicates.`,
     complexity: {"time":"O(n log n + m log m)","space":"O(min(n,m))"},
+    mermaid: "flowchart TD\n  A[\"Intersection of Two Arrays\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "sort(n1,n1+n); sort(n2,n2+m);\nint i=0,j=0;\nwhile(i<n && j<m) {\n  if (n1[i]==n2[j]) { cout << n1[i] << \" \"; while(i<n && n1[i]==n2[j]) i++; j++; }\n  else if (n1[i] < n2[j]) i++;\n  else j++;\n}",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin>>n; int a[n]; for(int i=0;i<n;i++) cin>>a[i];\n  int m; cin>>m; int b[m]; for(int i=0;i<m;i++) cin>>b[i];\n  // sort + two pointers\n  return 0;\n}",
@@ -676,6 +691,7 @@ Differs from Intersection I: consecutive equal values in arr1 are both included 
 
 Edge cases: no intersection, one array subset of other, all elements match, empty arrays.`,
     complexity: {"time":"O(n log n + m log m)","space":"O(min(n,m))"},
+    mermaid: "flowchart TD\n  A[\"Intersection of Two Arrays II\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "sort(n1,n1+n); sort(n2,n2+m);\nint i=0,j=0;\nwhile(i<n && j<m) {\n  if (n1[i]==n2[j]) { cout << n1[i] << \" \"; i++; j++; }\n  else if (n1[i] < n2[j]) i++;\n  else j++;\n}",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin>>n; int a[n]; for(int i=0;i<n;i++) cin>>a[i];\n  int m; cin>>m; int b[m]; for(int i=0;i<m;i++) cin>>b[i];\n  // sort + two pointers\n  return 0;\n}",
@@ -709,6 +725,7 @@ Step2: left=0(2) right=2(5) sum=7 == target → return [1,3] (0-based: [0,2])
 
 Edge cases: no pair exists, negative numbers, target smaller than all sums, target larger than all sums, duplicate values. Works because array is strictly sorted.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Two Sum II - Pair with Target Sum\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int i=0, j=n-1;\nwhile(i<j) {\n  if(arr[i]+arr[j]==target) { cout<<i+1<<\" \"<<j+1; return 0; }\n  else if(arr[i]+arr[j]<target) i++;\n  else j--;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  cin>>target;\n  // two pointers\n  return 0;\n}",
@@ -749,6 +766,7 @@ Total combinations = 4
 
 Edge cases: large counts (mod 10^9+7), all same values, no triplets.`,
     complexity: {"time":"O(n²)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"3Sum With Multiplicity\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nconst int MOD = 1e9+7;\nlong long ans = 0;\nfor (int i=0; i<n-2; i++) {\n  int j=i+1, k=n-1;\n  while (j < k) {\n    int sum = nums[i]+nums[j]+nums[k];\n    if (sum < target) j++;\n    else if (sum > target) k--;\n    else {\n      if (nums[j]==nums[k]) { int cnt = k-j+1; ans += cnt*(cnt-1)/2; ans %= MOD; break; }\n      int left=1, right=1;\n      while (j+1<k && nums[j]==nums[j+1]) { left++; j++; }\n      while (k-1>j && nums[k]==nums[k-1]) { right++; k--; }\n      ans += left*right; ans %= MOD; j++; k--;\n    }\n  }\n}\nreturn (int)ans;",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n, target; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  cin>>target;\n  // sort + two pointers\n  return 0;\n}",
@@ -797,6 +815,7 @@ Max length = 5.
 
 Edge cases: no peak (return 0), plateau at peak, n < 3.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Mountain in Array\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int maxLen = 0;\nfor (int i=1; i<n-1; i++) {\n  if (arr[i]>arr[i-1] && arr[i]>arr[i+1]) {\n    int left=i-1, right=i+1;\n    while (left>0 && arr[left]>arr[left-1]) left--;\n    while (right<n-1 && arr[right]>arr[right+1]) right++;\n    maxLen = max(maxLen, right-left+1);\n    i = right;\n  }\n}\nreturn maxLen;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  // find peaks, expand\n  return 0;\n}",
@@ -844,6 +863,7 @@ Wait let me recheck: for k=3 (side=4): left=0(2) right=2(3) → valid, count += 
 
 Edge cases: no valid triangle, all sides equal, n < 3 (return 0).`,
     complexity: {"time":"O(n²)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Valid Triangle Number\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(nums, nums+n);\nint count = 0;\nfor (int k=n-1; k>=2; k--) {\n  int left=0, right=k-1;\n  while (left < right) {\n    if (nums[left] + nums[right] > nums[k]) { count += right-left; right--; }\n    else left++;\n  }\n}\nreturn count;",
     solution_template: "#include <iostream>\n#include <algorithm>\nusing namespace std;\n\nint main() {\n  int n; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  // sort + two pointers\n  return 0;\n}",
@@ -894,6 +914,7 @@ Result = [0, 1, 9, 16, 100]
 
 Edge cases: all non-negative, all non-positive, single element, zeros.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Squares of a Sorted Array\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int result[n], pos=n-1, left=0, right=n-1;\nwhile (left <= right) {\n  if (abs(arr[left]) > abs(arr[right])) result[pos--] = arr[left]*arr[left++];\n  else result[pos--] = arr[right]*arr[right--];\n}",
     solution_template: "#include <iostream>\n#include <cstdlib>\nusing namespace std;\n\nint main() {\n  int n; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  // two pointers from ends\n  return 0;\n}",
@@ -933,6 +954,7 @@ Second pass - output all pairs with diff==1:
 
 Edge cases: duplicates (diff=0), negative numbers, already sorted, n=2.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Absolute Difference\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "sort(arr, arr+n);\nint minDiff = INT_MAX;\nfor (int i=0; i<n-1; i++) minDiff = min(minDiff, arr[i+1]-arr[i]);\nfor (int i=0; i<n-1; i++) if (arr[i+1]-arr[i]==minDiff) cout << arr[i] << \" \" << arr[i+1] << endl;",
     solution_template: "#include <iostream>\n#include <algorithm>\n#include <climits>\nusing namespace std;\n\nint main() {\n  int n; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  // sort + find min diff\n  return 0;\n}",
@@ -970,6 +992,7 @@ Result: [4, 2, 1, 3]
 
 Edge cases: all even, all odd, single element, alternating parity. Order of evens/odds among themselves is not preserved (use stable partition if needed).`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Sort Array By Parity\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "int left=0, right=n-1;\nwhile (left < right) {\n  if (arr[left]%2==1 && arr[right]%2==0) swap(arr[left++], arr[right--]);\n  if (arr[left]%2==0) left++;\n  if (arr[right]%2==1) right--;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin>>n;\n  int arr[n]; for(int i=0;i<n;i++) cin>>arr[i];\n  // two pointer parity sort\n  for(int i=0;i<n;i++) cout<<arr[i]<<\" \";\n  return 0;\n}",
@@ -1009,6 +1032,7 @@ Result: "holle"
 
 Edge cases: no vowels, all vowels, single character, uppercase vowels (A,E,I,O,U), empty string.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Reverse Vowels of a String\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "string vowels = \"aeiouAEIOU\";\nint l=0, r=s.size()-1;\nwhile (l < r) {\n  while (l<r && vowels.find(s[l])==string::npos) l++;\n  while (l<r && vowels.find(s[r])==string::npos) r--;\n  swap(s[l++], s[r--]);\n}",
     solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  string s; cin >> s;\n  // two pointer reverse vowels\n  cout << s << endl;\n  return 0;\n}",
@@ -1052,6 +1076,7 @@ Result: "apbqcr"
 
 Edge cases: one string longer than other, empty string, single character strings, very unequal lengths.`,
     complexity: {"time":"O(n+m)","space":"O(n+m)"},
+    mermaid: "flowchart TD\n  A[\"Merge Strings Alternately\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Love Babbar 450",
     solution_code: "string result;\nint i=0, j=0;\nwhile (i < word1.size() || j < word2.size()) {\n  if (i < word1.size()) result += word1[i++];\n  if (j < word2.size()) result += word2[j++];\n}\nreturn result;",
     solution_template: "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n  string w1, w2; cin >> w1 >> w2;\n  // two pointers merge alternately\n  return 0;\n}",

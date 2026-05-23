@@ -14,6 +14,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=s.size()-1; while(i<j)swap(s[i++],s[j--]); cout<<s;",
+    mermaid: "flowchart TD\n  A[\"Reverse a String\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "palindrome-string",
@@ -30,6 +31,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "int i=0,j=s.size()-1; while(i<j)if(s[i++]!=s[j--]){cout<<\"No\";return 0;}cout<<\"Yes\";",
+    mermaid: "flowchart TD\n  A[\"Check Palindrome String\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "anagram",
@@ -46,6 +48,7 @@ export default [
     techniques: ["prefix-sum"],
     sheet: "Love Babbar 450",
     solution_code: "int cnt[26]={0}; for(char c:s)cnt[c-'a']++; for(char c:t)cnt[c-'a']--; for(int i=0;i<26;i++)if(cnt[i]!=0){cout<<\"No\";return 0;}cout<<\"Yes\";",
+    mermaid: "flowchart TD\n  A[\"Valid Anagram\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "first-non-repeat",
@@ -62,6 +65,7 @@ export default [
     techniques: ["prefix-sum"],
     sheet: "Love Babbar 450",
     solution_code: "int cnt[256]={0}; for(char c:s)cnt[c]++; for(char c:s)if(cnt[c]==1){cout<<c;return 0;}cout<<'-';",
+    mermaid: "flowchart TD\n  A[\"First Non-Repeating Character\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-substr-no-repeat",
@@ -78,6 +82,7 @@ export default [
     techniques: ["sliding-window"],
     sheet: "Striver A2Z",
     solution_code: "int last[256]; memset(last,-1,sizeof(last)); int l=0,mx=0; for(int r=0;r<s.size();r++){if(last[s[r]]>=l)l=last[s[r]]+1;last[s[r]]=r;mx=max(mx,r-l+1);}cout<<mx;",
+    mermaid: "flowchart TD\n  A[\"Longest Substring Without Repeating Characters\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "lcp",
@@ -94,6 +99,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "if(n==0){cout<<\"\";return 0;} string p=strs[0]; for(int i=1;i<n;i++){int j=0;while(j<p.size()&&j<strs[i].size()&&p[j]==strs[i][j])j++;p=p.substr(0,j);}cout<<p;",
+    mermaid: "flowchart TD\n  A[\"Longest Common Prefix\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "valid-parentheses",
@@ -127,6 +133,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Striver A2Z",
     solution_code: "int l=0,r=0,mx=0; for(int i=0;i<s.size();i++){int l1=i,r1=i;while(l1>=0&&r1<s.size()&&s[l1]==s[r1]){if(r1-l1+1>mx){mx=r1-l1+1;l=l1;r=r1;}l1--;r1++;}int l2=i,r2=i+1;while(l2>=0&&r2<s.size()&&s[l2]==s[r2]){if(r2-l2+1>mx){mx=r2-l2+1;l=l2;r=r2;}l2--;r2++;}}cout<<s.substr(l,r-l+1);",
+    mermaid: "flowchart TD\n  A[\"Longest Palindromic Substring\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "str-str",
@@ -143,6 +150,7 @@ export default [
     techniques: ["two-pointers","trie"],
     sheet: "Striver A2Z",
     solution_code: "int n=haystack.size(),m=needle.size(); for(int i=0;i<=n-m;i++){int j=0;while(j<m&&haystack[i+j]==needle[j])j++;if(j==m){cout<<i;return 0;}}cout<<-1;",
+    mermaid: "flowchart TD\n  A[\"Find First Occurrence (strStr)\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "roman-integer",
@@ -176,6 +184,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "string r; int cnt=1; for(int i=1;i<=s.size();i++){if(i<s.size()&&s[i]==s[i-1])cnt++;else{r+=s[i-1]+to_string(cnt);cnt=1;}}cout<<r;",
+    mermaid: "flowchart TD\n  A[\"String Compression (Run-Length)\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "group-anagrams",
@@ -192,6 +201,7 @@ export default [
     techniques: ["prefix-sum"],
     sheet: "Striver A2Z",
     solution_code: "unordered_map<string,vector<string>> mp; for(string& s:strs){string t=s;sort(t.begin(),t.end());mp[t].push_back(s);} for(auto& p:mp){for(string& s:p.second)cout<<s<<\" \";cout<<endl;}",
+    mermaid: "flowchart TD\n  A[\"Group Anagrams\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "count-palindromic-substr",
@@ -208,6 +218,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "int cnt=0; for(int i=0;i<s.size();i++){int l=i,r=i;while(l>=0&&r<s.size()&&s[l]==s[r]){cnt++;l--;r++;}l=i;r=i+1;while(l>=0&&r<s.size()&&s[l]==s[r]){cnt++;l--;r++;}}cout<<cnt;",
+    mermaid: "flowchart TD\n  A[\"Count Palindromic Substrings\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "min-char-palindrome",
@@ -224,6 +235,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "string t=s+'#'+string(s.rbegin(),s.rend()); int lps[t.size()]={0}; for(int i=1;i<t.size();i++){int j=lps[i-1];while(j>0&&t[i]!=t[j])j=lps[j-1];if(t[i]==t[j])j++;lps[i]=j;}cout<<s.size()-lps[t.size()-1];",
+    mermaid: "flowchart TD\n  A[\"Min Chars to Make Palindrome\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "wildcard-match",
@@ -240,6 +252,7 @@ export default [
     techniques: ["backtracking"],
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(),m=p.size(); vector<vector<bool>> dp(n+1,vector<bool>(m+1)); dp[0][0]=1; for(int j=1;j<=m;j++)if(p[j-1]=='*')dp[0][j]=dp[0][j-1]; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(p[j-1]=='*')dp[i][j]=dp[i-1][j]||dp[i][j-1];else if(p[j-1]=='?'||s[i-1]==p[j-1])dp[i][j]=dp[i-1][j-1];} cout<<(dp[n][m]?\"Yes\":\"No\");",
+    mermaid: "flowchart TD\n  A[\"Wildcard Pattern Matching\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-repeating-replace",
@@ -256,6 +269,7 @@ export default [
     techniques: ["sliding-window"],
     sheet: "Striver A2Z",
     solution_code: "int cnt[26]={0},l=0,mx=0,mf=0; for(int r=0;r<s.size();r++){mf=max(mf,++cnt[s[r]-'A']);while(r-l+1-mf>k)cnt[s[l++]-'A']--;mx=max(mx,r-l+1);}cout<<mx;",
+    mermaid: "flowchart TD\n  A[\"Longest Repeating Character Replacement\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "word-break",
@@ -272,6 +286,7 @@ export default [
     techniques: ["trie"],
     sheet: "Love Babbar 450",
     solution_code: "unordered_set<string> st(dict,dict+n); vector<bool> dp(s.size()+1); dp[0]=1; for(int i=0;i<s.size();i++)if(dp[i]){string t;for(int j=i;j<s.size();j++){t+=s[j];if(st.count(t))dp[j+1]=1;}}cout<<(dp[s.size()]?\"Yes\":\"No\");",
+    mermaid: "flowchart TD\n  A[\"Word Break\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "word-search-dict",
@@ -288,6 +303,7 @@ export default [
     techniques: ["backtracking"],
     sheet: "Striver A2Z",
     solution_code: "function<bool(int,int,int)> dfs=[&](int i,int j,int k){if(k==word.size())return true;if(i<0||i>=m||j<0||j>=n||board[i][j]!=word[k])return false;char t=board[i][j];board[i][j]='#';bool f=dfs(i+1,j,k+1)||dfs(i-1,j,k+1)||dfs(i,j+1,k+1)||dfs(i,j-1,k+1);board[i][j]=t;return f;}; for(int i=0;i<m;i++)for(int j=0;j<n;j++)if(dfs(i,j,0)){cout<<\"Yes\";return 0;}cout<<\"No\";",
+    mermaid: "flowchart TD\n  A[\"Word Search\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "generate-parens",
@@ -304,6 +320,7 @@ export default [
     techniques: ["backtracking"],
     sheet: "Striver A2Z",
     solution_code: "vector<string> res; function<void(int,int,string)> bt=[&](int o,int c,string cur){if(o==n&&c==n){res.push_back(cur);return;}if(o<n)bt(o+1,c,cur+'(');if(c<o)bt(o,c+1,cur+')');}; bt(0,0,\"\"); for(auto& s:res)cout<<s<<\" \";",
+    mermaid: "flowchart TD\n  A[\"Generate Parentheses\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "letter-combo",
@@ -320,6 +337,7 @@ export default [
     techniques: ["backtracking"],
     sheet: "Striver A2Z",
     solution_code: "vector<string> res; string map[10]={\"\",\"\",\"abc\",\"def\",\"ghi\",\"jkl\",\"mno\",\"pqrs\",\"tuv\",\"wxyz\"}; function<void(int,string)> bt=[&](int i,string cur){if(i==digits.size()){res.push_back(cur);return;}for(char c:map[digits[i]-'0'])bt(i+1,cur+c);}; if(digits.empty())return 0; bt(0,\"\"); for(auto& s:res)cout<<s<<\" \";",
+    mermaid: "flowchart TD\n  A[\"Letter Combinations of a Phone Number\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "decode-ways-str",
@@ -336,6 +354,7 @@ export default [
     techniques: ["prefix-sum"],
     sheet: "Love Babbar 450",
     solution_code: "int n=s.size(); vector<int> dp(n+1); dp[0]=1; for(int i=1;i<=n;i++){if(s[i-1]!='0')dp[i]+=dp[i-1];if(i>1&&(s[i-2]=='1'||(s[i-2]=='2'&&s[i-1]<='6')))dp[i]+=dp[i-2];}cout<<dp[n];",
+    mermaid: "flowchart TD\n  A[\"Decode Ways\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "min-window-substr",
@@ -352,6 +371,7 @@ export default [
     techniques: ["sliding-window"],
     sheet: "Striver A2Z",
     solution_code: "int cnt[128]={0},ncnt[128]={0}; for(char c:t)cnt[c]++; int l=0,have=0,need=0,mnl=1e9,mns=0; for(char c:t)if(cnt[c]==1)need++; for(int r=0;r<s.size();r++){char c=s[r];ncnt[c]++;if(cnt[c]&&ncnt[c]==cnt[c])have++;while(have>=need){if(r-l+1<mnl){mnl=r-l+1;mns=l;}char lc=s[l];ncnt[lc]--;if(cnt[lc]&&ncnt[lc]<cnt[lc])have--;l++;}}cout<<(mnl==1e9?\"\":s.substr(mns,mnl));",
+    mermaid: "flowchart TD\n  A[\"Minimum Window Substring\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "check-inclusion-str",
@@ -368,6 +388,7 @@ export default [
     techniques: ["sliding-window"],
     sheet: "Striver A2Z",
     solution_code: "int cnt[26]={0},win[26]={0}; for(char c:s1)cnt[c-'a']++; int l=0; for(int r=0;r<s2.size();r++){win[s2[r]-'a']++;if(r-l+1>s1.size())win[s2[l++]-'a']--;if(r-l+1==s1.size()){int ok=1;for(int i=0;i<26;i++)if(cnt[i]!=win[i]){ok=0;break;}if(ok){cout<<\"Yes\";return 0;}}}cout<<\"No\";",
+    mermaid: "flowchart TD\n  A[\"Check String Inclusion (Permutation in String)\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "reverse-words-str",
@@ -384,6 +405,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "reverse(s.begin(),s.end()); int l=0; for(int r=0;r<=s.size();r++){if(r==s.size()||s[r]==' '){reverse(s.begin()+l,s.begin()+r);l=r+1;}} cout<<s;",
+    mermaid: "flowchart TD\n  A[\"Reverse Words in a String\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "is-subsequence",
@@ -400,6 +422,7 @@ export default [
     techniques: ["two-pointers"],
     sheet: "Love Babbar 450",
     solution_code: "int i=0; for(int j=0;i<s.size()&&j<t.size();j++)if(s[i]==t[j])i++;cout<<(i==s.size()?\"Yes\":\"No\");",
+    mermaid: "flowchart TD\n  A[\"Is Subsequence\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "basic-calc",
@@ -416,6 +439,7 @@ export default [
     techniques: ["backtracking"],
     sheet: "Striver A2Z",
     solution_code: "int res=0,sign=1; stack<int> st; for(int i=0;i<s.size();i++){if(isdigit(s[i])){int num=0;while(i<s.size()&&isdigit(s[i]))num=num*10+(s[i++]-'0');i--;res+=sign*num;}else if(s[i]=='+')sign=1;else if(s[i]=='-')sign=-1;else if(s[i]=='('){st.push(res);st.push(sign);res=0;sign=1;}else if(s[i]==')'){res=st.top()*res;st.pop();res+=st.top();st.pop();}}cout<<res;",
+    mermaid: "flowchart TD\n  A[\"Basic Calculator\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "rabin-karp-search",
@@ -460,6 +484,7 @@ Edge cases: pattern longer than text (immediate -1), empty pattern (return 0), h
     complexity: {"time":"O(n+m)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "ll p=1,ph=0,th=0;for(int i=0;i<m-1;i++)p=p*BASE%MOD;for(int i=0;i<m;i++){ph=(ph*BASE+P[i])%MOD;th=(th*BASE+T[i])%MOD;}for(int i=0;i<=n-m;i++){if(ph==th){int j=0;while(j<m&&T[i+j]==P[j])j++;if(j==m){cout<<i;return 0;}}if(i<n-m){th=(th-T[i]*p%MOD+MOD)%MOD;th=(th*BASE+T[i+m])%MOD;}}cout<<-1;",
+    mermaid: "flowchart TD\n  A[\"Rabin-Karp Pattern Search\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-common-prefix-rolling",
@@ -498,6 +523,7 @@ Edge cases: one string empty (return empty string), no common prefix (return emp
     complexity: {"time":"O(n log n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s1.size(),m=s2.size();vector<ll> h1(n+1),h2(m+1),pw(max(n,m)+1);pw[0]=1;for(int i=1;i<pw.size();i++)pw[i]=pw[i-1]*BASE%MOD;for(int i=0;i<n;i++)h1[i+1]=(h1[i]*BASE+s1[i])%MOD;for(int i=0;i<m;i++)h2[i+1]=(h2[i]*BASE+s2[i])%MOD;auto get=[&](vector<ll>&h,int l,int r){return (h[r]-h[l]*pw[r-l]%MOD+MOD)%MOD;};int lo=0,hi=min(n,m),ans=0;while(lo<=hi){int mid=(lo+hi)/2;if(get(h1,0,mid)==get(h2,0,mid)){ans=mid;lo=mid+1;}else hi=mid-1;}cout<<s1.substr(0,ans);",
+    mermaid: "flowchart TD\n  A[\"Longest Common Prefix Using Rolling Hash\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "distinct-substrings",
@@ -541,6 +567,7 @@ Edge cases: single character (1 distinct substring), all unique characters (n*(n
     complexity: {"time":"O(n^2)","space":"O(n^2)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size();ll pw[n+1];pw[0]=1;for(int i=1;i<=n;i++)pw[i]=pw[i-1]*BASE%MOD;ll h[n+1]={0};for(int i=0;i<n;i++)h[i+1]=(h[i]*BASE+s[i])%MOD;auto get=[&](int l,int r){return (h[r]-h[l]*pw[r-l]%MOD+MOD)%MOD;};ll ans=0;for(int L=1;L<=n;L++){unordered_set<ll> st;for(int i=0;i+L<=n;i++)st.insert(get(i,i+L));ans+=st.size();}cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"Count Distinct Substrings\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-palindromic-rolling",
@@ -589,6 +616,7 @@ Edge cases: single character (palindrome itself), all same characters (whole str
     complexity: {"time":"O(n log n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "string rev=string(s.rbegin(),s.rend());int n=s.size();vector<ll> pw(n+1),h1(n+1),h2(n+1);pw[0]=1;for(int i=1;i<=n;i++)pw[i]=pw[i-1]*BASE%MOD;for(int i=0;i<n;i++)h1[i+1]=(h1[i]*BASE+s[i])%MOD;for(int i=0;i<n;i++)h2[i+1]=(h2[i]*BASE+rev[i])%MOD;auto g=[&](vector<ll>&h,int l,int r){return (h[r]-h[l]*pw[r-l]%MOD+MOD)%MOD;};int mx=1,st=0;for(int i=0;i<n;i++){int lo=1,hi=min(i,n-1-i);while(lo<=hi){int m=(lo+hi)/2;if(g(h1,i-m,i+m+1)==g(h2,n-1-i-m,n-1-i+m+1)){if(2*m+1>mx){mx=2*m+1;st=i-m;}lo=m+1;}else hi=m-1;}}for(int i=0;i<n-1;i++){int lo=1,hi=min(i+1,n-1-i);while(lo<=hi){int m=(lo+hi)/2;if(g(h1,i-m+1,i+m+1)==g(h2,n-1-i-m,n-1-i+m)){if(2*m>mx){mx=2*m;st=i-m+1;}lo=m+1;}else hi=m-1;}}cout<<s.substr(st,mx);",
+    mermaid: "flowchart TD\n  A[\"Longest Palindromic Substring Using Rolling Hash\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "string-matching-all",
@@ -637,6 +665,7 @@ Edge cases: pattern longer than text (print empty line), pattern appears at over
     complexity: {"time":"O(n+m)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "if(m>n){cout<<endl;return 0;}ll p=1,ph=0,th=0;for(int i=0;i<m-1;i++)p=p*BASE%MOD;for(int i=0;i<m;i++){ph=(ph*BASE+P[i])%MOD;th=(th*BASE+T[i])%MOD;}vector<int> pos;for(int i=0;i<=n-m;i++){if(ph==th){int j=0;while(j<m&&T[i+j]==P[j])j++;if(j==m)pos.push_back(i);}if(i<n-m){th=(th-T[i]*p%MOD+MOD)%MOD;th=(th*BASE+T[i+m])%MOD;}}for(int i=0;i<pos.size();i++)cout<<pos[i]<<(i+1<pos.size()?\" \":\"\");",
+    mermaid: "flowchart TD\n  A[\"Find All Occurrences of Pattern\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "repeated-substring-pattern",
@@ -678,6 +707,7 @@ Edge cases: single character (no divisor L < n, return No), prime length n (only
     complexity: {"time":"O(n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size();vector<ll> pw(n+1),h(n+1);pw[0]=1;for(int i=1;i<=n;i++)pw[i]=pw[i-1]*BASE%MOD;for(int i=0;i<n;i++)h[i+1]=(h[i]*BASE+s[i])%MOD;auto get=[&](int l,int r){return (h[r]-h[l]*pw[r-l]%MOD+MOD)%MOD;};for(int L=1;L<=n/2;L++){if(n%L==0){ll pat=get(0,L);bool ok=1;for(int j=L;j<n;j+=L)if(get(j,j+L)!=pat){ok=0;break;}if(ok){cout<<\"Yes\";return 0;}}}cout<<\"No\";",
+    mermaid: "flowchart TD\n  A[\"Repeated Substring Pattern\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "word-dictionary-trie",
@@ -721,6 +751,7 @@ Edge cases: empty string (return false for search unless empty word added). Comp
     complexity: {"time":"O(m) insert, O(26^w) search","space":"O(total_chars)"},
     sheet: "Striver A2Z",
     solution_code: "struct Node{Node* c[26]={};bool e=0;};Node* r=new Node();auto ins=[&](string& w){Node* n=r;for(char ch:w){int i=ch-'a';if(!n->c[i])n->c[i]=new Node();n=n->c[i];}n->e=1;};function<bool(Node*,string&,int)> dfs=[&](Node* n,string& w,int i)->bool{if(!n)return 0;if(i==w.size())return n->e;if(w[i]!='.'){int ci=w[i]-'a';return n->c[ci]?dfs(n->c[ci],w,i+1):0;}for(int j=0;j<26;j++)if(n->c[j]&&dfs(n->c[j],w,i+1))return 1;return 0;};",
+    mermaid: "flowchart TD\n  A[\"Word Dictionary (Trie with Wildcard Search)\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "prefix-and-suffix-trie",
@@ -768,6 +799,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(m) per op","space":"O(total_chars)"},
     sheet: "Striver A2Z",
     solution_code: "struct Node{Node* c[26]={};bool e=0;};auto ins=[&](Node* r,string& w){Node* n=r;for(char ch:w){int i=ch-'a';if(!n->c[i])n->c[i]=new Node();n=n->c[i];}n->e=1;};function<bool(Node*,string&,int)> srch=[&](Node* n,string& w,int i)->bool{if(!n)return 0;if(i==w.size())return 1;int ci=w[i]-'a';return n->c[ci]?srch(n->c[ci],w,i+1):0;};string comb=pref;for(char c:suff)comb+=c;cout<<(srch(root,comb,0)?\"true\":\"false\");",
+    mermaid: "flowchart TD\n  A[\"Prefix and Suffix Search\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-common-prefix-strings",
@@ -784,6 +816,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n * log minLen)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=200; string ans; while(lo<=hi){int mid=(lo+hi)/2; bool ok=1;if(mid>strs[0].size()){ok=0;hi=mid-1;continue;}long long h0=0,p=1;for(int j=0;j<mid;j++){h0=(h0*31+strs[0][j])%1000000007;p=p*31%1000000007;}for(int i=1;i<n&&ok;i++){if(mid>strs[i].size()){ok=0;break;}long long h=0;for(int j=0;j<mid;j++)h=(h*31+strs[i][j])%1000000007;if(h!=h0)ok=0;}if(ok){ans=strs[0].substr(0,mid);lo=mid+1;}else hi=mid-1;}cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"Longest Common Prefix of Strings\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-repeating-substring",
@@ -800,6 +833,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n log n)","space":"O(n)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(),lo=1,hi=n-1,ans=0; while(lo<=hi){int L=(lo+hi)/2; unordered_set<long long> seen; long long h=0,p=1; bool found=0; for(int i=0;i<L;i++){h=(h*31+s[i])%1000000007;p=p*31%1000000007;} seen.insert(h); for(int i=L;i<n;i++){h=(h*31-s[i-L]*p%1000000007+1000000007)%1000000007;h=(h+s[i])%1000000007;if(seen.count(h)){found=1;break;}seen.insert(h);} if(found){ans=L;lo=L+1;}else hi=L-1;}cout<<s.substr(0,ans);",
+    mermaid: "flowchart TD\n  A[\"Longest Repeating Substring\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-substring-at-least-k-repeating",
@@ -816,6 +850,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(26*n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "function<int(int,int)> dc=[&](int l,int r){if(r-l<k)return 0;int cnt[26]={0};for(int i=l;i<r;i++)cnt[s[i]-'a']++;int ans=0,start=l;for(int i=l;i<r;i++){if(cnt[s[i]-'a']<k){ans=max(ans,dc(start,i));start=i+1;}}if(start==l)return r-l;ans=max(ans,dc(start,r));return ans;}; cout<<dc(0,s.size());",
+    mermaid: "flowchart TD\n  A[\"Longest Substring with at Least K Repeating\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "substrings-of-size-k-different-char",
@@ -832,6 +867,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n*k)","space":"O(k)"},
     sheet: "Striver A2Z",
     solution_code: "if(k>s.size()){cout<<0;return 0;} unordered_set<string> seen; int cnt[26]={0},dups=0; for(int i=0;i<k;i++){if(++cnt[s[i]-'a']==2)dups++;} if(!dups)seen.insert(s.substr(0,k)); for(int i=k;i<s.size();i++){if(--cnt[s[i-k]-'a']==1)dups--;if(++cnt[s[i]-'a']==2)dups++;if(!dups)seen.insert(s.substr(i-k+1,k));} cout<<seen.size();",
+    mermaid: "flowchart TD\n  A[\"Substrings of Size K with Distinct Chars\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "substrings-that-begin-and-end-same",
@@ -848,6 +884,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "long long cnt[26]={0},ans=0; for(char c:s)cnt[c-'a']++; for(int i=0;i<26;i++)ans+=cnt[i]*(cnt[i]+1)/2; cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"Substrings with Same Start and End\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "palindrome-substrings-count",
@@ -864,6 +901,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n^2)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(),cnt=0; long long pwr[5001]={1},fwd[5002]={0},rev[5002]={0},mod=1e9+7,base=31; for(int i=1;i<=n;i++)pwr[i]=pwr[i-1]*base%mod; for(int i=0;i<n;i++)fwd[i+1]=(fwd[i]*base+s[i])%mod; for(int i=n-1;i>=0;i--)rev[i]=(rev[i+1]*base+s[i])%mod; auto get=[&](int l,int r){return (fwd[r+1]-fwd[l]*pwr[r-l+1]%mod+mod)%mod;}; auto getr=[&](int l,int r){return (rev[l]-rev[r+1]*pwr[r-l+1]%mod+mod)%mod;}; for(int i=0;i<n;i++)for(int j=i;j<n;j++)if(get(i,j)==getr(i,j))cnt++; cout<<cnt;",
+    mermaid: "flowchart TD\n  A[\"Count Palindromic Substrings (Rolling Hash)\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "distinct-echo-substrings",
@@ -880,6 +918,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n^2)","space":"O(n^2)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(); long long pwr[2001]={1},h[2002]={0},mod=1e9+7; for(int i=1;i<=n;i++)pwr[i]=pwr[i-1]*31%mod; for(int i=0;i<n;i++)h[i+1]=(h[i]*31+s[i])%mod; auto get=[&](int l,int r){return (h[r+1]-h[l]*pwr[r-l+1]%mod+mod)%mod;}; unordered_set<long long> ans; for(int L=1;L<=n/2;L++){int cnt=0;for(int i=0;i+L+L<=n;i++){if(get(i,i+L-1)==get(i+L,i+L+L-1)){cnt++;ans.insert(get(i,i+L+L-1));}else cnt=0;}} cout<<ans.size();",
+    mermaid: "flowchart TD\n  A[\"Distinct Echo Substrings\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-nice-substring",
@@ -896,6 +935,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n^2)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(),best=0,pos=0; for(int i=0;i<n;i++){int lo=0,up=0;for(int j=i;j<n;j++){if(s[j]>='a')lo|=1<<(s[j]-'a');else up|=1<<(s[j]-'A');if(lo==up&&j-i+1>best){best=j-i+1;pos=i;}}} cout<<s.substr(pos,best);",
+    mermaid: "flowchart TD\n  A[\"Longest Nice Substring\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "delete-columns-to-make-sorted",
@@ -912,6 +952,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n*m)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int del=0; for(int j=0;j<m;j++){for(int i=1;i<n;i++){if(strs[i][j]<strs[i-1][j]){del++;break;}}} cout<<del;",
+    mermaid: "flowchart TD\n  A[\"Delete Columns to Make Sorted\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "substring-with-concatenated-words",
@@ -928,6 +969,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n * wordLen)","space":"O(no. of words)"},
     sheet: "Striver A2Z",
     solution_code: "int wl=words[0].size(), tl=wl*n; unordered_map<string,int> need; for(auto& w:words)need[w]++; for(int off=0;off<wl;off++){unordered_map<string,int> have; int cnt=0; for(int i=off;i+wl<=s.size();i+=wl){if(i>=off+tl){string out=s.substr(i-tl,wl);if(need.count(out)&&--have[out]<need[out])cnt--;}string in=s.substr(i,wl);if(need.count(in)){have[in]++;if(have[in]<=need[in])cnt++;}if(cnt==n)cout<<i-tl+wl<<\" \";}}",
+    mermaid: "flowchart TD\n  A[\"Substring with Concatenation of All Words\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "find-all-anagrams-in-string",
@@ -944,6 +986,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int ns=s.size(),np=p.size(); if(np>ns){return 0;} int need[26]={0},have[26]={0},diff=0; for(char c:p)need[c-'a']++; for(int i=0;i<np;i++)have[s[i]-'a']++; for(int i=0;i<26;i++)if(have[i]!=need[i])diff++; if(!diff)cout<<0<<\" \"; for(int i=np;i<ns;i++){int out=s[i-np]-'a',in=s[i]-'a';if(have[out]==need[out])diff++;have[out]--;if(have[out]==need[out])diff--;if(have[in]==need[in])diff++;have[in]++;if(have[in]==need[in])diff--;if(!diff)cout<<i-np+1<<\" \";}",
+    mermaid: "flowchart TD\n  A[\"Find All Anagrams in String\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "count-number-of-homogenous-substrings",
@@ -960,6 +1003,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "long long ans=0,cnt=1,mod=1e9+7; for(int i=1;i<=s.size();i++){if(i<s.size()&&s[i]==s[i-1])cnt++;else{ans=(ans+cnt*(cnt+1)/2)%mod;cnt=1;}} cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"Count Homogenous Substrings\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "check-if-string-contains-binary-codes",
@@ -976,6 +1020,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n)","space":"O(2^k)"},
     sheet: "Striver A2Z",
     solution_code: "if(k>s.size()){cout<<\"false\";return 0;} unordered_set<int> seen; int mask=(1<<k)-1, cur=0; for(int i=0;i<k;i++)cur=(cur<<1)|(s[i]-'0'); seen.insert(cur); for(int i=k;i<s.size();i++){cur=((cur<<1)|(s[i]-'0'))&mask;seen.insert(cur);if(seen.size()==(1<<k)){cout<<\"true\";return 0;}} cout<<\"false\";",
+    mermaid: "flowchart TD\n  A[\"Check All Binary Codes of Size K\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "longest-word-in-dictionary",
@@ -992,6 +1037,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n log n + total chars)","space":"O(total chars)"},
     sheet: "Striver A2Z",
     solution_code: "sort(words,words+n,[](string& a,string& b){return a.size()!=b.size()?a.size()<b.size():a<b;}); unordered_set<string> st; string ans; for(auto& w:words){if(w.size()==1||st.count(w.substr(0,w.size()-1))){st.insert(w);if(w.size()>ans.size()||(w.size()==ans.size()&&w<ans))ans=w;}} cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"Longest Word in Dictionary\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "shortest-palindrome",
@@ -1008,6 +1054,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "long long f=0,r=0,p=1,mod=1e9+7,base=31,best=0; int n=s.size(); for(int i=0;i<n;i++){f=(f*base+s[i])%mod;r=(r+s[i]*p)%mod;p=p*base%mod;if(f==r)best=i+1;} string rem=s.substr(best); reverse(rem.begin(),rem.end()); cout<<rem+s;",
+    mermaid: "flowchart TD\n  A[\"Shortest Palindrome\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "substring-with-largest-variance",
@@ -1024,6 +1071,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(26^2 * n)","space":"O(1)"},
     sheet: "Striver A2Z",
     solution_code: "int ans=0; for(char ma='a';ma<='z';ma++)for(char mi='a';mi<='z';mi++){if(ma==mi)continue;int cur=0,has=0,first=0;for(char c:s){if(c==ma)cur++;else if(c==mi){has=1;cur--;if(cur<0&&first){cur=-1;first=0;}}if(has)ans=max(ans,cur);if(cur<0){cur=0;has=0;first=1;}}} cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"Substring With Largest Variance\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "string-compression-ii",
@@ -1040,6 +1088,7 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(n^2 * k)","space":"O(n*k)"},
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(); vector<vector<int>> dp(n+1,vector<int>(k+1,100)); dp[0][0]=0; for(int i=1;i<=n;i++)for(int d=0;d<=k;d++){if(d>0)dp[i][d]=min(dp[i][d],dp[i-1][d-1]);int same=0,del=0;for(int j=i;j>=1;j--){if(s[j-1]==s[i-1])same++;else del++;if(del<=d){int len=1+(same>=10?2:same>=2?1:0);dp[i][d]=min(dp[i][d],dp[j-1][d-del]+len);}}} int ans=100; for(int d=0;d<=k;d++)ans=min(ans,dp[n][d]); cout<<ans;",
+    mermaid: "flowchart TD\n  A[\"String Compression II\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
   {
     id: "minimum-window-subsequence",
@@ -1056,5 +1105,6 @@ Edge cases: prefix or suffix longer than the word (immediate false), empty prefi
     complexity: {"time":"O(|s|*|t|)","space":"O(|s|*|t|)"},
     sheet: "Striver A2Z",
     solution_code: "int ns=s.size(),nt=t.size(); vector<vector<int>> dp(ns+1,vector<int>(nt+1,-1)); for(int i=0;i<=ns;i++)dp[i][0]=i; for(int i=1;i<=ns;i++)for(int j=1;j<=nt;j++){if(s[i-1]==t[j-1])dp[i][j]=dp[i-1][j-1];else dp[i][j]=dp[i-1][j];} int best=1e9,pos=-1; for(int i=1;i<=ns;i++){if(dp[i][nt]!=-1){int len=i-dp[i][nt];if(len<best){best=len;pos=dp[i][nt];}}} cout<<s.substr(pos,best);",
+    mermaid: "flowchart TD\n  A[\"Minimum Window Subsequence\"] --> B[\"Parse input string\"]\n  B --> C{\"Process chars\"}\n  C -->|Yes| D[\"Apply string operation\"]\n  D --> E[\"Update result\"]\n  E --> C\n  C -->|No| F[\"Return result\"]",
   },
 ];

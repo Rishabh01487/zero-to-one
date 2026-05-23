@@ -33,6 +33,7 @@ Diagram:
 
 Brute force scans all n elements O(n). Since array is sorted, comparing with middle element discards half the search space each iteration. Initialize lo=0, hi=n-1. While lo<=hi, compute mid=lo+(hi-lo)/2 to avoid overflow. If arr[mid]==target return mid. If target<arr[mid], set hi=mid-1; else lo=mid+1. Edge cases: target outside range, single element.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Binary Search (Find Index)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){cout<<m;return 0;}if(arr[m]<target)lo=m+1;else hi=m-1;}cout<<-1;",
     techniques: ["binary-search"],
@@ -90,6 +91,7 @@ Diagram:
 
 Brute force O(n) scans left for first and right for last. For first occurrence, when match found store ans and move hi=mid-1. For last occurrence, store ans and move lo=mid+1.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"First and Last Position in Sorted Array\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1,first=-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){first=m;hi=m-1;}else if(arr[m]<target)lo=m+1;else hi=m-1;} lo=0;hi=n-1;int last=-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){last=m;lo=m+1;}else if(arr[m]<target)lo=m+1;else hi=m-1;}cout<<first<<\" \"<<last;",
     techniques: ["binary-search"],
@@ -134,6 +136,7 @@ Diagram:
 
 At every mid, at least one half is fully sorted. Check arr[lo]<=arr[mid] to identify the sorted left half; if target lies within its range, search there; otherwise search the other half.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Search in Rotated Sorted Array\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1; while(lo<=hi){int m=lo+(hi-lo)/2;if(arr[m]==target){cout<<m;return 0;}if(arr[lo]<=arr[m]){if(target>=arr[lo]&&target<arr[m])hi=m-1;else lo=m+1;}else{if(target>arr[m]&&target<=arr[hi])lo=m+1;else hi=m-1;}}cout<<-1;",
     techniques: ["binary-search"],
@@ -189,6 +192,7 @@ Diagram:
 
 If arr[mid] > arr[mid+1], array descends, peak on left (including mid). Else peak on right (excluding mid).`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find Peak Element\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]>arr[m+1])hi=m;else lo=m+1;}cout<<lo;",
     techniques: ["binary-search"],
@@ -246,6 +250,7 @@ Diagram:
 
 Brute force O(x) checks every integer. Binary search on [1, x/2] is O(log x). Handle x<2 as base case. Use long long cast for multiplication.`,
     complexity: {"time":"O(log x)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Square Root (Binary Search)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=1,hi=x/2,ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if((long long)m*m<=x){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -298,6 +303,7 @@ Diagram:
 
 The key insight: partition both arrays so left half has (n+m+1)/2 elements and all left elements <= all right elements.`,
     complexity: {"time":"O(log min(n,m))","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Median of Two Sorted Arrays\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "if(n>m)swap(n,m),swap(a,b); int lo=0,hi=n; while(lo<=hi){int p1=lo+(hi-lo)/2,p2=(n+m+1)/2-p1;int l1=(p1?INT_MIN:p1-1);int r1=(p1==n?INT_MAX:a[p1]);int l2=(p2?INT_MIN:b[p2-1]);int r2=(p2==m?INT_MAX:b[p2]);if(l1<=r2&&l2<=r1){if((n+m)%2)cout<<max(l1,l2);else cout<<(max(l1,l2)+min(r1,r2))/2.0;return 0;}if(l1>r2)hi=p1-1;else lo=p1+1;}",
     techniques: ["binary-search"],
@@ -341,6 +347,7 @@ Diagram:
 
 Feasibility is monotonic: if distance d works, all smaller d also work. Greedy canPlace() places first cow at stalls[0], then each next cow when distance >= mid.`,
     complexity: {"time":"O(n log range)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Aggressive Cows (Binary Search)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(stalls,stalls+n); int lo=0,hi=stalls[n-1]-stalls[0],ans=0; while(lo<=hi){int m=lo+(hi-lo)/2;if(canPlace(stalls,n,c,m)){ans=m;lo=m+1;}else hi=m-1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -392,6 +399,7 @@ Diagram:
 
 Binary search on answer: lo=max pages (largest single book), hi=sum of pages. canAlloc() greedily checks if we can split with maxP limit using <= m students.`,
     complexity: {"time":"O(n log sum)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Book Allocation Problem\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=*max_element(pages,pages+n),hi=accumulate(pages,pages+n,0),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;if(canAlloc(pages,n,m,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -440,6 +448,7 @@ Diagram:
 
 Standard lower_bound binary search. hi starts at n (not n-1) to handle insert at end. Returns smallest index i where arr[i] >= target.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Search Insert Position\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=0,hi=n; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]<target)lo=m+1;else hi=m;}cout<<lo;",
     techniques: ["binary-search"],
@@ -486,6 +495,7 @@ Diagram:
 
 Compare arr[mid] with arr[hi]. If arr[mid] > arr[hi], minimum is in right half (lo=mid+1). Else minimum is in left half (hi=mid).`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find Minimum in Rotated Sorted Array\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "Striver A2Z",
     solution_code: "int lo=0,hi=n-1; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]>arr[hi])lo=m+1;else hi=m;}cout<<arr[lo];",
     techniques: ["binary-search"],
@@ -543,6 +553,7 @@ Diagram:
 
 Index of minimum element equals number of rotations.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Count Rotations in Rotated Sorted Array\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "GeeksforGeeks",
     solution_code: "int lo=0,hi=n-1; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]>arr[hi])lo=m+1;else hi=m;}cout<<lo;",
     techniques: ["binary-search"],
@@ -586,6 +597,7 @@ Diagram:
 
   Check: if pairs are intact (arr[mid]==arr[mid+1]), single element is on the right. Otherwise it's on the left. Ensure mid is even for clean pair check.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Single Element in a Sorted Array\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=0,hi=n-1; while(lo<hi){int m=lo+(hi-lo)/2;if(m%2)m--;if(arr[m]==arr[m+1])lo=m+2;else hi=m;}cout<<arr[lo];",
     techniques: ["binary-search"],
@@ -630,6 +642,7 @@ Diagram:
 
 Generalized median-of-two approach for arbitrary k. Partition a at p1, b at p2=k-p1. Adjust using binary search until all left elements <= all right elements.`,
     complexity: {"time":"O(log min(n,m))","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Kth Element of Two Sorted Arrays\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "GeeksforGeeks",
     solution_code: "if(n>m)swap(n,m),swap(a,b); int lo=max(0,k-m),hi=min(k,n); while(lo<=hi){int p1=lo+(hi-lo)/2,p2=k-p1;int l1=(p1?INT_MIN:a[p1-1]),r1=(p1==n?INT_MAX:a[p1]);int l2=(p2?INT_MIN:b[p2-1]),r2=(p2==m?INT_MAX:b[p2]);if(l1<=r2&&l2<=r1){cout<<max(l1,l2);return 0;}if(l1>r2)hi=p1-1;else lo=p1+1;}",
     techniques: ["binary-search"],
@@ -671,6 +684,7 @@ Diagram:
 
 Monotonic: if speed k works, all k' > k also work. Find minimum feasible k.`,
     complexity: {"time":"O(n log maxPile)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Koko Eating Bananas\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=1,hi=*max_element(piles,piles+n),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;if(canEat(piles,n,h,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -712,6 +726,7 @@ Diagram:
 
 Feasibility: can we ship with <= days using capacity mid? Ship until weight exceeds capacity, then next day.`,
     complexity: {"time":"O(n log sum)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Capacity to Ship Packages Within D Days\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=*max_element(w,w+n),hi=accumulate(w,w+n,0),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;if(canShip(w,n,days,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -754,6 +769,7 @@ Diagram:
 
 Same pattern as book allocation: binary search on answer, greedy feasibility check.`,
     complexity: {"time":"O(n log sum)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Split Array Largest Sum\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=*max_element(arr,arr+n),hi=accumulate(arr,arr+n,0),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;if(canSplit(arr,n,m,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -799,6 +815,7 @@ Diagram:
 
 Monotonic: if mid^n <= m, all smaller values also satisfy. Use overflow-safe power function.`,
     complexity: {"time":"O(log m * n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Nth Root of an Integer\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "GeeksforGeeks",
     solution_code: "int lo=1,hi=pow(m,1.0/n)+2,ans=1; while(lo<=hi){int mid=lo+(hi-lo)/2;long long p=1;for(int i=0;i<n;i++){p*=mid;if(p>m)break;}if(p<=m){ans=mid;lo=mid+1;}else hi=mid-1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -842,6 +859,7 @@ Diagram:
 
 Monotonic: larger divisors always reduce sum. Find smallest divisor where sum <= threshold.`,
     complexity: {"time":"O(n log max)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find the Smallest Divisor Given a Threshold\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=1,hi=*max_element(arr,arr+n),ans=hi; while(lo<=hi){int m=lo+(hi-lo)/2;long long sum=0;for(int i=0;i<n;i++)sum+=(arr[i]+m-1)/m;if(sum<=threshold){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -892,6 +910,7 @@ Diagram:
 
 Identical to book allocation. Binary search on max time, greedy allocate to painters.`,
     complexity: {"time":"O(n log sum)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Painter's Partition Problem\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "GeeksforGeeks",
     solution_code: "long long lo=*max_element(boards,boards+n),hi=accumulate(boards,boards+n,0LL),ans=hi; while(lo<=hi){long long m=lo+(hi-lo)/2;if(canPaint(boards,n,k,m)){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -939,6 +958,7 @@ Diagram:
 
 Timestamps are strictly increasing per key (guaranteed by set order). Upper bound binary search finds last timestamp <= given timestamp.`,
     complexity: {"time":"O(log n) per get","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Time Based Key-Value Store\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "auto& v=mp[key];int lo=0,hi=v.size()-1;string ans=\"\";while(lo<=hi){int m=lo+(hi-lo)/2;if(v[m].first<=ts){ans=v[m].second;lo=m+1;}else hi=m-1;}return ans.empty()?\"null\":ans;",
     techniques: ["binary-search"],
@@ -982,6 +1002,7 @@ Diagram:
 
 lower_bound on prefix sums: find first pref[mid] >= r.`,
     complexity: {"time":"O(log n) per pick, O(n) init","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Random Pick with Weight\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int r=rand()%total+1,lo=0,hi=pref.size()-1;while(lo<hi){int m=lo+(hi-lo)/2;if(pref[m]<r)lo=m+1;else hi=m;}return lo;",
     techniques: ["binary-search"],
@@ -1026,6 +1047,7 @@ Diagram:
 
 Collect all start points with original indices, sort, then for each interval binary search first start >= end.`,
     complexity: {"time":"O(n log n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Find Right Interval\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "sort(starts,starts+n); for(int i=0;i<n;i++){int t=intervals[i].second,lo=0,hi=n-1,idx=-1;while(lo<=hi){int m=lo+(hi-lo)/2;if(starts[m].first>=t){idx=starts[m].second;hi=m-1;}else lo=m+1;}cout<<idx<<\" \";}",
     techniques: ["binary-search"],
@@ -1077,6 +1099,7 @@ Diagram:
 
 Stair-step counting (O(n)) leverages row/col sorted property: start bottom-left, move right if value <= mid, up otherwise.`,
     complexity: {"time":"O(n log range)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Kth Smallest Element in a Sorted Matrix\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=matrix[0][0],hi=matrix[n-1][n-1],ans=lo; while(lo<=hi){int m=lo+(hi-lo)/2,cnt=0,row=n-1,col=0;while(row>=0&&col<n){if(matrix[row][col]<=m){cnt+=row+1;col++;}else row--;}if(cnt>=k){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -1118,6 +1141,7 @@ Diagram:
 
 Two-pointer counting: for each i, find first j where arr[j]-arr[i] > mid, add (j-i-1) pairs.`,
     complexity: {"time":"O(n log range + n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find Kth Smallest Pair Distance\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "sort(arr,arr+n); int lo=0,hi=arr[n-1]-arr[0],ans=0; while(lo<=hi){int m=lo+(hi-lo)/2,cnt=0,j=0;for(int i=0;i<n;i++){while(j<n&&arr[j]-arr[i]<=m)j++;cnt+=j-i-1;}if(cnt>=k){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -1164,6 +1188,7 @@ Diagram:
 
 Find max in middle row. If it's greater than both vertical neighbors, return. Otherwise move toward the larger neighbor.`,
     complexity: {"time":"O(n log m)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find Peak Element II (2D Matrix)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=0,hi=n-1; while(lo<=hi){int m=lo+(hi-lo)/2,mc=0;for(int j=0;j<m;j++)if(mat[m][j]>mat[m][mc])mc=j;if((m==0||mat[m][mc]>mat[m-1][mc])&&(m==n-1||mat[m][mc]>mat[m+1][mc])){cout<<m<<\" \"<<mc;return 0;}if(m>0&&mat[m][mc]<mat[m-1][mc])hi=m-1;else lo=m+1;}",
     techniques: ["binary-search"],
@@ -1208,6 +1233,7 @@ Diagram:
 
 If array is [0..n] missing one, after sorting arr[i] should equal i for all i < missing number. First arr[i] > i gives the missing number.`,
     complexity: {"time":"O(n log n) dominant sort","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Missing Number (Binary Search)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "sort(arr,arr+n); int lo=0,hi=n; while(lo<hi){int m=lo+(hi-lo)/2;if(arr[m]>m)hi=m;else lo=m+1;}cout<<lo;",
     techniques: ["binary-search"],
@@ -1252,6 +1278,7 @@ Diagram:
 
 Pigeonhole principle: if numbers are 1..n and array has n+1 elements, count of numbers <= mid being > mid indicates duplicate in [1..mid].`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find the Duplicate Number (Binary Search)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=1,hi=n,ans=-1; while(lo<=hi){int m=lo+(hi-lo)/2,c=0;for(int i=0;i<n+1;i++)if(arr[i]<=m)c++;if(c>m){ans=m;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -1295,6 +1322,7 @@ Diagram:
 
 For each mid (start candidate), compare distance to arr[mid] and arr[mid+k]. If left element further away than right, shift window right.`,
     complexity: {"time":"O(log(n-k) + k)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find K Closest Elements\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=0,hi=n-k; while(lo<hi){int m=lo+(hi-lo)/2;if(x-arr[m]>arr[m+k]-x)lo=m+1;else hi=m;}for(int i=lo;i<lo+k;i++)cout<<arr[i]<<\" \";",
     techniques: ["binary-search"],
@@ -1336,6 +1364,7 @@ Diagram:
 
 h-index is max h such that at least h papers have >= h citations. In sorted ascending order, find first arr[i] >= n-i, then h = n-i.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"H-Index II (Binary Search)\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=0,hi=n-1,ans=0; while(lo<=hi){int m=lo+(hi-lo)/2,p=n-m;if(arr[m]>=p){ans=p;hi=m-1;}else lo=m+1;}cout<<ans;",
     techniques: ["binary-search"],
@@ -1372,6 +1401,7 @@ Diagram:
 
   Alternative: two-pointer merge is O(n+m). Binary search per unique element is O(n log m).`,
     complexity: {"time":"O(n log m)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Intersection of Two Sorted Arrays\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "sort(a,a+n);sort(b,b+m); vector<int>ans; for(int i=0;i<n;i++){if(i&&a[i]==a[i-1])continue;int lo=0,hi=m-1;while(lo<=hi){int m=lo+(hi-lo)/2;if(b[m]==a[i]){ans.push_back(a[i]);break;}if(b[m]<a[i])lo=m+1;else hi=m-1;}} for(int x:ans)cout<<x<<\" \";",
     techniques: ["binary-search"],
@@ -1417,6 +1447,7 @@ Diagram:
 
 For each sorted row, binary search first negative index, then all elements to its right are also negative.`,
     complexity: {"time":"O(n log m)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Count Negative Numbers in a Sorted Matrix\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int cnt=0; for(int i=0;i<n;i++){int lo=0,hi=m-1,pos=-1;while(lo<=hi){int m=lo+(hi-lo)/2;if(mat[i][m]<0){pos=m;hi=m-1;}else lo=m+1;}if(pos!=-1)cnt+=m-pos;}cout<<cnt;",
     techniques: ["binary-search"],
@@ -1461,6 +1492,7 @@ Diagram:
 
 Standard upper_bound: find first character strictly greater than target. If none (lo==n), return first due to wrap-around.`,
     complexity: {"time":"O(log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Find Smallest Letter Greater Than Target\"] --> B[\"low=0, high=n-1\"]\n  B --> C{\"low <= high?\"}\n  C -->|Yes| D[\"mid = (low+high)/2\"]\n  D --> E{\"arr[mid] == target?\"}\n  E -->|Yes| F[\"Return mid\"]\n  E -->|\"< target\"| G[\"low = mid+1\"]\n  E -->|\"> target\"| H[\"high = mid-1\"]\n  G --> C\n  H --> C\n  C -->|No| I[\"Return -1\"]",
     sheet: "LeetCode",
     solution_code: "int lo=0,hi=n; while(lo<hi){int m=lo+(hi-lo)/2;if(letters[m]<=target)lo=m+1;else hi=m;}cout<<(lo==n?letters[0]:letters[lo]);",
     techniques: ["binary-search"],

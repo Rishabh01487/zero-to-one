@@ -44,6 +44,7 @@ The greedy works because picking the earliest-finishing compatible activity
 maximizes remaining time for other activities. Sorting by finish is O(n log n)
 and the selection pass is O(n).`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Activity Selection\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(act,act+n,[](auto& a,auto& b){return a.end<b.end;}); int cnt=1,last=act[0].end; for(int i=1;i<n;i++){if(act[i].start>=last){cnt++;last=act[i].end;}}cout<<cnt;",
     techniques: ["greedy"]
@@ -91,6 +92,7 @@ The greedy choice of highest ratio per unit weight is optimal because
 any unit of capacity is best filled with the highest-ratio item available.
 This holds because items are divisible (fractional).`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Fractional Knapsack\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(items,items+n,[](auto& a,auto& b){return a.value*b.weight>b.value*a.weight;}); double profit=0; for(int i=0;i<n&&W>0;i++){int take=min(items[i].weight,W);profit+=take*items[i].value/items[i].weight;W-=take;}cout<<fixed<<setprecision(2)<<profit;",
     techniques: ["greedy"]
@@ -140,6 +142,7 @@ Step 2: Greedy selection
 
 Result: [1, 2, 4, 5] = 4 meetings`,
     complexity: {"time":"O(n log n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"N Meetings in One Room\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(meetings,meetings+n,[](auto& a,auto& b){return a.end<b.end;}); int cnt=1,last=meetings[0].end; for(int i=1;i<n;i++){if(meetings[i].start>last){cnt++;last=meetings[i].end;}}cout<<cnt;",
     techniques: ["greedy"]
@@ -183,6 +186,7 @@ NOTE: Greedy only works for canonical coin systems (where each coin
 value is a multiple of the next smaller coin). For arbitrary denominations,
 use DP (minimum coin change).`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Coin Change (Greedy)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(coins,coins+n,greater<int>()); int cnt=0; for(int i=0;i<n;i++){cnt+=amount/coins[i];amount%=coins[i];}cout<<cnt;",
     techniques: ["greedy"]
@@ -234,6 +238,7 @@ Case 2: nums = [3, 2, 1, 0, 4]
 The greedy insight: only track the farthest index reachable. If any index
 is beyond maxReach, it's impossible to continue.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Jump Game (Can Reach End)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int maxReach = 0; for (int i = 0; i < n; i++) { if (i > maxReach) { cout << \"No\" << endl; return 0; } maxReach = max(maxReach, i + nums[i]); } cout << \"Yes\" << endl;",
     techniques: ["greedy"]
@@ -277,6 +282,7 @@ Greedy choice: at each step, explore the farthest we can reach within
 current jump range. When we exhaust the current range, we must jump,
 and the next range is the farthest we've explored.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Jump Game II (Min Jumps)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int jumps=0,cur=0,far=0; for(int i=0;i<n-1;i++){far=max(far,i+nums[i]);if(i==cur){jumps++;cur=far;}}cout<<jumps;",
     techniques: ["greedy"]
@@ -350,6 +356,7 @@ always choosing to explore the next reachable index. The search is optimal
 because any path to a zero-valued index is shortest in terms of number of
 jumps when found via BFS.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Jump Game III (Jump to Zero)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "queue<int> q; vector<bool> v(n); q.push(start); v[start]=1; while(!q.empty()){int i=q.front();q.pop();if(arr[i]==0){cout<<\"Yes\";return;}int a=i+arr[i],b=i-arr[i];if(a<n&&!v[a]){v[a]=1;q.push(a);}if(b>=0&&!v[b]){v[b]=1;q.push(b);}}cout<<\"No\";",
     techniques: ["greedy", "bfs"]
@@ -397,6 +404,7 @@ and the first time we reach index n-1 gives the shortest path.
 The optimization: after processing a same-value group, clear it from
 the map to avoid redundant checks.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Jump Game IV (Min Jumps with Same Value)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "unordered_map<int,vector<int>> mp; for(int i=0;i<n;i++) mp[arr[i]].push_back(i); queue<int> q; vector<int> d(n,-1); q.push(0); d[0]=0; while(!q.empty()){int i=q.front();q.pop();if(i==n-1)break; for(int j:mp[arr[i]]){if(d[j]==-1){d[j]=d[i]+1;q.push(j);}}mp.erase(arr[i]); if(i+1<n&&d[i+1]==-1){d[i+1]=d[i]+1;q.push(i+1);} if(i-1>=0&&d[i-1]==-1){d[i-1]=d[i]+1;q.push(i-1);}}cout<<d[n-1];",
     techniques: ["greedy", "bfs"]
@@ -446,6 +454,7 @@ Step 2: Two-pointer simulation (i=arr, j=dep)
 
 Result: 3`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Platforms Required\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(arr,arr+n);sort(dep,dep+n); int plat=1,maxP=1,i=1,j=0; while(i<n&&j<n){if(arr[i]<=dep[j]){plat++;i++;}else{plat--;j++;}maxP=max(maxP,plat);}cout<<maxP;",
     techniques: ["greedy", "two-pointers"]
@@ -506,6 +515,7 @@ Result: f:0 c:100 d:101 a:1100 b:1101 e:111
 Greedy property: merging smallest frequencies locally minimizes
 the total weighted path length, which gives optimal prefix-free codes.`,
     complexity: {"time":"O(n log n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Huffman Coding\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "// Build min-heap of nodes. While size > 1: extract min2, create parent = sum, insert. Last node is root.",
     techniques: ["greedy"]
@@ -572,6 +582,7 @@ it to the latest available slot ensures we don't block earlier deadlines
 unnecessarily. The Union-Find (Disjoint Set) optimization speeds up
 finding the nearest free slot from O(n*d) to nearly O(n).`,
     complexity: {"time":"O(n log n + n*d)","space":"O(max deadline)"},
+    mermaid: "flowchart TD\n  A[\"Job Sequencing with Deadlines\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(jobs,jobs+n,[](auto& a,auto& b){return a.profit>b.profit;}); vector<int> slot(md+1,-1); int cnt=0,profit=0; for(auto& j:jobs){for(int t=j.deadline;t>0;t--){if(slot[t]==-1){slot[t]=j.id;cnt++;profit+=j.profit;break;}}}cout<<cnt<<\" \"<<profit;",
     techniques: ["greedy", "union-find"]
@@ -620,6 +631,7 @@ Key greedy insight: If the cumulative surplus becomes negative at i,
 no station from start to i can be a valid starting point. We skip ahead
 to i+1 as the only possible candidate. Single O(n) pass suffices.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Gas Station (Circular Tour)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int total = 0, cur = 0, start = 0; for (int i = 0; i < n; i++) { total += gas[i] - cost[i]; cur += gas[i] - cost[i]; if (cur < 0) { start = i + 1; cur = 0; } } cout << (total >= 0 ? start : -1) << endl;",
     techniques: ["greedy"]
@@ -678,6 +690,7 @@ Left pass ensures each child > left neighbor gets more candies.
 Right pass ensures each child > right neighbor gets enough.
 Combined, both constraints are satisfied globally with minimum total.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Candy Distribution\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<int> c(n,1); for(int i=1;i<n;i++) if(ratings[i]>ratings[i-1]) c[i]=c[i-1]+1; for(int i=n-2;i>=0;i--) if(ratings[i]>ratings[i+1]) c[i]=max(c[i],c[i+1]+1); int sum=0; for(int x:c) sum+=x; cout<<sum;",
     techniques: ["greedy"]
@@ -724,6 +737,7 @@ Greedy choice: sorting by end ensures each arrow bursts the maximum
 number of remaining balloons — always shoot at the end of the balloon
 that finishes earliest among those not yet burst.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Arrows to Burst Balloons\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(bal,bal+n,[](auto& a,auto& b){return a.second<b.second;}); int a=1,end=bal[0].second; for(int i=1;i<n;i++){if(bal[i].first>end){a++;end=bal[i].second;}}cout<<a;",
     techniques: ["greedy"]
@@ -771,6 +785,7 @@ Result: 1 interval to remove
 Same greedy principle as activity selection: maximize kept intervals
 by always picking the one with earliest finish. Min to remove = n - max kept.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Non-Overlapping Intervals\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(inv,inv+n,[](auto& a,auto& b){return a.second<b.second;}); int k=1,e=inv[0].second; for(int i=1;i<n;i++){if(inv[i].first>=e){k++;e=inv[i].second;}}cout<<n-k;",
     techniques: ["greedy"]
@@ -816,6 +831,7 @@ is detected we always remove the later-ending interval (the current one),
 which minimizes the chance of future overlaps. This is equivalent to
 maximizing the number of kept intervals.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Remove Overlap Intervals (Erase Overlap)\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(inv,inv+n,[](auto& a,auto& b){return a.second<b.second;}); int r=0,e=-1e9; for(auto& p:inv){if(p.first>=e)e=p.second;else r++;}cout<<r;",
     techniques: ["greedy"]
@@ -875,6 +891,7 @@ Greedy: extend the current segment's end boundary to the furthest last
 occurrence of any character seen so far. When i reaches end, the segment
 is complete because all its characters only appear within it.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Partition Labels\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int last[26]; for(int i=0;i<n;i++)last[s[i]-'a']=i; int st=0,en=0; for(int i=0;i<n;i++){en=max(en,last[s[i]-'a']);if(i==en){cout<<en-st+1<<\" \";st=i+1;}}",
     techniques: ["greedy"]
@@ -924,6 +941,7 @@ If k remains after flipping all negatives, only the parity of k matters
 because double-flip cancels out. An odd k flips the smallest absolute
 value element.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximize Sum After K Negations\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(arr,arr+n); for(int i=0;i<n&&k>0&&arr[i]<0;i++){arr[i]=-arr[i];k--;} if(k%2)*min_element(arr,arr+n)= -*min_element(arr,arr+n); cout<<accumulate(arr,arr+n,0);",
     techniques: ["greedy"]
@@ -989,6 +1007,7 @@ This uses DP because the greedy choice is not purely locally optimal —
 we need to consider multiple pass options. However, the DP transition
 is greedy in choosing among 3 ticket types for each reachable state.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Cost For Tickets\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(n+1,1e9); dp[0]=0; for(int i=0;i<n;i++){dp[i+1]=min(dp[i+1],dp[i]+costs[0]); int j=i; while(j<n&&days[j]<days[i]+7)j++; dp[j]=min(dp[j],dp[i]+costs[1]); j=i; while(j<n&&days[j]<days[i]+30)j++; dp[j]=min(dp[j],dp[i]+costs[2]);}cout<<dp[n];",
     techniques: ["greedy", "dp"]
@@ -1033,6 +1052,7 @@ with the lightest person, pair them (optimal use of limit). Otherwise,
 the heaviest goes alone. Two-pointer on sorted array implements this
 efficiently in O(n log n).`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Boat Rescue (Boats to Save People)\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(p,p+n); int b=0,i=0,j=n-1; while(i<=j){if(p[i]+p[j]<=limit){i++;j--;}else{j--;}b++;}cout<<b;",
     techniques: ["greedy", "two-pointers"]
@@ -1084,6 +1104,7 @@ diffs (most negative, meaning much cheaper to send to A) go to A.
 The rest go to B. This ensures the smartest allocation because we
 send each person to the city where they are relatively cheaper.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Two City Scheduling\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(costs,costs+2*n,[](auto& a,auto& b){return a.first-a.second<b.first-b.second;}); int t=0; for(int i=0;i<n;i++)t+=costs[i].first; for(int i=n;i<2*n;i++)t+=costs[i].second;cout<<t;",
     techniques: ["greedy"]
@@ -1131,6 +1152,7 @@ Result: 8
 Greedy: always load the box type with the highest units per box first.
 This maximizes total units since each box slot is identical in size.`,
     complexity: {"time":"O(n log n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximum Units on a Truck\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(boxes,boxes+n,greater<>()); int t=0; for(auto& b:boxes){int take=min(truck,b.second); t+=take*b.first; truck-=take; if(!truck)break;}cout<<t;",
     techniques: ["greedy"]
@@ -1233,6 +1255,7 @@ Result: 1 rotation needed.
 Greedy: only A[0] or B[0] can be the uniform value. Check both,
 counting rotations needed for top and bottom. Pick the minimum.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Domino Rotations For Equal Row\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "auto f=[&](int x){int a=0,b=0; for(int i=0;i<n;i++){if(A[i]!=x&&B[i]!=x)return 1e9; if(A[i]!=x)a++; if(B[i]!=x)b++;}return min(a,b);}; int ans=min(f(A[0]),f(B[0]));cout<<(ans==1e9?-1:ans);",
     techniques: ["greedy"]
@@ -1294,6 +1317,7 @@ The greedy works because the reverse operations (divide by 2 or increment)
 are deterministic and optimal — when target is even, dividing is always
 better than incrementing toward start.`,
     complexity: {"time":"O(log target)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Broken Calculator\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int ops=0; while(target>start){if(target%2)target++;else target/=2;ops++;}cout<<ops+start-target;",
     techniques: ["greedy"]
@@ -1368,6 +1392,7 @@ The greedy algorithm:
 2. For each column, flip if 0s outnumber 1s
 This guarantees maximum score because the highest bit dominates all others.`,
     complexity: {"time":"O(m*n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Score After Flipping Matrix\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "for(int i=0;i<m;i++){if(grid[i][0]==0)for(int j=0;j<n;j++)grid[i][j]^=1;} for(int j=1;j<n;j++){int o=0;for(int i=0;i<m;i++)o+=grid[i][j];if(o<m-o)for(int i=0;i<m;i++)grid[i][j]^=1;} int s=0; for(int i=0;i<m;i++){int r=0;for(int j=0;j<n;j++)r=(r<<1)|grid[i][j];s+=r;}cout<<s;",
     techniques: ["greedy"]
@@ -1420,6 +1445,7 @@ Verification:
 Greedy: inserting taller people first ensures shorter people can be placed
 at their correct k position without disturbing already-placed taller ones.`,
     complexity: {"time":"O(n^2)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Queue Reconstruction by Height\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "sort(p,p+n,[](auto& a,auto& b){return a.first>b.first||(a.first==b.first&&a.second<b.second);}); vector<pair<int,int>> r; for(auto& p:people)r.insert(r.begin()+p.second,p); for(auto& p:r)cout<<p.first<<\" \"<<p.second<<\" \";",
     techniques: ["greedy"]
@@ -1472,6 +1498,7 @@ of profits can be decomposed into adjacent positive differences. The
 greedy of summing all positive daily differences is equivalent to buying
 at every local minimum and selling at every local maximum.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Best Time to Buy & Sell Stock II\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int p=0; for(int i=1;i<n;i++)if(prices[i]>prices[i-1])p+=prices[i]-prices[i-1];cout<<p;",
     techniques: ["greedy"]
@@ -1544,6 +1571,7 @@ This greedy DP tracks the best profit at each state without explicitly
 knowing transaction boundaries. It greedily updates each state based on
 the current price.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Best Time to Buy & Sell Stock III\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "int b1=-1e9,s1=0,b2=-1e9,s2=0; for(int p:prices){b1=max(b1,-p);s1=max(s1,b1+p);b2=max(b2,s1-p);s2=max(s2,b2+p);}cout<<s2;",
     techniques: ["greedy", "dp"]
@@ -1627,6 +1655,7 @@ Diagram:
 Optimization: when k >= n/2, use unlimited transactions (Stock II) O(n).
 Otherwise, O(n*k) DP with state machine.`,
     complexity: {"time":"O(n*min(k,n))","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Best Time to Buy & Sell Stock IV\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "if(k>=n/2){int p=0;for(int i=1;i<n;i++)if(prices[i]>prices[i-1])p+=prices[i]-prices[i-1];cout<<p;return;} vector<int> b(k+1,-1e9),s(k+1,0); for(int p:prices)for(int j=1;j<=k;j++){b[j]=max(b[j],s[j-1]-p);s[j]=max(s[j],b[j]+p);}cout<<s[k];",
     techniques: ["greedy", "dp"]
@@ -1683,6 +1712,7 @@ When we find an element larger than both, a triplet exists. The greedy
 tracks the best (smallest) candidates for each position without caring
 about their indices explicitly.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Increasing Triplet Subsequence\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int f=2e9,s=2e9; for(int x:nums){if(x<=f)f=x;else if(x<=s)s=x;else{cout<<\"Yes\";return 0;}}cout<<\"No\";",
     techniques: ["greedy"]
@@ -1732,6 +1762,7 @@ Result: Yes/No
 Greedy works because planting at the earliest possible spot (left-to-right)
 leaves maximum remaining space for more flowers.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Can Place Flowers\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "for(int i=0;i<n&&k;i++){if(bed[i]==0&&(i==0||bed[i-1]==0)&&(i==n-1||bed[i+1]==0)){bed[i]=1;k--;i++;}}cout<<(k==0?\"Yes\":\"No\");",
     techniques: ["greedy"]
@@ -1789,6 +1820,7 @@ Result: Yes
 The greedy is optimal because matching at the earliest possible position
 in t maximizes remaining characters for future matches.`,
     complexity: {"time":"O(|t|)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Is Subsequence (Greedy)\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int j=0; for(char c:t)if(c==s[j])j++; cout<<(j==s.size()?\"Yes\":\"No\");",
     techniques: ["greedy", "two-pointers"]
@@ -1849,6 +1881,7 @@ Greedy works because $5 bills are the most versatile (can serve as change
 for both $10 and $20), while $10 bills can only serve $20. Conserving $5
 bills is always optimal.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Lemonade Change\"] --> B[\"Sort/order input\"]\n  B --> C[\"Init result=0\"]\n  C --> D{\"All processed?\"}\n  D -->|No| E[\"Make greedy choice\"]\n  E --> F[\"Update result\"]\n  F --> D\n  D -->|Yes| G[\"Return result\"]",
     sheet: "Striver A2Z",
     solution_code: "int f=0,t=0; for(int b:bills){if(b==5)f++;else if(b==10){t++;f--;}else{if(t){t--;f--;}else f-=3;}if(f<0){cout<<\"No\";return 0;}}cout<<\"Yes\";",
     techniques: ["greedy"]

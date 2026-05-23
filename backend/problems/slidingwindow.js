@@ -25,6 +25,7 @@ max-sum-subarray-k:
   
   Result: 9`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximum Sum Subarray of Size K\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "int maxSum = 0, windowSum = 0;\nfor (int i = 0; i < k; i++) windowSum += arr[i];\nmaxSum = windowSum;\nfor (int i = k; i < n; i++) {\n  windowSum += arr[i] - arr[i - k];\n  maxSum = max(maxSum, windowSum);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window\n  return 0;\n}",
@@ -58,6 +59,7 @@ longest-substring-k-distinct:
   
   Result: 4`,
     complexity: {"time":"O(n)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Longest Substring with K Distinct Characters\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "int freq[26] = {0}, distinct = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < s.size(); right++) {\n  if (freq[s[right]-'a']++ == 0) distinct++;\n  while (distinct > k) if (--freq[s[left++]-'a'] == 0) distinct--;\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; int k;\n  cin >> s >> k;\n  // sliding window + freq\n  return 0;\n}",
@@ -94,6 +96,7 @@ min-window-substr:
   
   Result: "BANC"`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Window Substring\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "int need[128] = {0}, have[128] = {0}, needCnt = 0, haveCnt = 0, left = 0, minLen = INT_MAX, start = 0;\nfor (char c : t) if (need[c]++ == 0) needCnt++;\nfor (int right = 0; right < s.size(); right++) {\n  char c = s[right]; have[c]++;\n  if (have[c] == need[c]) haveCnt++;\n  while (haveCnt == needCnt) {\n    if (right - left + 1 < minLen) { minLen = right - left + 1; start = left; }\n    char lc = s[left++]; have[lc]--;\n    if (have[lc] < need[lc]) haveCnt--;\n  }\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s, t; cin >> s >> t;\n  // sliding window\n  return 0;\n}",
@@ -132,6 +135,7 @@ fruit-baskets:
   
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Fruit Into Baskets\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Love Babbar 450",
     solution_code: "int freq[100001] = {0}, distinct = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < n; right++) {\n  if (freq[arr[right]]++ == 0) distinct++;\n  while (distinct > 2) if (--freq[arr[left++]] == 0) distinct--;\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window at most 2 distinct\n  return 0;\n}",
@@ -170,6 +174,7 @@ longest-repeating-replacement:
   
   Result: 4`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Repeating Character Replacement\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "int freq[26] = {0}, maxFreq = 0, left = 0, maxLen = 0;\nfor (int right = 0; right < s.size(); right++) {\n  maxFreq = max(maxFreq, ++freq[s[right]-'A']);\n  while ((right - left + 1) - maxFreq > k) {\n    freq[s[left++]-'A']--;\n    maxFreq = 0;\n    for (int i = 0; i < 26; i++) maxFreq = max(maxFreq, freq[i]);\n  }\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; int k; cin >> s >> k;\n  // sliding window\n  return 0;\n}",
@@ -207,6 +212,7 @@ longest-substr-without-repeating:
   
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Substring Without Repeating Characters\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "int lastIdx[128] = {0}, left = 0, maxLen = 0;\nfor (int right = 0; right < s.size(); right++) {\n  left = max(left, lastIdx[s[right]]);\n  maxLen = max(maxLen, right - left + 1);\n  lastIdx[s[right]] = right + 1;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; cin >> s;\n  // sliding window\n  return 0;\n}",
@@ -240,6 +246,7 @@ min-sum-subarray-len:
   
   Result: 2`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Size Subarray Sum\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int left = 0, windowSum = 0, minLen = INT_MAX;\nfor (int right = 0; right < n; right++) {\n  windowSum += arr[right];\n  while (windowSum >= target) {\n    minLen = min(minLen, right - left + 1);\n    windowSum -= arr[left++];\n  }\n}\nreturn minLen == INT_MAX ? 0 : minLen;",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, target; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> target;\n  // sliding window\n  return 0;\n}",
@@ -273,6 +280,7 @@ max-consecutive-ones:
   
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Max Consecutive Ones\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Love Babbar 450",
     solution_code: "int count = 0, maxCount = 0;\nfor (int i = 0; i < n; i++) {\n  if (arr[i] == 1) { count++; maxCount = max(maxCount, count); }\n  else count = 0;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window\n  return 0;\n}",
@@ -309,6 +317,7 @@ max-consecutive-ones-iii:
   
   Result: 6`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Max Consecutive Ones III\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "int left = 0, zeroCount = 0, maxLen = 0;\nfor (int right = 0; right < n; right++) {\n  if (arr[right] == 0) zeroCount++;\n  while (zeroCount > k) if (arr[left++] == 0) zeroCount--;\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window\n  return 0;\n}",
@@ -352,6 +361,7 @@ nice-subarrays-count:
   
   Result: 14 - 12 = 2`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Count Number of Nice Subarrays\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "auto atMost = [&](int x) {\n  if (x < 0) return 0;\n  int left = 0, oddCount = 0, total = 0;\n  for (int right = 0; right < n; right++) {\n    if (arr[right] % 2) oddCount++;\n    while (oddCount > x) if (arr[left++] % 2) oddCount--;\n    total += right - left + 1;\n  }\n  return total;\n};\nreturn atMost(k) - atMost(k-1);",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window with atMost\n  return 0;\n}",
@@ -384,6 +394,7 @@ max-erasure:
   
   Result: 17`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximum Erasure Value\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int freq[10001] = {0}, left = 0, windowSum = 0, maxSum = 0;\nfor (int right = 0; right < n; right++) {\n  while (freq[arr[right]] > 0) { windowSum -= arr[left]; freq[arr[left++]]--; }\n  freq[arr[right]] = 1;\n  windowSum += arr[right];\n  maxSum = max(maxSum, windowSum);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window + frequency\n  return 0;\n}",
@@ -418,6 +429,7 @@ longest-harmonious-sub:
   
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Longest Harmonious Subsequence\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Love Babbar 450",
     solution_code: "unordered_map<int,int> freq;\nint maxLen = 0;\nfor (int x : arr) freq[x]++;\nfor (auto& [v,c] : freq)\n  if (freq.count(v+1))\n    maxLen = max(maxLen, c + freq[v+1]);",
     solution_template: "#include <iostream>\n#include <unordered_map>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window / freq map\n  return 0;\n}",
@@ -451,6 +463,7 @@ contains-nearby-duplicate:
   
   Result: true`,
     complexity: {"time":"O(n)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Contains Duplicate II\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Love Babbar 450",
     solution_code: "unordered_set<int> window;\nfor (int i = 0; i < n; i++) {\n  if (window.count(arr[i])) return true;\n  window.insert(arr[i]);\n  if (window.size() > k) window.erase(arr[i - k]);\n}",
     solution_template: "#include <iostream>\n#include <unordered_set>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window set\n  return 0;\n}",
@@ -487,6 +500,7 @@ grumpy-owner:
   
   Result: base + maxGain = 10 + 6 = 16`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Grumpy Bookstore Owner\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int base = 0, windowGain = 0, maxGain = 0;\nfor (int i = 0; i < n; i++) {\n  if (!grumpy[i]) base += customers[i];\n  if (grumpy[i]) windowGain += customers[i];\n  if (i >= k && grumpy[i-k]) windowGain -= customers[i-k];\n  maxGain = max(maxGain, windowGain);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int customers[n], grumpy[n];\n  for (int i = 0; i < n; i++) cin >> customers[i];\n  for (int i = 0; i < n; i++) cin >> grumpy[i];\n  cin >> k;\n  // sliding window\n  return 0;\n}",
@@ -515,6 +529,7 @@ moving-avg-stream:
   next(15): window=[5,10,15] sum=30 avg=10.0
   next(20): window=[10,15,20] sum=45 avg=15.0 (5 removed)`,
     complexity: {"time":"O(1) per operation","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Moving Average from Data Stream\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "queue<int> q;\ndouble sum = 0;\ndouble next(int val) {\n  q.push(val);\n  sum += val;\n  if (q.size() > k) { sum -= q.front(); q.pop(); }\n  return sum / q.size();\n}",
     solution_template: "#include <iostream>\n#include <queue>\nusing namespace std;\n\nint main() {\n  int k, n; cin >> k >> n;\n  // queue-based moving average\n  return 0;\n}",
@@ -552,6 +567,7 @@ sliding-window-max:
   
   Result: [3, 3, 5, 5, 6, 7]`,
     complexity: {"time":"O(n)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Sliding Window Maximum\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "deque<int> dq;\nvector<int> result;\nfor (int i = 0; i < n; i++) {\n  while (!dq.empty() && dq.front() <= i - k) dq.pop_front();\n  while (!dq.empty() && arr[dq.back()] <= arr[i]) dq.pop_back();\n  dq.push_back(i);\n  if (i >= k - 1) result.push_back(arr[dq.front()]);\n}",
     solution_template: "#include <iostream>\n#include <deque>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // deque-based sliding window max\n  return 0;\n}",
@@ -583,6 +599,7 @@ max-points-from-cards:
   
   Result: 12`,
     complexity: {"time":"O(k)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximum Points You Can Obtain from Cards\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int total = 0, windowSum = 0;\nfor (int i = 0; i < k; i++) windowSum += arr[i];\nint maxSum = windowSum;\nfor (int i = 0; i < k; i++) {\n  windowSum = windowSum - arr[k-1-i] + arr[n-1-i];\n  maxSum = max(maxSum, windowSum);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window from ends\n  return 0;\n}",
@@ -616,6 +633,7 @@ min-flips-ones:
   flip position 2: [1,1,1]
   2 flips. Correct.`,
     complexity: {"time":"O(n)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Minimum K Consecutive Bit Flips\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int flips = 0, flipped = 0;\nvector<bool> isFlipped(n, false);\nfor (int i = 0; i < n; i++) {\n  if (i >= k && isFlipped[i-k]) flipped ^= 1;\n  if ((arr[i] + flipped) % 2 == 0) {\n    if (i + k > n) return -1;\n    flips++;\n    isFlipped[i] = true;\n    flipped ^= 1;\n  }\n}",
     solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // greedy sliding window\n  return 0;\n}",
@@ -651,6 +669,7 @@ max-vowels:
   
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximum Number of Vowels in a Substring of Given Length\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Love Babbar 450",
     solution_code: "auto isVowel = [](char c) { return c=='a'||c=='e'||c=='i'||c=='o'||c=='u'; };\nint count = 0, maxCount = 0;\nfor (int i = 0; i < s.size(); i++) {\n  if (isVowel(s[i])) count++;\n  if (i >= k && isVowel(s[i-k])) count--;\n  if (i >= k-1) maxCount = max(maxCount, count);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  string s; int k; cin >> s >> k;\n  // sliding window vowel count\n  return 0;\n}",
@@ -689,6 +708,7 @@ longest-turbulent-arr:
   
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Turbulent Subarray\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int maxLen = 1, curLen = 1;\nfor (int i = 1; i < n; i++) {\n  if (arr[i] > arr[i-1]) {\n    if (i == 1 || arr[i-1] < arr[i-2]) curLen++;\n    else curLen = 2;\n  } else if (arr[i] < arr[i-1]) {\n    if (i == 1 || arr[i-1] > arr[i-2]) curLen++;\n    else curLen = 2;\n  } else curLen = 1;\n  maxLen = max(maxLen, curLen);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window turbulent\n  return 0;\n}",
@@ -724,6 +744,7 @@ longest-subarray-after-delete:
   
   Result: 5`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Subarray of 1's After Deleting One Element\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int left = 0, zeroCount = 0, maxLen = 0;\nfor (int right = 0; right < n; right++) {\n  if (arr[right] == 0) zeroCount++;\n  while (zeroCount > 1) if (arr[left++] == 0) zeroCount--;\n  maxLen = max(maxLen, right - left); // we delete one element\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window at most 1 zero\n  return 0;\n}",
@@ -757,6 +778,7 @@ sliding-window-median:
   
   Result: [1, -1, -1, 3, 3, 6]`,
     complexity: {"time":"O(n log k)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Sliding Window Median\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "vector<double> result;\nmultiset<int> window(arr, arr + k);\nauto mid = next(window.begin(), k/2);\nfor (int i = k; ; i++) {\n  result.push_back(k % 2 ? *mid : (*prev(mid) + *mid) / 2.0);\n  if (i == n) break;\n  window.insert(arr[i]);\n  if (arr[i] < *mid) mid--;\n  if (arr[i-k] <= *mid) mid++;\n  window.erase(window.lower_bound(arr[i-k]));\n}",
     solution_template: "#include <iostream>\n#include <vector>\n#include <set>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window median using multiset\n  return 0;\n}",
@@ -800,6 +822,7 @@ subarrays-k-distinct:
   
   Result: 13-5 = 7`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Subarrays with K Different Integers\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Striver A2Z",
     solution_code: "auto atMost = [&](int x) {\n  if (x < 0) return 0;\n  unordered_map<int,int> freq;\n  int left = 0, distinct = 0, total = 0;\n  for (int right = 0; right < n; right++) {\n    if (freq[arr[right]]++ == 0) distinct++;\n    while (distinct > x) if (--freq[arr[left++]] == 0) distinct--;\n    total += right - left + 1;\n  }\n  return total;\n};\nreturn atMost(k) - atMost(k-1);",
     solution_template: "#include <iostream>\n#include <unordered_map>\nusing namespace std;\n\nint main() {\n  int n, k; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  cin >> k;\n  // sliding window + atMost\n  return 0;\n}",
@@ -834,6 +857,7 @@ longest-nice-subarray:
   
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Nice Subarray\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int left = 0, windowOR = 0, maxLen = 0;\nfor (int right = 0; right < n; right++) {\n  while ((windowOR & arr[right]) != 0) {\n    windowOR ^= arr[left++]; // this simplified approach works when we track per-bit counts\n  }\n  windowOR |= arr[right];\n  maxLen = max(maxLen, right - left + 1);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window + bitwise OR\n  return 0;\n}",
@@ -864,6 +888,7 @@ diet-plan-performance:
   
   Result: 3`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Diet Plan Performance\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Hackos",
     solution_code: "int windowSum = 0, points = 0;\nfor (int i = 0; i < k; i++) windowSum += calories[i];\nif (windowSum < lower) points--; else if (windowSum > upper) points++;\nfor (int i = k; i < n; i++) {\n  windowSum += calories[i] - calories[i-k];\n  if (windowSum < lower) points--; else if (windowSum > upper) points++;\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n, k, lower, upper; cin >> n;\n  int calories[n]; for (int i = 0; i < n; i++) cin >> calories[i];\n  cin >> k >> lower >> upper;\n  // sliding window\n  return 0;\n}",
@@ -899,6 +924,7 @@ longest-continuous-increasing:
   
   Result: 4`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Longest Continuous Increasing Subsequence\"] --> B[\"left=0, right=0\"]\n  B --> C{\"right < n?\"}\n  C -->|Yes| D[\"Expand: add arr[right]\"]\n  D --> E{\"Window valid?\"}\n  E -->|No| F[\"right++\"]\n  E -->|Yes| G[\"Update answer\"]\n  G --> H[\"Shrink: left++, remove arr[left]\"]\n  H --> E\n  F --> C\n  C -->|No| I[\"Return answer\"]",
     sheet: "Love Babbar 450",
     solution_code: "int maxLen = 1, curLen = 1;\nfor (int i = 1; i < n; i++) {\n  if (arr[i] > arr[i-1]) curLen++;\n  else curLen = 1;\n  maxLen = max(maxLen, curLen);\n}",
     solution_template: "#include <iostream>\nusing namespace std;\n\nint main() {\n  int n; cin >> n;\n  int arr[n]; for (int i = 0; i < n; i++) cin >> arr[i];\n  // sliding window\n  return 0;\n}",

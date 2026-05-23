@@ -16,6 +16,7 @@ export default [
     solution_template: "#include <iostream>\n#include <vector>\nusing namespace std;\n\nint main() {\n  int n;\n  cin >> n;\n  if (n <= 1) { cout << n << endl; return 0; }\n  \n  // DP: dp[i] = dp[i-1] + dp[i-2]\n\n  return 0;\n}",
     approach: `DP bottom-up: store computed values in array, dp[i]=dp[i-1]+dp[i-2].\n\nDiagram:\n  n=5\n\n    i    0   1   2   3   4   5\n  dp[i]  0   1   1   2   3   5\n\n  dp[i] = dp[i-1] + dp[i-2]\n  Result: 5`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Fibonacci Number (DP)\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "long long dp[n+1]; dp[0]=0; dp[1]=1; for(int i=2;i<=n;i++)dp[i]=dp[i-1]+dp[i-2]; cout<<dp[n];",
   },
@@ -45,6 +46,7 @@ Diagram:
   dp[a] = min(dp[a], dp[a-coin]+1)
   Result: 3 (5+5+1)`,
     complexity: {"time":"O(n*amount)","space":"O(amount)"},
+    mermaid: "flowchart TD\n  A[\"Coin Change (Min Coins)\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(amount+1,amount+1); dp[0]=0; for(int a=1;a<=amount;a++)for(int c:coins)if(c<=a)dp[a]=min(dp[a],dp[a-c]+1); cout<<(dp[amount]>amount?-1:dp[amount]);",
   },
@@ -75,6 +77,7 @@ Diagram:
   dp[i] = 1 + max(dp[j]) for j < i and arr[j] < arr[i]
   Result: 4 ([2,3,7,101])`,
     complexity: {"time":"O(n²)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Longest Increasing Subsequence\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(n,1); int mx=1; for(int i=0;i<n;i++){for(int j=0;j<i;j++)if(arr[j]<arr[i])dp[i]=max(dp[i],dp[j]+1);mx=max(mx,dp[i]);}cout<<mx;",
   },
@@ -106,6 +109,7 @@ Diagram:
   dp[i][w] = max(dp[i-1][w], val[i-1]+dp[i-1][w-wt[i-1]])
   Result: 220 (items 2+3)`,
     complexity: {"time":"O(n*W)","space":"O(W)"},
+    mermaid: "flowchart TD\n  A[\"0/1 Knapsack\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<int> dp(W+1,0); for(int i=0;i<n;i++)for(int w=W;w>=wt[i];w--)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]); cout<<dp[W];",
   },
@@ -141,6 +145,7 @@ Diagram:
            else: 1+min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
   Result: 3 (horse->rorse->rose->ros)`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    mermaid: "flowchart TD\n  A[\"Edit Distance (Levenshtein)\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=0;i<=n;i++)dp[i][0]=i; for(int j=0;j<=m;j++)dp[0][j]=j; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=dp[i-1][j-1];else dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});}cout<<dp[n][m];",
   },
@@ -176,6 +181,7 @@ Diagram:
   dp[i][j] = (s[i-1]==t[j-1]) ? 1+dp[i-1][j-1] : max(dp[i-1][j], dp[i][j-1])
   Result: 3 ("ace")`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    mermaid: "flowchart TD\n  A[\"Longest Common Subsequence\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<vector<int>> dp(n+1,vector<int>(m+1)); for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(s1[i-1]==s2[j-1])dp[i][j]=1+dp[i-1][j-1];else dp[i][j]=max(dp[i-1][j],dp[i][j-1]);}cout<<dp[n][m];",
   },
@@ -205,6 +211,7 @@ Diagram:
   dp[i] = max(price[j] + dp[i-j-1]) for 0 <= j < i
   Result: 22 (cut 2+6 = 5+17)`,
     complexity: {"time":"O(n²)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Rod Cutting\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Love Babbar 450",
     solution_code: "int dp[n+1]={0}; for(int i=1;i<=n;i++)for(int j=0;j<i;j++)dp[i]=max(dp[i],price[j]+dp[i-j-1]);cout<<dp[n];",
   },
@@ -235,6 +242,7 @@ Diagram:
   dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])
   Result: 7  (path: 1->3->1->1->1)`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    mermaid: "flowchart TD\n  A[\"Minimum Path Sum in Grid\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "int dp[n][m]; dp[0][0]=grid[0][0]; for(int i=1;i<n;i++)dp[i][0]=dp[i-1][0]+grid[i][0]; for(int j=1;j<m;j++)dp[0][j]=dp[0][j-1]+grid[0][j]; for(int i=1;i<n;i++)for(int j=1;j<m;j++)dp[i][j]=grid[i][j]+min(dp[i-1][j],dp[i][j-1]);cout<<dp[n-1][m-1];",
   },
@@ -270,6 +278,7 @@ Diagram:
   dp[i][s] = dp[i-1][s] || dp[i-1][s-arr[i-1]]
   Result: Yes ({4,5}=9)`,
     complexity: {"time":"O(n*target)","space":"O(target)"},
+    mermaid: "flowchart TD\n  A[\"Subset Sum Problem\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<bool> dp(target+1); dp[0]=1; for(int x:arr)for(int s=target;s>=x;s--)if(dp[s-x])dp[s]=1; cout<<(dp[target]?\"Yes\":\"No\");",
   },
@@ -298,6 +307,7 @@ Diagram:
   dp[w] = max(dp[w], dp[w-wt[i]]+val[i])
   Result: 50 (weight 1+3 = 10+40)`,
     complexity: {"time":"O(n*W)","space":"O(W)"},
+    mermaid: "flowchart TD\n  A[\"Unbounded Knapsack\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Love Babbar 450",
     solution_code: "vector<int> dp(W+1,0); for(int w=1;w<=W;w++)for(int i=0;i<n;i++)if(wt[i]<=w)dp[w]=max(dp[w],dp[w-wt[i]]+val[i]);cout<<dp[W];",
   },
@@ -334,6 +344,7 @@ Diagram:
   dp[i] = min(dp[j]+1) for j<i where pal[j+1][i]
   Result: 1 cut (aa|b)`,
     complexity: {"time":"O(n²)","space":"O(n²)"},
+    mermaid: "flowchart TD\n  A[\"Palindrome Partitioning (Min Cuts)\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Love Babbar 450",
     solution_code: "vector<vector<bool>> pal(n,vector<bool>(n,0)); for(int i=0;i<n;i++)pal[i][i]=1; for(int len=2;len<=n;len++)for(int i=0;i+len-1<n;i++){int j=i+len-1;if(s[i]==s[j]&&(len==2||pal[i+1][j-1]))pal[i][j]=1;} vector<int> dp(n,0); for(int i=0;i<n;i++){if(pal[0][i])dp[i]=0;else{dp[i]=i;for(int j=0;j<i;j++)if(pal[j+1][i])dp[i]=min(dp[i],dp[j]+1);}}cout<<dp[n-1];",
   },
@@ -364,6 +375,7 @@ Diagram:
   dp[e][f] = 1 + min(max(dp[e-1][x-1], dp[e][f-x]))
   Result: 4 attempts`,
     complexity: {"time":"O(k*n²)","space":"O(k*n)"},
+    mermaid: "flowchart TD\n  A[\"Egg Dropping Problem\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Love Babbar 450",
     solution_code: "vector<vector<int>> dp(k+1,vector<int>(n+1)); for(int i=1;i<=k;i++){dp[i][0]=0;dp[i][1]=1;} for(int j=1;j<=n;j++)dp[1][j]=j; for(int i=2;i<=k;i++)for(int j=2;j<=n;j++){dp[i][j]=INT_MAX;for(int x=1;x<=j;x++)dp[i][j]=min(dp[i][j],1+max(dp[i-1][x-1],dp[i][j-x]));}cout<<dp[k][n];",
   },
@@ -396,6 +408,7 @@ Diagram:
   else if match:  dp[i][j] = dp[i-1][j-1]
   Result: Yes`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    mermaid: "flowchart TD\n  A[\"Wildcard Matching (DP)\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "int n=s.size(),m=p.size(); vector<vector<bool>> dp(n+1,vector<bool>(m+1)); dp[0][0]=1; for(int j=1;j<=m;j++)if(p[j-1]=='*')dp[0][j]=dp[0][j-1]; for(int i=1;i<=n;i++)for(int j=1;j<=m;j++){if(p[j-1]=='*')dp[i][j]=dp[i-1][j]||dp[i][j-1];else if(p[j-1]=='?'||s[i-1]==p[j-1])dp[i][j]=dp[i-1][j-1];}cout<<(dp[n][m]?\"Yes\":\"No\");",
   },
@@ -425,6 +438,7 @@ Diagram:
   dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
   Result: side=2, area=4`,
     complexity: {"time":"O(n*m)","space":"O(n*m)"},
+    mermaid: "flowchart TD\n  A[\"Max Square of 1s in Binary Matrix\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<vector<int>> dp(n,vector<int>(m)); int mx=0; for(int i=0;i<n;i++)for(int j=0;j<m;j++){if(i==0||j==0)dp[i][j]=mat[i][j];else if(mat[i][j])dp[i][j]=1+min({dp[i-1][j],dp[i][j-1],dp[i-1][j-1]});else dp[i][j]=0;mx=max(mx,dp[i][j]);}cout<<mx;",
   },
@@ -456,6 +470,7 @@ Diagram:
   Result: 12 (2+9+1)
   Houses: 0, 2, 4 (no adjacent)`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"House Robber\"] --> B[\"Define DP state\"]\n  B --> C[\"Init base cases\"]\n  C --> D[\"Iterate over states\"]\n  D --> E[\"Apply recurrence\"]\n  E --> F[\"Store in DP table\"]\n  F --> G{\"More?\"}\n  G -->|Yes| D\n  G -->|No| H[\"Return dp[n]\"]",
     sheet: "Striver A2Z",
     solution_code: "int prev2=0,prev1=nums[0]; for(int i=1;i<n;i++){int cur=max(prev1,prev2+nums[i]);prev2=prev1;prev1=cur;}cout<<prev1;",
   }

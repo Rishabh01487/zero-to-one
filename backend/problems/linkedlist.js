@@ -38,6 +38,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Reverse a Linked List\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *prev=nullptr,*curr=head; while(curr){Node* nxt=curr->next; curr->next=prev; prev=curr; curr=nxt;} return prev;",
     techniques: ["inplace-reversal"],
@@ -86,6 +87,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Middle of Linked List\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} cout<<slow->data;",
     techniques: ["fast-slow-pointers"],
@@ -128,6 +130,7 @@ Diagram:
 
 The proof relies on the fact that once both pointers are inside the cycle, fast gains on slow by 1 step per iteration, guaranteeing they will meet within the cycle's length iterations. Edge cases: empty list (return false), single node with no cycle (return false), single node pointing to itself (return true). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Detect Cycle in Linked List\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;if(slow==fast)return true;} return false;",
     techniques: ["fast-slow-pointers"],
@@ -167,6 +170,7 @@ Diagram:
 
 Edge cases: one or both lists empty (return the non-empty one, or null). Complexity: O(n+m) time, O(1) extra space.`,
     complexity: {"time":"O(n+m)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Merge Two Sorted Linked Lists\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node dummy(0); Node* t=&dummy; while(a&&b){if(a->data<b->data){t->next=a;a=a->next;}else{t->next=b;b=b->next;}t=t->next;} t->next=a?a:b; return dummy.next;",
     techniques: ["two-pointers", "recursion"],
@@ -209,6 +213,7 @@ Diagram:
 
 Edge cases: removing the head (k equals length, fast becomes null after initial k steps, return head→next), removing the tail (slow→next→next is null), single node list. Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Remove Nth Node From End\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *fast=head,*slow=head; for(int i=0;i<k;i++)fast=fast->next; if(!fast)return head->next; while(fast->next){slow=slow->next;fast=fast->next;} slow->next=slow->next->next;",
     techniques: ["fast-slow-pointers"],
@@ -256,6 +261,7 @@ Diagram:
 
 Edge cases: empty list or single node (both are palindromes). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Palindrome Linked List\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} Node *rev=nullptr,*cur=slow; while(cur){Node* n=cur->next;cur->next=rev;rev=cur;cur=n;} Node* a=head,*b=rev; while(b){if(a->data!=b->data){cout<<\"No\";return 0;}a=a->next;b=b->next;}cout<<\"Yes\";",
     techniques: ["fast-slow-pointers", "inplace-reversal"],
@@ -303,6 +309,7 @@ Diagram:
 
 Edge cases: no intersection (return null), one list is empty (return null), lists intersect at the very first node. Complexity: O(n+m) time, O(1) space.`,
     complexity: {"time":"O(n+m)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Intersection of Two Linked Lists\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *p1=a,*p2=b; while(p1!=p2){p1=p1?p1->next:b;p2=p2?p2->next:a;} return p1;",
     techniques: ["two-pointers"],
@@ -342,6 +349,7 @@ Diagram:
 
 The problem guarantees that the given node is not the tail, so node→next is always valid. Edge cases: deleting the last node is not allowed (guaranteed by constraints). Complexity: O(1) time, O(1) space.`,
     complexity: {"time":"O(1)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Delete Node Without Head Pointer\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* temp=node->next; node->data=temp->data; node->next=temp->next; delete temp;",
     techniques: ["inplace-reversal"],
@@ -384,6 +392,7 @@ Diagram:
 
 Edge cases: different lengths (shorter list contributes 0 for missing nodes), final carry beyond last digit (e.g., 9→9 + 1 = 0→0→1), one or both lists empty. Complexity: O(max(n,m)) time, O(max(n,m)) space for result list.`,
     complexity: {"time":"O(n+m)","space":"O(max(n,m))"},
+    mermaid: "flowchart TD\n  A[\"Add Two Numbers (Linked Lists)\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node dummy(0); Node* t=&dummy; int carry=0; while(a||b||carry){int s=carry; if(a){s+=a->data;a=a->next;}if(b){s+=b->data;b=b->next;}t->next=new Node(s%10);carry=s/10;t=t->next;} return dummy.next;",
     techniques: ["inplace-reversal"],
@@ -427,6 +436,7 @@ Diagram:
 
 Edge cases: k=0 or k is a multiple of len (no rotation), single node (return head as-is), empty list (return null). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Rotate Linked List by K\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* t=head; int len=1; while(t->next){t=t->next;len++;} t->next=head; k%=len; int steps=len-k; while(steps--)t=t->next; head=t->next; t->next=nullptr;",
     techniques: ["fast-slow-pointers", "inplace-reversal"],
@@ -470,6 +480,7 @@ Diagram:
 
 Edge cases: no child pointers (behaves as a normal linked list), multiple levels of deep nesting, a node with child but no next (directly follow child without pushing). Complexity: O(n) time, O(n) space for the stack.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Flatten a Multilevel Linked List\"] --> B[\"Define base case\"]\n  B --> C{\"Base?\"}\n  C -->|Yes| D[\"Return base value\"]\n  C -->|No| E[\"Recurse smaller\"]\n  E --> F[\"Combine results\"]\n  F --> G[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "stack<Node*> st; Node* cur=head; while(cur){if(cur->child&&cur->next)st.push(cur->next);if(cur->child)cur->next=cur->child;else if(!cur->next&&!st.empty()){cur->next=st.top();st.pop();}cur=cur->next;}",
     techniques: ["recursion"],
@@ -511,6 +522,7 @@ Diagram:
 
 Edge cases: null random pointers (check before dereferencing), single node with null random. Complexity: O(n) time, O(1) extra space (excluding output).`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Clone Linked List with Random Pointer\"] --> B[\"Define base case\"]\n  B --> C{\"Base?\"}\n  C -->|Yes| D[\"Return base value\"]\n  C -->|No| E[\"Recurse smaller\"]\n  E --> F[\"Combine results\"]\n  F --> G[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* cur=head; while(cur){Node* n=new Node(cur->val);n->next=cur->next;cur->next=n;cur=n->next;} cur=head; while(cur){if(cur->random)cur->next->random=cur->random->next;cur=cur->next->next;} Node* newHead=head->next; cur=head; while(cur){Node* n=cur->next;cur->next=n->next;if(n->next)n->next=n->next->next;cur=cur->next;} return newHead;",
     techniques: ["recursion"],
@@ -558,6 +570,7 @@ Diagram:
 
 Edge cases: k=1 (no reversal), list length is exactly a multiple of k, remaining nodes less than k at the end (left in original order). Complexity: O(n) time, O(n/k) recursion stack space.`,
     complexity: {"time":"O(n)","space":"O(n/k)"},
+    mermaid: "flowchart TD\n  A[\"Reverse Nodes in K-Group\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* cur=head; int cnt=0; while(cur&&cnt<k){cur=cur->next;cnt++;} if(cnt<k)return head; Node *prev=nullptr,*curr=head; for(int i=0;i<k;i++){Node* n=curr->next;curr->next=prev;prev=curr;curr=n;} head->next=reverseKGroup(curr,k); return prev;",
     techniques: ["inplace-reversal"],
@@ -598,6 +611,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is), two nodes (no rearrangement needed). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Odd Even Linked List\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "if(!head||!head->next)return head; Node *odd=head,*even=head->next,*evenHead=even; while(even&&even->next){odd->next=even->next;odd=odd->next;even->next=odd->next;even=even->next;} odd->next=evenHead; return head;",
     techniques: ["inplace-reversal"],
@@ -647,6 +661,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is), odd number of nodes (last node stays untouched). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Swap Nodes in Pairs\"] --> B[\"Define base case\"]\n  B --> C{\"Base?\"}\n  C -->|Yes| D[\"Return base value\"]\n  C -->|No| E[\"Recurse smaller\"]\n  E --> F[\"Combine results\"]\n  F --> G[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "Node dummy(0); dummy.next=head; Node* prev=&dummy; while(prev->next&&prev->next->next){Node* f=prev->next;Node* s=f->next;f->next=s->next;s->next=f;prev->next=s;prev=f;} return dummy.next;",
     techniques: ["inplace-reversal", "recursion"],
@@ -695,6 +710,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is), two nodes (already in correct order, no reordering possible). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Reorder List\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "if(!head||!head->next)return; Node *s=head,*f=head; while(f&&f->next){s=s->next;f=f->next->next;} Node *prev=nullptr,*cur=s->next; s->next=nullptr; while(cur){Node* n=cur->next;cur->next=prev;prev=cur;cur=n;} Node *a=head,*b=prev; while(b){Node* n1=a->next,*n2=b->next; a->next=b; b->next=n1; a=n1; b=n2;}",
     techniques: ["fast-slow-pointers", "inplace-reversal"],
@@ -739,6 +755,7 @@ Diagram:
 
 Edge cases: k > n (some parts will be empty/null), k=1 (entire list as one part), empty list (all parts are null). Complexity: O(n) time, O(k) space for the result array.`,
     complexity: {"time":"O(n)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Split Linked List in Parts\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "int len=0; Node* t=head; while(t){len++;t=t->next;} int sz=len/k,ex=len%k; vector<Node*> res(k); t=head; for(int i=0;i<k;i++){res[i]=t;int partSz=sz+(i<ex?1:0);for(int j=0;j<partSz-1;j++)t=t->next;if(t){Node* n=t->next;t->next=nullptr;t=n;}} return res;",
     techniques: ["two-pointers"],
@@ -794,6 +811,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is), all duplicates (e.g., 1→1→1→1 → result 1). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Remove Duplicates from Sorted List\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* cur=head; while(cur&&cur->next){if(cur->data==cur->next->data)cur->next=cur->next->next;else cur=cur->next;} return head;",
     techniques: ["two-pointers"],
@@ -835,6 +853,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is), all duplicates (set removes all but first). Complexity: O(n) time, O(n) space for the hash set.`,
     complexity: {"time":"O(n)","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Remove Duplicates from Unsorted List\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "unordered_set<int> seen; Node *prev=nullptr,*cur=head; while(cur){if(seen.count(cur->data)){prev->next=cur->next;delete cur;cur=prev->next;}else{seen.insert(cur->data);prev=cur;cur=cur->next;}} return head;",
     techniques: ["two-pointers"],
@@ -883,6 +902,7 @@ Diagram:
 
 Edge cases: empty list (return new node as head), insert before head (val is smallest), insert after tail (val is largest), duplicate values (insert after existing equal value). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Insert into Sorted Linked List\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* nn=new Node(val); if(!head||val<head->data){nn->next=head;return nn;} Node* cur=head; while(cur->next&&cur->next->data<val)cur=cur->next; nn->next=cur->next; cur->next=nn; return head;",
     techniques: ["two-pointers"],
@@ -922,6 +942,7 @@ Diagram:
 
 Edge cases: k=0 (return null), some lists are empty (skip them), all lists empty (return null), one list non-empty (return it as-is). Complexity: O(n log k) time, O(k) space for heap.`,
     complexity: {"time":"O(n log k)","space":"O(k)"},
+    mermaid: "flowchart TD\n  A[\"Merge K Sorted Linked Lists\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "auto cmp=[](Node* a,Node* b){return a->data>b->data;}; priority_queue<Node*,vector<Node*>,decltype(cmp)> pq(cmp); for(Node* l:lists)if(l)pq.push(l); Node dummy(0),*t=&dummy; while(!pq.empty()){Node* cur=pq.top();pq.pop();t->next=cur;t=t->next;if(cur->next)pq.push(cur->next);} return dummy.next;",
     techniques: ["two-pointers", "recursion"],
@@ -983,6 +1004,7 @@ Diagram:
 
 Edge cases: no cycle (return null), entire list is a cycle (head→next = head, return head), cycle starts at head. Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Linked List Cycle II (Find Cycle Start)\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;if(slow==fast){slow=head;while(slow!=fast){slow=slow->next;fast=fast->next;}return slow;}} return nullptr;",
     techniques: ["fast-slow-pointers"],
@@ -1036,6 +1058,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is), already sorted list (no additional work after merge). Complexity: O(n log n) time, O(log n) recursion stack space.`,
     complexity: {"time":"O(n log n)","space":"O(log n)"},
+    mermaid: "flowchart TD\n  A[\"Sort Linked List (Merge Sort)\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "if(!head||!head->next)return head; Node *slow=head,*fast=head->next; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} Node* mid=slow->next; slow->next=nullptr; return merge(sortList(head),sortList(mid));",
     techniques: ["fast-slow-pointers", "two-pointers", "recursion"],
@@ -1083,6 +1106,7 @@ Diagram:
 
 Edge cases: all nodes < x (greater list is empty, just return lessHead→next), all nodes >= x (less list is empty, return greaterHead→next), empty list (return null), single node. Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Partition List\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node lessD(0),greaterD(0); Node *l=&lessD,*g=&greaterD; Node* cur=head; while(cur){if(cur->data<x){l->next=cur;l=l->next;}else{g->next=cur;g=g->next;}cur=cur->next;} l->next=greaterD.next; g->next=nullptr; return lessD.next;",
     techniques: ["two-pointers", "inplace-reversal"],
@@ -1135,6 +1159,7 @@ Diagram:
 
 Edge cases: k=1 (swap first and last), k > n/2 (the two pointers might be same node), k == n (swap last with first, same as k=1 reversed), single node (swap is no-op). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Swap Kth Nodes from Beginning and End\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *fast=head,*slow=head,*kthStart=head; for(int i=1;i<k;i++)kthStart=kthStart->next; for(int i=0;i<k;i++)fast=fast->next; while(fast){slow=slow->next;fast=fast->next;} swap(kthStart->data,slow->data); return head;",
     techniques: ["two-pointers"],
@@ -1182,6 +1207,7 @@ Diagram:
 
 Edge cases: single node (return null after deletion), two nodes (delete second node, return first). Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Delete the Middle Node\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "if(!head||!head->next)return nullptr; Node *slow=head,*fast=head,*prev=nullptr; while(fast&&fast->next){prev=slow;slow=slow->next;fast=fast->next->next;} prev->next=slow->next; return head;",
     techniques: ["fast-slow-pointers", "inplace-reversal"],
@@ -1232,6 +1258,7 @@ Diagram:
 
 The problem guarantees n is even, so no middle node ambiguity. Edge cases: two nodes (single twin pair, return their sum), n=2 is the minimum case. Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Maximum Twin Sum of Linked List\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *slow=head,*fast=head; while(fast&&fast->next){slow=slow->next;fast=fast->next->next;} Node *prev=nullptr,*cur=slow; while(cur){Node* n=cur->next;cur->next=prev;prev=cur;cur=n;} int mx=0; Node *a=head,*b=prev; while(b){mx=max(mx,a->data+b->data);a=a->next;b=b->next;} cout<<mx;",
     techniques: ["fast-slow-pointers", "inplace-reversal"],
@@ -1283,6 +1310,7 @@ Diagram:
 
 Edge cases: single digit (e.g., 5→1→0, 9→1→8), overflow to extra digit (e.g., 5 * 2 = 10 becomes 1→0), empty list. Complexity: O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Double a Number Represented as Linked List\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* rev=nullptr,*cur=head,*t; while(cur){Node* n=cur->next;cur->next=rev;rev=cur;cur=n;} cur=rev; int carry=0; while(cur){int val=cur->data*2+carry;cur->data=val%10;carry=val/10;t=cur;cur=cur->next;} if(carry){Node* nn=new Node(carry);t->next=nn;} Node* res=nullptr; cur=rev; while(cur){Node* n=cur->next;cur->next=res;res=cur;cur=n;} return res;",
     techniques: ["inplace-reversal"],
@@ -1332,6 +1360,7 @@ Diagram:
 
 Edge cases: empty list (return null), single node (return head as-is, no pairs to insert GCD between), two nodes (one GCD insertion). Complexity: O(n) time, O(1) extra space (excluding the new nodes).`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Insert Greatest Common Divisor Between Adjacent Nodes\"] --> B[\"Sort array (if needed)\"]\n  B --> C[\"left=0, right=n-1\"]\n  C --> D{\"left < right?\"}\n  D -->|Yes| E[\"Compute sum\"]\n  E --> F{\"Match?\"}\n  F -->|Yes| G[\"Return indices\"]\n  F -->|No| H[\"Move pointer\"]\n  H --> D\n  D -->|No| I[\"Not found\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* cur=head; while(cur&&cur->next){int g=gcd(cur->data,cur->next->data);Node* nn=new Node(g);nn->next=cur->next;cur->next=nn;cur=nn->next;} return head;",
     techniques: ["two-pointers"],
@@ -1367,6 +1396,7 @@ Map: {1:n1, 2:n2, 3:n3} -> after evict: {2:n2, 3:n3, 4:n4}
 
 Edge cases: get missing key (-1), capacity=1. O(1) per op, O(capacity) space.`,
     complexity: {"time":"O(1) per op","space":"O(capacity)"},
+    mermaid: "flowchart TD\n  A[\"Design LRU Cache\"] --> B[\"Choose data structures\"]\n  B --> C[\"Implement operations\"]\n  C --> D[\"Handle edge cases\"]\n  D --> E[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "class LRUCache{int c;unordered_map<int,Node*> m;Node*h=new Node(-1,-1),*t=new Node(-1,-1);void rm(Node*n){n->p->nxt=n->nxt;n->nxt->p=n->p;}void ins(Node*n){n->nxt=h->nxt;n->p=h;h->nxt->p=n;h->nxt=n;}public:LRUCache(int cap){c=cap;h->nxt=t;t->p=h;}int get(int k){if(!m.count(k))return-1;Node*n=m[k];rm(n);ins(n);return n->v;}void put(int k,int v){if(m.count(k)){Node*n=m[k];n->v=v;rm(n);ins(n);return;}if(m.size()==c){Node*l=t->p;m.erase(l->k);rm(l);}Node*nn=new Node(k,v);m[k]=nn;ins(nn);}};",
   },
@@ -1405,6 +1435,7 @@ freqList[2]: head<->1<->tail
 
 Edge: capacity=0 (return -1 for gets). O(1) per op, O(capacity) space.`,
     complexity: {"time":"O(1) per op","space":"O(capacity)"},
+    mermaid: "flowchart TD\n  A[\"Design LFU Cache\"] --> B[\"Choose data structures\"]\n  B --> C[\"Implement operations\"]\n  C --> D[\"Handle edge cases\"]\n  D --> E[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "class LFUCache{int c,mf;unordered_map<int,Node*> kn;unordered_map<int,FreqList*> fl;public:LFUCache(int cap){c=cap;mf=0;}int get(int k){if(!kn.count(k))return-1;Node*n=kn[k];up(n);return n->v;}void put(int k,int v){if(!c)return;if(kn.count(k)){Node*n=kn[k];n->v=v;up(n);return;}if(kn.size()==c){Node*e=fl[mf]->pop();kn.erase(e->k);}Node*nn=new Node(k,v);kn[k]=nn;mf=1;if(!fl.count(1))fl[1]=new FreqList();fl[1]->push(nn);}void up(Node*n){int of=n->f;fl[of]->rem(n);if(fl[of]->empty()&&of==mf)mf++;n->f++;if(!fl.count(n->f))fl[n->f]=new FreqList();fl[n->f]->push(n);}};",
   },
@@ -1448,6 +1479,7 @@ Swap-with-last trick:
 
 Edge: insert existing (false), remove missing (false), getRandom on empty (undefined). O(1) avg, O(n) space.`,
     complexity: {"time":"O(1) avg per op","space":"O(n)"},
+    mermaid: "flowchart TD\n  A[\"Insert Delete GetRandom O(1)\"] --> B[\"Choose data structures\"]\n  B --> C[\"Implement operations\"]\n  C --> D[\"Handle edge cases\"]\n  D --> E[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "unordered_map<int,int> m;vector<int> a;auto ins=[&](int v){if(m.count(v))return 0;m[v]=a.size();a.push_back(v);return 1;};auto rem=[&](int v){if(!m.count(v))return 0;int i=m[v],l=a.back();a[i]=l;m[l]=i;a.pop_back();m.erase(v);return 1;};auto rnd=[&]{return a[rand()%a.size()];};",
   },
@@ -1492,6 +1524,7 @@ get(foo, 25):
 
 Edge: key not found (return ''), ts before all values (return ''). O(1) set, O(log n) get. Space: O(entries).`,
     complexity: {"time":"O(1) set, O(log n) get","space":"O(entries)"},
+    mermaid: "flowchart TD\n  A[\"Time-Based Key-Value Store\"] --> B[\"Choose data structures\"]\n  B --> C[\"Implement operations\"]\n  C --> D[\"Handle edge cases\"]\n  D --> E[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "unordered_map<string,vector<pair<int,string>>> m;auto st=[&](string k,string v,int t){m[k].push_back({t,v});};auto gt=[&](string k,int t)->string{if(!m.count(k))return\"\";auto&v=m[k];int l=0,r=v.size()-1,a=-1;while(l<=r){int md=(l+r)/2;if(v[md].first<=t){a=md;l=md+1;}else r=md-1;}return a==-1?\"\":v[a].second;};",
   },
@@ -1531,6 +1564,7 @@ Alternative index-history view:
 
 Edge: get on unset index (return 0), query snap_id before any set (return 0). O(1) set/snap, O(log k) get. Space: O(changes).`,
     complexity: {"time":"O(1) set/snap, O(log k) get","space":"O(changes)"},
+    mermaid: "flowchart TD\n  A[\"Snapshot Array\"] --> B[\"Choose data structures\"]\n  B --> C[\"Implement operations\"]\n  C --> D[\"Handle edge cases\"]\n  D --> E[\"Return\"]",
     sheet: "Striver A2Z",
     solution_code: "vector<unordered_map<int,int>> ss;unordered_map<int,int> cur;int sid=0;auto st=[&](int i,int v){cur[i]=v;};auto sp=[&]{ss.push_back(cur);return sid++;};auto gt=[&](int i,int si){for(int id=si;id>=0;id--)if(ss[id].count(i))return ss[id][i];return 0;};",
   },
@@ -1563,6 +1597,7 @@ middle-node-list:
 
 Edge: empty (null), single node (return head). O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Middle of the Linked List\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *s=head,*f=head; while(f&&f->next){s=s->next;f=f->next->next;} cout<<s->data;",
   },
@@ -1597,6 +1632,7 @@ detect-cycle-start:
 
 Edge: no cycle (print empty). O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Linked List Cycle II (Detect Cycle Start)\"] --> B[\"slow=head, fast=head\"]\n  B --> C{\"fast && fast->next?\"}\n  C -->|Yes| D[\"slow = slow->next\"]\n  D --> E[\"fast = fast->next->next\"]\n  E --> F{\"slow == fast?\"}\n  F -->|Yes| G[\"Cycle detected\"]\n  F -->|No| C\n  C -->|No| H[\"No cycle / return result\"]",
     sheet: "Striver A2Z",
     solution_code: "Node *s=head,*f=head; while(f&&f->next){s=s->next;f=f->next->next;if(s==f){s=head;while(s!=f){s=s->next;f=f->next;}cout<<s->data;return 0;}} cout<<endl;",
   },
@@ -1636,6 +1672,7 @@ reverse-k-group-list:
 
 Edge: k=1 (no change), k=n (reverse all), leftovers stay in order. O(n) time, O(n/k) stack space.`,
     complexity: {"time":"O(n)","space":"O(n/k)"},
+    mermaid: "flowchart TD\n  A[\"Reverse Nodes in K-Group\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node* cur=head;int cnt=0;while(cur&&cnt<k){cur=cur->next;cnt++;}if(cnt<k)return head;Node *p=nullptr,*c=head;for(int i=0;i<k;i++){Node* n=c->next;c->next=p;p=c;c=n;}head->next=reverseKGroup(cur,k);return p;",
   },
@@ -1675,6 +1712,7 @@ swap-nodes-pairs:
 
 Edge: empty, single node (return head), odd nodes (last stays). O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Swap Nodes in Pairs\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "Node d(0); d.next=head; Node* p=&d; while(p->next&&p->next->next){Node* f=p->next,*s=f->next;f->next=s->next;s->next=f;p->next=s;p=f;} head=d.next;",
   },
@@ -1715,6 +1753,7 @@ rotate-right:
 
 Edge: k multiple of len (no change), single node (return head). O(n) time, O(1) space.`,
     complexity: {"time":"O(n)","space":"O(1)"},
+    mermaid: "flowchart TD\n  A[\"Rotate Linked List by K Positions\"] --> B[\"prev=null, curr=head\"]\n  B --> C{\"curr != null?\"}\n  C -->|Yes| D[\"Save next = curr.next\"]\n  D --> E[\"curr.next = prev\"]\n  E --> F[\"prev = curr\"]\n  F --> G[\"curr = next\"]\n  G --> C\n  C -->|No| H[\"Return prev (new head)\"]",
     sheet: "Striver A2Z",
     solution_code: "if(!head||!head->next||k%n==0)return head; k%=n; Node* t=head; while(t->next)t=t->next; t->next=head; int s=n-k; while(s--)t=t->next; head=t->next; t->next=nullptr;",
   },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import Editor from '../components/Editor';
+import ProblemDiagram from '../components/ProblemDiagram';
 
 export default function ProblemDetailPage({ username }) {
   const { id } = useParams();
@@ -158,7 +159,14 @@ export default function ProblemDetailPage({ username }) {
           {problem.approach && (
             <div className="card" style={{ padding: 20, marginBottom: 16, borderLeft: '3px solid #48dbfb' }}>
               <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8, color: '#48dbfb' }}>Approach</div>
-              <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>{problem.approach}</p>
+              <ReactMarkdown
+                components={{
+                  p: ({ children }) => <p style={{ margin: '8px 0', color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: 13 }}>{children}</p>,
+                  code: ({ children }) => <code style={{ background: 'var(--bg-tertiary)', padding: '2px 6px', borderRadius: 4, fontSize: 12 }}>{children}</code>,
+                  pre: ({ children }) => <div className="code-block" style={{ fontSize: 12, padding: 12, margin: '8px 0', lineHeight: 1.6 }}>{children}</div>,
+                }}
+              >{problem.approach}</ReactMarkdown>
+              <ProblemDiagram definition={problem.mermaid} />
               {problem.complexity && (
                 <div style={{ marginTop: 10, display: 'flex', gap: 16 }}>
                   <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Time: <span style={{ color: '#7bed9f', fontFamily: 'var(--font-mono)' }}>{problem.complexity.time || problem.complexity}</span></div>
