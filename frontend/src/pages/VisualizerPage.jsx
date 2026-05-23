@@ -53,70 +53,117 @@ function getStepExplanation(step, idx, steps) {
   return '';
 }
 
-function tryParseArray(str) {
-  const nums = str.match(/-?\d+/g);
-  if (nums && nums.length > 1) return nums.map(Number);
-  return null;
-}
-
-function detectArrayVars(variables) {
+function buildArrState(variables) {
+  const arrMap = {};
+  for (const [key, value] of Object.entries(variables)) {
+    const m = key.match(/^(\w+)\[(\d+)\]$/);
+    if (m) {
+      const name = m[1];
+      const idx = parseInt(m[2]);
+      if (!arrMap[name]) arrMap[name] = {};
+      arrMap[name][idx] = isNaN(Number(value)) ? value : Number(value);
+    }
+  }
   const result = {};
-  for (const [name, value] of Object.entries(variables)) {
-    const parsed = tryParseArray(String(value));
-    if (parsed && parsed.length > 1) result[name] = parsed;
+  for (const [name, elements] of Object.entries(arrMap)) {
+    const maxIdx = Math.max(...Object.keys(elements).map(Number), 0);
+    const arr = [];
+    for (let i = 0; i <= maxIdx; i++) {
+      arr.push(elements[i] !== undefined ? elements[i] : null);
+    }
+    if (arr.some(v => v !== null)) result[name] = arr;
   }
   return result;
 }
 
-function BarChart({ data, prevData, highlightIndices, compareIndices, swapIndices, animating }) {
-  const maxVal = Math.max(...data, 1);
+function ArrBoxView({ name, data, prevData, changedIndices }) {
+  const maxVal = Math.max(...data.filter(v => v !== null), 1);
   return (
-    <div style={{ marginBottom: 12 }}>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 200, padding: '12px 0', position: 'relative' }}>
+    <div style={{ marginBottom: 12, animation: 'fadeIn 0.3s ease' }}>
+      <div style={{ fontSize: 10, color: '#48dbfb', fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>{name}[]</div>
+      <div style={{ display: 'flex', gap: 3, alignItems: 'flex-end', padding: '4px 0', minHeight: 120 }}>
         {data.map((val, i) => {
-          const pct = (val / maxVal) * 100;
-          const isHighlight = highlightIndices !== undefined && (
-            i === highlightIndices || (Array.isArray(highlightIndices) && highlightIndices.includes(i))
-          );
-          const isCompare = compareIndices && (
-            i === compareIndices || (Array.isArray(compareIndices) && compareIndices.includes(i))
-          );
-          const isSwap = swapIndices && (
-            i === swapIndices || (Array.isArray(swapIndices) && swapIndices.includes(i))
-          );
-          const colorIdx = i % BAR_COLORS.length;
-          let barColor = BAR_COLORS[colorIdx];
-          if (isSwap) barColor = '#feca57';
-          else if (isCompare) barColor = '#48dbfb';
-          else if (isHighlight) barColor = '#7bed9f';
-          const glow = isSwap ? '0 0 18px rgba(254,202,87,0.8)' :
-                       isCompare ? '0 0 14px rgba(72,219,251,0.7)' :
-                       isHighlight ? '0 0 10px rgba(72,219,251,0.4)' : 'none';
+          if (val === null) return null;
+          const isChanged = changedIndices && changedIndices.includes(i);
           const prevVal = prevData && prevData[i] !== undefined ? prevData[i] : val;
-          const changed = prevVal !== val;
+          const didChange = prevVal !== val;
+          const barH = Math.max((val / maxVal) * 80, 8);
+          const colorIdx = i % BAR_COLORS.length;
           return (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-              {changed && <div style={{ fontSize: 9, color: '#feca57', marginBottom: 2, fontWeight: 700, animation: 'pulse 0.4s ease' }}>▼</div>}
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, minWidth: 28 }}>
               <div style={{
-                width: '70%', maxWidth: 40,
-                height: `${Math.max(pct, 5)}%`,
-                background: `linear-gradient(180deg, ${barColor}, ${barColor}cc)`,
-                borderRadius: '4px 4px 2px 2px',
-                boxShadow: glow,
-                transition: animating ? 'height 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease' : 'none',
-                minHeight: 4,
-                position: 'relative',
-                opacity: isHighlight || isCompare || isSwap ? 1 : 0.8,
+                width: '100%', height: barH, borderRadius: '3px 3px 0 0',
+                background: isChanged ? 'linear-gradient(180deg, #feca57, #ff9ff3)' : `linear-gradient(180deg, ${BAR_COLORS[colorIdx]}, ${BAR_COLORS[colorIdx]}aa)`,
+                boxShadow: isChanged ? '0 0 12px rgba(254,202,87,0.6)' : 'none',
+                transition: 'height 0.4s ease, background 0.3s ease',
+                minHeight: 8, position: 'relative',
               }}>
-                {isSwap && <div style={{position:'absolute',top:-24,left:'50%',transform:'translateX(-50%)',fontSize:9,color:'#feca57',whiteSpace:'nowrap',fontWeight:600}}>🔄</div>}
-                {isCompare && <div style={{position:'absolute',top:-24,left:'50%',transform:'translateX(-50%)',fontSize:9,color:'#48dbfb',whiteSpace:'nowrap',fontWeight:600}}>🔍</div>}
+                {isChanged && <div style={{ position: 'absolute', top: -16, left: '50%', transform: 'translateX(-50%)', fontSize: 8, color: '#feca57', fontWeight: 700 }}>▲</div>}
               </div>
               <span style={{
-                fontSize: 11, color: isSwap ? '#feca57' : isCompare ? '#48dbfb' : isHighlight ? '#7bed9f' : 'var(--text-muted)',
-                marginTop: 4, fontFamily: 'var(--font-mono)', fontWeight: (isSwap || isCompare) ? 700 : 400,
-                transition: animating ? 'color 0.3s ease, transform 0.3s ease' : 'none',
-                transform: changed && animating ? 'scale(1.2)' : 'scale(1)',
+                fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: didChange ? 700 : 400, marginTop: 2,
+                color: isChanged ? '#feca57' : didChange ? '#7bed9f' : 'var(--text-muted)',
+                transition: 'color 0.3s ease, transform 0.3s ease',
+                transform: didChange ? 'scale(1.15)' : 'scale(1)',
               }}>{val}</span>
+              <span style={{ fontSize: 7, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{i}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function StView({ name, data, prevData }) {
+  const items = data || [];
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ fontSize: 10, color: '#ff9ff3', fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>{name} (stack)</div>
+      <div style={{ display: 'flex', flexDirection: 'column-reverse', alignItems: 'center', gap: 2, border: '1px solid rgba(255,159,243,0.3)', borderRadius: 6, padding: 8, minHeight: 40, background: 'rgba(255,159,243,0.05)' }}>
+        {items.length === 0 && <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>empty</span>}
+        {items.map((val, i) => {
+          const prev = prevData && prevData[i];
+          const changed = prev !== undefined && String(prev) !== String(val);
+          return (
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', gap: 6, width: '100%',
+              padding: '4px 10px', borderRadius: 4,
+              background: changed ? 'rgba(255,159,243,0.15)' : 'rgba(255,159,243,0.05)',
+              border: '1px solid rgba(255,159,243,0.2)',
+              transition: 'all 0.3s ease',
+            }}>
+              <span style={{ fontSize: 8, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', width: 20 }}>{i}</span>
+              <span style={{ fontSize: 13, fontWeight: changed ? 700 : 400, fontFamily: 'var(--font-mono)', color: changed ? '#ff9ff3' : 'var(--text-primary)' }}>{val}</span>
+              {i === items.length - 1 && <span style={{ fontSize: 8, color: '#ff9ff3', marginLeft: 'auto' }}>← top</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function QView({ name, data, prevData }) {
+  const items = data || [];
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <div style={{ fontSize: 10, color: '#7bed9f', fontWeight: 600, marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>{name} (queue)</div>
+      <div style={{ display: 'flex', gap: 3, alignItems: 'center', border: '1px solid rgba(123,237,159,0.3)', borderRadius: 6, padding: 8, minHeight: 36, background: 'rgba(123,237,159,0.05)', overflowX: 'auto' }}>
+        {items.length === 0 && <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>empty</span>}
+        {items.map((val, i) => {
+          const prev = prevData && prevData[i];
+          const changed = prev !== undefined && String(prev) !== String(val);
+          return (
+            <div key={i} style={{
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              padding: '4px 8px', borderRadius: 4, minWidth: 32,
+              background: changed ? 'rgba(123,237,159,0.15)' : 'rgba(123,237,159,0.05)',
+              border: '1px solid rgba(123,237,159,0.2)',
+              transition: 'all 0.3s ease',
+            }}>
+              <span style={{ fontSize: 12, fontWeight: changed ? 700 : 400, fontFamily: 'var(--font-mono)', color: changed ? '#7bed9f' : 'var(--text-primary)' }}>{val}</span>
+              <span style={{ fontSize: 7, color: 'var(--text-muted)' }}>{i === 0 ? 'front' : i === items.length - 1 ? 'rear' : ''}</span>
             </div>
           );
         })}
@@ -129,7 +176,7 @@ function LinkedListView({ headVar, previousVars }) {
   if (!headVar) return <div style={{ fontSize: 12, color: 'var(--text-muted)', padding: 16 }}>no linked list data</div>;
   const nodes = String(headVar).split(/->|,|\s+/).filter(s => s && s !== 'null' && s !== 'nullptr' && s !== 'NULL');
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'wrap', padding: '16px 0', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'wrap', padding: '16px 0', justifyContent: 'center' }}>
       {nodes.map((val, i) => (
         <React.Fragment key={i}>
           <div style={{
@@ -190,30 +237,59 @@ function TreeView({ rootVar }) {
   );
 }
 
-function DetectedVisualization({ variables, previousVars, lineNumber }) {
-  const arrVars = detectArrayVars(variables);
-  const prevArrVars = previousVars ? detectArrayVars(previousVars) : {};
-  const hasLinkedList = Object.keys(variables).some(k => k === 'head' || k.startsWith('list'));
-  const hasTree = Object.keys(variables).some(k => k === 'root' || k.startsWith('tree'));
+function isSt(name) { return name === 'st' || name === 'stack' || name.startsWith('st_'); }
+function isQ(name) { return name === 'q' || name === 'queue' || name.startsWith('q_'); }
+function isLL(name) { return name === 'head' || name.startsWith('list'); }
+function isTree(name) { return name === 'root' || name.startsWith('tree'); }
+
+function DataView({ variables, prevVariables }) {
+  const arrState = buildArrState(variables);
+  const prevArrState = prevVariables ? buildArrState(prevVariables) : {};
+  const changedIndices = {};
+  for (const [name, arr] of Object.entries(arrState)) {
+    const prev = prevArrState[name] || [];
+    changedIndices[name] = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] !== prev[i]) changedIndices[name].push(i);
+    }
+  }
+
+  const stVars = {}, qVars = {}, llVars = {}, treeVars = {}, arrNames = [];
+  for (const [name, value] of Object.entries(variables)) {
+    if (name.includes('[')) continue;
+    const s = String(value);
+    const parts = s.split(',').map(v => v.trim()).filter(v => !isNaN(v));
+    if (isSt(name) && parts.length > 0) stVars[name] = parts;
+    else if (isQ(name) && parts.length > 0) qVars[name] = parts;
+    else if (isLL(name)) llVars[name] = value;
+    else if (isTree(name)) treeVars[name] = value;
+  }
+
+  const hasArr = Object.keys(arrState).length > 0;
+  const hasSt = Object.keys(stVars).length > 0;
+  const hasQ = Object.keys(qVars).length > 0;
+  const hasLL = Object.keys(llVars).length > 0;
+  const hasTree = Object.keys(treeVars).length > 0;
+  const hasAny = hasArr || hasSt || hasQ || hasLL || hasTree;
 
   return (
     <div>
-      {Object.entries(arrVars).map(([name, data]) => {
-        const prevData = prevArrVars[name];
-        return (
-          <div key={name} style={{ animation: 'fadeIn 0.3s ease' }}>
-            <div style={{ fontSize: 11, color: '#48dbfb', fontWeight: 600, marginBottom: 2, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-              {name}[]
-            </div>
-            <BarChart data={data} prevData={prevData} animating={true} />
-          </div>
-        );
+      {Object.entries(arrState).map(([name, data]) => (
+        <ArrBoxView key={name} name={name} data={data} prevData={prevArrState[name]} changedIndices={changedIndices[name]} />
+      ))}
+      {Object.entries(stVars).map(([name, data]) => {
+        const prev = prevVariables ? String(prevVariables[name] || '').split(',').map(v => v.trim()).filter(v => !isNaN(v)) : [];
+        return <StView key={name} name={name} data={data} prevData={prev} />;
       })}
-      {hasLinkedList && <LinkedListView headVar={variables.head} previousVars={previousVars} />}
-      {hasTree && <TreeView rootVar={variables.root} />}
-      {Object.keys(arrVars).length === 0 && !hasLinkedList && !hasTree && (
+      {Object.entries(qVars).map(([name, data]) => {
+        const prev = prevVariables ? String(prevVariables[name] || '').split(',').map(v => v.trim()).filter(v => !isNaN(v)) : [];
+        return <QView key={name} name={name} data={data} prevData={prev} />;
+      })}
+      {Object.entries(llVars).map(([name, value]) => <LinkedListView key={name} headVar={value} previousVars={prevVariables} />)}
+      {Object.entries(treeVars).map(([name, value]) => <TreeView key={name} rootVar={value} />)}
+      {!hasAny && (
         <div style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'center', padding: 20 }}>
-          {Object.keys(variables).length > 0 ? 'array or data structure data will visualize here' : 'run the visualizer to see data structures in action'}
+          {Object.keys(variables).length > 0 ? 'select a code example and click visualize' : 'run the visualizer to see data structures'}
         </div>
       )}
     </div>
@@ -240,15 +316,6 @@ function VarCard({ name, value, prevValue, color }) {
       {changed && <div style={{ fontSize: 9, color: '#feca57', marginTop: 2 }}>▲ changed</div>}
     </div>
   );
-}
-
-function getArrayDiffIndices(current, previous) {
-  if (!previous) return [];
-  const indices = [];
-  for (let i = 0; i < Math.max(current.length, previous.length); i++) {
-    if (current[i] !== previous[i]) indices.push(i);
-  }
-  return indices;
 }
 
 export default function VisualizerPage() {
@@ -399,7 +466,7 @@ export default function VisualizerPage() {
   const currentExplanation = currentStepObj ? getStepExplanation(currentStepObj, currentStep - 1, steps) : '';
   const recentLogs = steps.slice(0, Math.max(currentStep, 0));
   const scalarVars = Object.entries(variables)
-    .filter(([k]) => !detectArrayVars({[k]: variables[k]})?.[k]?.length > 1)
+    .filter(([k]) => !k.includes('['))
     .filter(([k]) => k !== 't' && k !== 'temp');
   const tempVar = variables.t || variables.temp;
   const progress = hasSteps ? Math.round((currentStep / steps.length) * 100) : 0;
@@ -528,7 +595,7 @@ export default function VisualizerPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div className="card" style={{ padding: 16, background: 'linear-gradient(180deg, #0d1117, var(--bg-card))', minHeight: 200 }}>
             <div style={{ fontSize: 10, color: '#48dbfb', fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 1 }}>◈ data structure view</div>
-            <DetectedVisualization variables={variables} previousVars={prevVariables} lineNumber={currentLine} />
+            <DataView variables={variables} prevVariables={prevVariables} />
           </div>
 
           <div className="card" style={{ padding: 14, background: 'linear-gradient(180deg, #0d1117, var(--bg-card))' }}>

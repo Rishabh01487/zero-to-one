@@ -103,6 +103,21 @@ export async function instrumentCode(code, input) {
         continue;
       }
 
+      const arrDeclMatch = trimmed.match(/^(int|float|double|char|bool|string|long)\s+(\w+)\[.*?\]\s*(?:=\s*\{(.*?)\})?\s*;?$/);
+      if (arrDeclMatch) {
+        const arrName = arrDeclMatch[2];
+        const initVals = arrDeclMatch[3];
+        traceLines.push(line);
+        if (initVals && initVals.trim()) {
+          const vals = initVals.split(',').map(v => v.trim());
+          vals.forEach((val, idx) => {
+            traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
+            traceLines.push(indent + 'TRACE_VAR("' + arrName + '[' + idx + ']", ' + arrName + '[' + idx + ']);');
+          });
+        }
+        continue;
+      }
+
       const varDeclMatch = trimmed.match(/^(int|float|double|char|bool|string|long|short|unsigned|auto)\s+(\w+)\s*(?:=\s*(.*?))?;?$/);
       if (varDeclMatch) {
         const type = varDeclMatch[1];
@@ -113,6 +128,16 @@ export async function instrumentCode(code, input) {
           traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
           traceLines.push(indent + 'TRACE_VAR("' + varName + '", ' + varName + ');');
         }
+        continue;
+      }
+
+      const arrElemAssignMatch = trimmed.match(/^(\w+)\[(.*?)\]\s*(?:\+=|-=|=)\s*(.*?);?$/);
+      if (arrElemAssignMatch) {
+        const arrName = arrElemAssignMatch[1];
+        const arrIdx = arrElemAssignMatch[2];
+        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
+        traceLines.push(line);
+        traceLines.push(indent + 'TRACE_VAR("' + arrName + '[' + arrIdx + ']", ' + arrName + '[' + arrIdx + ']);');
         continue;
       }
 
