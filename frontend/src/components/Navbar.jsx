@@ -10,6 +10,10 @@ const navItems = [
   { path: '/dashboard', label: 'Progress' },
 ];
 
+const externalLinks = [
+  { href: 'https://mockmate-interview-platform-eosin.vercel.app', label: 'Mock Interview', icon: '🎤' },
+];
+
 export default function Navbar({ username, onLogout }) {
   const location = useLocation();
 
@@ -50,6 +54,20 @@ export default function Navbar({ username, onLogout }) {
             }}>
               {item.label}
             </Link>
+          ))}
+          <span style={{ width: 1, height: 20, background: 'var(--border)', margin: '4px 8px' }} />
+          {externalLinks.map(link => (
+            <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" style={{
+              padding: '6px 12px',
+              borderRadius: 'var(--radius)',
+              textDecoration: 'none',
+              fontSize: 13,
+              fontWeight: 450,
+              color: 'var(--text-muted)',
+              transition: 'var(--transition)'
+            }}>
+              {link.icon} {link.label}
+            </a>
           ))}
         </div>
       </div>
