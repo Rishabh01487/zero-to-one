@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: zero-to-one
+    env: node
+    buildCommand: npm install --prefix backend
+    startCommand: cd backend && npm start
+    healthCheckPath: /api/patterns
