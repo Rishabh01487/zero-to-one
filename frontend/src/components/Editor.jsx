@@ -60,32 +60,54 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
 
   return (
     <div style={{
-      border: '1px solid var(--border)',
-      borderRadius: 'var(--radius-lg)',
+      border: '1px solid #d0d7de',
+      borderRadius: 8,
       overflow: 'hidden',
-      background: '#fff'
+      background: '#fff',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.06)'
     }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: '12px 16px',
-        background: '#f5f5f5',
-        borderBottom: '1px solid #e0e0e0'
+        padding: '10px 16px',
+        background: 'linear-gradient(135deg, #1a73e8, #1557b0)',
+        borderBottom: '1px solid #124a9a'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 12, color: '#999', fontWeight: 600 }}>solution.cpp</span>
+          <span style={{ fontSize: 12, color: '#fff', fontWeight: 600, letterSpacing: '0.3px' }}>solution.cpp</span>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button
-            className="btn btn-sm btn-ghost"
             onClick={() => setShowInput(!showInput)}
+            style={{
+              padding: '6px 14px',
+              border: '1px solid rgba(255,255,255,0.3)',
+              borderRadius: 5,
+              background: 'rgba(255,255,255,0.1)',
+              color: '#fff',
+              fontSize: 12,
+              fontWeight: 500,
+              cursor: 'pointer',
+              transition: '0.2s'
+            }}
+            onMouseOver={e => e.target.style.background = 'rgba(255,255,255,0.2)'}
+            onMouseOut={e => e.target.style.background = 'rgba(255,255,255,0.1)'}
           >Input</button>
           <button
-            className="btn btn-sm btn-primary"
             onClick={handleRun}
             disabled={running}
-            style={{ opacity: running ? 0.6 : 1 }}
+            style={{
+              padding: '6px 18px',
+              border: 'none',
+              borderRadius: 5,
+              background: running ? '#93b8f0' : '#fff',
+              color: running ? '#fff' : '#1a73e8',
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: running ? 'not-allowed' : 'pointer',
+              transition: '0.2s'
+            }}
           >
             {running ? 'Running...' : 'Run'}
           </button>
@@ -123,8 +145,8 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
       />
 
       {showInput && (
-        <div style={{ padding: '12px 16px', borderTop: '1px solid #e0e0e0', background: '#fafafa' }}>
-          <div style={{ fontSize: 12, color: '#666', marginBottom: 6, fontWeight: 600 }}>Standard Input:</div>
+        <div style={{ padding: '12px 16px', borderTop: '1px solid #e8ecf0', background: '#f8f9fa' }}>
+          <div style={{ fontSize: 12, color: '#1a73e8', marginBottom: 6, fontWeight: 600 }}>Standard Input:</div>
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -135,9 +157,9 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
               fontSize: 13,
               color: '#333',
               background: '#fff',
-              border: '1px solid #ddd',
-              borderRadius: 4,
-              padding: '8px',
+              border: '1px solid #d0d7de',
+              borderRadius: 5,
+              padding: '8px 10px',
               resize: 'vertical',
               outline: 'none'
             }}
@@ -148,21 +170,21 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
 
       {(output || error || execTime) && (
         <div style={{
-          borderTop: '1px solid #e0e0e0',
+          borderTop: '1px solid #e8ecf0',
           padding: '16px',
-          background: '#fafafa'
+          background: '#f8f9fa'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#666' }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#1a73e8' }}>
               {error ? 'Errors' : 'Output'}
             </span>
-            {execTime && <span style={{ fontSize: 11, color: '#999' }}>{execTime}</span>}
+            {execTime && <span style={{ fontSize: 11, color: '#6b7280' }}>{execTime}</span>}
           </div>
           <pre style={{
             margin: 0,
             fontFamily: "'Courier New', monospace",
             fontSize: 13,
-            color: error ? '#d32f2f' : '#333',
+            color: error ? '#d32f2f' : '#1f2937',
             whiteSpace: 'pre-wrap',
             wordBreak: 'break-word',
             maxHeight: 300,
