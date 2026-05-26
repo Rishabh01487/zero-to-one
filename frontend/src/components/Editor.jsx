@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 
-const DEFAULT_CODE = `class Solution {
+const DEFAULT_CODE = `#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
         unordered_map<int, int> mp;
-
         for (int i = 0; i < nums.size(); i++) {
             int need = target - nums[i];
-
             if (mp.find(need) != mp.end()) {
                 return {mp[need], i};
             }
-
             mp[nums[i]] = i;
         }
-
         return {};
     }
-};`;
+};
+
+int main() {
+    Solution sol;
+    vector<int> nums = {2, 7, 11, 15};
+    auto res = sol.twoSum(nums, 9);
+    for (int x : res) cout << x << " ";
+    return 0;
+}`;
 
 export default function CodeEditor({ initialCode, readOnly, onCodeChange, height }) {
   const [code, setCode] = useState(initialCode || DEFAULT_CODE);
@@ -163,7 +170,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
               resize: 'vertical',
               outline: 'none'
             }}
-            placeholder="Enter input for your program..."
+            placeholder="e.g. 10 20  (stdin passed to auto-generated main())"
           />
         </div>
       )}

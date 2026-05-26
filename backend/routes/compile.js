@@ -39,29 +39,29 @@ function generateMain(code) {
     params.push(cur.trim());
   }
 
-  // Generate read-code for each param
+  // Generate default-value code for each param (no stdin required)
   const readLines = params.map(p => {
     const parts = p.split(/\s+/);
     const name = parts[parts.length - 1];
     const rawType = parts.slice(0, -1).join(' ');
     const t = typeName(rawType);
 
-    if (t === 'int') return `  int ${name} = 0; cin >> ${name};`;
-    if (t === 'long long') return `  long long ${name} = 0; cin >> ${name};`;
-    if (t === 'string' || t === 'std::string') return `  string ${name}; cin >> ${name};`;
-    if (t === 'char') return `  char ${name} = 0; cin >> ${name};`;
-    if (t === 'double' || t === 'float') return `  ${t} ${name} = 0; cin >> ${name};`;
-    if (t === 'bool') return `  bool ${name} = false; cin >> ${name};`;
+    if (t === 'int') return `  int ${name} = 0;`;
+    if (t === 'long long') return `  long long ${name} = 0;`;
+    if (t === 'string' || t === 'std::string') return `  string ${name};`;
+    if (t === 'char') return `  char ${name} = ' ';`;
+    if (t === 'double' || t === 'float') return `  ${t} ${name} = 0;`;
+    if (t === 'bool') return `  bool ${name} = false;`;
 
-    if (t.startsWith('vector<int>')) return `  int ${name}_n = 0; cin >> ${name}_n;\n  vector<int> ${name}(${name}_n);\n  for(auto& x : ${name}) cin >> x;`;
-    if (t.startsWith('vector<long long>')) return `  int ${name}_n = 0; cin >> ${name}_n;\n  vector<long long> ${name}(${name}_n);\n  for(auto& x : ${name}) cin >> x;`;
-    if (t.startsWith('vector<string>')) return `  int ${name}_n = 0; cin >> ${name}_n;\n  vector<string> ${name}(${name}_n);\n  for(auto& x : ${name}) cin >> x;`;
-    if (t.startsWith('vector<double>')) return `  int ${name}_n = 0; cin >> ${name}_n;\n  vector<double> ${name}(${name}_n);\n  for(auto& x : ${name}) cin >> x;`;
-    if (t.startsWith('vector<char>')) return `  int ${name}_n = 0; cin >> ${name}_n;\n  vector<char> ${name}(${name}_n);\n  for(auto& x : ${name}) cin >> x;`;
-    if (t.startsWith('vector<vector<int>>')) return `  int ${name}_r = 0; cin >> ${name}_r;\n  vector<vector<int>> ${name}(${name}_r);\n  for(auto& row : ${name}) { int ${name}_c = 0; cin >> ${name}_c; row.resize(${name}_c); for(auto& x : row) cin >> x; }`;
-    if (t.startsWith('vector<vector<long long>>')) return `  int ${name}_r = 0; cin >> ${name}_r;\n  vector<vector<long long>> ${name}(${name}_r);\n  for(auto& row : ${name}) { int ${name}_c = 0; cin >> ${name}_c; row.resize(${name}_c); for(auto& x : row) cin >> x; }`;
+    if (t.startsWith('vector<int>')) return `  vector<int> ${name} = {1, 2, 3};`;
+    if (t.startsWith('vector<long long>')) return `  vector<long long> ${name} = {1, 2, 3};`;
+    if (t.startsWith('vector<string>')) return `  vector<string> ${name} = {"a", "b"};`;
+    if (t.startsWith('vector<double>')) return `  vector<double> ${name} = {1.5, 2.5};`;
+    if (t.startsWith('vector<char>')) return `  vector<char> ${name} = {'a', 'b'};`;
+    if (t.startsWith('vector<vector<int>>')) return `  vector<vector<int>> ${name} = {{1, 2}, {3, 4}};`;
+    if (t.startsWith('vector<vector<long long>>')) return `  vector<vector<long long>> ${name} = {{1, 2}};`;
 
-    return `  ${rawType} ${name}; // Cannot auto-read type, please read manually`;
+    return `  ${rawType} ${name}; // Unsupported type`;
   }).join('\n');
 
   const paramNames = params.map(p => {
