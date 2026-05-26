@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 const router = Router();
 
-const PISTON = 'https://emkc.org/api/v2/piston/execute';
+const WANDBOX = 'https://wandbox.org/api/compile.json';
 
 router.post('/', async (req, res) => {
   const { code, input } = req.body;
@@ -10,33 +10,31 @@ router.post('/', async (req, res) => {
 
   try {
     const start = Date.now();
-    const piston = await fetch(PISTON, {
+    const wandbox = await fetch(WANDBOX, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        language: 'cpp',
-        version: '*',
-        files: [{ name: 'main.cpp', content: code }],
+        code,
+        compiler: 'gcc-head',
+        options: '-std=c++17',
         stdin: input || '',
-        compile_timeout: 10000,
-        run_timeout: 5000,
+        save: false,
+        compiler_option_raw: true,
+        runtime_option_raw: false,
       }),
     });
 
-    const result = await piston.json();
+    const result = await wandbox.json();
+    const execTime = Date.now() - start;
 
-    if (result.compile?.stderr) {
-      return res.json({ output: result.compile.stderr, success: false });
+    if (result.compiler_error) {
+      return res.json({ output: result.compiler_error, success: false });
     }
 
-    const execTime = Date.now() - start;
-    const output = result.run?.stdout || result.run?.output || '(no output)';
-    const stderr = result.run?.stderr;
-
     res.json({
-      output: stderr ? `${output}\n${stderr}` : output,
+      output: result.program_output || result.program_message || '(no output)',
       executionTime: `${execTime}ms`,
-      success: result.run?.code === 0,
+      success: result.status === '0',
     });
   } catch (err) {
     res.json({ output: err.message, success: false });
