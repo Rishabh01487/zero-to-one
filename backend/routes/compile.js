@@ -4,6 +4,21 @@ const router = Router();
 
 const WANDBOX = 'https://wandbox.org/api/compile.json';
 
+// Wrap LeetCode-style code (class Solution without main) to make it compilable
+function wrapCode(code) {
+  if (code.includes('int main(') || code.includes('main(')) return code;
+  const hasIncludes = code.includes('#include');
+  const hasNamespace = code.includes('using namespace');
+  const wrapped = [];
+  if (!hasIncludes) wrapped.push('#include <bits/stdc++.h>');
+  if (!hasNamespace) wrapped.push('using namespace std;');
+  wrapped.push('');
+  wrapped.push(code);
+  wrapped.push('');
+  wrapped.push(`int main() {\n  Solution sol;\n  // TODO: call your method and print result\n  return 0;\n}`);
+  return wrapped.join('\n');
+}
+
 router.post('/', async (req, res) => {
   const { code, input } = req.body;
   if (!code) return res.status(400).json({ error: 'No code provided' });
@@ -14,7 +29,7 @@ router.post('/', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        code,
+        code: wrapCode(code),
         compiler: 'gcc-head',
         options: '-std=c++17',
         stdin: input || '',

@@ -1,13 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Editor, { loader } from '@monaco-editor/react';
 
-const DEFAULT_CODE = `#include <iostream>
-using namespace std;
-
-int main() {
-  cout << "Hello, Zero to One!" << endl;
-  return 0;
-}`;
+const DEFAULT_CODE = `class Solution {
+public:
+    // Implement your solution here
+    
+};`;
 
 export default function CodeEditor({ initialCode, readOnly, onCodeChange, height }) {
   const [code, setCode] = useState(initialCode || DEFAULT_CODE);
