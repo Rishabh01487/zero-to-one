@@ -15,6 +15,7 @@ export default function ProblemDetailPage({ username }) {
   const [running, setRunning] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
   const [solved, setSolved] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     fetch(`/api/problems/${id}`)
@@ -65,13 +66,39 @@ export default function ProblemDetailPage({ username }) {
       }
     }
     setTestResults(results);
+    setSubmitted(false);
+    setRunning(false);
+  };
+
+  const submitTests = async () => {
+    if (!problem) return;
+    setRunning(true);
+    setTestResults(null);
+    setSubmitted(false);
+    const results = [];
+    for (const test of problem.test_cases) {
+      try {
+        const res = await fetch('/api/compile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code, input: test.input || '' })
+        });
+        const data = await res.json();
+        const passed = data.success && data.output.trim() === test.expected.trim();
+        results.push({ input: test.input, expected: test.expected, actual: data.output.trim(), passed });
+      } catch {
+        results.push({ input: test.input, expected: test.expected, actual: 'Error', passed: false });
+      }
+    }
+    setTestResults(results);
     const allPassed = results.every(r => r.passed);
     if (username && allPassed) {
-      fetch(`/api/progress/${username}/${problem.id}/submit`, {
+      await fetch(`/api/progress/${username}/${problem.id}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code })
-      }).catch(() => {});
+      });
+      setSubmitted(true);
     }
     setRunning(false);
   };
@@ -243,8 +270,11 @@ export default function ProblemDetailPage({ username }) {
         <div>
           <Editor initialCode={code} onCodeChange={setCode} height={380} />
           <div style={{ display: 'flex', gap: 10, marginTop: 14, flexWrap: 'wrap' }}>
-            <button className="btn btn-primary" onClick={runTests} disabled={running} style={{ borderRadius: 6 }}>
+            <button className="btn btn-ghost" onClick={runTests} disabled={running} style={{ borderRadius: 6 }}>
               {running ? 'running...' : 'run tests'}
+            </button>
+            <button className="btn btn-primary" onClick={submitTests} disabled={running} style={{ borderRadius: 6 }}>
+              {running ? 'running...' : submitted ? '✓ submitted' : 'submit'}
             </button>
             <button className="btn btn-ghost" onClick={() => setShowSolution(!showSolution)} style={{ borderRadius: 6 }}>
               {showSolution ? 'hide solution' : 'view solution'}
