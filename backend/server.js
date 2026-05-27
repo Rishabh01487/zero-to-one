@@ -44,12 +44,16 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3002;
-httpServer.listen(PORT, async () => {
-  try {
-    const { seedDatabase } = await import('./seed.js');
-    seedDatabase();
-  } catch (e) {
-    console.log('Seed skipped:', e.message);
-  }
+
+// Seed on module load (works on Vercel serverless)
+try {
+  const { seedDatabase } = await import('./seed.js');
+  seedDatabase();
+  console.log('Seed completed');
+} catch (e) {
+  console.log('Seed skipped:', e.message);
+}
+
+httpServer.listen(PORT, () => {
   console.log(`Zero to One server running on port ${PORT}`);
 });
