@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import db from '../db/schema.js';
+import db from '../db/index.js';
 import patterns from '../patterns/metadata.js';
 
 const router = Router();
@@ -65,9 +65,9 @@ function generateLeetCodeTemplate(problem) {
   return `class Solution {\npublic:\n    ${sig.retType} ${sig.methodName}(${sig.params}) {\n        \n    }\n};`;
 }
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const { difficulty, category, technique } = req.query;
-  let problems = db.query('problems');
+  let problems = await db.query('problems');
   if (difficulty) problems = problems.filter(p => p.difficulty === difficulty);
   if (category) problems = problems.filter(p => p.category === category);
   if (technique) problems = problems.filter(p => p.techniques && p.techniques.includes(technique));
@@ -80,8 +80,8 @@ router.get('/', (req, res) => {
   res.json(problems.map(({ id, title, difficulty, category, techniques }) => ({ id, title, difficulty, category, techniques: techniques || [] })));
 });
 
-router.get('/:id', (req, res) => {
-  const problem = db.getOne('problems', req.params.id);
+router.get('/:id', async (req, res) => {
+  const problem = await db.getOne('problems', req.params.id);
   if (!problem) return res.status(404).json({ error: 'Problem not found' });
   if (typeof problem.examples === 'string') problem.examples = JSON.parse(problem.examples);
   if (typeof problem.test_cases === 'string') problem.test_cases = JSON.parse(problem.test_cases);
@@ -90,12 +90,12 @@ router.get('/:id', (req, res) => {
   res.json(problem);
 });
 
-router.post('/seed', (req, res) => {
+router.post('/seed', async (req, res) => {
   const { problems } = req.body;
   if (!Array.isArray(problems)) return res.status(400).json({ error: 'Problems array required' });
 
   for (const p of problems) {
-    db.upsert('problems', p.id, {
+    await db.upsert('problems', p.id, {
       id: p.id,
       title: p.title,
       difficulty: p.difficulty,

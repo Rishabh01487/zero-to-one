@@ -1,4 +1,4 @@
-import db from './db/schema.js';
+import db from './db/index.js';
 import { v4 as uuidv4 } from 'uuid';
 import oopLessons from './lessons/oop.js';
 import stlLessons from './lessons/stl.js';
@@ -316,9 +316,9 @@ const existingExtraLessons = [
   }
 ];
 
-export function seedDatabase() {
+export async function seedDatabase() {
   // Skip if already seeded (prevents re-seeding on warm starts)
-  const existing = db.query('problems');
+  const existing = await db.query('problems');
   if (existing.length > 0) { console.log('DB already seeded, skipping'); return; }
   console.log('Seeding database...');
 
@@ -326,7 +326,7 @@ export function seedDatabase() {
 
   // Seed lessons
   for (const lesson of allLessons) {
-    db.upsert('lessons', lesson.id, lesson);
+    await db.upsert('lessons', lesson.id, lesson);
   }
   console.log(`Seeded ${allLessons.length} lessons`);
 
@@ -353,7 +353,7 @@ export function seedDatabase() {
     ...intervalProblems,
   ];
   for (const problem of allProblems) {
-    db.upsert('problems', problem.id, {
+    await db.upsert('problems', problem.id, {
       ...problem,
       examples: JSON.stringify(problem.examples),
       test_cases: JSON.stringify(problem.test_cases)
@@ -365,4 +365,4 @@ export function seedDatabase() {
   return { lessons: allLessons.length, problems: problems.length };
 }
 
-seedDatabase();
+await seedDatabase().catch(e => console.log('Auto-seed error:', e.message));

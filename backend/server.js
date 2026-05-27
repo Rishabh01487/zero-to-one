@@ -14,7 +14,7 @@ const io = new Server(httpServer, { cors: { origin: '*', methods: ['GET', 'POST'
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-import './db/schema.js';
+import db, { connectDB } from './db/index.js';
 import compileRoutes from './routes/compile.js';
 import lessonsRoutes from './routes/lessons.js';
 import problemsRoutes from './routes/problems.js';
@@ -45,10 +45,11 @@ app.get('*', (req, res) => {
 
 const PORT = process.env.PORT || 3002;
 
-// Seed on module load (works on Vercel serverless)
+// Connect to MongoDB and seed on module load
 try {
+  await connectDB();
   const { seedDatabase } = await import('./seed.js');
-  seedDatabase();
+  await seedDatabase();
   console.log('Seed completed');
 } catch (e) {
   console.log('Seed skipped:', e.message);
