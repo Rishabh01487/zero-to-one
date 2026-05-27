@@ -1,24 +1,10 @@
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { v4 as uuidv4 } from 'uuid';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TEMP_DIR = path.join(__dirname, '..', '..', 'temp');
+const WANDBOX = 'https://wandbox.org/api/compile.json';
 
 function escapeForCpp(str) {
   return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
 }
 
 export async function instrumentCode(code, input) {
-  const id = uuidv4();
-  const srcFile = path.join(TEMP_DIR, `${id}.cpp`);
-  const exeFile = path.join(TEMP_DIR, `${id}.exe`);
-  const traceFile = path.join(TEMP_DIR, `${id}.trace`);
-
-  if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR, { recursive: true });
-
   try {
     const lines = code.split('\n');
     const traceLines = [];
@@ -33,8 +19,6 @@ export async function instrumentCode(code, input) {
 
     let braceCount = 0;
     let inFunction = false;
-    let functionDepth = 0;
-    let lastVarLine = '';
     let lineNumber = 0;
 
     for (const rawLine of lines) {
@@ -69,7 +53,6 @@ export async function instrumentCode(code, input) {
 
       if (trimmed.startsWith('int main(')) {
         inFunction = true;
-        functionDepth = braceCount;
         traceLines.push(line);
         continue;
       }
@@ -142,7 +125,7 @@ export async function instrumentCode(code, input) {
       }
 
       const assignMatch = trimmed.match(/^(\w+)\s*(?:\+=|-=|[*]=|\/=|%=|=)\s*(.*?);?$/);
-      if (assignMatch && !trimmed.startsWith('int') && !trimmed.startsWith('float') && !trimmed.startsWith('double') && !trimmed.startsWith('for') && !trimmed.startsWith('while')) {
+      if (assignMatch && !trimmed.startsWith('int') && !trimmed.startsWith('float') && !trimmed.startsWith('for') && !trimmed.startsWith('while')) {
         const varName = assignMatch[1];
         traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
         traceLines.push(line);
@@ -155,69 +138,72 @@ export async function instrumentCode(code, input) {
     }
 
     const instrumentedCode = traceLines.join('\n');
-    fs.writeFileSync(srcFile, instrumentedCode);
 
-    try {
-      execSync(`g++ "${srcFile}" -o "${exeFile}" -std=c++17 2>&1`, {
-        timeout: 15000,
-        encoding: 'utf-8'
-      });
-    } catch (compileErr) {
-      return {
-        steps: [],
-        output: '',
-        lineMap: [],
-        error: 'Compilation error: ' + (compileErr.stderr || compileErr.message),
-        rawOutput: compileErr.stderr || ''
-      };
-    }
+    const MAX_RETRIES = 3;
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+      try {
+        if (attempt > 0) await new Promise(r => setTimeout(r, 1000 * attempt));
+        const wandbox = await fetch(WANDBOX, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code: instrumentedCode,
+            compiler: 'gcc-head',
+            options: '-std=c++17',
+            stdin: input || '',
+            save: false,
+            compiler_option_raw: true,
+          }),
+        });
+        const result = await wandbox.json();
+        const rawOutput = result.program_output || result.compiler_error || '';
 
-    let rawOutput;
-    try {
-      rawOutput = execSync(`"${exeFile}"`, {
-        input: input || '',
-        timeout: 5000,
-        encoding: 'utf-8',
-        maxBuffer: 1024 * 1024
-      });
-    } catch (runErr) {
-      rawOutput = runErr.stdout || runErr.stderr || '';
-    }
+        const errMsg = result.compiler_error || result.program_output || '';
+        if (errMsg.includes('Resource temporarily unavailable') || errMsg.includes('OCI runtime error')) {
+          if (attempt < MAX_RETRIES - 1) continue;
+          return { steps: [], output: '', lineMap: [], error: 'Wandbox is busy. Please try again.' };
+        }
 
-    const steps = [];
-    const lineMap = new Set();
-    let programOutput = '';
+        if (result.compiler_error) {
+          return { steps: [], output: '', lineMap: [], error: 'Compilation error: ' + result.compiler_error, rawOutput: result.compiler_error };
+        }
 
-    for (const line of rawOutput.split('\n')) {
-      if (line.startsWith('###STEP###')) {
-        steps.push({ type: 'step', value: line.replace('###STEP###', '').trim() });
-      } else if (line.startsWith('###VAR###')) {
-        const parts = line.replace('###VAR###', '').trim().split('=');
-        const varName = parts[0];
-        const varValue = parts.slice(1).join('=');
-        steps.push({ type: 'var', varName, varValue });
-      } else if (line.startsWith('###LINE###')) {
-        const lineNum = parseInt(line.replace('###LINE###', '').trim());
-        lineMap.add(lineNum);
-        steps.push({ type: 'line', lineNumber: lineNum });
-      } else {
-        programOutput += line + '\n';
+        const steps = [];
+        const lineMap = new Set();
+        let programOutput = '';
+
+        for (const line of rawOutput.split('\n')) {
+          if (line.startsWith('###STEP###')) {
+            steps.push({ type: 'step', value: line.replace('###STEP###', '').trim() });
+          } else if (line.startsWith('###VAR###')) {
+            const parts = line.replace('###VAR###', '').trim().split('=');
+            const varName = parts[0];
+            const varValue = parts.slice(1).join('=');
+            steps.push({ type: 'var', varName, varValue });
+          } else if (line.startsWith('###LINE###')) {
+            const lineNum = parseInt(line.replace('###LINE###', '').trim());
+            if (!isNaN(lineNum)) {
+              lineMap.add(lineNum);
+              steps.push({ type: 'line', lineNumber: lineNum });
+            }
+          } else {
+            programOutput += line + '\n';
+          }
+        }
+
+        return {
+          steps,
+          output: programOutput.trim(),
+          lineMap: Array.from(lineMap).sort((a, b) => a - b),
+          code: instrumentedCode,
+          originalCode: code
+        };
+      } catch (err) {
+        if (attempt < MAX_RETRIES - 1) continue;
+        return { steps: [], output: '', lineMap: [], error: err.message };
       }
     }
-
-    return {
-      steps,
-      output: programOutput.trim(),
-      lineMap: Array.from(lineMap).sort((a, b) => a - b),
-      code: instrumentedCode,
-      originalCode: code
-    };
   } catch (err) {
     return { steps: [], output: '', lineMap: [], error: err.message };
-  } finally {
-    try {
-      if (fs.existsSync(srcFile)) fs.unlinkSync(srcFile);
-      if (fs.existsSync(exeFile)) fs.unlinkSync(exeFile);
-    } catch (e) {}
   }
 }
