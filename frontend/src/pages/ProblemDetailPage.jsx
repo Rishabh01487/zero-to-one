@@ -65,7 +65,8 @@ export default function ProblemDetailPage({ username }) {
       }
     }
     setTestResults(results);
-    if (username) {
+    const allPassed = results.every(r => r.passed);
+    if (username && allPassed) {
       fetch(`/api/progress/${username}/${problem.id}/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
