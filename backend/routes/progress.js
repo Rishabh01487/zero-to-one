@@ -9,10 +9,7 @@ router.post('/:username/:itemId/submit', (req, res) => {
   const { username, itemId } = req.params;
   const { code } = req.body;
 
-  const user = db.query('users', { username })[0];
-  if (!user) return res.status(404).json({ error: 'User not found' });
-
-  let record = db.query('progress', { user_id: user.id, item_id: itemId })[0];
+  let record = db.query('progress', { user_id: username, item_id: itemId })[0];
   if (record) {
     db.update('progress', record.id, {
       submissions: (record.submissions || 0) + 1,
@@ -22,7 +19,7 @@ router.post('/:username/:itemId/submit', (req, res) => {
   } else {
     db.insert('progress', {
       id: uuidv4(),
-      user_id: user.id,
+      user_id: username,
       item_id: itemId,
       item_type: 'problem',
       submissions: 1,

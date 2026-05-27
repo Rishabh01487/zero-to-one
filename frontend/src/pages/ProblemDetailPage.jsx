@@ -14,6 +14,7 @@ export default function ProblemDetailPage({ username }) {
   const [code, setCode] = useState('');
   const [running, setRunning] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
+  const [solved, setSolved] = useState(false);
 
   useEffect(() => {
     fetch(`/api/problems/${id}`)
@@ -33,7 +34,16 @@ export default function ProblemDetailPage({ username }) {
         }
       })
       .catch(() => setLoading(false));
-  }, [id]);
+    if (username) {
+      fetch(`/api/progress/${username}`)
+        .then(r => r.json())
+        .then(progress => {
+          const record = progress.find(p => p.item_id === id);
+          if (record && record.completed) setSolved(true);
+        })
+        .catch(() => {});
+    }
+  }, [id, username]);
 
   const runTests = async () => {
     if (!problem) return;
@@ -67,11 +77,12 @@ export default function ProblemDetailPage({ username }) {
 
   const markComplete = () => {
     if (username) {
+      setSolved(true);
       fetch(`/api/progress/${username}/${problem.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ itemType: 'problem', code })
-      }).catch(() => {});
+      }).catch(() => setSolved(false));
     }
   };
 
@@ -238,7 +249,9 @@ export default function ProblemDetailPage({ username }) {
               {showSolution ? 'hide solution' : 'view solution'}
             </button>
             {username && (
-              <button className="btn btn-ghost" onClick={markComplete} style={{ borderRadius: 6 }}>mark solved</button>
+              <button className={solved ? 'btn btn-primary' : 'btn btn-ghost'} onClick={markComplete} disabled={solved} style={{ borderRadius: 6 }}>
+                {solved ? '✓ solved' : 'mark solved'}
+              </button>
             )}
           </div>
           {showSolution && problem.solution_code && (
