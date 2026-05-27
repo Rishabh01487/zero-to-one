@@ -1,39 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 
-const DEFAULT_CODE = `#include <bits/stdc++.h>
-using namespace std;
-
-class Solution {
+const DEFAULT_CODE = `class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int, int> mp;
-        for (int i = 0; i < nums.size(); i++) {
-            int need = target - nums[i];
-            if (mp.find(need) != mp.end()) {
-                return {mp[need], i};
-            }
-            mp[nums[i]] = i;
-        }
-        return {};
+        
     }
-};
-
-int main() {
-    Solution sol;
-    vector<int> nums = {2, 7, 11, 15};
-    auto res = sol.twoSum(nums, 9);
-    for (int x : res) cout << x << " ";
-    return 0;
-}`;
+};`;
 
 export default function CodeEditor({ initialCode, readOnly, onCodeChange, height }) {
   const [code, setCode] = useState(initialCode || DEFAULT_CODE);
   const [output, setOutput] = useState('');
   const [execTime, setExecTime] = useState('');
   const [running, setRunning] = useState(false);
-  const [input, setInput] = useState('');
-  const [showInput, setShowInput] = useState(false);
+  const [input, setInput] = useState('4\n2 7 11 15\n9');
+  const [showInput, setShowInput] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -91,7 +72,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
               padding: '6px 14px',
               border: '1px solid rgba(255,255,255,0.3)',
               borderRadius: 5,
-              background: 'rgba(255,255,255,0.1)',
+              background: showInput ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.1)',
               color: '#fff',
               fontSize: 12,
               fontWeight: 500,
@@ -99,7 +80,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
               transition: '0.2s'
             }}
             onMouseOver={e => e.target.style.background = 'rgba(255,255,255,0.2)'}
-            onMouseOut={e => e.target.style.background = 'rgba(255,255,255,0.1)'}
+            onMouseOut={e => e.target.style.background = showInput ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.1)'}
           >Input</button>
           <button
             onClick={handleRun}
@@ -123,6 +104,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
 
       <Editor
         height={height || 400}
+        language="cpp"
         theme="vs"
         value={code}
         onChange={val => {
@@ -141,6 +123,10 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
           smoothScrolling: false,
           padding: { top: 12 },
           automaticLayout: true,
+          autoClosingBrackets: 'always',
+          autoClosingQuotes: 'always',
+          autoClosingDelete: 'auto',
+          autoClosingOvertype: 'auto',
           overviewRulerLanes: 0,
           hideCursorInOverviewRuler: true,
           overviewRulerBorder: false,
@@ -153,7 +139,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
 
       {showInput && (
         <div style={{ padding: '12px 16px', borderTop: '1px solid #e8ecf0', background: '#f8f9fa' }}>
-          <div style={{ fontSize: 12, color: '#1a73e8', marginBottom: 6, fontWeight: 600 }}>Standard Input:</div>
+          <div style={{ fontSize: 12, color: '#1a73e8', marginBottom: 6, fontWeight: 600 }}>Custom Input:</div>
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -170,7 +156,7 @@ export default function CodeEditor({ initialCode, readOnly, onCodeChange, height
               resize: 'vertical',
               outline: 'none'
             }}
-            placeholder="e.g. 10 20  (stdin passed to auto-generated main())"
+            placeholder="e.g. 4 (size) then 2 7 11 15 (nums) then 9 (target)"
           />
         </div>
       )}
