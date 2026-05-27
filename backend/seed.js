@@ -317,6 +317,9 @@ const existingExtraLessons = [
 ];
 
 export function seedDatabase() {
+  // Skip if already seeded (prevents re-seeding on warm starts)
+  const existing = db.query('problems');
+  if (existing.length > 0) { console.log('DB already seeded, skipping'); return; }
   console.log('Seeding database...');
 
   const allLessons = [...lessons, ...existingExtraLessons, ...oopLessons, ...stlLessons, ...sortingLessons, ...linkedListLessons, ...treeLessons, ...advancedLessons];

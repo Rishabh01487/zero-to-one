@@ -3,7 +3,22 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = path.join(__dirname, '..', 'data');
+
+// Use /tmp/data on Vercel (writable) or local data dir
+function getDataDir() {
+  const local = path.join(__dirname, '..', 'data');
+  // Check if local dir is writable
+  try {
+    const test = path.join(local, '.write-test');
+    fs.writeFileSync(test, '');
+    fs.unlinkSync(test);
+    return local;
+  } catch {
+    return path.join('/tmp', 'data');
+  }
+}
+
+const DATA_DIR = getDataDir();
 const DB_FILE = path.join(DATA_DIR, 'zerotoone.json');
 
 function initDir() {
