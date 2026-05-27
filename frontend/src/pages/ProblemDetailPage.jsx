@@ -16,8 +16,7 @@ export default function ProblemDetailPage({ username }) {
   const [showSolution, setShowSolution] = useState(false);
   const [solved, setSolved] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [loadingLeetCode, setLoadingLeetCode] = useState(false);
-  const [leetCodeError, setLeetCodeError] = useState('');
+  const [hasLeetCodeDesc, setHasLeetCodeDesc] = useState(false);
 
   useEffect(() => {
     fetch(`/api/problems/${id}`)
@@ -26,6 +25,29 @@ export default function ProblemDetailPage({ username }) {
         setProblem(data);
         setCode(data.leetcode_template || data.solution_template);
         setLoading(false);
+        // Auto-fetch full LeetCode description
+        const slug = data.id.startsWith('prob-') ? data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : data.id;
+        const q = `query questionContent($titleSlug: String!) { question(titleSlug: $titleSlug) { content title difficulty exampleTestcases topicTags { name slug } } }`;
+        fetch('/api/leetcode-graphql', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: q, variables: { titleSlug: slug } })
+        }).then(r => r.json()).then(res => {
+          const c = res?.data?.question?.content;
+          if (!c) return;
+          const html = c
+            .replace(/<pre>[\s\S]*?<\/pre>/g, m => '```\n' + m.replace(/<\/?pre>/g, '').replace(/<code>/g, '').replace(/<\/code>/g, '').trim() + '\n```')
+            .replace(/<code[^>]*>([\s\S]*?)<\/code>/g, '`$1`')
+            .replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**')
+            .replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*')
+            .replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '$1\n\n')
+            .replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, '$1')
+            .replace(/<li[^>]*>([\s\S]*?)<\/li>/g, '- $1\n')
+            .replace(/<br\s*\/?>/g, '\n')
+            .replace(/<[^>]*>/g, '')
+            .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+          setProblem(prev => prev ? { ...prev, description: html } : prev);
+          setHasLeetCodeDesc(true);
+        }).catch(() => {});
         if (data.category) {
           fetch(`/api/patterns/${data.category}`)
             .then(r => r.json())
@@ -116,38 +138,6 @@ export default function ProblemDetailPage({ username }) {
     }
   };
 
-  const loadLeetCodeDesc = async () => {
-    if (!problem) return;
-    setLoadingLeetCode(true);
-    setLeetCodeError('');
-    const slug = problem.id.startsWith('prob-') ? problem.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : problem.id;
-    const query = `query questionContent($titleSlug: String!) { question(titleSlug: $titleSlug) { content title difficulty exampleTestcases topicTags { name slug } } }`;
-    try {
-      const res = await fetch('/api/leetcode-graphql', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, variables: { titleSlug: slug } })
-      });
-      const data = await res.json();
-      const q = data?.data?.question;
-      if (!q || !q.content) { setLeetCodeError('Description not found on LeetCode'); setLoadingLeetCode(false); return; }
-      const html = q.content
-        .replace(/<pre>[\s\S]*?<\/pre>/g, m => '```\n' + m.replace(/<\/?pre>/g, '').replace(/<code>/g, '').replace(/<\/code>/g, '').trim() + '\n```')
-        .replace(/<code[^>]*>([\s\S]*?)<\/code>/g, '`$1`')
-        .replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**')
-        .replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*')
-        .replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '$1\n\n')
-        .replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, '$1')
-        .replace(/<li[^>]*>([\s\S]*?)<\/li>/g, '- $1\n')
-        .replace(/<br\s*\/?>/g, '\n')
-        .replace(/<[^>]*>/g, '')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-      const examples = q.exampleTestcases ? q.exampleTestcases.split('\n').filter(Boolean).map((tc, i) => ({ input: tc, output: `See example ${i+1}`, explanation: '' })) : problem.examples;
-      setProblem(prev => ({ ...prev, description: html, examples: examples.length > 0 ? examples : prev.examples }));
-      setLoadingLeetCode(false);
-    } catch { setLeetCodeError('Failed to fetch LeetCode description'); setLoadingLeetCode(false); }
-  };
-
   if (loading) {
     return (
       <div className="container" style={{ paddingTop: 40 }}>
@@ -186,9 +176,6 @@ export default function ProblemDetailPage({ username }) {
               }}>{problem.category}</Link>
               {problem.sheet && <span style={{ fontSize: 10, color: '#48dbfb', border: '1px solid rgba(72,219,251,0.3)', borderRadius: 4, padding: '1px 6px' }}>{problem.sheet}</span>}
             </div>
-            <button className="btn btn-ghost" onClick={loadLeetCodeDesc} disabled={loadingLeetCode} style={{ fontSize: 11, padding: '4px 10px', borderRadius: 4 }}>
-              {loadingLeetCode ? 'loading...' : leetCodeError || 'load leetcode desc'}
-            </button>
           </div>
 
           <div className="card" style={{ padding: 24, marginBottom: 16, fontSize: 14, lineHeight: 1.7 }}>
@@ -207,8 +194,8 @@ export default function ProblemDetailPage({ username }) {
               </>
             )}
 
-            <div style={{ fontSize: 13, fontWeight: 600, margin: '16px 0 8px' }}>Examples</div>
-            {Array.isArray(problem.examples) && problem.examples.map((ex, i) => (
+            {!hasLeetCodeDesc && <div style={{ fontSize: 13, fontWeight: 600, margin: '16px 0 8px' }}>Examples</div>}
+            {!hasLeetCodeDesc && Array.isArray(problem.examples) && problem.examples.map((ex, i) => (
               <div key={i} style={{
                 background: 'var(--bg-secondary)', borderRadius: 'var(--radius)', padding: 14,
                 marginBottom: 10, fontSize: 13, fontFamily: 'var(--font-mono)'
