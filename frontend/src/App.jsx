@@ -10,6 +10,7 @@ import PatternsPage from './pages/PatternsPage';
 import PatternDetailPage from './pages/PatternDetailPage';
 import VisualizerPage from './pages/VisualizerPage';
 import DashboardPage from './pages/DashboardPage';
+import ProfilePage from './pages/ProfilePage';
 import Navbar from './components/Navbar';
 
 function WakeUpOverlay({ onReady }) {
@@ -67,6 +68,7 @@ function AppContent() {
         <Route path="/problems/:id" element={<ProblemDetailPage username={username} />} />
         <Route path="/visualizer" element={<VisualizerPage />} />
         <Route path="/dashboard" element={<DashboardPage username={username} />} />
+        <Route path="/profile" element={<ProfilePage username={username} />} />
       </Routes>
     </div>
   );

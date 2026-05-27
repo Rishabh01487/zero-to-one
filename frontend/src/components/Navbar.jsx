@@ -7,7 +7,7 @@ const navItems = [
   { path: '/playground', label: 'Playground' },
   { path: '/visualizer', label: 'Visualizer' },
   { path: '/problems', label: 'Problems' },
-  { path: '/dashboard', label: 'Progress' },
+  { path: '/profile', label: 'Profile' },
 ];
 
 const externalLinks = [

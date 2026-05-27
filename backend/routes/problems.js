@@ -9,6 +9,62 @@ function categoryOrder(cat) {
   return p ? p.order : 999;
 }
 
+// ── LeetCode-style template auto-generation ─────────────────
+function toCamelCase(str) {
+  return str
+    .replace(/[^a-zA-Z0-9 ]/g, '')
+    .split(/\s+/)
+    .map((w, i) => i === 0 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join('');
+}
+
+function guessMethodSignature(problem) {
+  const name = toCamelCase(problem.title);
+  const cat = (problem.category || '').toLowerCase();
+  const examples = problem.examples || [];
+  const sampleIn = examples[0]?.input || '';
+  const sampleOut = examples[0]?.output || '';
+  const isBool = sampleOut === 'true' || sampleOut === 'false';
+  const isNumeric = /^-?\d+$/.test(sampleOut.trim());
+  const isArray = sampleOut.includes(' ');
+  const lines = sampleIn.split('\n').filter(Boolean);
+  let hasArr = cat === 'arrays' || cat === 'sorting' || cat === 'twopointers' || /arr|nums|vector/.test(problem.solution_template || '');
+  let hasStr = cat === 'strings' || /string/.test(problem.solution_template || '');
+  let hasTarget = /target|sum/.test(problem.title.toLowerCase());
+  let hasKey = /val|key/.test(problem.title.toLowerCase());
+
+  // Default return type
+  let retType = 'void';
+  if (isBool) retType = 'bool';
+  else if (isNumeric && !isArray) retType = 'int';
+  else if (isArray) retType = 'vector<int>';
+
+  // Default params
+  let params = '';
+  if (hasStr && !hasArr) {
+    params = 'string s';
+  } else if (hasArr || cat === 'arrays' || lines.length >= 2) {
+    params = 'vector<int>& nums';
+    if (hasTarget) params += ', int target';
+    else if (hasKey) params += ', int val';
+  } else if (cat === 'matrix' || cat === 'graph' || cat === 'dp') {
+    params = 'vector<vector<int>>& grid';
+  } else {
+    params = 'vector<int>& nums';
+  }
+
+  if (retType === 'vector<int>' && params === 'vector<int>& nums') {
+    retType = 'void';
+  }
+
+  return { retType, methodName: name, params };
+}
+
+function generateLeetCodeTemplate(problem) {
+  const sig = guessMethodSignature(problem);
+  return `class Solution {\npublic:\n    ${sig.retType} ${sig.methodName}(${sig.params}) {\n        \n    }\n};`;
+}
+
 router.get('/', (req, res) => {
   const { difficulty, category, technique } = req.query;
   let problems = db.query('problems');
@@ -29,6 +85,8 @@ router.get('/:id', (req, res) => {
   if (!problem) return res.status(404).json({ error: 'Problem not found' });
   if (typeof problem.examples === 'string') problem.examples = JSON.parse(problem.examples);
   if (typeof problem.test_cases === 'string') problem.test_cases = JSON.parse(problem.test_cases);
+  // Add LeetCode-style template alongside the original solution_template
+  problem.leetcode_template = generateLeetCodeTemplate(problem);
   res.json(problem);
 });
 

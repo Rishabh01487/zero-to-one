@@ -20,7 +20,7 @@ export default function ProblemDetailPage({ username }) {
       .then(r => r.json())
       .then(data => {
         setProblem(data);
-        setCode(data.solution_template);
+        setCode(data.leetcode_template || data.solution_template);
         setLoading(false);
         if (data.category) {
           fetch(`/api/patterns/${data.category}`)
@@ -55,6 +55,13 @@ export default function ProblemDetailPage({ username }) {
       }
     }
     setTestResults(results);
+    if (username) {
+      fetch(`/api/progress/${username}/${problem.id}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code })
+      }).catch(() => {});
+    }
     setRunning(false);
   };
 
