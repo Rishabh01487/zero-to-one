@@ -241,30 +241,6 @@ export default function ProblemDetailPage({ username }) {
             </div>
           )}
 
-          {testResults && (
-            <div className="card" style={{ padding: 20, marginBottom: 16 }}>
-              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>Test Results</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                {testResults.map((r, i) => (
-                  <div key={i} style={{
-                    padding: '10px 14px', borderRadius: 'var(--radius)',
-                    background: r.passed ? 'rgba(34,197,94,0.06)' : 'rgba(239,68,68,0.06)',
-                    border: `1px solid ${r.passed ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
-                    fontSize: 12
-                  }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
-                      <strong style={{ color: r.passed ? '#7bed9f' : '#ff6b6b' }}>Test {i + 1}: {r.passed ? 'Passed' : 'Failed'}</strong>
-                    </div>
-                    <div style={{ color: 'var(--text-secondary)' }}>Expected: <code style={{ background: 'var(--bg-tertiary)', padding: '1px 4px', borderRadius: 3 }}>{r.expected}</code></div>
-                    {!r.passed && <div style={{ color: '#ff6b6b' }}>Got: <code style={{ background: 'var(--bg-tertiary)', padding: '1px 4px', borderRadius: 3 }}>{r.actual}</code></div>}
-                  </div>
-                ))}
-                <div style={{ marginTop: 8, fontSize: 13, fontWeight: 600, color: '#feca57' }}>
-                  {testResults.filter(r => r.passed).length}/{testResults.length} passed
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
         <div>
@@ -289,6 +265,30 @@ export default function ProblemDetailPage({ username }) {
             <div className="card" style={{ marginTop: 14, padding: 16, borderLeft: '3px solid #7bed9f' }}>
               <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 8, color: '#7bed9f' }}>Solution</div>
               <pre style={{ margin: 0, fontSize: 12, fontFamily: 'var(--font-mono)', lineHeight: 1.6, color: 'var(--text-secondary)', whiteSpace: 'pre-wrap' }}>{problem.solution_code}</pre>
+            </div>
+          )}
+          {testResults && (
+            <div className="card" style={{ padding: 20, marginTop: 14 }}>
+              <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 12 }}>Test Results</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {testResults.map((r, i) => (
+                  <div key={i} style={{
+                    padding: '10px 14px', borderRadius: 'var(--radius)',
+                    background: r.passed ? 'rgba(34,197,94,0.06)' : 'rgba(239,68,68,0.06)',
+                    border: `1px solid ${r.passed ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
+                    fontSize: 12
+                  }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                      <strong style={{ color: r.passed ? '#7bed9f' : '#ff6b6b' }}>Test {i + 1}: {r.passed ? 'Passed' : 'Failed'}</strong>
+                    </div>
+                    <div style={{ color: 'var(--text-secondary)' }}>Expected: <code style={{ background: 'var(--bg-tertiary)', padding: '1px 4px', borderRadius: 3 }}>{r.expected}</code></div>
+                    {!r.passed && <div style={{ color: '#ff6b6b' }}>Got: <code style={{ background: 'var(--bg-tertiary)', padding: '1px 4px', borderRadius: 3 }}>{r.actual}</code></div>}
+                  </div>
+                ))}
+                <div style={{ marginTop: 8, fontSize: 13, fontWeight: 600, color: '#feca57' }}>
+                  {testResults.filter(r => r.passed).length}/{testResults.length} passed
+                </div>
+              </div>
             </div>
           )}
         </div>
