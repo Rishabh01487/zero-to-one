@@ -38,6 +38,21 @@ app.post('/api/visualize', async (req, res) => {
   }
 });
 
+app.post('/api/leetcode-graphql', async (req, res) => {
+  try {
+    const { query, variables } = req.body;
+    const response = await fetch('https://leetcode.com/graphql/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0' },
+      body: JSON.stringify({ query, variables })
+    });
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.json({ data: null, errors: [{ message: err.message }] });
+  }
+});
+
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'dist', 'index.html'));
