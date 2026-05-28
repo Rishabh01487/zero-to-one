@@ -24,6 +24,43 @@ function isSkipLine(trimmed) {
   return false;
 }
 
+// Find first `=` at depth 0 (not inside parens/brackets/braces), excluding `==`
+function findFirstEq(str) {
+  let depth = 0;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (ch === '(' || ch === '[' || ch === '{') depth++;
+    else if (ch === ')' || ch === ']' || ch === '}') depth--;
+    else if (ch === '=' && depth === 0 && str[i + 1] !== '=') return i;
+  }
+  return -1;
+}
+
+// Extract all lvalues from potentially chained assignment (a = b = c = 0 → [a, b, c])
+function extractLvalues(line) {
+  const result = [];
+  let remaining = line.replace(/;\s*$/, '').trim();
+  while (true) {
+    const eqPos = findFirstEq(remaining);
+    if (eqPos === -1) break;
+    let lhs = remaining.substring(0, eqPos).trim();
+    if (lhs) result.push(lhs);
+    remaining = remaining.substring(eqPos + 1).trim();
+  }
+  return result;
+}
+
+// True if line starts with a type keyword → likely a declaration
+function isDeclaration(lhs) {
+  return /^\s*(?:(?:const|static|mutable|volatile|register|extern)\s+)*(?:\w+(?:\s*<[^>]*>)?(?:\s*[*&])?)\s+\w/.test(lhs);
+}
+
+// Extract variable name from declaration lhs like "int x" → "x", "vector<int> nums" → "nums"
+function declVarName(lhs) {
+  const m = lhs.match(/(\w+)\s*$/);
+  return m ? m[1] : null;
+}
+
 export async function instrumentCode(code, input) {
   try {
     const lines = code.split('\n');
@@ -96,58 +133,57 @@ export async function instrumentCode(code, input) {
 
       // Lines that end with semicolon (statements) or are expressions
       if (trimmed.endsWith(';') || trimmed.endsWith('};')) {
-        // Add line trace
         out.push(indent + 'TRACE_LINE(' + lineIdx + ');');
 
-        // Check for assignments: contains = but not ==, <=, >=, !=
-        const hasAssignment = /=/.test(trimmed) && !/==|<=|>=|!=/.test(trimmed);
+        const hasEq = trimmed.includes('=') && !/==|<=|>=|!=/.test(trimmed);
 
-        if (hasAssignment) {
-          // Try to extract the variable name before =
-          const eqPos = trimmed.indexOf('=');
-          const beforeEq = trimmed.substring(0, eqPos).trim();
-          // Get the last word before = (the variable name)
-          const parts = beforeEq.split(/\s+/);
-          const varName = parts[parts.length - 1].replace(/[*&]/g, '').replace(/[;{]$/, '');
-          // Also handle array subscript: arr[i] = ...
-          const arrMatch = beforeEq.match(/(\w+)\s*\[.*?\]$/);
-          const extractedName = arrMatch ? arrMatch[1] : varName;
-
+        if (hasEq) {
           out.push(rawLine);
-          if (extractedName && extractedName !== ')' && !extractedName.startsWith('(')) {
-            // Try to capture the variable; if name contains brackets, use the full LHS
-            if (arrMatch) {
-              const fullLHS = beforeEq.match(/(\w+\[.*?\])$/)[1];
-              out.push(indent + 'TRACE_VAR("' + fullLHS.replace(/"/g, '\\"') + '", ' + fullLHS + ');');
-            } else {
-              out.push(indent + 'TRACE_VAR("' + extractedName + '", ' + extractedName + ');');
+          // Extract all lvalues from chained assignments (a=b=c=0 → a,b,c)
+          const lvalues = extractLvalues(trimmed);
+          for (const lval of lvalues) {
+            let traceExpr = lval;
+            // If it's a declaration like "int x", use just "x"
+            if (isDeclaration(traceExpr) || /\s/.test(traceExpr)) {
+              const vn = declVarName(traceExpr);
+              if (vn && !/(?:int|void|bool|char|float|double|long|auto|const|return)/.test(vn)) traceExpr = vn;
+            }
+            // Strip trailing garbage
+            traceExpr = traceExpr.replace(/[;{]*$/, '').trim();
+            if (traceExpr && !/^(?:int|void|bool|char|float|double|long|auto|const|return|if|while|for|switch)$/.test(traceExpr)) {
+              out.push(indent + 'TRACE_VAR("' + traceExpr.replace(/"/g, '\\"') + '", ' + traceExpr + ');');
             }
           }
-        } else if (/^\s*return\b/.test(trimmed)) {
-          // Return statement
-          const retVal = trimmed.replace(/^\s*return\s*/, '').replace(/;?\s*$/, '').trim();
+        } else if (/^\s*(?:return)\b/.test(trimmed)) {
+          const retVal = trimmed.replace(/^\s*return\s*/, '').replace(/;\s*$/, '').trim();
           out.push(rawLine);
           if (retVal) {
             out.push(indent + 'TRACE_VAR("return", ' + retVal + ');');
           }
         } else if (/^\s*(?:cin|std::cin)\s*[>]/.test(trimmed)) {
-          // cin >> var — trace the variable after >>
-          const cinVar = trimmed.replace(/^\s*(?:cin|std::cin)\s*>>\s*/, '').replace(/;?\s*$/, '').trim();
           out.push(rawLine);
-          if (cinVar) {
-            out.push(indent + 'TRACE_VAR("' + cinVar + '", ' + cinVar + ');');
+          // Trace each variable after >>
+          const cinVars = trimmed.replace(/^\s*(?:cin|std::cin)\s*>>\s*/, '').replace(/;\s*$/, '').split(/\s*>>\s*/);
+          for (const v of cinVars) {
+            if (v.trim()) out.push(indent + 'TRACE_VAR("' + v.trim() + '", ' + v.trim() + ');');
           }
         } else if (/^\s*(?:cout|std::cout)/.test(trimmed)) {
-          // cout — don't add var trace, just the line
           out.push(rawLine);
         } else {
-          // Other statement — just add the line
-          out.push(rawLine);
+          // Declaration without initializer? (int x;)
+          const bareDecl = trimmed.match(/^\s*(?:\w+(?:\s*<[^>]*>)?(?:\s*[*&])?)\s+(\w+)\s*(?:\[.*?\])?\s*;\s*$/);
+          if (bareDecl) {
+            out.push(rawLine);
+            const vn = bareDecl[1];
+            if (vn) out.push(indent + 'TRACE_VAR("' + vn + '", ' + vn + ');');
+          } else {
+            out.push(rawLine);
+          }
         }
         continue;
       }
 
-      // Lines without semicolons that aren't braces (e.g., standalone labels, case)
+      // Lines without semicolons (labels, case, standalone expressions)
       out.push(indent + 'TRACE_LINE(' + lineIdx + ');');
       out.push(rawLine);
     }
