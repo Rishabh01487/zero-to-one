@@ -4,6 +4,10 @@ const router = Router();
 
 const WANDBOX = 'https://wandbox.org/api/compile.json';
 
+function stripANSI(s) {
+  return s.replace(/\u001b\[.*?m/g, '').replace(/\u001b\[.*?[A-Za-z]/g, '');
+}
+
 // Smart wrap: generate main() from Solution method signature
 function isVectorType(t) {
   return t.startsWith('vector<');
@@ -172,18 +176,18 @@ router.post('/', async (req, res) => {
       const execTime = Date.now() - start;
 
       // Retry on Wandbox resource exhaustion
-      const errMsg = result.compiler_error || result.program_output || '';
+      const errMsg = stripANSI(result.compiler_error || result.program_output || '');
       if (errMsg.includes('Resource temporarily unavailable') || errMsg.includes('OCI runtime error')) {
         if (attempt < MAX_RETRIES - 1) continue;
         return res.json({ output: 'Wandbox is busy. Please try again.', success: false });
       }
 
       if (result.compiler_error) {
-        return res.json({ output: result.compiler_error, success: false });
+        return res.json({ output: stripANSI(result.compiler_error), success: false });
       }
 
       return res.json({
-        output: result.program_output || result.program_message || '(no output)',
+        output: stripANSI(result.program_output || result.program_message || '(no output)'),
         executionTime: `${execTime}ms`,
         success: result.status === '0',
       });

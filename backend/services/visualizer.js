@@ -156,16 +156,17 @@ export async function instrumentCode(code, input) {
           }),
         });
         const result = await wandbox.json();
-        const rawOutput = result.program_output || result.compiler_error || '';
+        const stripANSI = s => s.replace(/\u001b\[.*?m/g, '').replace(/\u001b\[.*?[A-Za-z]/g, '');
+        const rawOutput = stripANSI(result.program_output || result.compiler_error || '');
 
-        const errMsg = result.compiler_error || result.program_output || '';
+        const errMsg = stripANSI(result.compiler_error || result.program_output || '');
         if (errMsg.includes('Resource temporarily unavailable') || errMsg.includes('OCI runtime error')) {
           if (attempt < MAX_RETRIES - 1) continue;
           return { steps: [], output: '', lineMap: [], error: 'Wandbox is busy. Please try again.' };
         }
 
         if (result.compiler_error) {
-          return { steps: [], output: '', lineMap: [], error: 'Compilation error: ' + result.compiler_error, rawOutput: result.compiler_error };
+          return { steps: [], output: '', lineMap: [], error: 'Compilation error: ' + stripANSI(result.compiler_error), rawOutput: stripANSI(result.compiler_error) };
         }
 
         const steps = [];
