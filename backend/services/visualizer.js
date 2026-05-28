@@ -148,8 +148,8 @@ export async function instrumentCode(code, input) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             code: instrumentedCode,
-            compiler: 'gcc-head',
-            options: '-std=c++17',
+            compiler: 'clang-head',
+            options: '-std=c++23 -O2 -fsanitize=address -stdlib=libstdc++',
             stdin: input || '',
             save: false,
             compiler_option_raw: true,
