@@ -1,143 +1,158 @@
 const WANDBOX = 'https://wandbox.org/api/compile.json';
 
+const STD_HEADERS = [
+  'algorithm','array','bitset','cassert','cctype','chrono','climits','cmath',
+  'cstdint','cstdio','cstdlib','cstring','ctime','deque','forward_list','fstream',
+  'functional','iomanip','ios','iostream','istream','iterator','limits','list',
+  'locale','map','memory','mutex','numeric','ostream','queue','random','regex',
+  'set','sstream','stack','stdexcept','streambuf','string','thread','tuple',
+  'type_traits','typeinfo','unordered_map','unordered_set','utility','valarray','vector'
+].map(h => `#include <${h}>`).join('\n');
+
 function escapeForCpp(str) {
   return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '');
+}
+
+function stripANSI(s) {
+  return s.replace(/\u001b\[.*?m/g, '').replace(/\u001b\[.*?[A-Za-z]/g, '');
+}
+
+function isSkipLine(trimmed) {
+  if (!trimmed) return true;
+  if (trimmed.startsWith('#include') || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) return true;
+  if (trimmed.startsWith('using namespace') || trimmed.startsWith('#define') || trimmed.startsWith('#if') || trimmed.startsWith('#endif') || trimmed.startsWith('#else') || trimmed.startsWith('#pragma')) return true;
+  return false;
 }
 
 export async function instrumentCode(code, input) {
   try {
     const lines = code.split('\n');
-    const traceLines = [];
+    const out = [];
 
-    traceLines.push('#include <iostream>');
-    traceLines.push('#include <string>');
-    traceLines.push('#include <sstream>');
-    traceLines.push('#define TRACE_STEP(x) do { std::cout << "###STEP###" << x << "\\n"; } while(0)');
-    traceLines.push('#define TRACE_VAR(name,val) do { std::cout << "###VAR###" << name << "=" << val << "\\n"; } while(0)');
-    traceLines.push('#define TRACE_LINE(n) do { std::cout << "###LINE###" << n << "\\n"; } while(0)');
-    traceLines.push('');
+    out.push(STD_HEADERS);
+    out.push('#define TRACE_STEP(x) do { std::cout << "###STEP###" << x << "\\n"; } while(0)');
+    out.push('#define TRACE_VAR(n,v) do { std::cout << "###VAR###" << n << "=" << v << "\\n"; } while(0)');
+    out.push('#define TRACE_LINE(n) do { std::cout << "###LINE###" << n << "\\n"; } while(0)');
+    out.push('');
 
-    let braceCount = 0;
     let inFunction = false;
-    let lineNumber = 0;
+    let lineIdx = 0;
 
     for (const rawLine of lines) {
-      lineNumber++;
-      const line = rawLine;
-      const trimmed = line.trim();
-      const indent = line.match(/^\s*/)[0];
+      lineIdx++;
+      const indent = rawLine.match(/^\s*/)[0];
+      const trimmed = rawLine.trim();
+      const isBrace = trimmed === '{' || trimmed === '}' || trimmed === '};';
+      const isBlockEnd = trimmed === '}' || trimmed === '};';
 
-      if (trimmed.startsWith('#include') || trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) {
-        traceLines.push(line);
+      // Preserve includes, comments, preprocessor, empty lines, namespace
+      if (isSkipLine(trimmed)) {
+        out.push(rawLine);
         continue;
       }
 
-      if (trimmed.startsWith('using namespace')) {
-        traceLines.push(line);
+      // Blank lines
+      if (!trimmed) {
+        out.push(rawLine);
         continue;
       }
 
-      if (trimmed === '' || trimmed === '{' || trimmed === '}') {
-        if (trimmed === '{') {
-          traceLines.push(indent + '{');
-          traceLines.push(indent + '  TRACE_LINE(' + lineNumber + ');');
-          braceCount++;
-        } else if (trimmed === '}') {
-          braceCount--;
-          traceLines.push(line);
+      // Pure braces
+      if (isBrace && trimmed.length <= 2) {
+        if (isBlockEnd) {
+          out.push(rawLine);
         } else {
-          traceLines.push(line);
+          out.push(rawLine);
+          out.push(indent + '  TRACE_LINE(' + lineIdx + ');');
         }
         continue;
       }
 
-      if (trimmed.startsWith('int main(')) {
+      // Detect function start (includes main, Solution methods, lambdas, etc.)
+      if (/\b(?:int|void|bool|char|float|double|long|string|auto|size_t|vector|list|map|set|unordered_map|unordered_set|pair|ListNode|TreeNode|Node)\s+\w+\s*\(/.test(trimmed) && trimmed.endsWith('{')) {
         inFunction = true;
-        traceLines.push(line);
+        out.push(rawLine);
+        continue;
+      }
+      if (/^int\s+main\s*\(/.test(trimmed)) {
+        inFunction = true;
+        out.push(rawLine);
         continue;
       }
 
-      if (trimmed.startsWith('for (') || trimmed.startsWith('while(') || trimmed.startsWith('while (')) {
-        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-        traceLines.push(line);
+      // Loop/condition headers that open a brace on the same line or next
+      if (/^\s*(?:for|while|do|if|else\s+if|else|switch|catch)\s*\(/.test(trimmed) || /^\s*else\s*{?\s*$/.test(trimmed)) {
+        out.push(indent + 'TRACE_LINE(' + lineIdx + ');');
+        out.push(rawLine);
         continue;
       }
 
-      if (trimmed.startsWith('if') || trimmed.startsWith('else if') || trimmed.startsWith('else')) {
-        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-        traceLines.push(line);
+      // Try/catch
+      if (/^\s*try\s*{?\s*$/.test(trimmed)) {
+        out.push(indent + 'TRACE_LINE(' + lineIdx + ');');
+        out.push(rawLine);
         continue;
       }
 
-      if (trimmed.startsWith('cout') || trimmed.startsWith('std::cout')) {
-        traceLines.push(line);
-        continue;
-      }
+      // Lines that end with semicolon (statements) or are expressions
+      if (trimmed.endsWith(';') || trimmed.endsWith('};')) {
+        // Add line trace
+        out.push(indent + 'TRACE_LINE(' + lineIdx + ');');
 
-      if (trimmed.startsWith('cin') || trimmed.startsWith('std::cin')) {
-        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-        traceLines.push(line);
-        continue;
-      }
+        // Check for assignments: contains = but not ==, <=, >=, !=
+        const hasAssignment = /=/.test(trimmed) && !/==|<=|>=|!=/.test(trimmed);
 
-      if (trimmed.startsWith('return')) {
-        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-        traceLines.push(line);
-        continue;
-      }
+        if (hasAssignment) {
+          // Try to extract the variable name before =
+          const eqPos = trimmed.indexOf('=');
+          const beforeEq = trimmed.substring(0, eqPos).trim();
+          // Get the last word before = (the variable name)
+          const parts = beforeEq.split(/\s+/);
+          const varName = parts[parts.length - 1].replace(/[*&]/g, '').replace(/[;{]$/, '');
+          // Also handle array subscript: arr[i] = ...
+          const arrMatch = beforeEq.match(/(\w+)\s*\[.*?\]$/);
+          const extractedName = arrMatch ? arrMatch[1] : varName;
 
-      const arrDeclMatch = trimmed.match(/^(int|float|double|char|bool|string|long)\s+(\w+)\[.*?\]\s*(?:=\s*\{(.*?)\})?\s*;?$/);
-      if (arrDeclMatch) {
-        const arrName = arrDeclMatch[2];
-        const initVals = arrDeclMatch[3];
-        traceLines.push(line);
-        if (initVals && initVals.trim()) {
-          const vals = initVals.split(',').map(v => v.trim());
-          vals.forEach((val, idx) => {
-            traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-            traceLines.push(indent + 'TRACE_VAR("' + arrName + '[' + idx + ']", ' + arrName + '[' + idx + ']);');
-          });
+          out.push(rawLine);
+          if (extractedName && extractedName !== ')' && !extractedName.startsWith('(')) {
+            // Try to capture the variable; if name contains brackets, use the full LHS
+            if (arrMatch) {
+              const fullLHS = beforeEq.match(/(\w+\[.*?\])$/)[1];
+              out.push(indent + 'TRACE_VAR("' + fullLHS.replace(/"/g, '\\"') + '", ' + fullLHS + ');');
+            } else {
+              out.push(indent + 'TRACE_VAR("' + extractedName + '", ' + extractedName + ');');
+            }
+          }
+        } else if (/^\s*return\b/.test(trimmed)) {
+          // Return statement
+          const retVal = trimmed.replace(/^\s*return\s*/, '').replace(/;?\s*$/, '').trim();
+          out.push(rawLine);
+          if (retVal) {
+            out.push(indent + 'TRACE_VAR("return", ' + retVal + ');');
+          }
+        } else if (/^\s*(?:cin|std::cin)\s*[>]/.test(trimmed)) {
+          // cin >> var — trace the variable after >>
+          const cinVar = trimmed.replace(/^\s*(?:cin|std::cin)\s*>>\s*/, '').replace(/;?\s*$/, '').trim();
+          out.push(rawLine);
+          if (cinVar) {
+            out.push(indent + 'TRACE_VAR("' + cinVar + '", ' + cinVar + ');');
+          }
+        } else if (/^\s*(?:cout|std::cout)/.test(trimmed)) {
+          // cout — don't add var trace, just the line
+          out.push(rawLine);
+        } else {
+          // Other statement — just add the line
+          out.push(rawLine);
         }
         continue;
       }
 
-      const varDeclMatch = trimmed.match(/^(int|float|double|char|bool|string|long|short|unsigned|auto)\s+(\w+)\s*(?:=\s*(.*?))?;?$/);
-      if (varDeclMatch) {
-        const type = varDeclMatch[1];
-        const varName = varDeclMatch[2];
-        const initVal = varDeclMatch[3];
-        traceLines.push(line);
-        if (initVal && initVal.trim()) {
-          traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-          traceLines.push(indent + 'TRACE_VAR("' + varName + '", ' + varName + ');');
-        }
-        continue;
-      }
-
-      const arrElemAssignMatch = trimmed.match(/^(\w+)\[(.*?)\]\s*(?:\+=|-=|=)\s*(.*?);?$/);
-      if (arrElemAssignMatch) {
-        const arrName = arrElemAssignMatch[1];
-        const arrIdx = arrElemAssignMatch[2];
-        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-        traceLines.push(line);
-        traceLines.push(indent + 'TRACE_VAR("' + arrName + '[' + arrIdx + ']", ' + arrName + '[' + arrIdx + ']);');
-        continue;
-      }
-
-      const assignMatch = trimmed.match(/^(\w+)\s*(?:\+=|-=|[*]=|\/=|%=|=)\s*(.*?);?$/);
-      if (assignMatch && !trimmed.startsWith('int') && !trimmed.startsWith('float') && !trimmed.startsWith('for') && !trimmed.startsWith('while')) {
-        const varName = assignMatch[1];
-        traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-        traceLines.push(line);
-        traceLines.push(indent + 'TRACE_VAR("' + varName + '", ' + varName + ');');
-        continue;
-      }
-
-      traceLines.push(indent + 'TRACE_LINE(' + lineNumber + ');');
-      traceLines.push(line);
+      // Lines without semicolons that aren't braces (e.g., standalone labels, case)
+      out.push(indent + 'TRACE_LINE(' + lineIdx + ');');
+      out.push(rawLine);
     }
 
-    const instrumentedCode = traceLines.join('\n');
+    const instrumentedCode = out.join('\n');
 
     const MAX_RETRIES = 3;
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
@@ -156,7 +171,6 @@ export async function instrumentCode(code, input) {
           }),
         });
         const result = await wandbox.json();
-        const stripANSI = s => s.replace(/\u001b\[.*?m/g, '').replace(/\u001b\[.*?[A-Za-z]/g, '');
         const rawOutput = stripANSI(result.program_output || result.compiler_error || '');
 
         const errMsg = stripANSI(result.compiler_error || result.program_output || '');
@@ -177,10 +191,10 @@ export async function instrumentCode(code, input) {
           if (line.startsWith('###STEP###')) {
             steps.push({ type: 'step', value: line.replace('###STEP###', '').trim() });
           } else if (line.startsWith('###VAR###')) {
-            const parts = line.replace('###VAR###', '').trim().split('=');
-            const varName = parts[0];
-            const varValue = parts.slice(1).join('=');
-            steps.push({ type: 'var', varName, varValue });
+            const eqIdx = line.indexOf('=');
+            const rawName = line.substring(7, eqIdx);
+            const rawValue = line.substring(eqIdx + 1);
+            steps.push({ type: 'var', varName: rawName, varValue: rawValue });
           } else if (line.startsWith('###LINE###')) {
             const lineNum = parseInt(line.replace('###LINE###', '').trim());
             if (!isNaN(lineNum)) {
