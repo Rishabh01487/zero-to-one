@@ -37,14 +37,23 @@ function abbrToType(a) {
 }
 
 function genHelpers(types) {
-  // Add implied dependencies
-  if (types.has('ln')) types.add('vi');
-  if (types.has('tn')) types.add('vs');
+  // Expand all transitive dependencies recursively
+  const all = new Set(types);
+  if (all.has('ln')) all.add('vi');
+  if (all.has('tn')) all.add('vs');
+  for (let done = false; !done; ) {
+    done = true;
+    for (const a of Array.from(all)) {
+      if (a.startsWith('v') && !all.has(a.slice(1))) {
+        all.add(a.slice(1)); done = false;
+      }
+    }
+  }
   // Emit in dependency order: primitives first, then vectors (shorter = less nested)
   const prio = ['i','ll','d','f','c','b','s','ln','tn'];
   const sorted = [];
-  for (const a of prio) { if (types.has(a)) { sorted.push(a); types.delete(a); } }
-  sorted.push(...Array.from(types).sort((a,b)=>a.length-b.length));
+  for (const a of prio) { if (all.has(a)) { sorted.push(a); all.delete(a); } }
+  sorted.push(...Array.from(all).sort((a,b)=>a.length-b.length));
   let code = '';
   for (const a of sorted) {
     if (a==='i') {
