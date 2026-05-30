@@ -50,10 +50,15 @@ function genHelpers(types) {
     }
   }
   // Emit in dependency order: primitives first, then vectors (shorter = less nested)
-  const prio = ['i','ll','d','f','c','b','s','ln','tn'];
+  const prio = ['i','ll','d','f','c','b','s'];
   const sorted = [];
   for (const a of prio) { if (all.has(a)) { sorted.push(a); all.delete(a); } }
-  sorted.push(...Array.from(all).sort((a,b)=>a.length-b.length));
+  sorted.push(...Array.from(all).sort((a,b)=>{
+    if (a.length!==b.length) return a.length-b.length;
+    // Same length: vectors before non-vectors (vi before ln, vs before tn)
+    const aV=a.startsWith('v')?0:1, bV=b.startsWith('v')?0:1;
+    return aV-bV;
+  }));
   let code = '';
   for (const a of sorted) {
     if (a==='i') {
