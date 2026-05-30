@@ -55,7 +55,7 @@ export default function HomePage({ username, setUsername }) {
   };
 
   return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
+    <div style={{ minHeight: '100vh' }}>
       <nav style={{
         height: 56,
         display: 'flex',

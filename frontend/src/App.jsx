@@ -29,7 +29,7 @@ function WakeUpOverlay({ onReady }) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      minHeight: '100vh', background: 'var(--bg-primary)', gap: 16
+      minHeight: '100vh', gap: 16
     }}>
       <div style={{ width: 36, height: 36, border: '3px solid var(--border)', borderTopColor: 'var(--accent)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
       <p style={{ fontSize: 13, color: 'var(--text-muted)', margin: 0 }}>Warming up server{dots}</p>
@@ -55,7 +55,7 @@ function AppContent() {
   if (!backendReady) return <WakeUpOverlay onReady={() => setBackendReady(true)} />;
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ minHeight: '100vh' }}>
       {!isHome && <Navbar username={username} onLogout={() => { setUsername(''); localStorage.removeItem('zto_username'); }} />}
       <Routes>
         <Route path="/" element={<HomePage username={username} setUsername={setUsername} />} />
